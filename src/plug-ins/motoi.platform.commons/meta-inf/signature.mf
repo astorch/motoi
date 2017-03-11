@@ -1,0 +1,6 @@
+﻿Name: Motoi Platform Commons
+SymbolicName: motoi.platform.commons
+Version: 0.0.1
+Activator: 
+Vendor: Motoi Dev Team
+Dependencies: 

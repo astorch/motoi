@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" ?>
+<extensions>
+  <extension point="org.motoi.application">
+    <application id="motoi.demo.application" class="DemoApplication" />
+  </extension>
+  <extension point="org.motoi.application.menu">
+    <menu id="fileMenu" label="&#38;File"/>
+    <menu id="helpMenu" label="&#38;Help"/>
+    <menuItem id="fileMenuNew" menu="fileMenu" label="&#38;New" handler="FileMenuNewHandler" shortcut="N, Control" image="Images/File-New-24.png"/>
+    <menuItem id="fileMenuClose" menu="fileMenu" handler="FileMenuCloseHandler" label="&#38;Close" shortcut="Q, Control" image="Images/Exit-24.png"/>
+    <menuItem id="helpMenuAbout" menu="helpMenu" label="&#38;About" image="Images/About-64.png"/>
+  </extension>
+</extensions>

@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{04339BF5-52CF-4F60-A947-A09AA42990D4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>motoi.platform.ui</RootNamespace>
+    <AssemblyName>motoi.platform.ui</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\debug\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\debug\motoi.platform.ui.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="actions\AbstractActionHandler.cs" />
+    <Compile Include="actions\ActionHandlerDelegate.cs" />
+    <Compile Include="actions\ActionHandlerFactory.cs" />
+    <Compile Include="actions\IActionHandler.cs" />
+    <Compile Include="bindings\BindableObject.cs" />
+    <Compile Include="bindings\Binding.cs" />
+    <Compile Include="bindings\DataBinding.cs" />
+    <Compile Include="bindings\DataBindingOperator.cs" />
+    <Compile Include="bindings\EBindingSourceUpdateReason.cs" />
+    <Compile Include="bindings\EDataBindingMode.cs" />
+    <Compile Include="bindings\EDataBindingSourceUpdateTrigger.cs" />
+    <Compile Include="bindings\exceptions\DataBindingException.cs" />
+    <Compile Include="bindings\GlobalDataBindingIndex.cs" />
+    <Compile Include="bindings\IBindableProperty.cs" />
+    <Compile Include="bindings\IDataBindingSupport.cs" />
+    <Compile Include="bindings\PropertyChangedDispatcher.cs" />
+    <Compile Include="bindings\PropertyDescriptor.cs" />
+    <Compile Include="controls\ButtonHandle.cs" />
+    <Compile Include="controls\IButton.cs" />
+    <Compile Include="data\ArrayContentProvider.cs" />
+    <Compile Include="data\DefaultLabelProvider.cs" />
+    <Compile Include="data\DefaultTreeLabelProvider.cs" />
+    <Compile Include="data\IContentProvider.cs" />
+    <Compile Include="data\IDataViewer.cs" />
+    <Compile Include="data\IHierarchicalContentProvider.cs" />
+    <Compile Include="data\ILabelProvider.cs" />
+    <Compile Include="data\IListContentProvider.cs" />
+    <Compile Include="data\IListLabelProvider.cs" />
+    <Compile Include="data\ITreeContentProvider.cs" />
+    <Compile Include="data\ITreeLabelProvider.cs" />
+    <Compile Include="IDataBindingFactory.cs" />
+    <Compile Include="images\ImageDescriptor.cs" />
+    <Compile Include="IViewPartComposite.cs" />
+    <Compile Include="IWidgetFactory.cs" />
+    <Compile Include="layouts\GridLayoutBehaviour.cs" />
+    <Compile Include="menus\MenuContribution.cs" />
+    <Compile Include="menus\MenuItemContribution.cs" />
+    <Compile Include="menus\MenuItemProvider.cs" />
+    <Compile Include="messaging\IUIInvoker.cs" />
+    <Compile Include="messaging\IUIMessageDispatchListener.cs" />
+    <Compile Include="messaging\UIMessageDispatcher.cs" />
+    <Compile Include="messaging\UIMessage.cs" />
+    <Compile Include="shells\EWindowState.cs" />
+    <Compile Include="shells\IDialogWindow.cs" />
+    <Compile Include="shells\IMainWindow.cs" />
+    <Compile Include="shells\IMessageDialogWindow.cs" />
+    <Compile Include="shells\ITitledAreaDialog.cs" />
+    <Compile Include="shells\IWindow.cs" />
+    <Compile Include="FactoryProvider.cs" />
+    <Compile Include="IViewPart.cs" />
+    <Compile Include="IViewPartFactory.cs" />
+    <Compile Include="toolbars\IToolBarComboBox.cs" />
+    <Compile Include="toolbars\IToolBar.cs" />
+    <Compile Include="toolbars\IToolBarControl.cs" />
+    <Compile Include="toolbars\ToolbarItemContribution.cs" />
+    <Compile Include="toolbars\ToolbarGroupContribution.cs" />
+    <Compile Include="toolbars\ToolbarItemProvider.cs" />
+    <Compile Include="UIFactory.cs" />
+    <Compile Include="widgets\ICheckBox.cs" />
+    <Compile Include="widgets\IComboBox.cs" />
+    <Compile Include="widgets\IGridComposite.cs" />
+    <Compile Include="widgets\IItemsHost.cs" />
+    <Compile Include="widgets\IListViewer.cs" />
+    <Compile Include="widgets\IRichTextBox.cs" />
+    <Compile Include="widgets\ITextBlock.cs" />
+    <Compile Include="widgets\ITextBox.cs" />
+    <Compile Include="widgets\ITreeViewer.cs" />
+    <Compile Include="widgets\IWidget.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 und x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="meta-Inf\signature.mf" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bindings\runtime\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj">
+      <Project>{e85cb030-30d6-468d-9061-559f937f1904}</Project>
+      <Name>motoi.extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libs\motoi.plugins\motoi.plugins.csproj">
+      <Project>{dc59f99b-75a5-4877-b71b-3c865e4876a3}</Project>
+      <Name>motoi.plugins</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libs\Xcite.Collections\Xcite.Collections.csproj">
+      <Project>{251e8ae0-6ded-4701-8767-88001d931374}</Project>
+      <Name>Xcite.Collections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libs\Xcite.Csharp\Xcite.Csharp.csproj">
+      <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
+      <Name>Xcite.Csharp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)..\bin\debug\Tessa.exe" "$(ProjectPath)" "$(TargetPath)" "$(SolutionDir)..\bin\debug"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,6 @@
+﻿Name: Demo Application
+SymbolicName: org.motoi.demo.application
+Version: 0.0.1
+Activator: -
+Vendor: Motoi dev team
+Dependencies: 

@@ -1,0 +1,6 @@
+﻿Name: TestBundle
+SymbolicName: org.ptp4net.testbundle
+Version: 0.0.1
+Activator: -
+Vendor: PTP dev team
+Dependencies: -

@@ -1,0 +1,6 @@
+﻿Name: Motoi Platform Application
+SymbolicName: motoi.platform.application
+Version: 0.0.1
+Activator: internals/PlatformPluginActivator
+Vendor: Motoi Dev Team
+Dependencies: motoi.platform.ui, motoi.platform.resources

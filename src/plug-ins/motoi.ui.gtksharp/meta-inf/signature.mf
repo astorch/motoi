@@ -1,0 +1,6 @@
+﻿Name: Motoi UI GtkSharp Provider
+SymbolicName: org.motoi.ui.gtksharp
+Version: 0.0.1
+Activator: -
+Vendor: Motoi dev team
+Dependencies: 

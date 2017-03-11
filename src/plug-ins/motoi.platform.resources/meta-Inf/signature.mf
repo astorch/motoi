@@ -1,0 +1,6 @@
+﻿Name: Motoi Platform Resources
+SymbolicName: motoi.platform.resources
+Version: 0.0.1
+Activator: 
+Vendor: Motoi Dev Team
+Dependencies: 

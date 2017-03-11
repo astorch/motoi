@@ -1,0 +1,4 @@
+﻿Vendor: Arian Storch;
+Name: TestPlugin;
+Version: 1.0.0;
+Dependencies: org.demo.1, org.demo.2;

@@ -1,0 +1,58 @@
+﻿<Window x:Class="Motoi.UI.WPF.Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:wpf="clr-namespace:Motoi.UI.WPF"
+        xmlns:styleSelectors="clr-namespace:Motoi.UI.WPF.StyleSelectors"
+        xmlns:converters="clr-namespace:Motoi.UI.WPF.Converters"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        mc:Ignorable="d" 
+        d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance wpf:WindowModel}"
+        Width="{Binding Path=WindowWidth}" Height="{Binding Path=WindowHeight}" Title="{Binding Path=WindowTitle}"
+        >
+    <Window.Resources>
+        <styleSelectors:MenuItemStyleSelector x:Key="MenuItemTemplateSelector"/>
+        <converters:ActionHandlerToCommandConverter x:Key="ActionHandlerToCommandConverter"/>
+        <Style TargetType="MenuItem" x:Key="MenuStyle">
+            <Setter Property="Header" Value="{Binding Path=Label}"/>
+            <Setter Property="ItemsSource" Value="{Binding Path=MenuItems}"/>
+            <Setter Property="ItemContainerStyleSelector" Value="{StaticResource MenuItemTemplateSelector}"/>
+        </Style>
+        <Style TargetType="MenuItem" x:Key="MenuItemStyle">
+            <Setter Property="Header" Value="{Binding Path=Label}"/>
+            <Setter Property="Command" Value="{Binding Path=ActionHandler, Converter={StaticResource ActionHandlerToCommandConverter}}"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!-- Menu -->
+        <Menu Grid.Row="0" IsMainMenu="True" Name="ApplicationMainMenu" ItemsSource="{Binding Path=MainMenuItems}" ItemContainerStyleSelector="{StaticResource MenuItemTemplateSelector}"/>
+        
+        <!-- Window Content -->
+        <xcad:DockingManager Grid.Row="1" Name="ApplicationDockingManager" Visibility="Hidden">
+            <xcad:LayoutRoot>
+                <xcad:LayoutPanel Orientation="Horizontal">
+                    <xcad:LayoutDocumentPane>
+                        <xcad:LayoutDocument>
+                            <Label>Huhu</Label>
+                        </xcad:LayoutDocument>
+                    </xcad:LayoutDocumentPane>
+                    <xcad:LayoutAnchorablePane DockWidth="150">
+                        <xcad:LayoutAnchorable Title="Sample Tool Pane">
+                            <TextBox/>
+                        </xcad:LayoutAnchorable>
+                    </xcad:LayoutAnchorablePane>
+                </xcad:LayoutPanel>
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
+        
+        <!-- Status bar -->
+        <StatusBar Grid.Row="2" Name="ApplicationStatusBar" Visibility="Collapsed">
+            <StatusBarItem>Hello World</StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

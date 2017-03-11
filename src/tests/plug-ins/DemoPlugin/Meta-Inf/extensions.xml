@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" ?>
+<extensions>
+  <extension point="org.motoi.command">
+    <command id="my.first.command" class="Motoi.Test.CmdImpl" />
+  </extension>
+</extensions>

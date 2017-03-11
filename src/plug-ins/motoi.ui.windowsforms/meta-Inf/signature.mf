@@ -1,0 +1,6 @@
+﻿Name: Motoi UI Windows Forms Provider
+SymbolicName: org.motoi.ui.windowsforms
+Version: 0.0.1
+Activator: -
+Vendor: Motoi dev team
+Dependencies: 

@@ -1,0 +1,6 @@
+﻿Name: Motoi Workbench Stub
+SymbolicName: motoi.workbench.stub
+Version: 0.0.1
+Activator: 
+Vendor: Motoi Dev Team
+Dependencies: 

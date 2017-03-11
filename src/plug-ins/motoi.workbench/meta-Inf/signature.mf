@@ -1,0 +1,6 @@
+﻿Name: Motoi Workbench
+SymbolicName: motoi.workbench
+Version: 0.0.1
+Activator: 
+Vendor: Motoi Dev Team
+Dependencies: 

@@ -1,0 +1,6 @@
+﻿Name: Demo Plug-in Invalid
+SymbolicName: org.motoi.demo.invalid
+Version: 0.0.1
+Activator: -
+Vendor: Motoi dev team
+Dependencies: org.motoi.unknown

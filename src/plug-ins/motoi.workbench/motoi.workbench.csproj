@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{691F9CA7-639F-4FDD-AFF9-0BEAE6948288}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>motoi.workbench</RootNamespace>
+    <AssemblyName>motoi.workbench</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\debug\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DocumentationFile>bin\debug\motoi.workbench.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\release\motoi.workbench.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="bindings\WorkbenchPropertyChangedDispatcher.cs" />
+    <Compile Include="events\IPerspectiveListener.cs" />
+    <Compile Include="events\IWorkbenchListener.cs" />
+    <Compile Include="exceptions\WorkbenchPartInitializationException.cs" />
+    <Compile Include="model\jobs\IJobHandle.cs" />
+    <Compile Include="model\jobs\IJobService.cs" />
+    <Compile Include="model\jobs\IProgressMonitor.cs" />
+    <Compile Include="model\jobs\JobExecutionHandler.cs" />
+    <Compile Include="model\IDataView.cs" />
+    <Compile Include="model\IEditor.cs" />
+    <Compile Include="model\IMultiPageEditor.cs" />
+    <Compile Include="model\IMultiViewPerspective.cs" />
+    <Compile Include="model\IPerspective.cs" />
+    <Compile Include="model\ISaveableWorkbenchPart.cs" />
+    <Compile Include="model\ISingleViewPerspective.cs" />
+    <Compile Include="model\ITextEditor.cs" />
+    <Compile Include="model\IWizard.cs" />
+    <Compile Include="model\IWizardPage.cs" />
+    <Compile Include="model\IWorkbench.cs" />
+    <Compile Include="model\IWorkbenchPart.cs" />
+    <Compile Include="PerspectiveFactory.cs" />
+    <Compile Include="PlatformUI.cs" />
+    <Compile Include="registries\DataViewRegistry.cs" />
+    <Compile Include="registries\EditorRegistry.cs" />
+    <Compile Include="runtime\AbstractDataView.cs" />
+    <Compile Include="runtime\AbstractEditor.cs" />
+    <Compile Include="runtime\AbstractPerspective.cs" />
+    <Compile Include="runtime\AbstractSaveableWorkbenchPart.cs" />
+    <Compile Include="runtime\AbstractTextEditor.cs" />
+    <Compile Include="runtime\AbstractWizard.cs" />
+    <Compile Include="runtime\AbstractWizardPage.cs" />
+    <Compile Include="runtime\AbstractWorkbenchPart.cs" />
+    <Compile Include="runtime\jobs\JobService.cs" />
+    <Compile Include="runtime\MessageDialog.cs" />
+    <Compile Include="runtime\Workbench.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="meta-Inf\signature.mf" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj">
+      <Project>{e85cb030-30d6-468d-9061-559f937f1904}</Project>
+      <Name>motoi.extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libs\motoi.plugins\motoi.plugins.csproj">
+      <Project>{dc59f99b-75a5-4877-b71b-3c865e4876a3}</Project>
+      <Name>motoi.plugins</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libs\Xcite.Collections\Xcite.Collections.csproj">
+      <Project>{251e8ae0-6ded-4701-8767-88001d931374}</Project>
+      <Name>Xcite.Collections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libs\Xcite.Csharp\Xcite.Csharp.csproj">
+      <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
+      <Name>Xcite.Csharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\motoi.platform.application\motoi.platform.application.csproj">
+      <Project>{c501885f-20ec-424f-ba03-bf3762ac99e6}</Project>
+      <Name>motoi.platform.application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\motoi.platform.resources\motoi.platform.resources.csproj">
+      <Project>{4208230d-11f4-47d9-843a-493e89c5417e}</Project>
+      <Name>motoi.platform.resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\motoi.platform.ui\motoi.platform.ui.csproj">
+      <Project>{04339bf5-52cf-4f60-a947-a09aa42990d4}</Project>
+      <Name>motoi.platform.ui</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)..\bin\debug\Tessa.exe" "$(ProjectPath)" "$(TargetPath)" "$(SolutionDir)..\bin\debug"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

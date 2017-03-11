@@ -1,0 +1,6 @@
+﻿Name: Motoi Platform UI
+SymbolicName: motoi.platform.ui
+Version: 0.0.1
+Activator: 
+Vendor: Motoi Dev Team
+Dependencies: 

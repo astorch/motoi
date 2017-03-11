@@ -1,0 +1,6 @@
+﻿Name: Demo Plug-in
+SymbolicName: org.motoi.demo
+Version: 0.0.1
+Activator: -
+Vendor: Motoi dev team
+Dependencies: 

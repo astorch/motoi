@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" ?>
+<extensions>
+  <extension point="org.motoi.ui.provider">
+    <provider id="motoi.ui.windowsforms" viewPartFactory="ViewPartFactory" widgetFactory="WidgetFactory" dataBindingFactory="DataBindingFactory" />
+  </extension>
+</extensions>

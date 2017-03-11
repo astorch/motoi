@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" ?>
+<extensions>
+  <extension point="org.motoi.application.menu">
+    <menu id="fileMenu" label="&amp;File"/>
+    <menuItem id="fileMenuNew" menu="fileMenu" label="&amp;New" handler="Menus.Handlers.FileMenuNewHandler" shortcut="N, Control"/>
+    <menuItem id="fileMenuOpen" menu="fileMenu" label="&amp;Open" handler="" shortcut="O, Control"/>
+    <menuItem id="fileMenuClose" menu="fileMenu" label="&amp;Close" handler="" shortcut="Q, Control"/>
+  </extension>
+</extensions>

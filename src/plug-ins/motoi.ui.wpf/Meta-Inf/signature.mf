@@ -1,0 +1,6 @@
+﻿Name: Motoi UI WPF Provider
+SymbolicName: org.motoi.ui.wpf
+Version: 0.0.1
+Activator: -
+Vendor: Motoi dev team
+Dependencies: 

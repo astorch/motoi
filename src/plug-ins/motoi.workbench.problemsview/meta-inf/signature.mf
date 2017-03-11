@@ -1,0 +1,6 @@
+﻿Name: Motoi Workbench Problems View
+SymbolicName: motoi.workbench.problemsview
+Version: 0.0.1
+Activator: -
+Vendor: bumblebee dev team
+Dependencies: 

@@ -1,0 +1,6 @@
+﻿Name: Motoi SharpFace
+SymbolicName: org.motoi.sharpface
+Version: 0.0.1
+Activator: -
+Vendor: Motoi Dev Team
+Dependencies: 

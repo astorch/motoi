@@ -1,0 +1,6 @@
+﻿Name: Motoi Workbench Property View
+SymbolicName: motoi.workbench.propertyview
+Version: 0.0.1
+Activator: -
+Vendor: bumblebee dev team
+Dependencies: 

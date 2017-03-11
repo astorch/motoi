@@ -1,0 +1,6 @@
+﻿Name: Motoi Workbench Workspace Explorer
+SymbolicName: motoi.workbench.workspaceexplorer
+Version: 0.0.1
+Activator: -
+Vendor: bumblebee dev team
+Dependencies: 
