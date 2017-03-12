@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -164,10 +163,12 @@ namespace Tessa.Core {
                 if (wildcardIndex != -1) { 
                     string prefix = add.Substring(0, wildcardIndex);
                     IEnumerable<KeyValuePair<string, string>> matchingEntries = referencesTable.Where(entry => entry.Key.StartsWith(prefix));
-                    for (IEnumerator<KeyValuePair<string, string>> itr = matchingEntries.GetEnumerator(); itr.MoveNext();) {
-                        KeyValuePair<string, string> entry = itr.Current;
-                        string assemblyPath = entry.Value;
-                        AddToCopyList(assemblyPath, cpyInfos);
+                    using (IEnumerator<KeyValuePair<string, string>> itr = matchingEntries.GetEnumerator()) {
+                        while (itr.MoveNext()) {
+                            KeyValuePair<string, string> entry = itr.Current;
+                            string assemblyPath = entry.Value;
+                            AddToCopyList(assemblyPath, cpyInfos);
+                        }
                     }
                     continue;
                 }
