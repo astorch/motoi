@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Tessa.Core;
 
 namespace Tessa {
@@ -13,8 +15,10 @@ namespace Tessa {
         /// <param name="args"></param>
         static void Main(string[] args) {
             // TODO Print options to console
-            if (args.Length == 0)
-                return;
+            if (args.Length == 0) return;
+
+            if (args.Any(arg => arg == "debug"))
+                Debugger.Launch();
             
             /* (1) Path to csproj
              * (2) Path to compiled assembly
@@ -34,7 +38,7 @@ namespace Tessa {
                 currentDir = directoryInfo.FullName;
             }
 
-            // Build ouput directory path
+            // Build output directory path
             string pluginOutputPath = string.Format(@"{0}\\plug-ins\\", currentDir);
 
             // Perform packaging
