@@ -50,9 +50,13 @@
     <OutputPath>..\..\..\bin\Debug\</OutputPath>
     <DocumentationFile>..\..\..\bin\Debug\PTP.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>2</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\PTP.XML</DocumentationFile>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

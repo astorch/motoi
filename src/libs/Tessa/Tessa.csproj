@@ -75,6 +75,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\Release\</OutputPath>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\Tessa.XML</DocumentationFile>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -118,7 +121,7 @@
     <ProjectReference Include="..\PTP\PTP.csproj">
       <Project>{7AA07A65-1BAA-4CE7-85B6-C3B801A685E0}</Project>
       <Name>PTP</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
