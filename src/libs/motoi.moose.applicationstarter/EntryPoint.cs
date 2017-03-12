@@ -22,7 +22,7 @@ namespace motoi.moose.applicationstarter {
             ILog log = LogManager.GetLogger(typeof(EntryPoint));
             log.InfoFormat("Log writer initialized");
 
-            string platformPluginName = "motoi.platform";
+            string platformPluginName = "motoi.platform.application";
 
             try {
                 EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
