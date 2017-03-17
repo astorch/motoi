@@ -38,6 +38,7 @@ namespace motoi.ui.windowsforms.controls {
             Language = Language.Custom;
             Font = new Font("Consolas", 9.5f, FontStyle.Regular); //new Font(FontFamily.GenericMonospace, 9.5f, FontStyle.Regular);
             LeftPadding = 15;
+            CurrentLineColor = Color.Gold;
         }
 
         /// <summary>
