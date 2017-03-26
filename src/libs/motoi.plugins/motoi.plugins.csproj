@@ -80,6 +80,7 @@
     <Compile Include="exceptions\PluginActivationException.cs" />
     <Compile Include="LogConfigurer.cs" />
     <Compile Include="PluginService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -104,7 +105,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="adjuncts\log4net.config" />
+    <EmbeddedResource Include="log4net.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PTP\PTP.csproj">

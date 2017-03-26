@@ -6,7 +6,7 @@ using log4net.Config;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("motoi.moose.applicationstarter")]
+[assembly: AssemblyTitle("motoi.plugins")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("motoi")]
@@ -21,7 +21,7 @@ using log4net.Config;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f3a7efcd-015e-4cd5-b715-5baf1639cead")]
+[assembly: Guid("f744f42d-ec53-44e0-9033-403a2b2993eb")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -31,7 +31,6 @@ using log4net.Config;
 //      Revision
 //
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: Repository("motoi.moose.applicationstarter")]
+[assembly: Repository("motoi.plugins")]

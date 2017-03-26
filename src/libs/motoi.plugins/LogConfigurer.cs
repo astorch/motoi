@@ -1,26 +1,20 @@
+using System;
 using System.IO;
 using System.Reflection;
 
-namespace motoi.plugins
-{
+namespace motoi.plugins {
     /// <summary>
     /// Static class to configue log4net.
     /// </summary>
-    static class LogConfigurer
-    {
+    static class LogConfigurer {
         /// <summary>
         /// Configurates log4net.
         /// </summary>
-        public static void Configurate()
-        {
-            Stream stream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("motoi.core.plugins.adjuncts.log4net.config");
-
-            if (stream == null)
-                return;
-
-            log4net.Config.XmlConfigurator.Configure(stream);
-            stream.Dispose();
+        public static void Configurate() {
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("motoi.plugins.log4net.config")) {
+                if (stream == null) throw new InvalidOperationException("Could not read log4net.config stream");
+                log4net.Config.XmlConfigurator.Configure(stream);
+            }
         }
     }
 }
