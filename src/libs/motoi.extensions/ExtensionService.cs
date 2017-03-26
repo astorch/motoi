@@ -8,8 +8,7 @@ using motoi.plugins;
 using motoi.plugins.model;
 using Xcite.Collections;
 
-namespace motoi.extensions
-{
+namespace motoi.extensions {
     /// <summary>
     /// Provides a service that handles Extension Points.
     /// </summary>
@@ -59,29 +58,29 @@ namespace motoi.extensions
         /// Starts the Extension Service.
         /// </summary>
         public void Start() {
-            if (iStarted)
-                return;
+            if (iStarted) return;
 
             iLogger.Debug("Starting Extension Service");
 
             IList<IPluginInfo> providedPlugins = PluginService.Instance.ProvidedPlugins;
-            for (IEnumerator<IPluginInfo> enmtor = providedPlugins.GetEnumerator(); enmtor.MoveNext(); ) {
-                IPluginInfo plugin = enmtor.Current;
-                Stream stream = plugin.Bundle.GetResourceAsStream(ExtensionFileName);
-                if (stream == null)
-                    continue;
+            using (IEnumerator<IPluginInfo> enmtor = providedPlugins.GetEnumerator()) {
+                while (enmtor.MoveNext()) {
+                    IPluginInfo plugin = enmtor.Current;
+                    Stream stream = plugin.Bundle.GetResourceAsStream(ExtensionFileName);
+                    if (stream == null) continue;
 
-                // Create a parser and parse the stream
-                ExtensionFileParser parser = ExtensionFileParser.GetInstance(stream);
-                ExtensionPointMap map = parser.Parse();
+                    // Create a parser and parse the stream
+                    ExtensionFileParser parser = ExtensionFileParser.GetInstance(stream);
+                    ExtensionPointMap map = parser.Parse();
                 
-                // Map bundle to Configuration Elements
-                IList<IConfigurationElement> cfgElements = new List<IConfigurationElement>(map.Count);
-                map.ForEach(x => cfgElements.AddAll(x.Value));
-                iBundleToConfigurationElementMap.Add(plugin.Bundle, cfgElements);
+                    // Map bundle to Configuration Elements
+                    IList<IConfigurationElement> cfgElements = new List<IConfigurationElement>(map.Count);
+                    map.ForEach(x => cfgElements.AddAll(x.Value));
+                    iBundleToConfigurationElementMap.Add(plugin.Bundle, cfgElements);
 
-                // Merge the new elements to the existing ones
-                iExtensionPointMap.Merge(map);
+                    // Merge the new elements to the existing ones
+                    iExtensionPointMap.Merge(map);
+                }
             }
 
             iStarted = true;
@@ -92,8 +91,7 @@ namespace motoi.extensions
         /// Stops the Extension Service.
         /// </summary>
         public void Stop() {
-            if (iStopped)
-                return;
+            if (iStopped) return;
 
             iLogger.Debug("Stopping Extension Service");
 
