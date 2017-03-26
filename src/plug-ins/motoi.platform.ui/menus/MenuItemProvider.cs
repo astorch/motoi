@@ -20,7 +20,7 @@ namespace motoi.platform.ui.menus {
         /// </summary>
         private const string ExtensionPointId = "org.motoi.application.menu";
 
-        private static readonly IDictionary<string, MenuContribution> iIdToMenuMap = new Dictionary<string, MenuContribution>(10);
+        private static readonly OrderedDictionary<string, MenuContribution> iIdToMenuMap = new OrderedDictionary<string, MenuContribution>(10);
 
         /// <summary>
         /// Resolves all registered menus and items and tells the main window to handle it.
@@ -28,7 +28,7 @@ namespace motoi.platform.ui.menus {
         /// <param name="mainWindow">Main window</param>
         public static void AddExtensionPointMenuItems(IMainWindow mainWindow) {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(ExtensionPointId);
-
+            
             LinearList<IConfigurationElement> menuElementCollection = new LinearList<IConfigurationElement>();
             LinearList<IConfigurationElement> menuItemElementsCollection = new LinearList<IConfigurationElement>();
             LinearList<IConfigurationElement> menuItemSeparatorsCollection = new LinearList<IConfigurationElement>();
@@ -56,7 +56,7 @@ namespace motoi.platform.ui.menus {
                     string id = element["id"];
                     string label = element["label"];
                     MenuContribution menu = new MenuContribution(id, label);
-                    iIdToMenuMap.Add(id,menu);
+                    iIdToMenuMap.InsertLast(id, menu);
                 }
             }
 
@@ -77,15 +77,13 @@ namespace motoi.platform.ui.menus {
                     IBundle providingBundle = ExtensionService.Instance.GetProvidingBundle(element);
 
                     IActionHandler actionHandler = null;
-                    if (!string.IsNullOrEmpty(handler))
-                    {
+                    if (!string.IsNullOrEmpty(handler)) {
                         Type handlerType = TypeLoader.TypeForName(providingBundle, handler);
                         actionHandler = handlerType.NewInstance<IActionHandler>();
                     }
 
                     Stream imageStream = null;
-                    if (!string.IsNullOrEmpty(image))
-                    {
+                    if (!string.IsNullOrEmpty(image)) {
                         imageStream = providingBundle.GetAssemblyResourceAsStream(image);
                         streamList.AddLast(imageStream);
                     }

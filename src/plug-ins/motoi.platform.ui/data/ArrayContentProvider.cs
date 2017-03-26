@@ -64,7 +64,7 @@ namespace motoi.platform.ui.data {
             }
 
             public object[] ArrayConvert<T>(T[] input) {
-                object[] rawObjects = EnumerableMethodExtensions.ToArray(input.Cast<object>());
+                object[] rawObjects = EnumerableExtensions.ToArray(input.Cast<object>());
                 return rawObjects;
             }
         }
