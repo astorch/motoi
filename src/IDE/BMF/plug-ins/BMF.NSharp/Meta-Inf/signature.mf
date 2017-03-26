@@ -1,0 +1,6 @@
+﻿Name: BMF NShape Adapter
+SymbolicName: org.bflow.sharpflow.bmf.nshape
+Version: 1.0.0
+Activator: -
+Vendor: Bflow Toolbox Dev Team
+Dependencies: org.motoi.ui.windowsforms

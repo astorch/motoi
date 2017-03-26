@@ -1,0 +1,6 @@
+﻿Name: Sharp Flow core
+SymbolicName: org.bflow.toolbox.sharpflow
+Version: 1.0.0
+Activator: -
+Vendor: Bflow Toolbox Dev Team
+Dependencies: org.motoi.ui.windowsforms, org.bflow.sharpflow.bmf.nshape, org.motoi.sharpface

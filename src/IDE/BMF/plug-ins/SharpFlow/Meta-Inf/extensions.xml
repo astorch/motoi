@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" ?>
+<extensions>
+  <extension point="org.motoi.application">
+    <application id="sharpflow.application" class="SharpFlowApplication" />
+  </extension>
+  <extension point="org.motoi.sharpface.wizards.newWizard">
+    <category id="diagramCategory" label="Diagrams" />
+    <wizard id="sharpflow.newwizard.new" category="diagramCategory" label="New Model (NShape default)" class="NewModelWizard"/>
+  </extension>
+</extensions>
