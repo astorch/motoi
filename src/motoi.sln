@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ui-provider", "ui-provider"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.ui.windowsforms", "plug-ins\Motoi.UI.WindowsForms\motoi.ui.windowsforms.csproj", "{A069CD61-568C-4467-A691-948EADC7D868}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo-plug-ins", "demo-plug-ins", "{D89E9583-5F2F-44BB-BF53-9CE8C6C8BC67}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo plug-ins", "demo plug-ins", "{D89E9583-5F2F-44BB-BF53-9CE8C6C8BC67}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench.workspaceexplorer", "plug-ins\motoi.workbench.workspaceexplorer\motoi.workbench.workspaceexplorer.csproj", "{7CA52CC3-7E14-46DD-AD71-BC7BF858D7A8}"
 EndProject
