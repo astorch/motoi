@@ -150,18 +150,20 @@ namespace motoi.platform.ui.menus {
             IConfigurationElement[] customMenuConfigurerElements = ExtensionService.Instance.GetConfigurationElements(ExtensionPointIdCustomMenuConfigurer);
             if (customMenuConfigurerElements == null || customMenuConfigurerElements.Length == 0) return null;
 
+            IConfigurationElement customMenuConfigurationElement = customMenuConfigurerElements[0];
+            string id = customMenuConfigurationElement["id"];
+            string clsName = customMenuConfigurationElement["class"];
+            if (string.IsNullOrEmpty(clsName)) return null;
+
+            IBundle providingBundle = ExtensionService.Instance.GetProvidingBundle(customMenuConfigurationElement);
             try {
-                IConfigurationElement customMenuConfigurationElement = customMenuConfigurerElements[0];
-                string clsName = customMenuConfigurationElement["class"];
-                if (string.IsNullOrEmpty(clsName)) return null;
-
-                IBundle providingBundle = ExtensionService.Instance.GetProvidingBundle(customMenuConfigurationElement);
-
                 Type instanceType = TypeLoader.TypeForName(providingBundle, clsName);
                 return instanceType.NewInstance<ICustomMenuConfigurer>();
             } catch (Exception ex) {
                 ILog logWriter = LogManager.GetLogger(typeof(MenuItemProvider));
-                logWriter.Error("Error on creating instance of custom menu configurer", ex);
+                logWriter.Error(string.Format("Error on creating instance of custom menu configurer. " +
+                                              "Id is '{0}'. Providing bundle is '{1}'", id, providingBundle), 
+                                              ex);
                 return null;
             }
         }
