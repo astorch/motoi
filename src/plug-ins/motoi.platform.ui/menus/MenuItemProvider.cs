@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using log4net;
 using motoi.extensions;
 using motoi.extensions.core;
 using motoi.platform.ui.actions;
@@ -15,19 +16,20 @@ namespace motoi.platform.ui.menus {
     /// to handle it.
     /// </summary>
     public static class MenuItemProvider {
-        /// <summary>
-        /// Extension point id.
-        /// </summary>
-        private const string ExtensionPointId = "org.motoi.application.menu";
-
-        private static readonly OrderedDictionary<string, MenuContribution> iIdToMenuMap = new OrderedDictionary<string, MenuContribution>(10);
+        /// <summary> Extension point ID of menu items </summary>
+        private const string ExtensionPointIdMenuItems = "org.motoi.application.menu";
+        
+        /// <summary> Extension point ID of custom menu configurer </summary>
+        private const string ExtensionPointIdCustomMenuConfigurer = "org.motoi.application.menu.customconfigurer";
+        
+        private static readonly Dictionary<string, MenuContribution> iIdToMenuMap = new Dictionary<string, MenuContribution>(10);
 
         /// <summary>
         /// Resolves all registered menus and items and tells the main window to handle it.
         /// </summary>
         /// <param name="mainWindow">Main window</param>
         public static void AddExtensionPointMenuItems(IMainWindow mainWindow) {
-            IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(ExtensionPointId);
+            IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(ExtensionPointIdMenuItems);
             
             LinearList<IConfigurationElement> menuElementCollection = new LinearList<IConfigurationElement>();
             LinearList<IConfigurationElement> menuItemElementsCollection = new LinearList<IConfigurationElement>();
@@ -56,7 +58,7 @@ namespace motoi.platform.ui.menus {
                     string id = element["id"];
                     string label = element["label"];
                     MenuContribution menu = new MenuContribution(id, label);
-                    iIdToMenuMap.InsertLast(id, menu);
+                    iIdToMenuMap.Add(id, menu);
                 }
             }
 
@@ -119,11 +121,15 @@ namespace motoi.platform.ui.menus {
                 }
             }
 
-            using (IEnumerator<MenuContribution> enmtor = iIdToMenuMap.Values.GetEnumerator()) {
-                while (enmtor.MoveNext()) {
-                    mainWindow.AddMenu(enmtor.Current);
-                }
-            }
+            // Support custom menu configurer
+            ICustomMenuConfigurer customMenuConfigurer = GetCustomMenuConfigurer();
+            MenuContribution[] menuContributions = iIdToMenuMap.Values.ToArray();
+            MenuContribution[] customMenuContributions = customMenuConfigurer != null
+                ? customMenuConfigurer.Configure(menuContributions)
+                : menuContributions;
+
+            // Add each contributed menu to the main window
+            Array.ForEach(customMenuContributions, mainWindow.AddMenu);
 
             // Disposing all opened streams
             using (LinkedList<Stream>.Enumerator enmtor = streamList.GetEnumerator()) {
@@ -132,6 +138,31 @@ namespace motoi.platform.ui.menus {
                     if (stream != null)
                         stream.Dispose();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Returns an instance of <see cref="ICustomMenuConfigurer"/> if any has been registered 
+        /// using the associated extension point. If no type has been contributed, NULL is returned.
+        /// </summary>
+        /// <returns>An instance of <see cref="ICustomMenuConfigurer"/> or NULL</returns>
+        private static ICustomMenuConfigurer GetCustomMenuConfigurer() {
+            IConfigurationElement[] customMenuConfigurerElements = ExtensionService.Instance.GetConfigurationElements(ExtensionPointIdCustomMenuConfigurer);
+            if (customMenuConfigurerElements == null || customMenuConfigurerElements.Length == 0) return null;
+
+            try {
+                IConfigurationElement customMenuConfigurationElement = customMenuConfigurerElements[0];
+                string clsName = customMenuConfigurationElement["class"];
+                if (string.IsNullOrEmpty(clsName)) return null;
+
+                IBundle providingBundle = ExtensionService.Instance.GetProvidingBundle(customMenuConfigurationElement);
+
+                Type instanceType = TypeLoader.TypeForName(providingBundle, clsName);
+                return instanceType.NewInstance<ICustomMenuConfigurer>();
+            } catch (Exception ex) {
+                ILog logWriter = LogManager.GetLogger(typeof(MenuItemProvider));
+                logWriter.Error("Error on creating instance of custom menu configurer", ex);
+                return null;
             }
         }
     }

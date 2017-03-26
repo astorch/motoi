@@ -95,6 +95,7 @@
     <Compile Include="IViewPartComposite.cs" />
     <Compile Include="IWidgetFactory.cs" />
     <Compile Include="layouts\GridLayoutBehaviour.cs" />
+    <Compile Include="menus\ICustomMenuConfigurer.cs" />
     <Compile Include="menus\MenuContribution.cs" />
     <Compile Include="menus\MenuItemContribution.cs" />
     <Compile Include="menus\MenuItemProvider.cs" />

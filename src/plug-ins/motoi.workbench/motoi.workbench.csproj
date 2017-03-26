@@ -47,13 +47,14 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <None Include="meta-Inf\extensions.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="bindings\WorkbenchPropertyChangedDispatcher.cs" />
     <Compile Include="events\IPerspectiveListener.cs" />
     <Compile Include="events\IWorkbenchListener.cs" />
     <Compile Include="exceptions\WorkbenchPartInitializationException.cs" />
+    <Compile Include="menu\ShowViewsMenuHandler.cs" />
     <Compile Include="model\jobs\IJobHandle.cs" />
     <Compile Include="model\jobs\IJobService.cs" />
     <Compile Include="model\jobs\IProgressMonitor.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="model\IWorkbenchPart.cs" />
     <Compile Include="PerspectiveFactory.cs" />
     <Compile Include="PlatformUI.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="registries\DataViewRegistry.cs" />
     <Compile Include="registries\EditorRegistry.cs" />
     <Compile Include="runtime\AbstractDataView.cs" />

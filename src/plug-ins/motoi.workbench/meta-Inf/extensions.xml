@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<extensions>
+  <extension point="org.motoi.application.menu">
+    <menu id="windowMenu" label="&#38;Window" />
+    <menuItem id="windowMenuShowViews" menu="windowMenu" label="&#38;Show Views ..." handler="menu.ShowViewsMenuHandler" />
+  </extension>
+</extensions>
