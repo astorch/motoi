@@ -55,9 +55,10 @@
     <DocumentationFile>bin\debug\motoi.platform.application.xml</DocumentationFile>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\Release\</OutputPath>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Release\motoi.platform.application.XML</DocumentationFile>
@@ -69,7 +70,7 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="adjuncts\log4net.config" />
+    <EmbeddedResource Include="log4net.config" />
     <None Include="meta-Inf\signature.mf" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -105,6 +106,7 @@
     <Compile Include="MotoiBootloader.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="PlatformSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -114,9 +116,7 @@
     <Reference Include="System" />
     <Reference Include="System.XML" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj">
       <Project>{e85cb030-30d6-468d-9061-559f937f1904}</Project>

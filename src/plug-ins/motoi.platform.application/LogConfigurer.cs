@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Reflection;
 
@@ -10,14 +11,10 @@ namespace motoi.platform.application {
         /// Configurates log4net.
         /// </summary>
         public static void Configurate() {
-            Stream stream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("Motoi.Platform.Adjuncts.log4net.config");
-
-            if (stream == null)
-                return;
-
-            log4net.Config.XmlConfigurator.Configure(stream);
-            stream.Dispose();
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("motoi.platform.application.log4net.config")) {
+                if (stream == null) throw new InvalidOperationException("Could not read log4net.config stream");
+                log4net.Config.XmlConfigurator.Configure(stream);
+            }
         }
     }
 }
