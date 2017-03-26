@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using log4net;
 
@@ -18,7 +20,7 @@ namespace motoi.moose.applicationstarter {
                 ConsoleManager.ShowConsoleWindow();
 
             // Configure logging
-            LogConfigurer.Configurate();
+            ConfigureLog();
             ILog log = LogManager.GetLogger(typeof(EntryPoint));
             log.InfoFormat("Log writer initialized");
 
@@ -44,6 +46,16 @@ namespace motoi.moose.applicationstarter {
                 ConsoleManager.HideConsoleWindow();
             } catch (Exception ex) {
                 log.ErrorFormat("Error on starting plug-in '{0}'. Reason: {1}", platformPluginName, ex);
+            }
+        }
+
+        /// <summary>
+        /// Configures the log4net framework.
+        /// </summary>
+        private static void ConfigureLog() {
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("motoi.moose.applicationstarter.log4net.config")) {
+                if (stream == null) throw new InvalidOperationException("Could not read log4net.config stream");
+                log4net.Config.XmlConfigurator.Configure(stream);
             }
         }
     }
