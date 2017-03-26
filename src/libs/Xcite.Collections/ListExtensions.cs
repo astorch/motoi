@@ -6,7 +6,7 @@ namespace Xcite.Collections {
     /// <summary>
     /// Provides common extensions for collections.
     /// </summary>
-    public static class ListMethodExtensions {
+    public static class ListExtensions {
         /// <summary>
         /// Adds the given enumerable collection of items to current list.
         /// </summary>
@@ -14,9 +14,11 @@ namespace Xcite.Collections {
         /// <param name="list">List which will receive the new items</param>
         /// <param name="additionalItems">Items that will be added to the current list</param>
         public static void AddAll<TItem>(this IList<TItem> list, IEnumerable<TItem> additionalItems) {
-            for (IEnumerator<TItem> enmtor = additionalItems.GetEnumerator(); enmtor.MoveNext();) {
-                TItem item = enmtor.Current;
-                list.Add(item);
+            using (IEnumerator<TItem> enmtor = additionalItems.GetEnumerator()) {
+                while (enmtor.MoveNext()) {
+                    TItem item = enmtor.Current;
+                    list.Add(item);
+                }
             }
         }
 
@@ -75,13 +77,14 @@ namespace Xcite.Collections {
         /// <typeparam name="TValue"></typeparam>
         /// <param name="map"></param>
         /// <returns>String representation of the dictionary</returns>
-        public static string ToFormattedString<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> map)
-        {
+        public static string ToFormattedString<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> map) {
             iStringBuilder.Clear();
             iStringBuilder.Append('{');
-            for (IEnumerator<KeyValuePair<TKey, TValue>> enmtor = map.GetEnumerator(); enmtor.MoveNext(); ) {
-                KeyValuePair<TKey, TValue> pair = enmtor.Current;
-                iStringBuilder.AppendFormat(DictionaryToStringFormat, pair.Key, pair.Value);
+            using (IEnumerator<KeyValuePair<TKey, TValue>> enmtor = map.GetEnumerator()) {
+                while (enmtor.MoveNext()) {
+                    KeyValuePair<TKey, TValue> pair = enmtor.Current;
+                    iStringBuilder.AppendFormat(DictionaryToStringFormat, pair.Key, pair.Value);
+                }
             }
             iStringBuilder.Append('}');
             return iStringBuilder.ToString();

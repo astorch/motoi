@@ -5,7 +5,7 @@ namespace Xcite.Collections {
     /// <summary>
     /// Provides method extensions for arrays.
     /// </summary>
-    public static class ArrayMethodExtensions {
+    public static class ArrayExtensions {
         /// <summary>
         /// Copies all elements of the given array collection into a new array which contains all elements sequentially.
         /// </summary>

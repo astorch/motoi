@@ -4,7 +4,7 @@ namespace Xcite.Collections {
     /// <summary>
     /// Provides methods extensions for implementations of <see cref="ICollection{T}"/>.
     /// </summary>
-    public static class CollectionExtensionMethods {
+    public static class CollectionExtensions {
         /// <summary>
         /// Adds the given <paramref name="item"/> to the given <paramref name="collection"/> and 
         /// returns it.

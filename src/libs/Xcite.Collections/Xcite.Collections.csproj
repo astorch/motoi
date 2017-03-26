@@ -54,18 +54,20 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArrayMethodExtensions.cs" />
+    <Compile Include="ArrayExtensions.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="CollectionExtensionMethods.cs" />
+    <Compile Include="CollectionExtensions.cs" />
     <Compile Include="ICollectionListener.cs" />
     <Compile Include="IIndexedEnumerable.cs" />
     <Compile Include="IIndexedEnumerable`1.cs" />
     <Compile Include="IndexedEnumerableExtensions.cs" />
     <Compile Include="IObservableCollection.cs" />
+    <Compile Include="IOrderedDictionary`2.cs" />
     <Compile Include="LinearList.cs" />
-    <Compile Include="ListMethodExtensions.cs" />
-    <Compile Include="EnumerableMethodExtensions.cs" />
+    <Compile Include="ListExtensions.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ObservableCollection.cs" />
+    <Compile Include="OrderedDictionary`2.cs" />
     <Compile Include="sdk\CollectionDebugView.cs" />
     <Compile Include="WeakReferenceCollection.cs" />
   </ItemGroup>

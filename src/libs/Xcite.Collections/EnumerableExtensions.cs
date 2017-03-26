@@ -6,7 +6,7 @@ namespace Xcite.Collections {
     /// <summary>
     /// Provides method extension for <see cref="IEnumerable{T}"/>.
     /// </summary>
-    public static class EnumerableMethodExtensions {
+    public static class EnumerableExtensions {
         /// <summary>
         /// Applies the given <paramref name="action"/> to each element of the given sequence <paramref name="sequence"/>.
         /// </summary>
