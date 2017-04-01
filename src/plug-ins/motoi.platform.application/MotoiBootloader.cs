@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using log4net;
 using motoi.extensions;
 using motoi.platform.application.model;
@@ -67,18 +68,14 @@ namespace motoi.platform.application {
         /// Loads the ini file and stores all settings within the global PlatformSettings instance.
         /// </summary>
         private static void LoadIniFile() {
+            string procName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+            string iniName = string.Format("{0}.ini", procName).ToLowerInvariant();
+
             string currentDirectoryPath = Directory.GetCurrentDirectory();
             DirectoryInfo directoryInfo = new DirectoryInfo(currentDirectoryPath);
-            FileInfo[] iniFiles = directoryInfo.GetFiles("*.ini");
-            if (iniFiles.Length == 0)
-                throw new InvalidOperationException(
-                    string.Format("No ini file could be found within the current working dir '{0}'", currentDirectoryPath));
-
-            if (iniFiles.Length > 1)
-                throw new InvalidOperationException(
-                    string.Format("There is more than one ini file within the current working dir '{0}'", currentDirectoryPath));
-
-            FileInfo iniFile = iniFiles[0];
+            FileInfo iniFile = directoryInfo.GetFiles(iniName).FirstOrDefault();
+            if (iniFile == null) throw new InvalidOperationException(string.Format("No ini file '{1}' could be found within the current working dir '{0}'", currentDirectoryPath, iniName));
+            
             IniDocumentParser iniDocumentParser = new IniDocumentParser(iniFile);
             IPlainTextDocument document = iniDocumentParser.Parse();
             PlatformSettings platformSettings = PlatformSettings.Instance;
