@@ -220,6 +220,17 @@ namespace motoi.ui.windowsforms.controls {
             SelectionDoubleClicked(this, new SelectionEventArgs {Selection = selectedItem});
         }
 
+        /// <inheritdoc />
+        protected override void OnSelectedIndexChanged(EventArgs e) {
+            base.OnSelectedIndexChanged(e);
+
+            if (SelectedItems.Count == 0) return;
+            if (SelectionChanged == null) return;
+
+            object selectedItem = SelectedItems[0].Tag;
+            SelectionChanged(this, new SelectionEventArgs { Selection = selectedItem });
+        }
+
         /// <summary>
         /// Notifies the instance to initialize its content.
         /// </summary>
