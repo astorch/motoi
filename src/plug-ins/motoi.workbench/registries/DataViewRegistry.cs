@@ -4,6 +4,7 @@ using System.Linq;
 using log4net;
 using motoi.extensions;
 using motoi.extensions.core;
+using motoi.platform.ui;
 using motoi.plugins.model;
 using motoi.workbench.model;
 using Xcite.Csharp.generics;
@@ -18,8 +19,20 @@ namespace motoi.workbench.registries {
 
         private static readonly ILog iLog = LogManager.GetLogger(typeof (DataViewRegistry));
 
-        private readonly List<DataViewContribution> iRegisteredDataViews = new List<DataViewContribution>();
-        private readonly Dictionary<Type, IDataView> iCreatedDataViews = new Dictionary<Type, IDataView>(); 
+        private readonly List<DataViewContribution> iRegisteredDataViews = new List<DataViewContribution>(31);
+        private readonly Dictionary<Type, IDataView> iCreatedDataViews = new Dictionary<Type, IDataView>(31);
+
+        /// <summary>
+        /// Returns an enumerable of all registered view references.
+        /// </summary>
+        /// <returns>Enumerable of all registered view references</returns>
+        /// <seealso cref="IViewReference"/>
+        public IEnumerable<IViewReference> GetViewReferences() {
+            for (int i = -1; ++i != iRegisteredDataViews.Count;) {
+                DataViewContribution dataViewContribution = iRegisteredDataViews[i];
+                yield return new ViewReferenceImpl(dataViewContribution.DataViewId, dataViewContribution.DataViewType.Name);
+            }
+        }
 
         /// <summary>
         /// Returns the instance of <see cref="IDataView"/> with the given <paramref name="dataViewId"/> from the registry. 
@@ -125,6 +138,30 @@ namespace motoi.workbench.registries {
         protected override void OnDestroy() {
             iRegisteredDataViews.Clear();
             iCreatedDataViews.Clear();
+        }
+
+        /// <summary>
+        /// Provides an anonymous implementation of <see cref="IViewReference"/>.
+        /// </summary>
+        class ViewReferenceImpl : IViewReference {
+            /// <inheritdoc />
+            public ViewReferenceImpl(string id, string title) {
+                if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("id");
+                if (string.IsNullOrEmpty(title)) throw new ArgumentNullException("title");
+                Id = id;
+                Title = title;
+            }
+
+            /// <inheritdoc />
+            public IViewPart GetInstance(bool restore) {
+                throw new NotSupportedException();
+            }
+
+            /// <inheritdoc />
+            public string Id { get; private set; }
+
+            /// <inheritdoc />
+            public string Title { get; private set; }
         }
 
         /// <summary>

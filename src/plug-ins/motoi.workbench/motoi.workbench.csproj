@@ -76,6 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="registries\DataViewRegistry.cs" />
     <Compile Include="registries\EditorRegistry.cs" />
+    <Compile Include="registries\IViewReference.cs" />
     <Compile Include="runtime\AbstractDataView.cs" />
     <Compile Include="runtime\AbstractEditor.cs" />
     <Compile Include="runtime\AbstractPerspective.cs" />
