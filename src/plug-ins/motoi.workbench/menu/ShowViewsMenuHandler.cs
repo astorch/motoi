@@ -36,11 +36,11 @@ namespace motoi.workbench.menu {
             listViewer.Input = DataViewRegistry.Instance.GetViewReferences().ToArray();
             listViewer.Update();
             listViewer.SelectionChanged += (sender, args) => selectedViewReference = (IViewReference) args.Selection;
+            dialogWindow.AddButton("Cancel", () => dialogWindow.Close());
             dialogWindow.AddButton("OK", () => {
                 closedOk = true;
                 dialogWindow.Close();
             });
-            dialogWindow.AddButton("Cancel", () => dialogWindow.Close());
 
             dialogWindow.SetContent(gridComposite);
             dialogWindow.Show(true);
