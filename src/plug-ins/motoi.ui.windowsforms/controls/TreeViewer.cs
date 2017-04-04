@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using motoi.platform.ui;
 using motoi.platform.ui.data;
 using motoi.platform.ui.images;
 using motoi.platform.ui.widgets;
@@ -62,6 +63,24 @@ namespace motoi.ui.windowsforms.controls {
 
             if (!node.IsEnabled)
                 e.Cancel = true;
+        }
+
+        /// <inheritdoc />
+        EVisibility IWidget.Visibility {
+            get { return PTreeViewer.GetModelValue(this, PTreeViewer.VisibilityProperty); }
+            set {
+                PTreeViewer.SetModelValue(this, PTreeViewer.VisibilityProperty, value);
+                Visible = (value == EVisibility.Visible);
+            }
+        }
+
+        /// <inheritdoc />
+        bool IWidget.Enabled {
+            get { return PTreeViewer.GetModelValue(this, PTreeViewer.EnabledProperty); }
+            set {
+                PTreeViewer.SetModelValue(this, PTreeViewer.EnabledProperty, value);
+                Enabled = value;
+            }
         }
 
         /// <inheritdoc />

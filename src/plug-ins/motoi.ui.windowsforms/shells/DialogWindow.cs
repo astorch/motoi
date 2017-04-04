@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using motoi.platform.ui;
 using motoi.platform.ui.controls;
 using motoi.platform.ui.shells;
 
@@ -32,7 +33,7 @@ namespace motoi.ui.windowsforms.shells {
         /// <summary>
         /// Creates the window and makes it visible to the user.
         /// </summary>
-        void IWindow.Show() {
+        void IShell.Show() {
             ((IDialogWindow) this).Show(true);
         }
 

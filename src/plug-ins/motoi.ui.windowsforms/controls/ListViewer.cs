@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
+using motoi.platform.ui;
 using motoi.platform.ui.data;
 using motoi.platform.ui.widgets;
 
@@ -20,6 +21,24 @@ namespace motoi.ui.windowsforms.controls {
         }
 
         #region IListViewer
+
+        /// <inheritdoc />
+        EVisibility IWidget.Visibility {
+            get { return PListViewer.GetModelValue(this, PListViewer.VisibilityProperty); }
+            set {
+                PListViewer.SetModelValue(this, PListViewer.VisibilityProperty, value);
+                Visible = (value == EVisibility.Visible);
+            }
+        }
+
+        /// <inheritdoc />
+        bool IWidget.Enabled {
+            get { return PListViewer.GetModelValue(this, PListViewer.EnabledProperty); }
+            set {
+                PListViewer.SetModelValue(this, PListViewer.EnabledProperty, value);
+                Enabled = value;
+            }
+        }
 
         /// <summary>
         /// The handler will be notified when a new selection has been made.

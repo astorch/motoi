@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using motoi.platform.ui;
 using motoi.platform.ui.bindings;
 using motoi.platform.ui.widgets;
 
@@ -16,9 +17,25 @@ namespace motoi.ui.windowsforms.controls {
 
         #region ICheckBox
 
-        /// <summary>
-        /// Returns the text of the check box or does set it.
-        /// </summary>
+        /// <inheritdoc />
+        EVisibility IWidget.Visibility {
+            get { return PCheckBox.GetModelValue(this, PCheckBox.VisibilityProperty); }
+            set {
+                PCheckBox.SetModelValue(this, PCheckBox.VisibilityProperty, value);
+                Visible = (value == EVisibility.Visible);
+            } 
+        }
+
+        /// <inheritdoc />
+        bool IWidget.Enabled {
+            get { return PCheckBox.GetModelValue(this, PCheckBox.EnabledProperty); }
+            set {
+                PCheckBox.SetModelValue(this, PCheckBox.EnabledProperty, value);
+                Enabled = value;
+            }
+        }
+
+        /// <inheritdoc />
         string ICheckBox.Text {
             get { return PCheckBox.GetModelValue<string>(this, PCheckBox.TextProperty); }
             set {
@@ -27,9 +44,7 @@ namespace motoi.ui.windowsforms.controls {
             }
         }
 
-        /// <summary>
-        /// Returns TRUE if the box is check or does set it.
-        /// </summary>
+        /// <inheritdoc />
         bool? ICheckBox.IsChecked {
             get { return PCheckBox.GetModelValue<bool?>(this, PCheckBox.IsCheckedProperty); }
             set {
@@ -37,17 +52,6 @@ namespace motoi.ui.windowsforms.controls {
                 CheckState = (!value.HasValue
                     ? CheckState.Indeterminate
                     : (value.Value ? CheckState.Checked : CheckState.Unchecked));
-            }
-        }
-
-        /// <summary>
-        /// Returns TRUE if the box is enabled or does set it.
-        /// </summary>
-        bool ICheckBox.IsEnabled {
-            get { return PCheckBox.GetModelValue<bool>(this, PCheckBox.IsEnabledProperty); }
-            set {
-                PCheckBox.SetModelValue(this, PCheckBox.IsEnabledProperty, value);
-                Enabled = value;
             }
         }
 

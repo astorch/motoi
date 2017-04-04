@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationController.cs" />
     <Compile Include="controls\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -114,7 +115,6 @@
     <Compile Include="controls\TreeViewer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DataBindingFactory.cs" />
     <Compile Include="jobs\ProgressMonitor.cs" />
     <Compile Include="messaging\MessageReceivedEventArgs.cs" />
     <Compile Include="messaging\UIMessageDispatchListener.cs" />
@@ -143,8 +143,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="utils\CastUtil.cs" />
-    <Compile Include="ViewPartFactory.cs" />
+    <Compile Include="ShellFactory.cs" />
     <Compile Include="WidgetFactory.cs" />
+    <Compile Include="WinformsUIProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="meta-Inf\build.properties" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using motoi.platform.ui;
 using motoi.platform.ui.layouts;
 using motoi.platform.ui.widgets;
 using motoi.ui.windowsforms.utils;
@@ -22,20 +23,46 @@ namespace motoi.ui.windowsforms.controls {
 
         #region IGridComposite
 
+        /// <inheritdoc />
+        EVisibility IWidget.Visibility {
+            get { return PGridComposite.GetModelValue(this, PGridComposite.VisibilityProperty); }
+            set {
+                PGridComposite.SetModelValue(this, PGridComposite.VisibilityProperty, value);
+                Visible = (value == EVisibility.Visible);
+            }
+        }
+
+        /// <inheritdoc />
+        bool IWidget.Enabled {
+            get { return PGridComposite.GetModelValue(this, PGridComposite.EnabledProperty); }
+            set {
+                PGridComposite.SetModelValue(this, PGridComposite.EnabledProperty, value);
+                Enabled = value;
+            }
+        }
+
         /// <summary>
         /// Returns the number of layout columns or does set it.
         /// </summary>
         int IGridComposite.GridColumns {
-            get { return ColumnCount; }
-            set { ColumnCount = value; }
+            get {
+                return PGridComposite.GetModelValue(this, PGridComposite.GridColumnsProperty);
+            }
+            set {
+                PGridComposite.SetModelValue(this, PGridComposite.GridColumnsProperty, value);
+            }
         }
 
         /// <summary>
         /// Returns the number of layout rows or does set it.
         /// </summary>
         int IGridComposite.GridRows {
-            get { return RowCount; }
-            set { RowCount = value; }
+            get {
+                return PGridComposite.GetModelValue(this, PGridComposite.GridRowsProperty);
+            }
+            set {
+                PGridComposite.SetModelValue(this, PGridComposite.GridRowsProperty, value);
+            }
         }
 
         /// <summary>

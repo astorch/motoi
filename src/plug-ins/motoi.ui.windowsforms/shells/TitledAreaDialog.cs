@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using motoi.platform.ui;
 using motoi.platform.ui.controls;
 using motoi.platform.ui.shells;
-using motoi.platform.ui.widgets;
 using motoi.ui.windowsforms.controls;
 using motoi.ui.windowsforms.utils;
 
@@ -52,7 +51,7 @@ namespace motoi.ui.windowsforms.shells {
         /// Sets the given <paramref name="viewPart"/> as view content.
         /// </summary>
         /// <param name="viewPart">View content to set</param>
-        void IWindow.SetContent(IViewPart viewPart) {
+        void IShell.SetContent(IWidgetCompound viewPart) {
             Control wdgCtrl = CastUtil.Cast<Control>(viewPart);
             ContentPanel.Controls.Add(wdgCtrl);
             wdgCtrl.Dock = DockStyle.Fill;

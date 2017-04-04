@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using motoi.platform.ui;
 using motoi.platform.ui.widgets;
 
 namespace motoi.ui.windowsforms.controls {
@@ -16,11 +17,27 @@ namespace motoi.ui.windowsforms.controls {
 
         #region ITextBlock
 
-        /// <summary>
-        /// Returns the text or does set it.
-        /// </summary>
+        /// <inheritdoc />
+        EVisibility IWidget.Visibility {
+            get { return PTextBlock.GetModelValue(this, PTextBlock.VisibilityProperty); }
+            set {
+                PTextBlock.SetModelValue(this, PTextBlock.VisibilityProperty, value);
+                Visible = (value == EVisibility.Visible);
+            }
+        }
+
+        /// <inheritdoc />
+        bool IWidget.Enabled {
+            get { return PTextBlock.GetModelValue(this, PTextBlock.EnabledProperty); }
+            set {
+                PTextBlock.SetModelValue(this, PTextBlock.EnabledProperty, value);
+                Enabled = value;
+            }
+        }
+
+        /// <inheritdoc />
         string ITextBlock.Text {
-            get { return PTextBlock.GetModelValue<string>(this, PTextBlock.TextProperty); }
+            get { return PTextBlock.GetModelValue(this, PTextBlock.TextProperty); }
             set {
                 PTextBlock.SetModelValue(this, PTextBlock.TextProperty, value);
                 Text = value;

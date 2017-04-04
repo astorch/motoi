@@ -1,12 +1,12 @@
 ﻿using System;
 using motoi.platform.ui;
+using motoi.platform.ui.factories;
 using motoi.platform.ui.widgets;
 using motoi.ui.windowsforms.controls;
 
 namespace motoi.ui.windowsforms {
     /// <summary>
-    /// Implements <see cref="IWidgetFactory"/> to create Motoi-UI conform instances 
-    /// using Windows Forms
+    /// Implements <see cref="IWidgetFactory"/> for the windows forms UI platform.
     /// </summary>
     public class WidgetFactory : IWidgetFactory {
         /// <summary>

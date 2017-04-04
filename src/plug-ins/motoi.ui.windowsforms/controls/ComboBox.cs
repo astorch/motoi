@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Windows.Forms;
+using motoi.platform.ui;
 using motoi.platform.ui.bindings;
 using motoi.platform.ui.widgets;
 using Xcite.Collections;
@@ -19,11 +20,33 @@ namespace motoi.ui.windowsforms.controls {
 
         #region IComboBox
 
+        /// <inheritdoc />
+        EVisibility IWidget.Visibility
+        {
+            get { return PComboBox.GetModelValue(this, PComboBox.VisibilityProperty); }
+            set
+            {
+                PComboBox.SetModelValue(this, PComboBox.VisibilityProperty, value);
+                Visible = (value == EVisibility.Visible);
+            }
+        }
+
+        /// <inheritdoc />
+        bool IWidget.Enabled
+        {
+            get { return PComboBox.GetModelValue(this, PComboBox.EnabledProperty); }
+            set
+            {
+                PComboBox.SetModelValue(this, PComboBox.EnabledProperty, value);
+                Enabled = value;
+            }
+        }
+
         /// <summary>
         /// Returns the items source of the control or does set it.
         /// </summary>
         ICollection IItemsHost.ItemsSource {
-            get { return PComboBox.GetModelValue<ICollection>(this, PComboBox.ItemsSourceProperty); }
+            get { return PComboBox.GetModelValue(this, PComboBox.ItemsSourceProperty); }
             set {
                 PComboBox.SetModelValue(this, PComboBox.ItemsSourceProperty, value);
                 OnItemsSourceChanged(value);
@@ -34,7 +57,7 @@ namespace motoi.ui.windowsforms.controls {
         /// Returns TRUE if the combo box can be edited or does set it.
         /// </summary>
         bool IComboBox.Editable {
-            get { return PComboBox.GetModelValue<bool>(this, PComboBox.EditableProperty); }
+            get { return PComboBox.GetModelValue(this, PComboBox.EditableProperty); }
             set {
                 PComboBox.SetModelValue(this, PComboBox.EditableProperty, value);
                 DropDownStyle = value ? ComboBoxStyle.DropDown : ComboBoxStyle.DropDownList;
@@ -45,7 +68,7 @@ namespace motoi.ui.windowsforms.controls {
         /// Returns the currently selected item or does set it.
         /// </summary>
         object IComboBox.SelectedItem {
-            get { return PComboBox.GetModelValue<object>(this, PComboBox.SelectedItemProperty); }
+            get { return PComboBox.GetModelValue(this, PComboBox.SelectedItemProperty); }
             set {
                 PComboBox.SetModelValue(this, PComboBox.SelectedItemProperty, value);
                 SelectedItem = value;

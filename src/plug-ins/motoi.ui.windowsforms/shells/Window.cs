@@ -18,9 +18,27 @@ namespace motoi.ui.windowsforms.shells
         /// <summary>
         /// Returns the current window content or does set it.
         /// </summary>
-        protected IViewPart WindowContent { get; set; }
+        protected IWidgetCompound WindowContent { get; set; }
         
         #region IWindow
+
+        /// <inheritdoc />
+        EVisibility IWidget.Visibility {
+            get { return PWindow<IWindow>.GetModelValue(this, PWindow<IWindow>.VisibilityProperty); }
+            set {
+                PWindow<IWindow>.SetModelValue(this, PWindow<IWindow>.VisibilityProperty, value);
+                Visible = (value == EVisibility.Visible);
+            } 
+        }
+
+        /// <inheritdoc />
+        bool IWidget.Enabled {
+            get { return PWindow<IWindow>.GetModelValue(this, PWindow<IWindow>.EnabledProperty); }
+            set {
+                PWindow<IWindow>.SetModelValue(this, PWindow<IWindow>.EnabledProperty, value);
+                Enabled = value;
+            }
+        }
 
         /// <inheritdoc />
         string IWindow.WindowTitle {
@@ -65,7 +83,7 @@ namespace motoi.ui.windowsforms.shells
         }
 
         /// <inheritdoc />
-        void IWindow.SetContent(IViewPart viewPart) {
+        void IShell.SetContent(IWidgetCompound viewPart) {
             Control control = CastUtil.Cast<Control>(viewPart);
             control.Dock = DockStyle.Fill;
             Controls.Add(control);
@@ -73,7 +91,7 @@ namespace motoi.ui.windowsforms.shells
         }
 
         /// <inheritdoc />
-        IViewPart IWindow.Content { get { return WindowContent; } }
+        IWidgetCompound IShell.Content { get { return WindowContent; } }
 
         /// <summary>
         /// Converts a <see cref="FormWindowState"/> value to a <see cref="EWindowState"/> value.

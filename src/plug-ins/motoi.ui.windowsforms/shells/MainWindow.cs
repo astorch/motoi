@@ -116,18 +116,15 @@ namespace motoi.ui.windowsforms.shells {
             iTopControlAddQueue.Clear();
         }
 
-        /// <summary>
-        /// Sets the given <paramref name="viewPart"/> as view content.
-        /// </summary>
-        /// <param name="viewPart">View content to set</param>
-        void IWindow.SetContent(IViewPart viewPart) {
-            WindowContent = viewPart;
-            IDockableControl dockableControl = CastUtil.Cast<IDockableControl, IViewPart>(viewPart);
+        /// <inheritdoc />
+        void IShell.SetContent(IWidgetCompound widgetCompound) {
+            WindowContent = widgetCompound;
+            IDockableControl dockableControl = CastUtil.Cast<IDockableControl, IWidgetCompound>(widgetCompound);
 
             if (dockableControl != null) {
                 dockableControl.Attach((DockPanel)iPerspectivePane);
             } else {
-                Control wdgCtrl = CastUtil.Cast<Control, IViewPart>(viewPart);
+                Control wdgCtrl = CastUtil.Cast<Control, IWidgetCompound>(widgetCompound);
                 iPerspectivePane.Controls.Clear();
                 iPerspectivePane.Controls.Add(wdgCtrl);
                 wdgCtrl.Dock = DockStyle.Fill;

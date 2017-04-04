@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 using FastColoredTextBoxNS;
+using motoi.platform.ui;
 using motoi.platform.ui.bindings;
 using motoi.platform.ui.widgets;
 using Xcite.Collections;
@@ -41,11 +42,31 @@ namespace motoi.ui.windowsforms.controls {
             CurrentLineColor = Color.Gold;
         }
 
+        #region IRichTextBox
+
+        /// <inheritdoc />
+        EVisibility IWidget.Visibility {
+            get { return PRichTextBox.GetModelValue(this, PRichTextBox.VisibilityProperty); }
+            set {
+                PRichTextBox.SetModelValue(this, PRichTextBox.VisibilityProperty, value);
+                Visible = (value == EVisibility.Visible);
+            }
+        }
+
+        /// <inheritdoc />
+        bool IWidget.Enabled {
+            get { return PRichTextBox.GetModelValue(this, PRichTextBox.EnabledProperty); }
+            set {
+                PRichTextBox.SetModelValue(this, PRichTextBox.EnabledProperty, value);
+                Enabled = value;
+            }
+        }
+
         /// <summary>
         /// Returns the text content of the text box or does set it.
         /// </summary>
         string ITextBox.Text {
-            get { return PRichTextBox.GetModelValue<string>(this, PRichTextBox.TextProperty); }
+            get { return PRichTextBox.GetModelValue(this, PRichTextBox.TextProperty); }
             set {
                 PRichTextBox.SetModelValue(this, PRichTextBox.TextProperty, value);
                 Text = value;
@@ -56,7 +77,7 @@ namespace motoi.ui.windowsforms.controls {
         /// Returns the curent cursor index of the text box or does set it.
         /// </summary>
         int ITextBox.CursorIndex {
-            get { return PRichTextBox.GetModelValue<int>(this, PRichTextBox.CursorIndexProperty); }
+            get { return PRichTextBox.GetModelValue(this, PRichTextBox.CursorIndexProperty); }
             set {
                 PRichTextBox.SetModelValue(this, PRichTextBox.CursorIndexProperty, value);
                 SelectionStart = value;
@@ -68,7 +89,7 @@ namespace motoi.ui.windowsforms.controls {
         /// Returns the currently used Rich Text Model or does set it.
         /// </summary>
         IRichTextModel IRichTextBox.RichTextModel {
-            get { return PRichTextBox.GetModelValue<IRichTextModel>(this, PRichTextBox.RichTextModelProperty); }
+            get { return PRichTextBox.GetModelValue(this, PRichTextBox.RichTextModelProperty); }
             set {
                 PRichTextBox.SetModelValue(this, PRichTextBox.RichTextModelProperty, value);
                 OnRichTextModelChanged(value);
@@ -79,7 +100,7 @@ namespace motoi.ui.windowsforms.controls {
         /// Returns the currently used Rich Text Syntax validator or does set it.
         /// </summary>
         IRichTextSyntaxValidator IRichTextBox.RichTextSyntaxValidator {
-            get { return PRichTextBox.GetModelValue<IRichTextSyntaxValidator>(this, PRichTextBox.RichTextSyntaxValidatorProperty); }
+            get { return PRichTextBox.GetModelValue(this, PRichTextBox.RichTextSyntaxValidatorProperty); }
             set {
                 PRichTextBox.SetModelValue(this, PRichTextBox.RichTextSyntaxValidatorProperty, value);
                 OnRichTextSyntaxValidatorChanged(value);
@@ -90,12 +111,14 @@ namespace motoi.ui.windowsforms.controls {
         /// Returns TRUE if the text box is read only and therefore the text cannot be edited.
         /// </summary>
         bool ITextBox.ReadOnly {
-            get { return PRichTextBox.GetModelValue<bool>(this, PRichTextBox.ReadOnlyProperty); }
+            get { return PRichTextBox.GetModelValue(this, PRichTextBox.ReadOnlyProperty); }
             set {
                 PRichTextBox.SetModelValue(this, PRichTextBox.ReadOnlyProperty, value);
                 ReadOnly = value;
             }
         }
+
+        #endregion
 
         /// <summary> Fires SelectionChanged event </summary>
         public override void OnSelectionChanged() {
@@ -124,7 +147,6 @@ namespace motoi.ui.windowsforms.controls {
             PTextBox.SetModelValue(this, PRichTextBox.TextProperty, Text, EBindingSourceUpdateReason.LostFocus);
             base.OnLostFocus(e);
         }
-
 
         /// <summary>
         /// Is invoked when a line is painted.
@@ -275,6 +297,7 @@ namespace motoi.ui.windowsforms.controls {
             string assemblyName = assembly.GetName().Name;
             string rsxPath = string.Format("{0}.resources.images.{1}", assemblyName, imageName);
             using (Stream stream = assembly.GetManifestResourceStream(rsxPath)) {
+                if (stream == null) throw new InvalidOperationException(string.Format("Could not open stream to '{0}'", rsxPath));
                 using (BufferedStream bufferedStream = new BufferedStream(stream)) {
                     return new Bitmap(bufferedStream);
                 }
