@@ -23,8 +23,8 @@ namespace motoi.platform.ui.widgets {
     /// <summary>
     /// Provides the property meta data of <see cref="IItemsHost"/> that is used by data binding operations.
     /// </summary>
-    public class PItemsHostControl<TControl> : PWidget<TControl> where TControl : IDataBindingSupport {
+    public class PItemsHostControl<TControl> : PWidget<TControl> where TControl : class, IWidget {
         /// <summary>Items Source property meta data</summary>
-        public static readonly IBindableProperty ItemsSourceProperty = CreatePropertyInfo(Name.Of<IItemsHost,ICollection>(_=>_.ItemsSource), (ICollection)null);
+        public static readonly IBindableProperty<ICollection> ItemsSourceProperty = CreatePropertyInfo(Name.Of<IItemsHost,ICollection>(_=>_.ItemsSource), (ICollection)null);
     }
 }

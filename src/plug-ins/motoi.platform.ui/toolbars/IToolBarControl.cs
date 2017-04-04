@@ -23,6 +23,6 @@ namespace motoi.platform.ui.toolbars {
     /// <typeparam name="TControl">Type of parent control</typeparam>
     public class PToolBarControl<TControl> : BindableObject<TControl> where TControl : IToolBarControl {
         /// <summary>IsEnabled property meta data</summary>
-        public static readonly IBindableProperty IsEnabledProperty = CreatePropertyInfo("IsEnabled", true);
+        public static readonly IBindableProperty<bool> IsEnabledProperty = CreatePropertyInfo("IsEnabled", true);
     }
 }

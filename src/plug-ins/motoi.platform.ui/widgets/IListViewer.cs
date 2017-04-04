@@ -7,4 +7,11 @@ namespace motoi.platform.ui.widgets {
     public interface IListViewer : IWidget, IDataViewer<IListContentProvider, IListLabelProvider> {
         
     }
+
+    /// <summary>
+    /// Provides the property meta data of <see cref="IListViewer"/> that is used by data binding operations.
+    /// </summary>
+    public class PListViewer : PWidget<IListViewer> {
+        
+    }
 }

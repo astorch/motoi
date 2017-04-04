@@ -1,9 +1,11 @@
-﻿using motoi.platform.ui.shells;
+﻿using System;
+using motoi.platform.ui.shells;
 
-namespace motoi.platform.ui {
+namespace motoi.platform.ui.factories {
     /// <summary>
     /// Defines the interface of a View Part Factory.
     /// </summary>
+    [Obsolete("", true)]
     public interface IViewPartFactory {
         /// <summary>
         /// Return a new instance of the given type.

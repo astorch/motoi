@@ -21,9 +21,9 @@ namespace motoi.platform.ui.widgets {
     /// </summary>
     public class PComboBox : PItemsHostControl<IComboBox> {
         /// <summary>Editable property meta data</summary>
-        public static readonly IBindableProperty EditableProperty = CreatePropertyInfo(_ => _.Editable, true);
+        public static readonly IBindableProperty<bool> EditableProperty = CreatePropertyInfo(_ => _.Editable, true);
 
         /// <summary>SelectedItem property meta data</summary>
-        public static readonly IBindableProperty SelectedItemProperty = CreatePropertyInfo(_ => _.SelectedItem, null, true);
+        public static readonly IBindableProperty<object> SelectedItemProperty = CreatePropertyInfo(_ => _.SelectedItem, null, true);
     }
 }

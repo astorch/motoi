@@ -9,6 +9,13 @@ namespace motoi.platform.ui.widgets {
         ContextMenuItemProvider ContextMenuItemProvider { get; set; }
     }
 
+    /// <summary>
+    /// Provides the property meta data of <see cref="ITreeViewer"/> that is used by data binding operations.
+    /// </summary>
+    public class PTreeViewer : PWidget<ITreeViewer> {
+        
+    }
+
     public delegate IContextMenuItem[] ContextMenuItemProvider(object item);
 
     public interface IContextMenuItem {

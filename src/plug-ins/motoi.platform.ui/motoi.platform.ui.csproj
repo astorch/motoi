@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{04339BF5-52CF-4F60-A947-A09AA42990D4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AppDesignerFolder>properties</AppDesignerFolder>
     <RootNamespace>motoi.platform.ui</RootNamespace>
     <AssemblyName>motoi.platform.ui</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
@@ -60,10 +60,21 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\ProductAssemblyInfo.cs">
+      <Link>properties\ProductAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="actions\AbstractActionHandler.cs" />
     <Compile Include="actions\ActionHandlerDelegate.cs" />
     <Compile Include="actions\ActionHandlerFactory.cs" />
     <Compile Include="actions\IActionHandler.cs" />
+    <Compile Include="bindings\IBindableProperty`1.cs" />
+    <Compile Include="EVisibility.cs" />
+    <Compile Include="factories\IApplicationController.cs" />
+    <Compile Include="factories\IShellFactory.cs" />
+    <Compile Include="factories\IUIProvider.cs" />
+    <Compile Include="IShell.cs" />
+    <Compile Include="IWidgetCompound.cs" />
+    <Compile Include="properties\AssemblyInfo.cs" />
     <Compile Include="bindings\BindableObject.cs" />
     <Compile Include="bindings\Binding.cs" />
     <Compile Include="bindings\DataBinding.cs" />
@@ -90,10 +101,9 @@
     <Compile Include="data\IListLabelProvider.cs" />
     <Compile Include="data\ITreeContentProvider.cs" />
     <Compile Include="data\ITreeLabelProvider.cs" />
-    <Compile Include="IDataBindingFactory.cs" />
     <Compile Include="images\ImageDescriptor.cs" />
     <Compile Include="IViewPartComposite.cs" />
-    <Compile Include="IWidgetFactory.cs" />
+    <Compile Include="factories\IWidgetFactory.cs" />
     <Compile Include="layouts\GridLayoutBehaviour.cs" />
     <Compile Include="menus\ICustomMenuConfigurer.cs" />
     <Compile Include="menus\MenuContribution.cs" />
@@ -109,16 +119,16 @@
     <Compile Include="shells\IMessageDialogWindow.cs" />
     <Compile Include="shells\ITitledAreaDialog.cs" />
     <Compile Include="shells\IWindow.cs" />
-    <Compile Include="FactoryProvider.cs" />
+    <Compile Include="factories\FactoryProvider.cs" />
     <Compile Include="IViewPart.cs" />
-    <Compile Include="IViewPartFactory.cs" />
+    <Compile Include="factories\IViewPartFactory.cs" />
     <Compile Include="toolbars\IToolBarComboBox.cs" />
     <Compile Include="toolbars\IToolBar.cs" />
     <Compile Include="toolbars\IToolBarControl.cs" />
     <Compile Include="toolbars\ToolbarItemContribution.cs" />
     <Compile Include="toolbars\ToolbarGroupContribution.cs" />
     <Compile Include="toolbars\ToolbarItemProvider.cs" />
-    <Compile Include="UIFactory.cs" />
+    <Compile Include="factories\UIFactory.cs" />
     <Compile Include="widgets\ICheckBox.cs" />
     <Compile Include="widgets\IComboBox.cs" />
     <Compile Include="widgets\IGridComposite.cs" />
@@ -128,7 +138,7 @@
     <Compile Include="widgets\ITextBlock.cs" />
     <Compile Include="widgets\ITextBox.cs" />
     <Compile Include="widgets\ITreeViewer.cs" />
-    <Compile Include="widgets\IWidget.cs" />
+    <Compile Include="IWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

@@ -1,8 +1,6 @@
-﻿using motoi.platform.ui.widgets;
-
-namespace motoi.platform.ui {
+﻿namespace motoi.platform.ui.factories {
     /// <summary>
-    /// Defines the interface of a Widget Factory.
+    /// Defines the interface of a widget factory.
     /// </summary>
     public interface IWidgetFactory {
         /// <summary>

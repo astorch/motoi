@@ -1,4 +1,5 @@
 ﻿using System;
+using motoi.platform.ui.bindings;
 using motoi.platform.ui.layouts;
 using Xcite.Csharp.assertions;
 
@@ -6,7 +7,7 @@ namespace motoi.platform.ui.widgets {
     /// <summary>
     /// Defines a composite with a grid layout.
     /// </summary>
-    public interface IGridComposite : IWidget, IViewPartComposite {
+    public interface IGridComposite : IWidget, IViewPartComposite, IDataBindingSupport {
         /// <summary>
         /// Returns the number of layout columns or does set it.
         /// </summary>
@@ -43,6 +44,17 @@ namespace motoi.platform.ui.widgets {
         /// </summary>
         /// <param name="widget">Widget</param>
         void AddWidget(IWidget widget);
+    }
+
+    /// <summary>
+    /// Provides the property meta data of <see cref="IGridComposite"/> that is used by data binding operations.
+    /// </summary>
+    public class PGridComposite : PWidget<IGridComposite> {
+        /// <summary> Grid columns property meta data </summary>
+        public static readonly IBindableProperty<int> GridColumnsProperty = CreatePropertyInfo(_ => _.GridColumns, 1);
+
+        /// <summary> Grid rows property meta data </summary>
+        public static readonly IBindableProperty<int> GridRowsProperty = CreatePropertyInfo(_ => _.GridRows, 1);
     }
 
     /// <summary>

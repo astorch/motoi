@@ -74,7 +74,7 @@ namespace motoi.platform.ui.bindings {
         /// </summary>
         /// <param name="target">Data binding target to connect</param>
         /// <param name="property">Target property to bind</param>
-        public void Connect(IDataBindingSupport target, IBindableProperty property) {
+        public void Connect<TValue>(IDataBindingSupport target, IBindableProperty<TValue> property) {
             Target = Assert.NotNull(() => target);
             TargetPropertyInfo = Assert.NotNull(() => property).PropertyInfo;
 
@@ -117,7 +117,7 @@ namespace motoi.platform.ui.bindings {
         /// <param name="sender">Method invocator</param>
         /// <param name="property">Property to update</param>
         /// <param name="value">New value</param>
-        public void UpdateSource(object sender, IBindableProperty property, object value) {
+        public void UpdateSource<TValue>(object sender, IBindableProperty<TValue> property, object value) {
             if (!ShallUpdateSource) return;
 
             ApplyValueToBindingSource(Source, SourcePropertyInfo, Target, property.PropertyInfo);
@@ -143,11 +143,11 @@ namespace motoi.platform.ui.bindings {
         private void ApplyValueToBindingSource(object source, PropertyInfo sourcePropertyInfo, object target, PropertyInfo targetPropertyInfo) {
             object targetValue = null;
             try {
-                Assert.NotNull(() => target);
-                Assert.NotNull(() => targetPropertyInfo);
-                Assert.NotNull(() => source);
-                Assert.NotNull(() => sourcePropertyInfo);
-
+                if (target == null) throw new ArgumentNullException("target");
+                if (targetPropertyInfo == null) throw new ArgumentNullException("targetPropertyInfo");
+                if (source == null) throw new ArgumentNullException("source");
+                if (sourcePropertyInfo == null) throw new ArgumentNullException("sourcePropertyInfo");
+                
                 targetValue = targetPropertyInfo.GetValue(target, null);
                 ApplyValueChange(source, sourcePropertyInfo, targetValue);
             } catch (Exception ex) {
@@ -217,10 +217,10 @@ namespace motoi.platform.ui.bindings {
         /// </summary>
         /// <param name="target">Data binding target</param>
         /// <param name="property">Data binding property</param>
-        private void ApplyDefaultPropertyValue(IDataBindingSupport target, IBindableProperty property) {
+        private void ApplyDefaultPropertyValue<TValue>(IDataBindingSupport target, IBindableProperty<TValue> property) {
             try {
-                Assert.NotNull(() => target);
-                Assert.NotNull(() => property);
+                if (target == null) throw new ArgumentNullException("target");
+                if (property == null) throw new ArgumentNullException("property");
 
                 ApplyValueChange(target, property.PropertyInfo, property.DefaultValue);
             } catch (Exception ex) {

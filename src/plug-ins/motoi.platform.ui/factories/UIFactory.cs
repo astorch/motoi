@@ -1,7 +1,6 @@
 using System;
-using motoi.platform.ui.widgets;
 
-namespace motoi.platform.ui {
+namespace motoi.platform.ui.factories {
     /// <summary>
     /// Provides convenience methods to create instances of <see cref="IViewPart"/> or 
     /// <see cref="IWidget"/>.
@@ -14,17 +13,17 @@ namespace motoi.platform.ui {
         /// <returns>Instance or null</returns>
         public static TWidget NewWidget<TWidget>(IViewPartComposite composite) where TWidget : class, IWidget {
             if (composite == null) throw new ArgumentNullException("composite");
-            TWidget widget = FactoryProvider.GetWidgetFactory().CreateInstance<TWidget>(composite);
+            TWidget widget = FactoryProvider.Instance.GetWidgetFactory().CreateInstance<TWidget>(composite);
             return widget;
         }
 
         /// <summary>
-        /// Convenience method to create a type safe view part of the given type.
+        /// Convenience method to create a type safe shell off the given type.
         /// </summary>
-        /// <typeparam name="TViewPart">Type of the view part</typeparam>
+        /// <typeparam name="TShell">Type of the shell</typeparam>
         /// <returns>Instance or null</returns>
-        public static TViewPart NewViewPart<TViewPart>() where TViewPart : class, IViewPart {
-            TViewPart viewPart = FactoryProvider.GetViewPartFactory().CreateInstance<TViewPart>();
+        public static TShell NewShell<TShell>() where TShell : class, IShell {
+            TShell viewPart = FactoryProvider.Instance.GetShellFactory().CreateInstance<TShell>();
             return viewPart;
         }
     }

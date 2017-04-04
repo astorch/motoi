@@ -22,10 +22,10 @@ namespace motoi.platform.ui.widgets {
     /// </summary>
     public class PRichTextBox : PTextBoxControl<IRichTextBox> {
         /// <summary>Rich Text Model property meta data</summary>
-        public static readonly IBindableProperty RichTextModelProperty = CreatePropertyInfo("RichTextModel", (IRichTextModel)null);
+        public static readonly IBindableProperty<IRichTextModel> RichTextModelProperty = CreatePropertyInfo("RichTextModel", (IRichTextModel)null);
 
         /// <summary> Rich Text Syntax Validator property meta data </summary>
-        public static readonly IBindableProperty RichTextSyntaxValidatorProperty = CreatePropertyInfo("RichTextSyntaxValidator", (IRichTextSyntaxValidator)null);
+        public static readonly IBindableProperty<IRichTextSyntaxValidator> RichTextSyntaxValidatorProperty = CreatePropertyInfo("RichTextSyntaxValidator", (IRichTextSyntaxValidator)null);
     }
 
     /// <summary>

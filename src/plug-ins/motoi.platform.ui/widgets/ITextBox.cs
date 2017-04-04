@@ -31,14 +31,14 @@ namespace motoi.platform.ui.widgets {
     /// <summary>
     /// Provides the property meta data of <see cref="ITextBox"/> that is used by data binding operations.
     /// </summary>
-    public class PTextBoxControl<TControl> : PWidget<TControl> where TControl : IDataBindingSupport {
+    public class PTextBoxControl<TControl> : PWidget<TControl> where TControl : class, IWidget {
         /// <summary>Text property meta data</summary>
-        public static readonly IBindableProperty TextProperty = CreatePropertyInfo("Text", (string)null, true, EDataBindingSourceUpdateTrigger.PropertyChanged);
+        public static readonly IBindableProperty<string> TextProperty = CreatePropertyInfo("Text", (string)null, true, EDataBindingSourceUpdateTrigger.PropertyChanged);
 
         /// <summary>Cursor index property meta data</summary>
-        public static readonly IBindableProperty CursorIndexProperty = CreatePropertyInfo("CursorIndex", 0, true, EDataBindingSourceUpdateTrigger.PropertyChanged);
+        public static readonly IBindableProperty<int> CursorIndexProperty = CreatePropertyInfo("CursorIndex", 0, true, EDataBindingSourceUpdateTrigger.PropertyChanged);
 
         /// <summary> Read only property meta data </summary>
-        public static readonly IBindableProperty ReadOnlyProperty = CreatePropertyInfo("ReadOnly", false);
+        public static readonly IBindableProperty<bool> ReadOnlyProperty = CreatePropertyInfo("ReadOnly", false);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Xcite.Csharp.assertions;
 using Xcite.Csharp.lang;
 
 namespace motoi.platform.ui.bindings {
@@ -20,16 +19,16 @@ namespace motoi.platform.ui.bindings {
         /// <returns>Newly created instance of <see cref="IBindableProperty"/></returns>
         /// <exception cref="ArgumentNullException">If any parameter is NULL</exception>
         /// <exception cref="ArgumentException">If <paramref name="defaultSourceUpdateTrigger"/> is <see cref="EDataBindingSourceUpdateTrigger.Default"/></exception>
-        public static IBindableProperty CreateInfo<TValue>(Type controlType, string propertyName, TValue defaultValue, bool bindsTwoByDefault = false, EDataBindingSourceUpdateTrigger defaultSourceUpdateTrigger = null) {
-            Assert.NotNull(() => controlType);
-            Assert.NotNullOrEmpty(() => propertyName);
+        public static IBindableProperty<TValue> CreateInfo<TValue>(Type controlType, string propertyName, TValue defaultValue, bool bindsTwoByDefault = false, EDataBindingSourceUpdateTrigger defaultSourceUpdateTrigger = null) {
+            if (controlType == null) throw new ArgumentNullException("controlType");
+            if (string.IsNullOrEmpty(propertyName)) throw new ArgumentNullException("propertyName");
 
             if (defaultSourceUpdateTrigger == EDataBindingSourceUpdateTrigger.Default) throw new ArgumentException(string.Format("Default source update trigger cannot be '{0}'!", EDataBindingSourceUpdateTrigger.Default));
 
             PropertyInfo[] controlTypeProperties = controlType.GetPublicProperties();
             PropertyInfo propertyInfo = controlTypeProperties.First(property => property.Name == propertyName);
 
-            return new BindablePropertyImpl(controlType, propertyName, propertyInfo) {
+            return new BindablePropertyImpl<TValue>(controlType, propertyName, propertyInfo) {
                 BindsTwoWayByDefault = bindsTwoByDefault,
                 DefaultUpdateSourceUpdateTrigger = defaultSourceUpdateTrigger ?? EDataBindingSourceUpdateTrigger.PropertyChanged,
                 DefaultValue = defaultValue
@@ -39,7 +38,7 @@ namespace motoi.platform.ui.bindings {
         /// <summary>
         /// Provides an anonymous implementation of <see cref="IBindableProperty"/>.
         /// </summary>
-        class BindablePropertyImpl : IBindableProperty {
+        class BindablePropertyImpl<TValue> : IBindableProperty<TValue> {
             /// <summary>
             /// Creates a new instance based on the given parameters.
             /// </summary>
@@ -50,6 +49,7 @@ namespace motoi.platform.ui.bindings {
                 ControlType = controlType;
                 Name = name;
                 PropertyInfo = propertyInfo;
+                DefaultValue = default(TValue);
             }
 
             /// <summary>
@@ -65,7 +65,12 @@ namespace motoi.platform.ui.bindings {
             /// <summary>
             /// Returns the default property value.
             /// </summary>
-            public object DefaultValue { get; set; }
+            public TValue DefaultValue { get; set; }
+
+            /// <summary>
+            /// Returns the default property value.
+            /// </summary>
+            object IBindableProperty.DefaultValue { get { return DefaultValue; } }
 
             /// <summary>
             /// Returns the name of the bindable property.

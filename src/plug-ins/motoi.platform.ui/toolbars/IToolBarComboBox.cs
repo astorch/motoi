@@ -27,12 +27,12 @@ namespace motoi.platform.ui.toolbars {
     /// </summary>
     public class PToolBarComboBox : PToolBarControl<IToolBarComboBox> {
         /// <summary> SelectedItem property meta data </summary>
-        public static readonly IBindableProperty SelectedItemProperty = CreatePropertyInfo<object>("SelectedItem", null, true);
+        public static readonly IBindableProperty<object> SelectedItemProperty = CreatePropertyInfo("SelectedItem", (object)null, true);
 
         /// <summary> ItemsSource property meta data </summary>
-        public static readonly IBindableProperty ItemsSourceProperty = CreatePropertyInfo("ItemsSource", new ArrayList(0));
+        public static readonly IBindableProperty<ICollection> ItemsSourceProperty = CreatePropertyInfo("ItemsSource", new ArrayList(0));
 
         /// <summary> Editable property meta data  </summary>
-        public static readonly IBindableProperty EditableProperty = CreatePropertyInfo("Editable", true);
+        public static readonly IBindableProperty<bool> EditableProperty = CreatePropertyInfo("Editable", true);
     }
 }

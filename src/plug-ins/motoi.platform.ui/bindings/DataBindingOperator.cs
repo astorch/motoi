@@ -1,4 +1,4 @@
-﻿using Xcite.Csharp.assertions;
+﻿using System;
 
 namespace motoi.platform.ui.bindings {
     /// <summary>
@@ -12,11 +12,12 @@ namespace motoi.platform.ui.bindings {
         /// <param name="uiElement">UI Element that is used as target of the binding</param>
         /// <param name="property">Property that is being bound</param>
         /// <param name="dataBinding">Data binding</param>
-        public static void Apply(IDataBindingSupport uiElement, IBindableProperty property, DataBinding dataBinding) {
-            Assert.NotNull(() => uiElement);
-            Assert.NotNull(() => property);
-            Assert.NotNull(() => dataBinding);
-
+        /// <exception cref="ArgumentNullException">If any parameter is NULL</exception>
+        public static void Apply<TValue>(IDataBindingSupport uiElement, IBindableProperty<TValue> property, DataBinding dataBinding) {
+            if (uiElement == null) throw new ArgumentNullException("uiElement");
+            if (property == null) throw new ArgumentNullException("property");
+            if (dataBinding == null) throw new ArgumentNullException("dataBinding");
+            
             dataBinding.Connect(uiElement, property);
             GlobalDataBindingIndex.Instance.AddToIndex(uiElement, property, dataBinding);
         } 

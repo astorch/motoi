@@ -1,10 +1,11 @@
+using motoi.platform.ui.bindings;
 using motoi.platform.ui.images;
 
 namespace motoi.platform.ui.shells {
     /// <summary>
     /// Defines common properties of a window.
     /// </summary>
-    public interface IWindow : IViewPartComposite {
+    public interface IWindow : IShell {
         /// <summary>
         /// Returns the title of the window or does set it.
         /// </summary>
@@ -39,26 +40,19 @@ namespace motoi.platform.ui.shells {
         /// Returns the window icon or does set it.
         /// </summary>
         ImageDescriptor WindowIcon { get; set; }
+    }
 
-        /// <summary>
-        /// Creates the window and makes it visible to the user.
-        /// </summary>
-        void Show();
+    /// <summary>
+    /// Provides the property meta data of <see cref="IWindow"/> that is used by data binding operations.
+    /// </summary>
+    public class PWindow<TControl> : PShell<TControl> where TControl : class, IWindow {
+        /// <summary> Window title property meta data </summary>
+        public static readonly IBindableProperty<string> WindowTitleProperty = CreatePropertyInfo(_ => _.WindowTitle, "Untitled");
 
-        /// <summary>
-        /// Tells to window to close itself.
-        /// </summary>
-        void Close();
+        /// <summary> Window width property meta data </summary>
+        public static readonly IBindableProperty<int> WindowWidthProperty = CreatePropertyInfo(_ => _.WindowWidth, 800);
 
-        /// <summary>
-        /// Returns the current active view content.
-        /// </summary>
-        IViewPart Content { get; }
-
-        /// <summary>
-        /// Sets the given <paramref name="viewPart"/> as view content.
-        /// </summary>
-        /// <param name="viewPart">View content to set</param>
-        void SetContent(IViewPart viewPart);
+        /// <summary> Window height property meta data </summary>
+        public static readonly IBindableProperty<int> WindowHeightProperty = CreatePropertyInfo(_ => _.WindowHeight, 600);
     }
 }

@@ -16,6 +16,6 @@ namespace motoi.platform.ui.widgets {
     /// </summary>
     public class PTextBlock : PWidget<ITextBlock> {
         /// <summary> Text property meta data </summary>
-        public static readonly IBindableProperty TextProperty = CreatePropertyInfo(_ => _.Text, null);
+        public static readonly IBindableProperty<string> TextProperty = CreatePropertyInfo(_ => _.Text, null);
     }
 }

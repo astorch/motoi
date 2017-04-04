@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Xcite.Csharp.assertions;
 using Xcite.Csharp.expressions;
 
 namespace motoi.platform.ui.bindings {
@@ -20,7 +19,7 @@ namespace motoi.platform.ui.bindings {
         /// <param name="bindsTwoWayByDefault">If TRUE the property supports a two-way-binding per default</param>
         /// <param name="defaultSourceUpdateTrigger">Sets the default source update trigger</param>
         /// <returns>Created property meta data descriptor</returns>
-        protected static IBindableProperty CreatePropertyInfo<TValue>(string propertyName, TValue defaultValue, bool bindsTwoWayByDefault = false, 
+        protected static IBindableProperty<TValue> CreatePropertyInfo<TValue>(string propertyName, TValue defaultValue, bool bindsTwoWayByDefault = false, 
             EDataBindingSourceUpdateTrigger defaultSourceUpdateTrigger = null) {
             return PropertyDescriptor.CreateInfo(typeof(TControl), propertyName, defaultValue, bindsTwoWayByDefault, defaultSourceUpdateTrigger);
         }
@@ -35,7 +34,7 @@ namespace motoi.platform.ui.bindings {
         /// <param name="bindsTwoWayByDefault">If TRUE the property supports a two-way-binding per default</param>
         /// <param name="defaultSourceUpdateTrigger">Sets the default source update trigger</param>
         /// <returns>Created property meta data descriptor</returns>
-        protected static IBindableProperty CreatePropertyInfo<TValue>(Expression<Func<TControl, TValue>> propertyRef, TValue defaultValue, bool bindsTwoWayByDefault = false,
+        protected static IBindableProperty<TValue> CreatePropertyInfo<TValue>(Expression<Func<TControl, TValue>> propertyRef, TValue defaultValue, bool bindsTwoWayByDefault = false,
             EDataBindingSourceUpdateTrigger defaultSourceUpdateTrigger = null) {
             string propertyName = propertyRef.GetPropertyName();
             return CreatePropertyInfo(propertyName, defaultValue, bindsTwoWayByDefault, defaultSourceUpdateTrigger);
@@ -48,8 +47,8 @@ namespace motoi.platform.ui.bindings {
         /// <param name="obj">Data binding target</param>
         /// <param name="property">Data binding property</param>
         /// <returns>Current model value</returns>
-        public static TValue GetModelValue<TValue>(TControl obj, IBindableProperty property) {
-            return (TValue) GlobalDataBindingIndex.Instance.GetValue(obj, property);
+        public static TValue GetModelValue<TValue>(TControl obj, IBindableProperty<TValue> property) {
+            return GlobalDataBindingIndex.Instance.GetValue(obj, property);
         }
 
         /// <summary>
@@ -60,7 +59,7 @@ namespace motoi.platform.ui.bindings {
         /// <param name="obj">Data binding target</param>
         /// <param name="property">Data binding property</param>
         /// <param name="value">New value to set</param>
-        public static void SetModelValue<TValue>(TControl obj, IBindableProperty property, TValue value) { // Called from model
+        public static void SetModelValue<TValue>(TControl obj, IBindableProperty<TValue> property, TValue value) { // Called from model
             GlobalDataBindingIndex.Instance.SetValue(obj, property, value);
         }
 
@@ -74,9 +73,9 @@ namespace motoi.platform.ui.bindings {
         /// <param name="value">New value to set</param>
         /// <param name="updateReason">Update reason - must not be NULL</param>
         /// <exception cref="ArgumentNullException">If <paramref name="updateReason"/> is NULL</exception>
-        public static void SetModelValue<TValue>(TControl obj, IBindableProperty property, TValue value, // Called from control
+        public static void SetModelValue<TValue>(TControl obj, IBindableProperty<TValue> property, TValue value, // Called from control
             EBindingSourceUpdateReason updateReason) {
-            Assert.NotNull(() => updateReason);
+            if (updateReason == null) throw new ArgumentNullException("updateReason");
             DataBinding dataBinding = GlobalDataBindingIndex.Instance.GetDataBinding(obj, property);
 
             // If there is no data binding there is no model to update

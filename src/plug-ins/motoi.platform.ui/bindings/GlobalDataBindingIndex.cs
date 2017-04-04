@@ -21,8 +21,8 @@ namespace motoi.platform.ui.bindings {
         /// <param name="property">Data binding property</param>
         /// <param name="value">New property value</param>
         /// <returns>TRUE if the new value has been set</returns>
-        public bool SetValue(IDataBindingSupport obj, IBindableProperty property, object value) {
-            Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, property);
+        public bool SetValue<TValue>(IDataBindingSupport obj, IBindableProperty<TValue> property, TValue value) {
+            Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, (IBindableProperty)property);
             
             lock (iGlobalValueCache) {
                 // Only update real new values
@@ -42,14 +42,14 @@ namespace motoi.platform.ui.bindings {
         /// <param name="obj">Data binding target</param>
         /// <param name="property">Data binding property</param>
         /// <returns>Current property value</returns>
-        public object GetValue(IDataBindingSupport obj, IBindableProperty property) {
-            Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, property);
+        public TValue GetValue<TValue>(IDataBindingSupport obj, IBindableProperty<TValue> property) {
+            Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, (IBindableProperty)property);
 
             object result;
             lock (iGlobalValueCache) {
                 iGlobalValueCache.TryGetValue(key, out result);
             }
-            return result;
+            return (TValue)result;
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace motoi.platform.ui.bindings {
         /// <param name="obj">Data binding target</param>
         /// <param name="property">Data binding property</param>
         /// <returns>Data binding or NULL</returns>
-        public DataBinding GetDataBinding(IDataBindingSupport obj, IBindableProperty property) {
-            Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, property);
+        public DataBinding GetDataBinding<TValue>(IDataBindingSupport obj, IBindableProperty<TValue> property) {
+            Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, (IBindableProperty)property);
             lock (iGlobalDataBindingCache) {
                 DataBinding dataBinding;
                 iGlobalDataBindingCache.TryGetValue(key, out dataBinding);
@@ -75,8 +75,8 @@ namespace motoi.platform.ui.bindings {
         /// <param name="obj">Data binding target</param>
         /// <param name="property">Data binding property</param>
         /// <param name="dataBinding">Data binding to index</param>
-        public void AddToIndex(IDataBindingSupport obj, IBindableProperty property, DataBinding dataBinding) {
-            Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, property);
+        public void AddToIndex<TValue>(IDataBindingSupport obj, IBindableProperty<TValue> property, DataBinding dataBinding) {
+            Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, (IBindableProperty)property);
             lock (iGlobalDataBindingCache) {
                 iGlobalDataBindingCache[key] = dataBinding;
             }

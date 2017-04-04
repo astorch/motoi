@@ -14,11 +14,6 @@ namespace motoi.platform.ui.widgets {
         /// Returns TRUE if the box is check or does set it.
         /// </summary>
         bool? IsChecked { get; set; }
-
-        /// <summary>
-        /// Returns TRUE if the box is enabled or does set it.
-        /// </summary>
-        bool IsEnabled { get; set; }
     }
 
     /// <summary>
@@ -26,12 +21,9 @@ namespace motoi.platform.ui.widgets {
     /// </summary>
     public class PCheckBox : PWidget<ICheckBox> {
         /// <summary>Text property meta data</summary>
-        public static readonly IBindableProperty TextProperty = CreatePropertyInfo(_ => _.Text, string.Empty);
+        public static readonly IBindableProperty<string> TextProperty = CreatePropertyInfo(_ => _.Text, string.Empty);
 
         /// <summary> Is checked property meta data </summary>
-        public static readonly IBindableProperty IsCheckedProperty = CreatePropertyInfo(_ => _.IsChecked, false, true, EDataBindingSourceUpdateTrigger.PropertyChanged);
-
-        /// <summary> Is enabled property meta data </summary>
-        public static readonly IBindableProperty IsEnabledProperty = CreatePropertyInfo(_ => _.IsEnabled, true, true);
+        public static readonly IBindableProperty<bool?> IsCheckedProperty = CreatePropertyInfo(_ => _.IsChecked, false, true, EDataBindingSourceUpdateTrigger.PropertyChanged);
     }
 }
