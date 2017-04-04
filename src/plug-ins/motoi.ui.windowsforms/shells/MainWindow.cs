@@ -20,7 +20,7 @@ namespace motoi.ui.windowsforms.shells {
     /// API.
     /// </summary>
     public class MainWindow : Window, IMainWindow {
-        private Panel iPerspectivePane;
+        private Control iMainContentControl;
         private ToolBar iApplicationToolBar;
         private readonly LinearList<Control> iTopControlAddQueue = new LinearList<Control>();
 
@@ -124,17 +124,22 @@ namespace motoi.ui.windowsforms.shells {
         /// <inheritdoc />
         void IShell.SetContent(IWidgetCompound widgetCompound) {
             WindowContent = widgetCompound;
-            IDockableControl dockableControl = CastUtil.Cast<IDockableControl, IWidgetCompound>(widgetCompound);
 
-            if (dockableControl != null) {
-                dockableControl.Attach((DockPanel)iPerspectivePane);
-            } else {
-                Control wdgCtrl = CastUtil.Cast<Control, IWidgetCompound>(widgetCompound);
-                iPerspectivePane.Controls.Clear();
-                iPerspectivePane.Controls.Add(wdgCtrl);
-                wdgCtrl.Dock = DockStyle.Fill;
-                // wdgCtrl.Padding = new Padding(0);
-            }
+            Control wdgCtrl = CastUtil.Cast<Control, IWidgetCompound>(widgetCompound);
+
+            // Remove the old content and add the new
+//            iPerspectivePane.Controls.Clear();
+//            iPerspectivePane.Controls.Add(wdgCtrl);
+            Controls.Remove(iMainContentControl);
+            Controls.Add(wdgCtrl);
+
+            // Due to a bug of WeifenLou DockPanel the content panel should be at first position
+            Controls.SetChildIndex(wdgCtrl, 0);
+            iMainContentControl = wdgCtrl;
+
+            // Set dock and resize behavior
+            wdgCtrl.Dock = DockStyle.Fill;
+//            wdgCtrl.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom;
         }
 
         /// <summary>
@@ -144,17 +149,11 @@ namespace motoi.ui.windowsforms.shells {
             // Reduce flickering
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer | ControlStyles.OptimizedDoubleBuffer, true);
 
-//            iPerspectivePane = new Panel { Dock = DockStyle.Fill, Margin = new Padding(0) };
             IsMdiContainer = true;
-            iPerspectivePane = new DockPanel {Dock = DockStyle.Fill, Margin = new Padding(0)};
-            
-            // Apply current theme
-            ThemeBase theme = GetTheme();
-            theme.ApplyTo((DockPanel)iPerspectivePane);
-            theme.ApplyTo(iApplicationToolBar);
-            theme.ApplyToToolStripManager();
 
-            Controls.Add(iPerspectivePane);
+            // Perspective
+//            iPerspectivePane = new Panel {Dock = DockStyle.Fill, Margin = new Padding(0)};
+//            Controls.Add(iPerspectivePane);
 
             // Status strip
             StatusStrip statusStrip = new StatusStrip {Dock = DockStyle.Bottom};
@@ -168,14 +167,6 @@ namespace motoi.ui.windowsforms.shells {
             statusStrip.Items.Add(toolStripProgressBar);
 
             ProgressMonitor.ToolStripProgressBar = toolStripProgressBar;
-        }
-
-        /// <summary>
-        /// Returns the current theme.
-        /// </summary>
-        /// <returns>Theme</returns>
-        private ThemeBase GetTheme() {
-            return new VS2015BlueTheme();
         }
 
         #region IUIInvoker

@@ -14,33 +14,45 @@ namespace motoi.ui.windowsforms.shells {
     /// <summary>
     /// Provides an implementation of <see cref="ISingleViewPerspective"/>.
     /// </summary>
-    public class SingleViewPerspective : AbstractPerspective, ISingleViewPerspective, IDockableControl {
-        private DockPanel iDockPanel;
+    public class SingleViewPerspective : AbstractPerspective, ISingleViewPerspective {
+        private readonly PerspectiveDockPanel iDockPanel;
         private DockContent iDocumentDockContent;
         private ToolBar iCurrentToolBar;
 
+        /// <inheritdoc />
+        public SingleViewPerspective() {
+            iDockPanel = new PerspectiveDockPanel {
+                Margin = new Padding(0)
+            };
+
+            // Apply current theme
+            ThemeBase theme = GetTheme();
+            theme.ApplyTo(iDockPanel);
+            theme.ApplyTo(iDockPanel);
+            theme.ApplyToToolStripManager();
+
+            ConfigureDockPanel(iDockPanel);
+        }
+
         /// <summary>
-        /// Tells the control that it is going to be attached to the given <paramref name="dockPanel"/>.
+        /// Notifies the instance to apply a custom configuration to the underlying dock panel.
         /// </summary>
-        /// <param name="dockPanel">Dock panel this is instance is attached to</param>
-        void IDockableControl.Attach(DockPanel dockPanel) {
-            iDockPanel = dockPanel;
-            iDockPanel.DocumentStyle = GetDocumentStyle(dockPanel);
+        /// <param name="dockPanel">Underlying dock panel</param>
+        protected virtual void ConfigureDockPanel(DockPanel dockPanel) {
+            dockPanel.DocumentStyle = DocumentStyle.DockingSdi;
+        }
+
+        /// <summary>
+        /// Returns the current theme.
+        /// </summary>
+        /// <returns>Theme</returns>
+        private ThemeBase GetTheme() {
+            return new VS2015BlueTheme();
         }
 
         /// <inheritdoc />
         public override IWidgetCompound GetPane() {
-            return new WidgetCompoundAdapter(this);
-        }
-
-        /// <summary>
-        /// Returns the <see cref="DocumentStyle"/> for the given <paramref name="dockPanel"/> based on the type 
-        /// of this class. This class is intended to be overridden.
-        /// </summary>
-        /// <param name="dockPanel">Dock panel</param>
-        /// <returns>Document style</returns>
-        protected virtual DocumentStyle GetDocumentStyle(DockPanel dockPanel) {
-            return DocumentStyle.DockingSdi;
+            return iDockPanel;
         }
 
         /// <summary>
@@ -67,7 +79,7 @@ namespace motoi.ui.windowsforms.shells {
 
             // Add the tool bar to the controls
             toolStripContainer.TopToolStripPanel.Controls.Add(iCurrentToolBar);
-            iDockPanel.Controls.Add(iCurrentToolBar);
+//            iDockPanel.Controls.Add(iCurrentToolBar);
 
             // Let the editor create its content
             CompositePanel editorPanel = new CompositePanel { Dock = DockStyle.Fill };
@@ -209,32 +221,17 @@ namespace motoi.ui.windowsforms.shells {
         }
 
         /// <summary>
-        /// Implements an adapter between <see cref="IDockableControl"/> and <see cref="IWidgetCompound"/>.
+        /// Extends <see cref="DockPanel"/> to implement <see cref="IWidgetCompound"/>.
         /// </summary>
-        class WidgetCompoundAdapter : IDockableControl, IWidgetCompound {
-            private readonly IDockableControl iDockableControl;
+        class PerspectiveDockPanel : DockPanel, IWidgetCompound {
 
             /// <inheritdoc />
-            public WidgetCompoundAdapter(IDockableControl dockableControl) {
-                if (dockableControl == null) throw new ArgumentNullException("dockableControl");
-                iDockableControl = dockableControl;
-            }
-
-            /// <inheritdoc />
-            void IDockableControl.Attach(DockPanel dockPanel) {
-                iDockableControl.Attach(dockPanel);
-            }
+            public EVisibility Visibility { get; set; }
 
             /// <inheritdoc />
             bool IWidget.Enabled {
-                get { throw new NotImplementedException(); }
-                set { throw new NotImplementedException(); }
-            }
-
-            /// <inheritdoc />
-            EVisibility IWidget.Visibility {
-                get { throw new NotImplementedException(); }
-                set { throw new NotImplementedException(); }
+                get { return Enabled; }
+                set { Enabled = value; }
             }
         }
     }

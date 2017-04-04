@@ -122,7 +122,6 @@
     <Compile Include="shells\DialogWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="shells\IDockableControl.cs" />
     <Compile Include="shells\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
