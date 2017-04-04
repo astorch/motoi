@@ -16,9 +16,10 @@ namespace motoi.platform.ui.factories {
         /// </summary>
         private const string FactoryExtensionPointId = "org.motoi.ui.provider";
 
-        private IUIProvider iUiProvider;
+        private IUIProvider iUIProvider;
         private IShellFactory iShellFactory;
         private IWidgetFactory iWidgetFactory;
+        private IUIServiceFactory iUIServiceFactory;
         private IApplicationController iApplicationController;
 
         /// <summary>
@@ -28,7 +29,16 @@ namespace motoi.platform.ui.factories {
         /// <seealso cref="IApplicationController"/>
         /// <returns>UI platform application controller</returns>
         public IApplicationController GetApplicationController() {
-            return iApplicationController ?? (iApplicationController = iUiProvider.GetApplicationController());
+            return iApplicationController ?? (iApplicationController = iUIProvider.GetApplicationController());
+        }
+
+        /// <summary>
+        /// Returns the factory that is used to create UI services.
+        /// /// The factory is created the first time it's required.
+        /// </summary>
+        /// <returns>Factory for creating services</returns>
+        public IUIServiceFactory GetUIServiceFactory() {
+            return iUIServiceFactory ?? (iUIServiceFactory = iUIProvider.GetUIServiceFactory());
         }
 
         /// <summary>
@@ -38,7 +48,7 @@ namespace motoi.platform.ui.factories {
         /// <seealso cref="IShell"/>
         /// <returns>Factory for creating shells</returns>
         public IShellFactory GetShellFactory() {
-            return iShellFactory ?? (iShellFactory = iUiProvider.GetShellFactory());
+            return iShellFactory ?? (iShellFactory = iUIProvider.GetShellFactory());
         }
 
         /// <summary>
@@ -49,7 +59,7 @@ namespace motoi.platform.ui.factories {
         /// <seealso cref="IWidgetCompound"/>
         /// <returns>Factory for creating widgets or compounds</returns>
         public IWidgetFactory GetWidgetFactory() {
-            return iWidgetFactory ?? (iWidgetFactory = iUiProvider.GetWidgetFactory());
+            return iWidgetFactory ?? (iWidgetFactory = iUIProvider.GetWidgetFactory());
         }
 
         /// <inheritdoc />
@@ -80,7 +90,7 @@ namespace motoi.platform.ui.factories {
                 IBundle providingBundle = ExtensionService.Instance.GetProvidingBundle(element);
                 Type uiProviderType = TypeLoader.TypeForName(providingBundle, className);
 
-                iUiProvider = uiProviderType.NewInstance<IUIProvider>();
+                iUIProvider = uiProviderType.NewInstance<IUIProvider>();
             } catch (Exception ex) {
                 string msg = string.Format("Error on creating UI provider instance of '{0}' contributed by '{1}'", className, id);
                 logWriter.Fatal(msg);

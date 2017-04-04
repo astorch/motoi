@@ -7,7 +7,7 @@ namespace motoi.platform.ui.widgets {
     /// <summary>
     /// Defines a composite with a grid layout.
     /// </summary>
-    public interface IGridComposite : IWidget, IViewPartComposite, IDataBindingSupport {
+    public interface IGridComposite : IWidgetCompound, IDataBindingSupport {
         /// <summary>
         /// Returns the number of layout columns or does set it.
         /// </summary>

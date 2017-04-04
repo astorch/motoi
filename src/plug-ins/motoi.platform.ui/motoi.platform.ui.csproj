@@ -70,9 +70,11 @@
     <Compile Include="bindings\IBindableProperty`1.cs" />
     <Compile Include="EVisibility.cs" />
     <Compile Include="factories\IApplicationController.cs" />
+    <Compile Include="factories\IUIServiceFactory.cs" />
     <Compile Include="factories\IShellFactory.cs" />
     <Compile Include="factories\IUIProvider.cs" />
     <Compile Include="IShell.cs" />
+    <Compile Include="IUIService.cs" />
     <Compile Include="IWidgetCompound.cs" />
     <Compile Include="properties\AssemblyInfo.cs" />
     <Compile Include="bindings\BindableObject.cs" />
@@ -121,7 +123,6 @@
     <Compile Include="shells\IWindow.cs" />
     <Compile Include="factories\FactoryProvider.cs" />
     <Compile Include="IViewPart.cs" />
-    <Compile Include="factories\IViewPartFactory.cs" />
     <Compile Include="toolbars\IToolBarComboBox.cs" />
     <Compile Include="toolbars\IToolBar.cs" />
     <Compile Include="toolbars\IToolBarControl.cs" />

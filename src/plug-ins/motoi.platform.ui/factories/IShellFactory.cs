@@ -1,7 +1,8 @@
 ﻿namespace motoi.platform.ui.factories {
     /// <summary>
-    /// Provides methods to create instances of <see cref="IShell"/>.
+    /// Defines a factory for shells.
     /// </summary>
+    /// <seealso cref="IShell"/>
     public interface IShellFactory {
         /// <summary>
         /// Return a new instance of the given type.
