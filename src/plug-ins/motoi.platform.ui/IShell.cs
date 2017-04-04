@@ -30,7 +30,7 @@ namespace motoi.platform.ui {
     /// <summary>
     /// Provides the property meta data of <see cref="IShell"/> that is used by data binding operations.
     /// </summary>
-    public class PShell<TShell> : BindableObject<TShell> where TShell : class, IShell {
+    public class PShell<TShell> : PWigdetCompount<TShell> where TShell : class, IShell {
         
     }
 }
