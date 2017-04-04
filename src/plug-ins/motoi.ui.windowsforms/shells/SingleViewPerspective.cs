@@ -19,21 +19,18 @@ namespace motoi.ui.windowsforms.shells {
         private DockContent iDocumentDockContent;
         private ToolBar iCurrentToolBar;
 
-        private readonly PerspectivePane Pane = new PerspectivePane();
-
         /// <summary>
         /// Tells the control that it is going to be attached to the given <paramref name="dockPanel"/>.
         /// </summary>
         /// <param name="dockPanel">Dock panel this is instance is attached to</param>
         void IDockableControl.Attach(DockPanel dockPanel) {
-            Pane.Controls.Add(dockPanel);
             iDockPanel = dockPanel;
             iDockPanel.DocumentStyle = GetDocumentStyle(dockPanel);
         }
 
         /// <inheritdoc />
         public override IWidgetCompound GetPane() {
-            return Pane;
+            return new WidgetCompoundAdapter(this);
         }
 
         /// <summary>
@@ -211,12 +208,34 @@ namespace motoi.ui.windowsforms.shells {
             return DockState.Document;
         }
 
-        class PerspectivePane : Panel, IWidgetCompound {
-            /// <inheritdoc />
-            EVisibility IWidget.Visibility { get; set; }
+        /// <summary>
+        /// Implements an adapter between <see cref="IDockableControl"/> and <see cref="IWidgetCompound"/>.
+        /// </summary>
+        class WidgetCompoundAdapter : IDockableControl, IWidgetCompound {
+            private readonly IDockableControl iDockableControl;
 
             /// <inheritdoc />
-            bool IWidget.Enabled { get; set; }
+            public WidgetCompoundAdapter(IDockableControl dockableControl) {
+                if (dockableControl == null) throw new ArgumentNullException("dockableControl");
+                iDockableControl = dockableControl;
+            }
+
+            /// <inheritdoc />
+            void IDockableControl.Attach(DockPanel dockPanel) {
+                iDockableControl.Attach(dockPanel);
+            }
+
+            /// <inheritdoc />
+            bool IWidget.Enabled {
+                get { throw new NotImplementedException(); }
+                set { throw new NotImplementedException(); }
+            }
+
+            /// <inheritdoc />
+            EVisibility IWidget.Visibility {
+                get { throw new NotImplementedException(); }
+                set { throw new NotImplementedException(); }
+            }
         }
     }
 }
