@@ -66,7 +66,7 @@ namespace motoi.platform.ui.factories {
         protected override void OnInitialize() {
             ILog logWriter = LogManager.GetLogger(typeof(FactoryProvider));
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(FactoryExtensionPointId);
-            if (configurationElements.Length == 0) throw new NullReferenceException("There is no registered UI provider!");
+            if (configurationElements.Length == 0) throw new InvalidOperationException("There is no registered UI provider!");
 
             if (configurationElements.Length > 1) {
                 string[] viewPartFactories = configurationElements.Select(x => x.Id).ToArray();
