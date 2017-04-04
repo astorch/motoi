@@ -5,7 +5,7 @@ using motoi.extensions;
 using motoi.extensions.core;
 using motoi.platform.resources.model.preference;
 using motoi.platform.resources.runtime.preference;
-using motoi.platform.ui;
+using motoi.platform.ui.factories;
 using motoi.platform.ui.menus;
 using motoi.platform.ui.shells;
 using motoi.platform.ui.toolbars;
@@ -35,7 +35,7 @@ namespace motoi.platform.application.model
         private readonly ILog iLogger = LogManager.GetLogger(typeof (ApplicationManager));
 
         private IMotoiApplication iApplication;
-        private IViewPartFactory iViewPartFactory;
+        private IApplicationController iApplicationController;
         private IMainWindow iMainWindow;
 
         /// <summary>
@@ -62,7 +62,6 @@ namespace motoi.platform.application.model
                 throw new NullReferenceException(string.Format("There is no application implementation for the given application id '{0}'. " +
                                                                "Check the ini file and the existence of the application annotation!", applicationId));
 
-            iViewPartFactory = FactoryProvider.GetViewPartFactory();
             iApplication.OnStartup();
 
             // Creating and Starting UI-Thread
@@ -84,7 +83,7 @@ namespace motoi.platform.application.model
 
             if (!iApplication.IsHeadless) {
                 iApplication.OnPreInitializeMainWindow();
-                iMainWindow = iViewPartFactory.CreateInstance<IMainWindow>();
+                iMainWindow = UIFactory.NewShell<IMainWindow>();
                 Platform.Instance.MainWindow = iMainWindow;
                 MenuItemProvider.AddExtensionPointMenuItems(iMainWindow);
                 ToolbarItemProvider.AddExtensionPointToolbarItems(iMainWindow);
@@ -97,7 +96,8 @@ namespace motoi.platform.application.model
             iApplication.OnApplicationRun();
 
             try {
-                iViewPartFactory.RunApplication(iMainWindow);
+                iApplicationController = FactoryProvider.Instance.GetApplicationController();
+                iApplicationController.RunApplication(iMainWindow);
             } catch (Exception ex) {
                 iLogger.Error(ex.Message, ex);
             }
@@ -118,7 +118,7 @@ namespace motoi.platform.application.model
             iApplication.OnShutdown();
             iApplication = null;
 
-            iViewPartFactory = null;
+            iApplicationController = null;
             iMainWindow = null;
 
             iInstance = null;
@@ -135,8 +135,7 @@ namespace motoi.platform.application.model
         private IMotoiApplication GetApplicationInstance(string id) {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(ApplicationExtensionPointId);
             IConfigurationElement applicationConfigurationElement = Array.Find(configurationElements, el => el["id"] == id);
-            if (applicationConfigurationElement == null)
-                return null;
+            if (applicationConfigurationElement == null) return null;
 
             string className = applicationConfigurationElement["class"];
 
