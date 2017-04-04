@@ -50,6 +50,7 @@
     <Compile Include="expressions\ExpressionMethodExtensions.cs" />
     <Compile Include="generics\GenericInitializer.cs" />
     <Compile Include="generics\GenericSingleton.cs" />
+    <Compile Include="InitializationException.cs" />
     <Compile Include="io\ByteCompressor.cs" />
     <Compile Include="io\FileUtil.cs" />
     <Compile Include="lang\AbstractDisposable.cs" />

@@ -12,12 +12,19 @@ namespace Xcite.Csharp.generics {
         /// <summary>
         /// Returns the instance.
         /// </summary>
+        /// <exception cref="InitializationException">When an error occurred</exception>
         public static TClass Instance {
             get {
                 lock (typeof (TClass)) {
                     if (iInstance != null) return iInstance;
-                    iInstance = typeof (TClass).NewInstance<TClass>(true);
-                    iInstance.OnInitialize();
+         
+                    try {
+                        iInstance = typeof(TClass).NewInstance<TClass>(true);
+                        iInstance.OnInitialize();
+                    } catch (Exception ex) {
+                        throw new InitializationException(string.Format("Error on initializing the singleton '{0}'.", typeof(TClass)), ex);
+                    }
+
                     return iInstance;
                 }
             }
