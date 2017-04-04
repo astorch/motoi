@@ -1,5 +1,6 @@
 ﻿using System;
 using log4net;
+using motoi.platform.ui;
 using motoi.platform.ui.shells;
 using motoi.workbench.events;
 using motoi.workbench.model;
@@ -39,7 +40,8 @@ namespace motoi.workbench.runtime {
             if (string.IsNullOrEmpty(perspectiveId)) return null;
 
             IPerspective newPerspective = PerspectiveFactory.Instance.GetPerspective(perspectiveId);
-            MainWindow.SetContent(newPerspective);
+            IWidgetCompound widgetCompound = newPerspective.GetPane();
+            MainWindow.SetContent(widgetCompound);
 
             IPerspective oldPerspective = ActivePerspective;
 

@@ -5,6 +5,7 @@ using motoi.platform.resources.model;
 using motoi.platform.resources.runtime.editors;
 using motoi.platform.ui;
 using motoi.platform.ui.data;
+using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
 using motoi.platform.ui.widgets;
 using motoi.workbench.model;

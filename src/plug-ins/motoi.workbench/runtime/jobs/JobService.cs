@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using log4net;
-using motoi.platform.ui;
+using motoi.platform.ui.factories;
 using motoi.workbench.model.jobs;
 using Xcite.Csharp.lang;
 
@@ -66,7 +66,7 @@ namespace motoi.workbench.runtime.jobs {
                 JobExecutionHandler onExecute = (JobExecutionHandler) dataStore[0];
                 object onExecuteState = dataStore[1];
                 jobName = (string) dataStore[2] ?? "unnamed";
-                using (IProgressMonitor progressMonitor = UIFactory.NewViewPart<IProgressMonitor>()) {
+                using (IProgressMonitor progressMonitor = UIFactory.NewService<IProgressMonitor>()) {
                     onExecute(progressMonitor, onExecuteState);
                 }
             } catch (ThreadAbortException ex) {

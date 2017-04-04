@@ -1,4 +1,4 @@
-﻿using motoi.platform.ui;
+﻿using motoi.platform.ui.factories;
 using motoi.workbench.model;
 using Xcite.Csharp.generics;
 
@@ -24,7 +24,7 @@ namespace motoi.workbench {
         /// <typeparam name="TPerspective">Type of perspective to create</typeparam>
         /// <returns>Instance of perspective or NULL</returns>
         public IPerspective GetPerspective<TPerspective>() where TPerspective : class, IPerspective {
-            return FactoryProvider.GetViewPartFactory().CreateInstance<TPerspective>();
+            return UIFactory.NewService<TPerspective>();
         }
 
         /// <summary>

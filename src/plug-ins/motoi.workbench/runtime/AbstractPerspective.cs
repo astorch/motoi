@@ -4,6 +4,7 @@ using System.Linq;
 using log4net;
 using motoi.platform.resources.model.editors;
 using motoi.platform.ui;
+using motoi.platform.ui.factories;
 using motoi.platform.ui.shells;
 using motoi.workbench.events;
 using motoi.workbench.exceptions;
@@ -96,7 +97,7 @@ namespace motoi.workbench.runtime {
                 }
 
                 // Set up new editor
-                editor.WidgetFactory = FactoryProvider.GetWidgetFactory();
+                editor.WidgetFactory = FactoryProvider.Instance.GetWidgetFactory();
                 editor.SetEditorInput(editorInput);
 
                 // Make editor visible
@@ -198,7 +199,7 @@ namespace motoi.workbench.runtime {
                 dataView.Init();
 
                 // Set up new view
-                IWidgetFactory widgetFactory = FactoryProvider.GetWidgetFactory();
+                IWidgetFactory widgetFactory = FactoryProvider.Instance.GetWidgetFactory();
                 dataView.WidgetFactory = widgetFactory;
 
                 // Make view visible
@@ -247,5 +248,8 @@ namespace motoi.workbench.runtime {
         /// <param name="dataView">Data view to show</param>
         /// <param name="viewPosition">Target view position</param>
         protected abstract void OnShowDataView(IDataView dataView, EViewPosition viewPosition);
+
+        /// <inheritdoc />
+        public abstract IWidgetCompound GetPane();
     }
 }

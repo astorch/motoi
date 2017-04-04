@@ -1,6 +1,7 @@
 ﻿using motoi.platform.ui;
 using motoi.platform.ui.actions;
 using motoi.platform.ui.data;
+using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
 using motoi.platform.ui.shells;
 using motoi.platform.ui.widgets;
@@ -16,16 +17,16 @@ namespace motoi.workbench.menu {
     public class ShowViewsMenuHandler : AbstractActionHandler {
         /// <inheritdoc />
         public override void Run() {
-            ITitledAreaDialog dialogWindow = FactoryProvider.GetViewPartFactory().CreateInstance<ITitledAreaDialog>();
+            ITitledAreaDialog dialogWindow = UIFactory.NewShell<ITitledAreaDialog>();
             dialogWindow.Title = "Registered Views";
             dialogWindow.Description = "Select a view to open";
             dialogWindow.WindowWidth = 440;
             
-            IGridComposite gridComposite = FactoryProvider.GetWidgetFactory().CreateInstance<IGridComposite>(dialogWindow);
+            IGridComposite gridComposite = UIFactory.NewWidget<IGridComposite>(dialogWindow);
 
             gridComposite.GridColumns = 1;
             gridComposite.GridRows = 1;
-            IListViewer listViewer = FactoryProvider.GetWidgetFactory().CreateInstance<IListViewer>(gridComposite);
+            IListViewer listViewer = UIFactory.NewWidget<IListViewer>(gridComposite);
             gridComposite.AddWidget(listViewer);
 
             IViewReference selectedViewReference = null;

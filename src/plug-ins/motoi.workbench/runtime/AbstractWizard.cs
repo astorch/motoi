@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using motoi.platform.ui;
 using motoi.platform.ui.controls;
+using motoi.platform.ui.factories;
 using motoi.platform.ui.shells;
 using motoi.platform.ui.widgets;
 using motoi.workbench.model;
@@ -34,7 +34,7 @@ namespace motoi.workbench.runtime {
         /// Tells the wizard to initialize itself.
         /// </summary>
         public virtual void Initialize() {
-            iDialog = UIFactory.NewViewPart<ITitledAreaDialog>();
+            iDialog = UIFactory.NewShell<ITitledAreaDialog>();
             if (iDialog == null) return; // TODO Use throwHelper
 
             iDialog.AddButton("Cancel", Cancel);
@@ -149,7 +149,7 @@ namespace motoi.workbench.runtime {
                 gridComposite = UIFactory.NewWidget<IGridComposite>(iDialog);
                 gridComposite.GridColumns = 1;
                 gridComposite.GridRows = 1;
-                iCurrentWizardPage.Initialize(gridComposite, FactoryProvider.GetWidgetFactory());
+                iCurrentWizardPage.Initialize(gridComposite, FactoryProvider.Instance.GetWidgetFactory());
                 iPageToCompositeMap.Add(iCurrentWizardPage, gridComposite);
             }
 

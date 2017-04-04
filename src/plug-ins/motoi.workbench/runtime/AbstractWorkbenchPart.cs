@@ -1,4 +1,5 @@
 ﻿using motoi.platform.ui;
+using motoi.platform.ui.factories;
 using motoi.platform.ui.toolbars;
 using motoi.platform.ui.widgets;
 using motoi.workbench.bindings;

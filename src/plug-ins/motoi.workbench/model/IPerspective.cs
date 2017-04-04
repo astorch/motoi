@@ -8,7 +8,7 @@ namespace motoi.workbench.model {
     /// <summary>
     /// Defines the content of a window.
     /// </summary>
-    public interface IPerspective : IViewPartComposite {
+    public interface IPerspective : IUIService {
         /// <summary>
         /// Returns the currently active editor. May be NULL.
         /// </summary>
@@ -71,6 +71,9 @@ namespace motoi.workbench.model {
         /// </summary>
         /// <param name="listener">Listener to unsubscribe</param>
         void RemovePerspectiveListener(IPerspectiveListener listener);
+
+
+        IWidgetCompound GetPane();
     }
 
     /// <summary>

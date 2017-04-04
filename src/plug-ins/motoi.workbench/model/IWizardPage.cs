@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using motoi.platform.ui;
+using motoi.platform.ui.factories;
 using motoi.platform.ui.widgets;
 
 namespace motoi.workbench.model {

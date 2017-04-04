@@ -6,7 +6,7 @@ namespace motoi.workbench.model.jobs {
     /// Provides methods to visualize a background task with a measurable progress for 
     /// the user.
     /// </summary>
-    public interface IProgressMonitor : IViewPart, IDisposable {
+    public interface IProgressMonitor : IUIService, IDisposable {
         /// <summary>
         /// Returns TRUE if the progress is not measurable or does set it.
         /// </summary>

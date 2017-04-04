@@ -1,4 +1,4 @@
-﻿using motoi.platform.ui;
+﻿using motoi.platform.ui.factories;
 using motoi.platform.ui.shells;
 
 namespace motoi.workbench.runtime {
@@ -16,7 +16,7 @@ namespace motoi.workbench.runtime {
         /// <param name="resultSet">Set of possible dialog results</param>
         /// <returns>Selected dialog result</returns>
         public static EMessageDialogResult Show(EMessageDialogType dialogType, string title, string header, string text, EMessageDialogResult[] resultSet) {
-            IMessageDialogWindow msgDlg = UIFactory.NewViewPart<IMessageDialogWindow>();
+            IMessageDialogWindow msgDlg = UIFactory.NewShell<IMessageDialogWindow>();
             msgDlg.DialogType = dialogType;
             msgDlg.WindowTitle = title;
             msgDlg.Header = header;
