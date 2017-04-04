@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.shells;
 
@@ -10,12 +9,6 @@ namespace motoi.ui.windowsforms {
     public class ApplicationController : IApplicationController {
         /// <inheritdoc />
         public void RunApplication(IMainWindow mainWindow) {
-            if (Environment.OSVersion.Version.Major >= 6)
-                SetProcessDPIAware();
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
             ApplicationContext applicationContext = new ApplicationContext(mainWindow as Form);
             Application.Run(applicationContext);
         }
@@ -24,8 +17,5 @@ namespace motoi.ui.windowsforms {
         public void ShutdownApplication() {
             Application.Exit();
         }
-
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern bool SetProcessDPIAware();
     }
 }
