@@ -6,6 +6,7 @@ namespace motoi.ui.windowsforms {
     /// </summary>
     public class WinformsUIProvider : IUIProvider {
         private IApplicationController iApplicationController;
+        private IUIServiceFactory iUIServiceFactory;
         private IShellFactory iShellFactory;
         private IWidgetFactory iWidgetFactory;
 
@@ -22,6 +23,11 @@ namespace motoi.ui.windowsforms {
         /// <inheritdoc />
         public IWidgetFactory GetWidgetFactory() {
             return iWidgetFactory ?? (iWidgetFactory = new WidgetFactory());
+        }
+
+        /// <inheritdoc />
+        public IUIServiceFactory GetUIServiceFactory() {
+            return iUIServiceFactory ?? (iUIServiceFactory = new ServiceFactory());
         }
     }
 }

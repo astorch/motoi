@@ -118,6 +118,7 @@
     <Compile Include="jobs\ProgressMonitor.cs" />
     <Compile Include="messaging\MessageReceivedEventArgs.cs" />
     <Compile Include="messaging\UIMessageDispatchListener.cs" />
+    <Compile Include="ServiceFactory.cs" />
     <Compile Include="shells\DialogWindow.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using motoi.platform.ui;
 using motoi.platform.ui.images;
 using motoi.ui.windowsforms.controls;
 using motoi.workbench.model;
@@ -18,13 +19,21 @@ namespace motoi.ui.windowsforms.shells {
         private DockContent iDocumentDockContent;
         private ToolBar iCurrentToolBar;
 
+        private readonly PerspectivePane Pane = new PerspectivePane();
+
         /// <summary>
         /// Tells the control that it is going to be attached to the given <paramref name="dockPanel"/>.
         /// </summary>
         /// <param name="dockPanel">Dock panel this is instance is attached to</param>
         void IDockableControl.Attach(DockPanel dockPanel) {
+            Pane.Controls.Add(dockPanel);
             iDockPanel = dockPanel;
             iDockPanel.DocumentStyle = GetDocumentStyle(dockPanel);
+        }
+
+        /// <inheritdoc />
+        public override IWidgetCompound GetPane() {
+            return Pane;
         }
 
         /// <summary>
@@ -200,6 +209,14 @@ namespace motoi.ui.windowsforms.shells {
         /// <returns>Corresponding <see cref="DockState"/></returns>
         protected virtual DockState ConvertToDockState(EViewPosition viewPosition) {
             return DockState.Document;
+        }
+
+        class PerspectivePane : Panel, IWidgetCompound {
+            /// <inheritdoc />
+            EVisibility IWidget.Visibility { get; set; }
+
+            /// <inheritdoc />
+            bool IWidget.Enabled { get; set; }
         }
     }
 }

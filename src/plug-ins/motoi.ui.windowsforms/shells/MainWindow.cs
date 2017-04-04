@@ -44,35 +44,37 @@ namespace motoi.ui.windowsforms.shells {
             ToolStripMenuItem subMenu = new ToolStripMenuItem(menu.Label);
             MainMenuStrip.Items.Add(subMenu);
 
-            for (IEnumerator<MenuItemContribution> enmtor = menu.MenuItems.GetEnumerator(); enmtor.MoveNext(); ) {
-                MenuItemContribution menuItemContribution = enmtor.Current;
+            using (IEnumerator<MenuItemContribution> enmtor = menu.MenuItems.GetEnumerator()) {
+                while (enmtor.MoveNext()) {
+                    MenuItemContribution menuItemContribution = enmtor.Current;
 
-                // Support separator
-                if (menuItemContribution.IsSeparator) {
-                    ToolStripSeparator separator = new ToolStripSeparator();
-                    subMenu.DropDownItems.Add(separator);
-                    continue;
-                }
+                    // Support separator
+                    if (menuItemContribution.IsSeparator) {
+                        ToolStripSeparator separator = new ToolStripSeparator();
+                        subMenu.DropDownItems.Add(separator);
+                        continue;
+                    }
 
-                // Add normal menu items
-                ToolStripMenuItem menuItem = new ToolStripMenuItem(menuItemContribution.Label);
-                subMenu.DropDownItems.Add(menuItem);
-                menuItem.Enabled = menuItemContribution.ActionHandler.IsEnabled;
-                menuItem.Click += (sender, args) => menuItemContribution.ActionHandler.Run();
+                    // Add normal menu items
+                    ToolStripMenuItem menuItem = new ToolStripMenuItem(menuItemContribution.Label);
+                    subMenu.DropDownItems.Add(menuItem);
+                    menuItem.Enabled = menuItemContribution.ActionHandler.IsEnabled;
+                    menuItem.Click += (sender, args) => menuItemContribution.ActionHandler.Run();
 
-                if (menuItemContribution.ImageStream != null)
-                    menuItem.Image = new Bitmap(menuItemContribution.ImageStream);
+                    if (menuItemContribution.ImageStream != null)
+                        menuItem.Image = new Bitmap(menuItemContribution.ImageStream);
 
-                Keys shortcutKeys;
-                if (Enum.TryParse(menuItemContribution.Shortcut, true, out shortcutKeys)) {
-                    menuItem.ShortcutKeys = shortcutKeys;
-                    menuItem.ShowShortcutKeys = true;
-                }
+                    Keys shortcutKeys;
+                    if (Enum.TryParse(menuItemContribution.Shortcut, true, out shortcutKeys)) {
+                        menuItem.ShortcutKeys = shortcutKeys;
+                        menuItem.ShowShortcutKeys = true;
+                    }
 
-                menuItemContribution.ActionHandler.PropertyChanged += (sender, args) => {
+                    menuItemContribution.ActionHandler.PropertyChanged += (sender, args) => {
                         if (args.PropertyName == "IsEnabled")
                             menuItem.Enabled = menuItemContribution.ActionHandler.IsEnabled;
                     };
+                }
             }
         }
 
@@ -84,11 +86,11 @@ namespace motoi.ui.windowsforms.shells {
             bool groupExisting = true;
 
             if (iApplicationToolBar == null) {
-                ToolStripContainer toolStripContainer = new ToolStripContainer { Dock = DockStyle.Top };
+                ToolStripContainer toolStripContainer = new ToolStripContainer {Dock = DockStyle.Top};
                 Size oldSize = toolStripContainer.Size;
                 toolStripContainer.Size = new Size(oldSize.Width, 32);
                 Controls.Add(toolStripContainer);
-                
+
                 // All all remaining Controls
                 AddTopControlsFromQueue();
 
@@ -101,9 +103,12 @@ namespace motoi.ui.windowsforms.shells {
             if (groupExisting)
                 iApplicationToolBar.Items.Add(new ToolStripSeparator());
 
-            for (IEnumerator<ToolbarItemContribution> itr = group.GroupItems.GetEnumerator(); itr.MoveNext();) {
-                ToolbarItemContribution toolbarItem = itr.Current;
-                iApplicationToolBar.AddButton(null, toolbarItem.ImageStream, toolbarItem.ActionHandler, toolbarItem.Label);
+            using (IEnumerator<ToolbarItemContribution> itr = group.GroupItems.GetEnumerator()) {
+                while (itr.MoveNext()) {
+                    ToolbarItemContribution toolbarItem = itr.Current;
+                    iApplicationToolBar.AddButton(null, toolbarItem.ImageStream, toolbarItem.ActionHandler,
+                        toolbarItem.Label);
+                }
             }
         }
 
