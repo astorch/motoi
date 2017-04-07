@@ -18,7 +18,7 @@ namespace motoi.workbench.model {
         /// Tells the instance to create its content using the given widget factory.
         /// </summary>
         /// <param name="gridComposite">Panel to place the content widgets of the editor</param>
-        void CreateContents(IGridComposite gridComposite);
+        void CreateContents(IGridPanel gridComposite);
 
         /// <summary>
         /// Tells the editor to add additional tool bar controls if desired.

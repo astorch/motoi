@@ -52,7 +52,7 @@ namespace motoi.workbench.runtime {
         /// </summary>
         /// <param name="gridComposite">Element container</param>
         /// <param name="widgetFactory">Factory to create widgets</param>
-        public abstract void Initialize(IGridComposite gridComposite, IWidgetFactory widgetFactory);
+        public abstract void Initialize(IGridPanel gridComposite, IWidgetFactory widgetFactory);
 
         /// <summary>
         /// Notifies the instance to dispose any created or referenced resource.

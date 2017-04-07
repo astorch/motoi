@@ -1,5 +1,4 @@
-﻿using motoi.platform.ui;
-using motoi.platform.ui.actions;
+﻿using motoi.platform.ui.actions;
 using motoi.platform.ui.data;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
@@ -20,9 +19,9 @@ namespace motoi.workbench.menu {
             ITitledAreaDialog dialogWindow = UIFactory.NewShell<ITitledAreaDialog>();
             dialogWindow.Title = "Registered Views";
             dialogWindow.Description = "Select a view to open";
-            dialogWindow.WindowWidth = 440;
+            dialogWindow.Width = 440;
             
-            IGridComposite gridComposite = UIFactory.NewWidget<IGridComposite>(dialogWindow);
+            IGridPanel gridComposite = UIFactory.NewWidget<IGridPanel>(dialogWindow);
 
             gridComposite.GridColumns = 1;
             gridComposite.GridRows = 1;
@@ -36,11 +35,11 @@ namespace motoi.workbench.menu {
             listViewer.Input = DataViewRegistry.Instance.GetViewReferences().ToArray();
             listViewer.Update();
             listViewer.SelectionChanged += (sender, args) => selectedViewReference = (IViewReference) args.Selection;
-            dialogWindow.AddButton("Cancel", () => dialogWindow.Close());
-            dialogWindow.AddButton("OK", () => {
+            dialogWindow.AddButton("Cancel", new ActionHandlerDelegate(() => dialogWindow.Close()));
+            dialogWindow.AddButton("OK", new ActionHandlerDelegate(() => {
                 closedOk = true;
                 dialogWindow.Close();
-            });
+            }));
 
             dialogWindow.SetContent(gridComposite);
             dialogWindow.Show(true);

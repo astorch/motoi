@@ -19,7 +19,7 @@ namespace motoi.workbench.runtime {
         /// Tells the instance to create its content using the given widget factory.
         /// </summary>
         /// <param name="gridComposite">Panel to place the content widgets of the editor</param>
-        public abstract void CreateContents(IGridComposite gridComposite);
+        public abstract void CreateContents(IGridPanel gridComposite);
 
         /// <inheritdoc />
         /// <remarks>This method is intended to be overriden by clients</remarks>

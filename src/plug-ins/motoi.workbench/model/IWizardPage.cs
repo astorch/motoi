@@ -44,6 +44,6 @@ namespace motoi.workbench.model {
         /// </summary>
         /// <param name="gridComposite">Element container</param>
         /// <param name="widgetFactory">Factory to create widgets</param>
-        void Initialize(IGridComposite gridComposite, IWidgetFactory widgetFactory);
+        void Initialize(IGridPanel gridComposite, IWidgetFactory widgetFactory);
     }
 }

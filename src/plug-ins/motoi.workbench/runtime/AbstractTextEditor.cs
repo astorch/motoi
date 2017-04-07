@@ -59,7 +59,7 @@ namespace motoi.workbench.runtime {
         /// Tells the instance to create its content using the given widget factory.
         /// </summary>
         /// <param name="gridComposite">Panel to place the content widgets of the editor</param>
-        public override void CreateContents(IGridComposite gridComposite) {
+        public override void CreateContents(IGridPanel gridComposite) {
             gridComposite.GridColumns = 1;
             gridComposite.GridRows = 1;
             IRichTextBox richTextBox = WidgetFactory.CreateInstance<IRichTextBox>(gridComposite);

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using motoi.platform.ui.controls;
+using motoi.platform.ui.actions;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.shells;
 using motoi.platform.ui.widgets;
@@ -15,7 +15,7 @@ namespace motoi.workbench.runtime {
     /// </summary>
     public abstract class AbstractWizard : AbstractDisposable, IWizard {
         private readonly IList<IWizardPage> iWizardPages = new List<IWizardPage>(5);
-        private readonly IDictionary<IWizardPage, IGridComposite> iPageToCompositeMap = new Dictionary<IWizardPage, IGridComposite>(5);
+        private readonly IDictionary<IWizardPage, IGridPanel> iPageToCompositeMap = new Dictionary<IWizardPage, IGridPanel>(5);
         private ITitledAreaDialog iDialog;
         private IWizardPage iCurrentWizardPage;
         private int iCurrentWizardPageIndex;
@@ -37,14 +37,14 @@ namespace motoi.workbench.runtime {
             iDialog = UIFactory.NewShell<ITitledAreaDialog>();
             if (iDialog == null) return; // TODO Use throwHelper
 
-            iDialog.AddButton("Cancel", Cancel);
-            iBtnFinish = iDialog.AddButton("Finish", Finish);
-            iBtnNext = iDialog.AddButton("Next >", NavigateNext);
-            iBtnPrev = iDialog.AddButton("< Back", NavigateBack);
+            iDialog.AddButton("Cancel", new ActionHandlerDelegate(Cancel));
+            iBtnFinish = iDialog.AddButton("Finish", new ActionHandlerDelegate(Finish));
+            iBtnNext = iDialog.AddButton("Next >", new ActionHandlerDelegate(NavigateNext));
+            iBtnPrev = iDialog.AddButton("< Back", new ActionHandlerDelegate(NavigateBack));
 
-            iBtnPrev.IsEnabled = false;
-            iBtnFinish.IsEnabled = false;
-            iBtnNext.IsEnabled = false;
+            iBtnPrev.Enabled = false;
+            iBtnFinish.Enabled = false;
+            iBtnNext.Enabled = false;
 
             OnInitialize();
 
@@ -144,9 +144,9 @@ namespace motoi.workbench.runtime {
             iCurrentWizardPage = iWizardPages[iCurrentWizardPageIndex];
             iCurrentWizardPage.PropertyChanged += OnPagePropertyChanged;
 
-            IGridComposite gridComposite;
+            IGridPanel gridComposite;
             if (!iPageToCompositeMap.TryGetValue(iCurrentWizardPage, out gridComposite)) {
-                gridComposite = UIFactory.NewWidget<IGridComposite>(iDialog);
+                gridComposite = UIFactory.NewWidget<IGridPanel>(iDialog);
                 gridComposite.GridColumns = 1;
                 gridComposite.GridRows = 1;
                 iCurrentWizardPage.Initialize(gridComposite, FactoryProvider.Instance.GetWidgetFactory());
@@ -174,9 +174,9 @@ namespace motoi.workbench.runtime {
         /// Checks the state of the wizard and sets the behaviour of the wizard navigation buttons.
         /// </summary>
         private void CheckConditions() {
-            iBtnFinish.IsEnabled = (iCurrentWizardPageIndex + 1) == PageCount && iCurrentWizardPage.CanLeave;
-            iBtnNext.IsEnabled = !iBtnFinish.IsEnabled && iCurrentWizardPage.CanLeave;
-            iBtnPrev.IsEnabled = (iCurrentWizardPageIndex - 1) > 0;
+            iBtnFinish.Enabled = (iCurrentWizardPageIndex + 1) == PageCount && iCurrentWizardPage.CanLeave;
+            iBtnNext.Enabled = !iBtnFinish.Enabled && iCurrentWizardPage.CanLeave;
+            iBtnPrev.Enabled = (iCurrentWizardPageIndex - 1) > 0;
         }
 
         /// <summary>
