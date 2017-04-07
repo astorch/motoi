@@ -79,6 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationController.cs" />
+    <Compile Include="controls\Button.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="controls\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -88,7 +91,7 @@
     <Compile Include="controls\GradientBackgroundPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="controls\CompositePanel.cs">
+    <Compile Include="controls\GridPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="controls\ListViewer.cs">
@@ -119,6 +122,8 @@
     <Compile Include="messaging\MessageReceivedEventArgs.cs" />
     <Compile Include="messaging\UIMessageDispatchListener.cs" />
     <Compile Include="ServiceFactory.cs" />
+    <Compile Include="shells\Converter.cs" />
+    <Compile Include="shells\Converter`2.cs" />
     <Compile Include="shells\DialogWindow.cs">
       <SubType>Form</SubType>
     </Compile>

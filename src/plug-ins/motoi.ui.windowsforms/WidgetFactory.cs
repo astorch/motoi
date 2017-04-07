@@ -19,8 +19,8 @@ namespace motoi.ui.windowsforms {
             where TWidget : class, IWidget {
             Type type = typeof (TWidget);
 
-            if (type.IsAssignableFrom(typeof(IGridComposite)))
-                return new CompositePanel() as TWidget;
+            if (type.IsAssignableFrom(typeof(IGridPanel)))
+                return new GridPanel() as TWidget;
 
             if (type.IsAssignableFrom(typeof(ITreeViewer)))
                 return new TreeViewer() as TWidget;

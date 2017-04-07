@@ -2,15 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using motoi.platform.ui;
 using motoi.platform.ui.menus;
 using motoi.platform.ui.messaging;
 using motoi.platform.ui.shells;
 using motoi.platform.ui.toolbars;
 using motoi.ui.windowsforms.controls;
 using motoi.ui.windowsforms.jobs;
-using motoi.ui.windowsforms.utils;
-using WeifenLuo.WinFormsUI.Docking;
 using Xcite.Collections;
 using ToolBar = motoi.ui.windowsforms.toolbars.ToolBar;
 
@@ -20,7 +17,6 @@ namespace motoi.ui.windowsforms.shells {
     /// API.
     /// </summary>
     public class MainWindow : Window, IMainWindow {
-        private Control iMainContentControl;
         private ToolBar iApplicationToolBar;
         private readonly LinearList<Control> iTopControlAddQueue = new LinearList<Control>();
 
@@ -29,6 +25,7 @@ namespace motoi.ui.windowsforms.shells {
         /// </summary>
         public MainWindow() {
             InitializeComponents();
+            StartPosition = FormStartPosition.Manual;
         }
 
         /// <summary>
@@ -119,27 +116,6 @@ namespace motoi.ui.windowsforms.shells {
         private void AddTopControlsFromQueue() {
             iTopControlAddQueue.ForEach(Controls.Add);
             iTopControlAddQueue.Clear();
-        }
-
-        /// <inheritdoc />
-        void IShell.SetContent(IWidgetCompound widgetCompound) {
-            WindowContent = widgetCompound;
-
-            Control wdgCtrl = CastUtil.Cast<Control, IWidgetCompound>(widgetCompound);
-
-            // Remove the old content and add the new
-//            iPerspectivePane.Controls.Clear();
-//            iPerspectivePane.Controls.Add(wdgCtrl);
-            Controls.Remove(iMainContentControl);
-            Controls.Add(wdgCtrl);
-
-            // Due to a bug of WeifenLou DockPanel the content panel should be at first position
-            Controls.SetChildIndex(wdgCtrl, 0);
-            iMainContentControl = wdgCtrl;
-
-            // Set dock and resize behavior
-            wdgCtrl.Dock = DockStyle.Fill;
-//            wdgCtrl.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom;
         }
 
         /// <summary>

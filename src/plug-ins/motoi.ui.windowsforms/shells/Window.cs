@@ -3,17 +3,24 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using motoi.platform.ui;
+using motoi.platform.ui.bindings;
 using motoi.platform.ui.images;
 using motoi.platform.ui.shells;
 using motoi.ui.windowsforms.utils;
 
-namespace motoi.ui.windowsforms.shells
-{
+namespace motoi.ui.windowsforms.shells {
     /// <summary>
     /// Provides an implementation for <see cref="IWindow"/> based on 
     /// Windows Forms API.
     /// </summary>
     public class Window : Form, IWindow {
+        private EWindowResizeMode iWindowResizeMode;
+        private EWindowStyle iWindowStyle;
+
+        /// <inheritdoc />
+        public Window() {
+            InitializeComponents();
+        }
 
         /// <summary>
         /// Returns the current window content or does set it.
@@ -23,19 +30,25 @@ namespace motoi.ui.windowsforms.shells
         #region IWindow
 
         /// <inheritdoc />
+        IShell IShell.Owner {
+            get { return (IShell) Owner; } 
+            set { Owner = (Form) value; } 
+        }
+
+        /// <inheritdoc />
         EVisibility IWidget.Visibility {
-            get { return PWindow<IWindow>.GetModelValue(this, PWindow<IWindow>.VisibilityProperty); }
+            get { return PWindow.GetModelValue(this, PWindow.VisibilityProperty); }
             set {
-                PWindow<IWindow>.SetModelValue(this, PWindow<IWindow>.VisibilityProperty, value);
+                PWindow.SetModelValue(this, PWindow.VisibilityProperty, value);
                 Visible = (value == EVisibility.Visible);
             } 
         }
 
         /// <inheritdoc />
         bool IWidget.Enabled {
-            get { return PWindow<IWindow>.GetModelValue(this, PWindow<IWindow>.EnabledProperty); }
+            get { return PWindow.GetModelValue(this, PWindow.EnabledProperty); }
             set {
-                PWindow<IWindow>.SetModelValue(this, PWindow<IWindow>.EnabledProperty, value);
+                PWindow.SetModelValue(this, PWindow.EnabledProperty, value);
                 Enabled = value;
             }
         }
@@ -47,33 +60,45 @@ namespace motoi.ui.windowsforms.shells
         }
 
         /// <inheritdoc />
-        int IWindow.WindowWidth {
-            get { return Width; }
-            set { Width = value; }
+        int IShell.Width {
+            get { return PWindow.GetModelValue(this, PWindow.WidthProperty); }
+            set {
+                PWindow.SetModelValue(this, PWindow.WidthProperty, value);
+                Width = value;
+            }
         }
 
         /// <inheritdoc />
-        int IWindow.WindowHeight {
-            get { return Height; }
-            set { Height = value; }
+        int IShell.Height {
+            get { return PWindow.GetModelValue(this, PWindow.HeightProperty); }
+            set {
+                PWindow.SetModelValue(this, PWindow.HeightProperty, value);
+                Height = value;
+            }
         }
 
         /// <inheritdoc />
-        int IWindow.WindowTopLocation {
-            get { return Location.Y; } 
-            set { Location = new Point(Location.X, value); }
+        int IShell.TopLocation {
+            get { return PWindow.GetModelValue(this, PWindow.TopLocationProperty); }
+            set {
+                PWindow.SetModelValue(this, PWindow.TopLocationProperty, value);
+                Location = new Point(Location.X, value);
+            }
         }
 
         /// <inheritdoc />
-        public int WindowLeftLocation {
-            get { return Location.X; }
-            set { Location = new Point(value, Location.Y); }
+        int IShell.LeftLocation {
+            get { return PWindow.GetModelValue(this, PWindow.LeftLocationProperty); }
+            set {
+                PWindow.SetModelValue(this, PWindow.LeftLocationProperty, value);
+                Location = new Point(value, Location.Y);
+            }
         }
 
         /// <inheritdoc />
         EWindowState IWindow.WindowState {
-            get { return ConvertToMotoiWindowState(WindowState); }
-            set { WindowState = ConvertFromMotoiWindowState(value); }
+            get { return Converter.WindowState.ConvertFrom(WindowState); }
+            set { WindowState = Converter.WindowState.ConvertFrom(value); }
         }
 
         /// <inheritdoc />
@@ -83,36 +108,90 @@ namespace motoi.ui.windowsforms.shells
         }
 
         /// <inheritdoc />
-        void IShell.SetContent(IWidgetCompound viewPart) {
-            Control control = CastUtil.Cast<Control>(viewPart);
-            control.Dock = DockStyle.Fill;
-            Controls.Add(control);
-            WindowContent = viewPart;
+        void IShell.SetContent(IWidgetCompound widgetCompound) {
+            Control newContentControl = CastUtil.Cast<Control>(widgetCompound);
+            newContentControl.Dock = DockStyle.Fill;
+
+            // Remove the old content 
+            if (WindowContent != null) {
+                Control oldContentControl = CastUtil.Cast<Control>(WindowContent);
+                Controls.Remove(oldContentControl);
+            }
+
+            // Add the new content
+            Controls.Add(newContentControl);
+
+            // Due to a bug of WeifenLou DockPanel the content panel should be at first position
+            Controls.SetChildIndex(newContentControl, 0);
+            
+            // Store current window content
+            WindowContent = widgetCompound; 
         }
 
         /// <inheritdoc />
         IWidgetCompound IShell.Content { get { return WindowContent; } }
 
-        /// <summary>
-        /// Converts a <see cref="FormWindowState"/> value to a <see cref="EWindowState"/> value.
-        /// </summary>
-        /// <param name="windowState">Value to convert</param>
-        /// <returns>Converted value</returns>
-        private EWindowState ConvertToMotoiWindowState(FormWindowState windowState) {
-            if (windowState == FormWindowState.Maximized) return EWindowState.Maximized;
-            if (windowState == FormWindowState.Minimized) return EWindowState.Minimized;
-            return EWindowState.Normal;
+        /// <inheritdoc />
+        EWindowStartupLocation IWindow.WindowStartupLocation {
+            get { return Converter.WindowStartupLocation.ConvertFrom(StartPosition); }
+            set { StartPosition = Converter.WindowStartupLocation.ConvertFrom(value); }
+        }
+
+        /// <inheritdoc />
+        public EWindowStyle WindowStyle {
+            get { return iWindowStyle; }
+            set {
+                iWindowStyle = value;
+                UpdateFormBorderStyle();
+            }
+        }
+
+        /// <inheritdoc />
+        public EWindowResizeMode WindowResizeMode {
+            get { return iWindowResizeMode; }
+            set {
+                iWindowResizeMode = value;
+                UpdateFormBorderStyle();
+            } 
         }
 
         /// <summary>
-        /// Converts a <see cref="EWindowState"/> value to a <see cref="FormWindowState"/> value.
+        /// Updates the form border style according to the current model state based on 
+        /// <see cref="WindowResizeMode"/> and <see cref="WindowStyle"/>.
         /// </summary>
-        /// <param name="windowState">Value to convert</param>
-        /// <returns>Converted value</returns>
-        private FormWindowState ConvertFromMotoiWindowState(EWindowState windowState) {
-            if (windowState == EWindowState.Maximized) return FormWindowState.Maximized;
-            if (windowState == EWindowState.Minimized) return FormWindowState.Minimized;
-            return FormWindowState.Normal;
+        private void UpdateFormBorderStyle()  {
+            EWindowStyle windowStyle = iWindowStyle;
+            if (windowStyle == EWindowStyle.BlankWindow) {
+                FormBorderStyle = FormBorderStyle.None;
+                return;
+            }
+
+            EWindowResizeMode resizeMode = iWindowResizeMode;
+            if (resizeMode == EWindowResizeMode.NoResize) {
+                MinimizeBox = false;
+                MaximizeBox = false;
+
+                FormBorderStyle = windowStyle == EWindowStyle.ToolWindow
+                    ? FormBorderStyle.FixedToolWindow
+                    : FormBorderStyle.FixedSingle
+                    ;
+            } else if (resizeMode == EWindowResizeMode.CanMinimize) {
+                MinimizeBox = true;
+                MaximizeBox = false;
+
+                FormBorderStyle = windowStyle == EWindowStyle.ToolWindow
+                    ? FormBorderStyle.FixedToolWindow
+                    : FormBorderStyle.FixedSingle
+                    ;
+            } else { // CanResize
+                MinimizeBox = true;
+                MaximizeBox = true;
+
+                FormBorderStyle = windowStyle == EWindowStyle.ToolWindow
+                    ? FormBorderStyle.SizableToolWindow
+                    : FormBorderStyle.Sizable
+                    ;
+            }
         }
 
         /// <summary>
@@ -130,5 +209,29 @@ namespace motoi.ui.windowsforms.shells
         }
 
         #endregion
+
+        /// <summary>
+        /// Performs an initialization of the used components.
+        /// </summary>
+        private void InitializeComponents() {
+            WindowStyle = EWindowStyle.DefaultWindow;
+            WindowResizeMode = EWindowResizeMode.CanResize;
+        }
+
+        /// <inheritdoc />
+        protected override void OnLocationChanged(EventArgs e) {
+            base.OnLocationChanged(e);
+
+            PWindow.SetModelValue(this, PWindow.TopLocationProperty, Location.Y, EBindingSourceUpdateReason.PropertyChanged);
+            PWindow.SetModelValue(this, PWindow.LeftLocationProperty, Location.X, EBindingSourceUpdateReason.PropertyChanged);
+        }
+
+        /// <inheritdoc />
+        protected override void OnSizeChanged(EventArgs e) {
+            base.OnSizeChanged(e);
+
+            PWindow.SetModelValue(this, PWindow.WidthProperty, Width, EBindingSourceUpdateReason.PropertyChanged);
+            PWindow.SetModelValue(this, PWindow.HeightProperty, Height, EBindingSourceUpdateReason.PropertyChanged);
+        }
     }
 }

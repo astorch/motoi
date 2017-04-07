@@ -7,9 +7,9 @@ using motoi.ui.windowsforms.utils;
 
 namespace motoi.ui.windowsforms.controls {
     /// <summary>
-    /// Provides an implementation of <see cref="IGridComposite"/>.
+    /// Provides an implementation of <see cref="IGridPanel"/>.
     /// </summary>
-    public class CompositePanel : TableLayoutPanel, IGridComposite {
+    public class GridPanel : TableLayoutPanel, IGridPanel {
 
         private int iNextColumn;
         private int iNextRow;
@@ -17,26 +17,26 @@ namespace motoi.ui.windowsforms.controls {
         /// <summary>
         /// Creates a new instance.
         /// </summary>
-        public CompositePanel() {
+        public GridPanel() {
             InitializeComponent();
         }
 
-        #region IGridComposite
+        #region IGridPanel
 
         /// <inheritdoc />
         EVisibility IWidget.Visibility {
-            get { return PGridComposite.GetModelValue(this, PGridComposite.VisibilityProperty); }
+            get { return PGridPanel.GetModelValue(this, PGridPanel.VisibilityProperty); }
             set {
-                PGridComposite.SetModelValue(this, PGridComposite.VisibilityProperty, value);
+                PGridPanel.SetModelValue(this, PGridPanel.VisibilityProperty, value);
                 Visible = (value == EVisibility.Visible);
             }
         }
 
         /// <inheritdoc />
         bool IWidget.Enabled {
-            get { return PGridComposite.GetModelValue(this, PGridComposite.EnabledProperty); }
+            get { return PGridPanel.GetModelValue(this, PGridPanel.EnabledProperty); }
             set {
-                PGridComposite.SetModelValue(this, PGridComposite.EnabledProperty, value);
+                PGridPanel.SetModelValue(this, PGridPanel.EnabledProperty, value);
                 Enabled = value;
             }
         }
@@ -44,24 +44,26 @@ namespace motoi.ui.windowsforms.controls {
         /// <summary>
         /// Returns the number of layout columns or does set it.
         /// </summary>
-        int IGridComposite.GridColumns {
+        int IGridPanel.GridColumns {
             get {
-                return PGridComposite.GetModelValue(this, PGridComposite.GridColumnsProperty);
+                return PGridPanel.GetModelValue(this, PGridPanel.GridColumnsProperty);
             }
             set {
-                PGridComposite.SetModelValue(this, PGridComposite.GridColumnsProperty, value);
+                PGridPanel.SetModelValue(this, PGridPanel.GridColumnsProperty, value);
+                ColumnCount = value;
             }
         }
 
         /// <summary>
         /// Returns the number of layout rows or does set it.
         /// </summary>
-        int IGridComposite.GridRows {
+        int IGridPanel.GridRows {
             get {
-                return PGridComposite.GetModelValue(this, PGridComposite.GridRowsProperty);
+                return PGridPanel.GetModelValue(this, PGridPanel.GridRowsProperty);
             }
             set {
-                PGridComposite.SetModelValue(this, PGridComposite.GridRowsProperty, value);
+                PGridPanel.SetModelValue(this, PGridPanel.GridRowsProperty, value);
+                RowCount = value;
             }
         }
 
@@ -76,7 +78,7 @@ namespace motoi.ui.windowsforms.controls {
         /// <param name="value">Value of column definition</param>
         /// <exception cref="ArgumentNullException">If <paramref name="value"/> is NULL or empty</exception>
         /// <exception cref="FormatException">If <paramref name="value"/> cannot be parsed</exception>
-        void IGridComposite.AddColumnDefinition(string value) {
+        void IGridPanel.AddColumnDefinition(string value) {
             ColumnDefinition columnDefinition = new ColumnDefinition(value);
             ColumnStyle columnStyle = new ColumnStyle();
             SizeBehavior mode = columnDefinition.Mode;
@@ -94,7 +96,7 @@ namespace motoi.ui.windowsforms.controls {
             ColumnStyles.Add(columnStyle);
 
             if (ColumnStyles.Count > ColumnCount)
-                ((IGridComposite) this).GridColumns++;
+                ((IGridPanel) this).GridColumns++;
         }
 
         /// <summary>
@@ -102,7 +104,7 @@ namespace motoi.ui.windowsforms.controls {
         /// </summary>
         /// <param name="widget">Widget</param>
         /// <param name="layoutBehaviour">Additional layout informations</param>
-        void IGridComposite.AddWidget(IWidget widget, GridLayoutBehaviour layoutBehaviour) {
+        void IGridPanel.AddWidget(IWidget widget, GridLayoutBehaviour layoutBehaviour) {
             Control wdgCtrl = CastUtil.Cast<Control>(widget);
 
             // Add the control
@@ -117,7 +119,7 @@ namespace motoi.ui.windowsforms.controls {
             SetColumnSpan(wdgCtrl, behaviour.ColumnSpan);
             SetRowSpan(wdgCtrl, behaviour.RowSpan);
 
-            if (iNextColumn >= ((IGridComposite) this).GridColumns) {
+            if (iNextColumn >= ((IGridPanel) this).GridColumns) {
                 iNextColumn = 0;
                 iNextRow++;
             }
@@ -128,8 +130,8 @@ namespace motoi.ui.windowsforms.controls {
         /// The widget gets a default layout behaviour.
         /// </summary>
         /// <param name="widget">Widget</param>
-        void IGridComposite.AddWidget(IWidget widget) {
-            ((IGridComposite) this).AddWidget(widget, null);
+        void IGridPanel.AddWidget(IWidget widget) {
+            ((IGridPanel) this).AddWidget(widget, null);
         }
 
         #endregion

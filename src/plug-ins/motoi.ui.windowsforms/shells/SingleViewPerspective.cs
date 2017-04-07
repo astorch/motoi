@@ -31,6 +31,7 @@ namespace motoi.ui.windowsforms.shells {
             theme.ApplyTo(iDockPanel);
             theme.ApplyToToolStripManager();
 
+            // ReSharper disable once VirtualMemberCallInConstructor
             ConfigureDockPanel(iDockPanel);
         }
 
@@ -79,10 +80,10 @@ namespace motoi.ui.windowsforms.shells {
 
             // Add the tool bar to the controls
             toolStripContainer.TopToolStripPanel.Controls.Add(iCurrentToolBar);
-//            iDockPanel.Controls.Add(iCurrentToolBar);
+            iDockPanel.Controls.Add(iCurrentToolBar);
 
             // Let the editor create its content
-            CompositePanel editorPanel = new CompositePanel { Dock = DockStyle.Fill };
+            GridPanel editorPanel = new GridPanel { Dock = DockStyle.Fill };
             editor.CreateContents(editorPanel);
 
             // Place into a dock content
@@ -171,12 +172,11 @@ namespace motoi.ui.windowsforms.shells {
             DockContent dataViewDockContent = new DockContent();
 
             // Let the view create its content
-            CompositePanel compositePanel = new CompositePanel();
-            compositePanel.Dock = DockStyle.Fill;
-            dataView.CreateContents(compositePanel);
+            GridPanel gridPanel = new GridPanel {Dock = DockStyle.Fill};
+            dataView.CreateContents(gridPanel);
 
             // Place into a dock content
-            dataViewDockContent.Controls.Add(compositePanel);
+            dataViewDockContent.Controls.Add(gridPanel);
 
             // Provide a tool bar
             ToolBar dataViewToolBar = new ToolBar();

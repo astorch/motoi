@@ -37,7 +37,7 @@ namespace motoi.ui.windowsforms.controls {
 
         /// <inheritdoc />
         string ICheckBox.Text {
-            get { return PCheckBox.GetModelValue<string>(this, PCheckBox.TextProperty); }
+            get { return PCheckBox.GetModelValue(this, PCheckBox.TextProperty); }
             set {
                 PCheckBox.SetModelValue(this, PCheckBox.TextProperty, value);
                 Text = value;
@@ -46,7 +46,7 @@ namespace motoi.ui.windowsforms.controls {
 
         /// <inheritdoc />
         bool? ICheckBox.IsChecked {
-            get { return PCheckBox.GetModelValue<bool?>(this, PCheckBox.IsCheckedProperty); }
+            get { return PCheckBox.GetModelValue(this, PCheckBox.IsCheckedProperty); }
             set {
                 PCheckBox.SetModelValue(this, PCheckBox.IsCheckedProperty, value);
                 CheckState = (!value.HasValue
