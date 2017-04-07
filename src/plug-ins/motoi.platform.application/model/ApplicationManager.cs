@@ -168,10 +168,10 @@ namespace motoi.platform.application.model
                 int windowLeft = preferenceStore.GetValue(WindowLeftKey, 0);
 
                 mainWindow.WindowState = (EWindowState)windowState;
-                mainWindow.WindowWidth = windowWidth;
-                mainWindow.WindowHeight = windowHeight;
-                mainWindow.WindowTopLocation = windowTop;
-                mainWindow.WindowLeftLocation = windowLeft;
+                mainWindow.Width = windowWidth;
+                mainWindow.Height = windowHeight;
+                mainWindow.TopLocation = windowTop;
+                mainWindow.LeftLocation = windowLeft;
             } catch (Exception ex) {
                 iLogger.Error("Error on restoring window state.", ex);
             }
@@ -186,10 +186,10 @@ namespace motoi.platform.application.model
         private void MemorizeWindowState(IMainWindow mainWindow) {
             if (mainWindow == null) return;
             int windowState = (int)mainWindow.WindowState;
-            int windowWidth = mainWindow.WindowWidth;
-            int windowHeight = mainWindow.WindowHeight;
-            int windowTop = mainWindow.WindowTopLocation;
-            int windowLeft = mainWindow.WindowLeftLocation;
+            int windowWidth = mainWindow.Width;
+            int windowHeight = mainWindow.Height;
+            int windowTop = mainWindow.TopLocation;
+            int windowLeft = mainWindow.LeftLocation;
 
             try {
                 IPreferenceStore preferenceStore = GetPreferenceStore();
