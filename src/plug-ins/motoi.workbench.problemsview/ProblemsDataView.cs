@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using motoi.platform.commons;
-using motoi.platform.ui;
 using motoi.platform.ui.data;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
@@ -33,7 +32,7 @@ namespace motoi.workbench.problemsview {
         public override IWidgetFactory WidgetFactory { get; set; }
 
         /// <inheritdoc />
-        public override void CreateContents(IGridComposite gridComposite) {
+        public override void CreateContents(IGridPanel gridComposite) {
             gridComposite.GridColumns = 1;
             gridComposite.GridRows = 1;
 

@@ -23,7 +23,7 @@ namespace motoi.workbench.propertyview {
         }
 
         /// <inheritdoc />
-        public override void CreateContents(IGridComposite gridComposite) {
+        public override void CreateContents(IGridPanel gridComposite) {
 //            gridComposite.GridColumns = 1;
 //            gridComposite.GridRows = 1;
 //

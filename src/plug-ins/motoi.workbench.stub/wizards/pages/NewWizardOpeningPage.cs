@@ -1,5 +1,4 @@
-﻿using motoi.platform.ui;
-using motoi.platform.ui.data;
+﻿using motoi.platform.ui.data;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
 using motoi.platform.ui.widgets;
@@ -24,7 +23,7 @@ namespace motoi.workbench.stub.wizards.pages {
         /// </summary>
         /// <param name="gridComposite">Element container</param>
         /// <param name="widgetFactory">Factory to create widgets</param>
-        public override void Initialize(IGridComposite gridComposite, IWidgetFactory widgetFactory) {
+        public override void Initialize(IGridPanel gridComposite, IWidgetFactory widgetFactory) {
             Title = "Select a category";
             Description = "Select the type you want to create";
 
