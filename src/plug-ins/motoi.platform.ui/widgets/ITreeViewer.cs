@@ -12,7 +12,7 @@ namespace motoi.platform.ui.widgets {
     /// <summary>
     /// Provides the property meta data of <see cref="ITreeViewer"/> that is used by data binding operations.
     /// </summary>
-    public class PTreeViewer : PWidget<ITreeViewer> {
+    public class PTreeViewer : PWidgetControl<ITreeViewer> {
         
     }
 

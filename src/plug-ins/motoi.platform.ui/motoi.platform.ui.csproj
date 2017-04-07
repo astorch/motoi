@@ -90,8 +90,7 @@
     <Compile Include="bindings\IDataBindingSupport.cs" />
     <Compile Include="bindings\PropertyChangedDispatcher.cs" />
     <Compile Include="bindings\PropertyDescriptor.cs" />
-    <Compile Include="controls\ButtonHandle.cs" />
-    <Compile Include="controls\IButton.cs" />
+    <Compile Include="widgets\IButton.cs" />
     <Compile Include="data\ArrayContentProvider.cs" />
     <Compile Include="data\DefaultLabelProvider.cs" />
     <Compile Include="data\DefaultTreeLabelProvider.cs" />
@@ -115,7 +114,12 @@
     <Compile Include="messaging\IUIMessageDispatchListener.cs" />
     <Compile Include="messaging\UIMessageDispatcher.cs" />
     <Compile Include="messaging\UIMessage.cs" />
+    <Compile Include="shells\EMessageDialogResult.cs" />
+    <Compile Include="shells\EMessageDialogType.cs" />
+    <Compile Include="shells\EWindowResizeMode.cs" />
+    <Compile Include="shells\EWindowStartupLocation.cs" />
     <Compile Include="shells\EWindowState.cs" />
+    <Compile Include="shells\EWindowStyle.cs" />
     <Compile Include="shells\IDialogWindow.cs" />
     <Compile Include="shells\IMainWindow.cs" />
     <Compile Include="shells\IMessageDialogWindow.cs" />
@@ -132,7 +136,7 @@
     <Compile Include="factories\UIFactory.cs" />
     <Compile Include="widgets\ICheckBox.cs" />
     <Compile Include="widgets\IComboBox.cs" />
-    <Compile Include="widgets\IGridComposite.cs" />
+    <Compile Include="widgets\IGridPanel.cs" />
     <Compile Include="widgets\IItemsHost.cs" />
     <Compile Include="widgets\IListViewer.cs" />
     <Compile Include="widgets\IRichTextBox.cs" />
@@ -169,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bindings\runtime\" />
+    <Folder Include="controls\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj">

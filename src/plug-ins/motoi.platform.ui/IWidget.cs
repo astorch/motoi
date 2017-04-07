@@ -20,7 +20,14 @@ namespace motoi.platform.ui {
     /// <summary>
     /// Provides the property meta data of <see cref="IWidget"/> that is used by data binding operations.
     /// </summary>
-    public class PWidget<TControl> : BindableObject<TControl> where TControl : class, IWidget {
+    public class PWidget : PWidgetControl<IWidget> {
+        
+    }
+
+    /// <summary>
+    /// Provides the property meta data of <see cref="IWidget"/> that is used by data binding operations.
+    /// </summary>
+    public class PWidgetControl<TControl> : BindableObject<TControl> where TControl : class, IWidget {
         /// <summary> Enabled property meta data </summary>
         public static readonly IBindableProperty<bool> EnabledProperty = CreatePropertyInfo(Name.Of<IWidget, bool>(_ => _.Enabled), true, true);
 

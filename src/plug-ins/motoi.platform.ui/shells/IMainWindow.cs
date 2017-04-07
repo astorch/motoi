@@ -19,11 +19,4 @@ namespace motoi.platform.ui.shells {
         /// <param name="group"></param>
         void AddToolbarGroup(ToolbarGroupContribution group);
     }
-
-    /// <summary>
-    /// Defines actions of the main window.
-    /// </summary>
-    public static class MainWindowMessageActions {
-        public static readonly ushort SetViewContent = 1;
-    }
 }

@@ -4,7 +4,22 @@ namespace motoi.platform.ui {
     /// <summary>
     /// Defines a shell for widgets.
     /// </summary>
-    public interface IShell : IWidgetCompound, IDataBindingSupport {
+    public interface IShell : IWidgetCompound {
+        /// <summary> Returns the owner of the window or does set it. </summary>
+        IShell Owner { get; set; }
+
+        /// <summary> Returns the width of the shell or does set it. </summary>
+        int Width { get; set; }
+
+        /// <summary> Returns the height of the shell or does set it. </summary>
+        int Height { get; set; }
+
+        /// <summary> Returns the top location of the shell or does set it. </summary>
+        int TopLocation { get; set; }
+
+        /// <summary> Returns the left location of the shell or does set it. </summary>
+        int LeftLocation { get; set; }
+
         /// <summary>
         /// Creates the shell and makes it visible to the user.
         /// </summary>
@@ -30,7 +45,24 @@ namespace motoi.platform.ui {
     /// <summary>
     /// Provides the property meta data of <see cref="IShell"/> that is used by data binding operations.
     /// </summary>
-    public class PShell<TShell> : PWigdetCompount<TShell> where TShell : class, IShell {
+    public class PShell : PShellControl<IShell> {
         
+    }
+
+    /// <summary>
+    /// Provides the property meta data of <see cref="IShell"/> that is used by data binding operations.
+    /// </summary>
+    public class PShellControl<TShell> : PWigdetCompoundControl<TShell> where TShell : class, IShell {
+        /// <summary> Width property meta data </summary>
+        public static readonly IBindableProperty<int> WidthProperty = CreatePropertyInfo(_ => _.Width, 400);
+        
+        /// <summary> Height property meta data </summary>
+        public static readonly IBindableProperty<int> HeightProperty = CreatePropertyInfo(_ => _.Height, 300);
+
+        /// <summary> Left location property meta data </summary>
+        public static readonly IBindableProperty<int> TopLocationProperty = CreatePropertyInfo(_ => _.TopLocation, 0);
+
+        /// <summary> Top location property meta data </summary>
+        public static readonly IBindableProperty<int> LeftLocationProperty = CreatePropertyInfo(_ => _.LeftLocation, 0);
     }
 }

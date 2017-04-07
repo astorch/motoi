@@ -11,7 +11,7 @@ namespace motoi.platform.ui.widgets {
     /// <summary>
     /// Provides the property meta data of <see cref="IListViewer"/> that is used by data binding operations.
     /// </summary>
-    public class PListViewer : PWidget<IListViewer> {
+    public class PListViewer : PWidgetControl<IListViewer> {
         
     }
 }

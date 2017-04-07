@@ -3,7 +3,7 @@
 namespace motoi.platform.ui.layouts
 {
     /// <summary>
-    /// Defines a layout behaviour used by the <see cref="IGridComposite"/>.
+    /// Defines a layout behaviour used by the <see cref="IGridPanel"/>.
     /// </summary>
     public class GridLayoutBehaviour {
 

@@ -4,7 +4,7 @@ namespace motoi.platform.ui.widgets {
     /// <summary>
     /// Defines a text box.
     /// </summary>
-    public interface ITextBox : IWidget, IDataBindingSupport {
+    public interface ITextBox : IWidget {
         /// <summary>
         /// Returns the text content of the text box or does set it.
         /// </summary>
@@ -31,7 +31,7 @@ namespace motoi.platform.ui.widgets {
     /// <summary>
     /// Provides the property meta data of <see cref="ITextBox"/> that is used by data binding operations.
     /// </summary>
-    public class PTextBoxControl<TControl> : PWidget<TControl> where TControl : class, IWidget {
+    public class PTextBoxControl<TControl> : PWidgetControl<TControl> where TControl : class, IWidget {
         /// <summary>Text property meta data</summary>
         public static readonly IBindableProperty<string> TextProperty = CreatePropertyInfo("Text", (string)null, true, EDataBindingSourceUpdateTrigger.PropertyChanged);
 

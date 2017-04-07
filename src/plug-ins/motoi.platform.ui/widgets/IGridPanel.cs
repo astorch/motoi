@@ -5,9 +5,9 @@ using Xcite.Csharp.assertions;
 
 namespace motoi.platform.ui.widgets {
     /// <summary>
-    /// Defines a composite with a grid layout.
+    /// Defines a widget compound with a grid layout.
     /// </summary>
-    public interface IGridComposite : IWidgetCompound, IDataBindingSupport {
+    public interface IGridPanel : IWidgetCompound {
         /// <summary>
         /// Returns the number of layout columns or does set it.
         /// </summary>
@@ -47,9 +47,9 @@ namespace motoi.platform.ui.widgets {
     }
 
     /// <summary>
-    /// Provides the property meta data of <see cref="IGridComposite"/> that is used by data binding operations.
+    /// Provides the property meta data of <see cref="IGridPanel"/> that is used by data binding operations.
     /// </summary>
-    public class PGridComposite : PWidget<IGridComposite> {
+    public class PGridPanel : PWidgetControl<IGridPanel> {
         /// <summary> Grid columns property meta data </summary>
         public static readonly IBindableProperty<int> GridColumnsProperty = CreatePropertyInfo(_ => _.GridColumns, 1);
 

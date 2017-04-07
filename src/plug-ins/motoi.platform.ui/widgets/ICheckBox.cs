@@ -4,7 +4,7 @@ namespace motoi.platform.ui.widgets {
     /// <summary>
     /// Defines a check box.
     /// </summary>
-    public interface ICheckBox : IWidget, IDataBindingSupport {
+    public interface ICheckBox : IWidget {
         /// <summary>
         /// Returns the text of the check box or does set it.
         /// </summary>
@@ -19,7 +19,7 @@ namespace motoi.platform.ui.widgets {
     /// <summary>
     /// Provides the property meta data of <see cref="ICheckBox"/> that is used by data binding operations.
     /// </summary>
-    public class PCheckBox : PWidget<ICheckBox> {
+    public class PCheckBox : PWidgetControl<ICheckBox> {
         /// <summary>Text property meta data</summary>
         public static readonly IBindableProperty<string> TextProperty = CreatePropertyInfo(_ => _.Text, string.Empty);
 

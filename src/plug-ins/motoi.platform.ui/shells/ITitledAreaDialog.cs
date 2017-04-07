@@ -1,5 +1,4 @@
-using System;
-using motoi.platform.ui.controls;
+using motoi.platform.ui.bindings;
 
 namespace motoi.platform.ui.shells {
     /// <summary>
@@ -15,13 +14,16 @@ namespace motoi.platform.ui.shells {
         /// Returns the description text of the dialog or does set it.
         /// </summary>
         string Description { get; set; }
+    }
 
-        /// <summary>
-        /// Adds a button to dialog button area.
-        /// </summary>
-        /// <param name="label">Label of the button</param>
-        /// <param name="action">Action to be performed when the button is clicked</param>
-        /// <returns>Handle for the button</returns>
-        IButton AddButton(string label, Action action);
+    /// <summary>
+    /// Provides the property meta data of <see cref="ITitledAreaDialog"/> that is used by data binding operations.
+    /// </summary>
+    public class PTitledAreaDialog : PDialogWindowControl<ITitledAreaDialog> {
+        /// <summary> Title property meta data </summary>
+        public static readonly IBindableProperty<string> TitleProperty = CreatePropertyInfo(_ => _.Title, string.Empty);
+
+        /// <summary> Description property meta data </summary>
+        public static readonly IBindableProperty<string> DescriptionProperty = CreatePropertyInfo(_ => _.Description, string.Empty);
     }
 }

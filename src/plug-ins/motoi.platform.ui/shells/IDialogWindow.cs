@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using motoi.platform.ui.controls;
+﻿using motoi.platform.ui.actions;
+using motoi.platform.ui.widgets;
 
 namespace motoi.platform.ui.shells {
     /// <summary>
@@ -7,15 +7,32 @@ namespace motoi.platform.ui.shells {
     /// </summary>
     public interface IDialogWindow : IWindow {
         /// <summary>
-        /// Returns a collection of buttons of the dialog window.
-        /// </summary>
-        IList<IButton> Buttons { get; }
-
-        /// <summary>
         /// Creates the dialogs and makes it visible to the user. If the flag 
         /// <paramref name="modal"/> is TRUE the dialog has a modal behaviour.
         /// </summary>
         /// <param name="modal">TRUE or FALSE</param>
         void Show(bool modal);
+
+        /// <summary>
+        /// Adds a button to dialog button area.
+        /// </summary>
+        /// <param name="label">Label of the button</param>
+        /// <param name="actionHandler">Handle of the action to be performed when the button is clicked</param>
+        /// <returns>Handle of the button</returns>
+        IButton AddButton(string label, IActionHandler actionHandler);
+    }
+
+    /// <summary>
+    /// Provides the property meta data of <see cref="IDialogWindow"/> that is used by data binding operations.
+    /// </summary>
+    public class PDialogWindow : PDialogWindowControl<IDialogWindow> {
+        
+    }
+
+    /// <summary>
+    /// Provides the property meta data of <see cref="IDialogWindow"/> that is used by data binding operations.
+    /// </summary>
+    public class PDialogWindowControl<TDialogWindow> : PWindowControl<TDialogWindow> where TDialogWindow : class, IDialogWindow {
+        
     }
 }
