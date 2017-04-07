@@ -76,9 +76,12 @@ namespace motoi.platform.ui.bindings {
         public static void SetModelValue<TValue>(TControl obj, IBindableProperty<TValue> property, TValue value, // Called from control
             EBindingSourceUpdateReason updateReason) {
             if (updateReason == null) throw new ArgumentNullException("updateReason");
-            DataBinding dataBinding = GlobalDataBindingIndex.Instance.GetDataBinding(obj, property);
+
+            // First, update the value
+            if (!GlobalDataBindingIndex.Instance.SetValue(obj, property, value)) return;
 
             // If there is no data binding there is no model to update
+            DataBinding dataBinding = GlobalDataBindingIndex.Instance.GetDataBinding(obj, property);
             if (dataBinding == null) return; // TODO Check if correct
 
             // If set to default the default setting of the property is used
@@ -89,9 +92,6 @@ namespace motoi.platform.ui.bindings {
             // Check if reason fits to set trigger
             if (updateReason == EBindingSourceUpdateReason.PropertyChanged && updateSourceTrigger != EDataBindingSourceUpdateTrigger.PropertyChanged) return;
             if (updateReason == EBindingSourceUpdateReason.LostFocus && updateSourceTrigger != EDataBindingSourceUpdateTrigger.LostFocus) return;
-
-            // Update the value
-            if (!GlobalDataBindingIndex.Instance.SetValue(obj, property, value)) return;
 
             // Update the source
             dataBinding.UpdateSource(obj, property, value);
