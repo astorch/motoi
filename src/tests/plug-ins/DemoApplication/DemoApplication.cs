@@ -34,8 +34,8 @@ namespace DemoApplication {
         /// <param name="mainWindow">Currently used main window</param>
         public void OnPostInitializeMainWindow(IMainWindow mainWindow) {
             mainWindow.WindowTitle = "Motoi - Demo Application";
-            mainWindow.WindowWidth = 800;
-            mainWindow.WindowHeight = 600;
+            mainWindow.Width = 800;
+            mainWindow.Height = 600;
         }
 
         /// <summary>
