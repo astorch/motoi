@@ -44,22 +44,18 @@ namespace motoi.ui.windowsforms.shells {
 
         /// <inheritdoc />
         IButton IDialogWindow.AddButton(string label, IActionHandler actionHandler) {
-            try {
-                iFlowLayoutPanel.SuspendLayout();
-
-                MotoiButton button = new MotoiButton {AutoSize = true, Text = label};
-                ((IButton) button).ActionHandler = actionHandler;
+            using (iFlowLayoutPanel.DeferLayout()) {
+                MotoiButton button = new MotoiButton { AutoSize = true, Text = label };
+                ((IButton)button).ActionHandler = actionHandler;
                 iFlowLayoutPanel.Controls.Add(button);
 
                 return button;
-            } finally {
-                iFlowLayoutPanel.ResumeLayout(true);
             }
         }
 
         /// <inheritdoc />
         void IShell.SetContent(IWidgetCompound widgetCompound) {
-            try {
+            using (this.DeferLayout()) {
                 SuspendLayout();
 
                 // Remove old content
@@ -75,8 +71,6 @@ namespace motoi.ui.windowsforms.shells {
                 contentControl.Margin = new Padding(0); // XXX
                 contentControl.Padding = new Padding(0); // XXX
                 iContentPanel.Controls.Add(contentControl);
-            } finally {
-                ResumeLayout(true);
             }
         }
 

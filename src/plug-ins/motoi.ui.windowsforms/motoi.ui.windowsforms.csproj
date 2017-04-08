@@ -149,6 +149,8 @@
     </Compile>
     <Compile Include="utils\CastUtil.cs" />
     <Compile Include="ShellFactory.cs" />
+    <Compile Include="utils\ControlExtensionMethods.cs" />
+    <Compile Include="utils\LayoutSuspensionToken.cs" />
     <Compile Include="WidgetFactory.cs" />
     <Compile Include="WinformsUIProvider.cs" />
   </ItemGroup>
