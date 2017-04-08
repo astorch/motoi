@@ -14,6 +14,7 @@ namespace motoi.ui.windowsforms.shells {
     public class DialogWindow : Window, IDialogWindow {
         private FlowLayoutPanel iFlowLayoutPanel;
         private TableLayoutPanel iTableLayoutPanel;
+        private Panel iContentPanel;
 
         /// <inheritdoc />
         public DialogWindow() {
@@ -43,38 +44,51 @@ namespace motoi.ui.windowsforms.shells {
 
         /// <inheritdoc />
         IButton IDialogWindow.AddButton(string label, IActionHandler actionHandler) {
-            MotoiButton button = new MotoiButton {AutoSize = true, Text = label};
-            ((IButton) button).ActionHandler = actionHandler;
-            iFlowLayoutPanel.Controls.Add(button);
-            PerformLayout();
-            return button;
+            try {
+                iFlowLayoutPanel.SuspendLayout();
+
+                MotoiButton button = new MotoiButton {AutoSize = true, Text = label};
+                ((IButton) button).ActionHandler = actionHandler;
+                iFlowLayoutPanel.Controls.Add(button);
+
+                return button;
+            } finally {
+                iFlowLayoutPanel.ResumeLayout(true);
+            }
         }
 
         /// <inheritdoc />
         void IShell.SetContent(IWidgetCompound widgetCompound) {
-            IWidgetCompound dialogContent = WindowContent;
-            if (dialogContent != null) {
-                Control oldContent = ToContentControl(dialogContent, true);
-                iTableLayoutPanel.Controls.Remove(oldContent);
+            try {
+                SuspendLayout();
+
+                // Remove old content
+                iContentPanel.Controls.Clear();
+
+                // Save new content
+                WindowContent = widgetCompound;
+                if (widgetCompound == null) return;
+
+                // Add new content
+                Control contentControl = CastUtil.Cast<Control>(widgetCompound);
+                contentControl.Dock = DockStyle.Fill; // XXX
+                contentControl.Margin = new Padding(0); // XXX
+                contentControl.Padding = new Padding(0); // XXX
+                iContentPanel.Controls.Add(contentControl);
+            } finally {
+                ResumeLayout(true);
             }
-
-            WindowContent = widgetCompound;
-            if (widgetCompound == null) return;
-
-            Control newContent = ToContentControl(widgetCompound, false);
-            iTableLayoutPanel.Controls.Add(newContent, 0, 0);
-            
-            PerformLayout();
         }
 
         /// <summary>
-        /// Returns a control type of the given widget compound.
+        /// Notifies the instance to create a content control as a child of the given 
+        /// content container. The content control is used to place the content set 
+        /// by <see cref="IShell.SetContent"/>.
         /// </summary>
-        /// <param name="widgetCompound">Widget compound to cast</param>
-        /// <param name="remove">TRUE if the control is going to be removed</param>
-        /// <returns>Control type of the widget compound</returns>
-        protected virtual Control ToContentControl(IWidgetCompound widgetCompound, bool remove) {
-            return CastUtil.Cast<Control>(widgetCompound);
+        /// <param name="contentContainer">Container of the content control</param>
+        /// <returns>Content control</returns>
+        protected virtual Panel CreateContentControl(Panel contentContainer) {
+            return contentContainer;
         }
 
         #endregion
@@ -89,9 +103,16 @@ namespace motoi.ui.windowsforms.shells {
             iTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize)); // Buttons
             Controls.Add(iTableLayoutPanel);
 
+            // Content panel
+            Panel contentContainer = new Panel { Dock = DockStyle.Fill };
+            iTableLayoutPanel.Controls.Add(contentContainer, 0, 0);
+            iContentPanel = CreateContentControl(contentContainer);
+
+            // Separator
             Separator separator = new Separator { Dock = DockStyle.Fill };
             iTableLayoutPanel.Controls.Add(separator, 0, 1);
 
+            // Button panel
             iFlowLayoutPanel = new FlowLayoutPanel {FlowDirection = FlowDirection.RightToLeft, Dock = DockStyle.Bottom};
             iFlowLayoutPanel.AutoSize = true;
             iTableLayoutPanel.Controls.Add(iFlowLayoutPanel, 0, 2);

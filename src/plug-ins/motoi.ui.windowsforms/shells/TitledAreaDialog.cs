@@ -1,8 +1,6 @@
 ﻿using System.Windows.Forms;
-using motoi.platform.ui;
 using motoi.platform.ui.shells;
 using motoi.ui.windowsforms.controls;
-using motoi.ui.windowsforms.utils;
 
 namespace motoi.ui.windowsforms.shells {
     /// <summary>
@@ -12,7 +10,6 @@ namespace motoi.ui.windowsforms.shells {
         private Label iLblText;
         private Label iLblTitle;
         private TableLayoutPanel iTableLayoutPanel;
-        private Separator iSeparator;
         private Panel iContentPanel;
 
         /// <summary>
@@ -46,30 +43,31 @@ namespace motoi.ui.windowsforms.shells {
             }
         }
 
-        /// <inheritdoc />
-        protected override Control ToContentControl(IWidgetCompound widgetCompound, bool remove) {
-            Control control = CastUtil.Cast<Control>(widgetCompound);
-            if (remove) {
-                iContentPanel.Controls.Remove(control);
-            } else {
-                iContentPanel.Controls.Add(control);
-                control.Dock = DockStyle.Fill;
-            }
-            
-            return iTableLayoutPanel;
-        }
-
         #endregion
 
         /// <summary>
         /// Performs an initialization of the used components.
         /// </summary>
         private void InitializeComponent() {
+            // Nothing to do here
+        }
+
+        /// <inheritdoc />
+        protected override Panel CreateContentControl(Panel contentContainer) {
+            CreateControls();
+            contentContainer.Controls.Add(iTableLayoutPanel);
+            return iContentPanel;
+        }
+
+        /// <summary>
+        /// Creates the controls used by this component.
+        /// </summary>
+        private void CreateControls() {
             GradientBackgroundPanel backgroundPanel = new GradientBackgroundPanel();
             iLblText = new Label();
             iLblTitle = new Label();
             iTableLayoutPanel = new TableLayoutPanel();
-            iSeparator = new Separator();
+            Separator separator = new Separator();
             iContentPanel = new Panel();
             backgroundPanel.SuspendLayout();
             iTableLayoutPanel.SuspendLayout();
@@ -117,7 +115,7 @@ namespace motoi.ui.windowsforms.shells {
             iTableLayoutPanel.ColumnCount = 1;
             iTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             iTableLayoutPanel.Controls.Add(backgroundPanel, 0, 0);
-            iTableLayoutPanel.Controls.Add(iSeparator, 0, 1);
+            iTableLayoutPanel.Controls.Add(separator, 0, 1);
             iTableLayoutPanel.Controls.Add(iContentPanel, 0, 2);
             iTableLayoutPanel.Dock = DockStyle.Fill;
             iTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
@@ -129,17 +127,17 @@ namespace motoi.ui.windowsforms.shells {
             iTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             iTableLayoutPanel.Size = new System.Drawing.Size(486, 404);
             iTableLayoutPanel.TabIndex = 3;
-            
+
             // 
             // separator2
             // 
-            iSeparator.BorderStyle = BorderStyle.Fixed3D;
-            iSeparator.Dock = DockStyle.Fill;
-            iSeparator.Location = new System.Drawing.Point(0, 64);
-            iSeparator.Margin = new Padding(0);
-            iSeparator.Name = "iSeparator";
-            iSeparator.Size = new System.Drawing.Size(486, 1);
-            iSeparator.TabIndex = 2;
+            separator.BorderStyle = BorderStyle.Fixed3D;
+            separator.Dock = DockStyle.Fill;
+            separator.Location = new System.Drawing.Point(0, 64);
+            separator.Margin = new Padding(0);
+            separator.Name = "iSeparator";
+            separator.Size = new System.Drawing.Size(486, 1);
+            separator.TabIndex = 2;
             // 
             // ContentPanel
             // 
