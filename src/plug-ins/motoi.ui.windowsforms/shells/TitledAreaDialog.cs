@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 using motoi.platform.ui.shells;
 using motoi.ui.windowsforms.controls;
 
@@ -7,9 +8,9 @@ namespace motoi.ui.windowsforms.shells {
     /// Provides an implementation of <see cref="ITitledAreaDialog"/>.
     /// </summary>
     public class TitledAreaDialog : DialogWindow, ITitledAreaDialog {
+        private TableLayoutPanel iTableLayoutPanel;
         private Label iLblText;
         private Label iLblTitle;
-        private TableLayoutPanel iTableLayoutPanel;
         private Panel iContentPanel;
 
         /// <summary>
@@ -49,117 +50,87 @@ namespace motoi.ui.windowsforms.shells {
         /// Performs an initialization of the used components.
         /// </summary>
         private void InitializeComponent() {
-            // Nothing to do here
+            ClientSize = new Size(486, 404);
+            ((IDialogWindow)this).WindowResizeMode = EWindowResizeMode.CanResize;
         }
 
         /// <inheritdoc />
-        protected override Panel CreateContentControl(Panel contentContainer) {
+        protected override Control CreateContentControl(Panel contentContainer) {
             CreateControls();
             contentContainer.Controls.Add(iTableLayoutPanel);
             return iContentPanel;
+        }
+
+        /// <inheritdoc />
+        protected override void OnWindowClosed() {
+            iTableLayoutPanel.Controls.Clear();
+            iContentPanel.Controls.Clear();
+            iTableLayoutPanel = null;
+            iContentPanel = null;
+            iLblText = null;
+            iLblTitle = null;
+
+            base.OnWindowClosed();
         }
 
         /// <summary>
         /// Creates the controls used by this component.
         /// </summary>
         private void CreateControls() {
-            GradientBackgroundPanel backgroundPanel = new GradientBackgroundPanel();
-            iLblText = new Label();
-            iLblTitle = new Label();
             iTableLayoutPanel = new TableLayoutPanel();
-            Separator separator = new Separator();
-            iContentPanel = new Panel();
-            backgroundPanel.SuspendLayout();
-            iTableLayoutPanel.SuspendLayout();
-            SuspendLayout();
-            // 
-            // gradientBackgroundPanel1
-            // 
-            backgroundPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            backgroundPanel.BackColor = System.Drawing.Color.WhiteSmoke;
-            backgroundPanel.BackColorStop = System.Drawing.SystemColors.ActiveCaption;
-            backgroundPanel.Controls.Add(iLblText);
-            backgroundPanel.Controls.Add(iLblTitle);
-            backgroundPanel.Dock = DockStyle.Fill;
-            backgroundPanel.Location = new System.Drawing.Point(0, 0);
-            backgroundPanel.Margin = new Padding(0);
-            backgroundPanel.Name = "backgroundPanel";
-            backgroundPanel.Size = new System.Drawing.Size(486, 64);
-            backgroundPanel.TabIndex = 0;
-            // 
-            // LblText
-            // 
-            iLblText.AutoSize = true;
-            iLblText.BackColor = System.Drawing.Color.Transparent;
-            iLblText.Location = new System.Drawing.Point(9, 30);
-            iLblText.Margin = new Padding(5);
-            iLblText.Name = "iLblText";
-            iLblText.Size = new System.Drawing.Size(145, 25);
-            iLblText.TabIndex = 1;
-            iLblText.Text = "Description text";
-            // 
-            // LblTitle
-            // 
-            iLblTitle.AutoSize = true;
-            iLblTitle.BackColor = System.Drawing.Color.Transparent;
-            iLblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            iLblTitle.Location = new System.Drawing.Point(9, 4);
-            iLblTitle.Margin = new Padding(5);
-            iLblTitle.Name = "iLblTitle";
-            iLblTitle.Size = new System.Drawing.Size(58, 25);
-            iLblTitle.TabIndex = 0;
-            iLblTitle.Text = "Title";
-            // 
-            // tableLayoutPanel1
-            // 
+
+            GradientBackgroundPanel backgroundPanel = new GradientBackgroundPanel {
+                    BackColor = Color.WhiteSmoke,
+                    BackColorStop = SystemColors.ActiveCaption,
+                    Dock = DockStyle.Fill,
+                    Margin = new Padding(0)
+                };
+
+            TableLayoutPanel gradientBackgroundLayoutPanel = new TableLayoutPanel {
+                RowCount = 2, ColumnCount = 1, 
+                Dock = DockStyle.Fill, 
+                BackColor = Color.Transparent
+            };
+            backgroundPanel.Controls.Add(gradientBackgroundLayoutPanel);
+
+            iLblTitle = new Label {
+                Dock = DockStyle.Fill,
+                BackColor = Color.Transparent,
+                Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 0),
+                Margin = new Padding(5)
+            };
+            gradientBackgroundLayoutPanel.Controls.Add(iLblTitle, 0, 0);
+
+            iLblText = new Label {
+                Dock = DockStyle.Fill,
+                BackColor = Color.Transparent,
+                Margin = new Padding(5)
+            };
+            gradientBackgroundLayoutPanel.Controls.Add(iLblText, 0, 1);
+
+            Separator separator = new Separator {
+                BorderStyle = BorderStyle.Fixed3D,
+                Dock = DockStyle.Fill,
+                Margin = new Padding(0)
+            };
+
+            iContentPanel = new Panel {
+                Dock = DockStyle.Fill,
+                Margin = new Padding(0)
+            };
+
+            // tableLayoutPanel
             iTableLayoutPanel.ColumnCount = 1;
             iTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             iTableLayoutPanel.Controls.Add(backgroundPanel, 0, 0);
             iTableLayoutPanel.Controls.Add(separator, 0, 1);
             iTableLayoutPanel.Controls.Add(iContentPanel, 0, 2);
             iTableLayoutPanel.Dock = DockStyle.Fill;
-            iTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             iTableLayoutPanel.Margin = new Padding(0);
-            iTableLayoutPanel.Name = "iTableLayoutPanel";
             iTableLayoutPanel.RowCount = 5;
             iTableLayoutPanel.RowStyles.Add(new RowStyle());
             iTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 1F));
             iTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            iTableLayoutPanel.Size = new System.Drawing.Size(486, 404);
-            iTableLayoutPanel.TabIndex = 3;
-
-            // 
-            // separator2
-            // 
-            separator.BorderStyle = BorderStyle.Fixed3D;
-            separator.Dock = DockStyle.Fill;
-            separator.Location = new System.Drawing.Point(0, 64);
-            separator.Margin = new Padding(0);
-            separator.Name = "iSeparator";
-            separator.Size = new System.Drawing.Size(486, 1);
-            separator.TabIndex = 2;
-            // 
-            // ContentPanel
-            // 
-            iContentPanel.Dock = DockStyle.Fill;
-            iContentPanel.Location = new System.Drawing.Point(0, 65);
-            iContentPanel.Margin = new Padding(0);
-            iContentPanel.Name = "iContentPanel";
-            iContentPanel.Size = new System.Drawing.Size(486, 293);
-            iContentPanel.TabIndex = 4;
-            // 
-            // TitledAreaDialog
-            // 
-            ClientSize = new System.Drawing.Size(486, 404);
-            Controls.Add(iTableLayoutPanel);
-            MinimizeBox = false;
-            Name = "TitledAreaDialog";
-            StartPosition = FormStartPosition.CenterParent;
-            backgroundPanel.ResumeLayout(false);
-            backgroundPanel.PerformLayout();
-            iTableLayoutPanel.ResumeLayout(false);
-            iTableLayoutPanel.PerformLayout();
-            ResumeLayout(false);
         }
     }
 }
