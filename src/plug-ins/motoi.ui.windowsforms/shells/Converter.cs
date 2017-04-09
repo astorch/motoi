@@ -19,14 +19,14 @@ namespace motoi.ui.windowsforms.shells {
             /// <inheritdoc />
             public EWindowStyle ConvertFrom(FormBorderStyle obj) {
                 if (obj == FormBorderStyle.None) return EWindowStyle.BlankWindow;
-                if (obj == FormBorderStyle.SizableToolWindow) return EWindowStyle.ToolWindow;
+                if (obj == FormBorderStyle.SizableToolWindow) return EWindowStyle.DialogWindow;
                 return EWindowStyle.DefaultWindow;
             }
 
             /// <inheritdoc />
             public FormBorderStyle ConvertFrom(EWindowStyle obj) {
                 if (obj == EWindowStyle.BlankWindow) return FormBorderStyle.None;
-                if (obj == EWindowStyle.ToolWindow) return FormBorderStyle.SizableToolWindow;
+                if (obj == EWindowStyle.DialogWindow) return FormBorderStyle.SizableToolWindow;
                 return FormBorderStyle.Sizable;
             }
         }
