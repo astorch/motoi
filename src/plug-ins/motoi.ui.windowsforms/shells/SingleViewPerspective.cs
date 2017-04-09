@@ -53,7 +53,7 @@ namespace motoi.ui.windowsforms.shells {
         }
 
         /// <inheritdoc />
-        public override IWidgetCompound GetPane() {
+        public override IWidgetCompound GetPanel() {
             return iDockPanel;
         }
 
@@ -137,7 +137,7 @@ namespace motoi.ui.windowsforms.shells {
         private void OnDockContentClosed(object sender, EventArgs eventArgs) {
             DockContent dockContent = sender as DockContent;
             if (dockContent == null) return;
-            CloseEditor(dockContent.Tag as IEditor);
+            CloseEditor(dockContent.Tag as IEditor, true);
         }
 
         /// <summary>
