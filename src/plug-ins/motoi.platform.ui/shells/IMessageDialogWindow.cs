@@ -1,4 +1,6 @@
-﻿namespace motoi.platform.ui.shells {
+﻿using motoi.platform.ui.bindings;
+
+namespace motoi.platform.ui.shells {
     /// <summary>
     /// Defines a message dialog.
     /// </summary>
@@ -34,6 +36,10 @@
     /// Provides the property meta data of <see cref="IMessageDialogWindow"/> that is used by data binding operations.
     /// </summary>
     public class PMessageDialogWindow : PDialogWindowControl<IMessageDialogWindow> {
-        
+        /// <summary> Header property meta data </summary>
+        public static readonly IBindableProperty<string> HeaderProperty = CreatePropertyInfo(_ => _.Header, string.Empty);
+
+        /// <summary> Text property meta data </summary>
+        public static readonly IBindableProperty<string> TextProperty = CreatePropertyInfo(_ => _.Text, string.Empty);
     }
 }
