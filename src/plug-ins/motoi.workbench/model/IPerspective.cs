@@ -23,23 +23,35 @@ namespace motoi.workbench.model {
         /// Advices the perspective to make the editor with the given <paramref name="editorId"/> visible.
         /// </summary>
         /// <param name="editorId">Id of the editor</param>
-        void OpenEditor(string editorId);
+        /// <returns>The opened editor instance or NULL</returns>
+        /// <exception cref="WorkbenchPartInitializationException">If an error during the process occurs</exception>
+        IEditor OpenEditor(string editorId);
 
         /// <summary>
         /// Opens an editor within the perspective that can handle the given <paramref name="editorInput"/>.
         /// </summary>
         /// <param name="editorInput">Input for the editor</param>
+        /// <returns>The opened editor instance or NULL</returns>
         /// <exception cref="WorkbenchPartInitializationException">If an error during the process occurs</exception>
-        void OpenEditor(IEditorInput editorInput);
+        IEditor OpenEditor(IEditorInput editorInput);
 
         /// <summary>
         /// Closes the currently opened editor. If none is open, nothing will happen. Note, there is no guarantee the editor is closed. 
         /// The user may cancel the process when the editor is dirty and the user refuses the save dialog.
         /// </summary>
-        void CloseEditor();
+        /// <returns>TRUE if the editor has been closed</returns>
+        bool CloseEditor();
 
         /// <summary>
-        /// Shows the view with the given <paramref name="dataViewId"/> at the given <see cref="viewPosition"/>, but there is no guarantee that 
+        /// Closes the editor referenced by the given instance. If none is open, nothing will happen. Note, there is no guarantee the editor is closed. 
+        /// The user may cancel the process when the editor is dirty and the user refuses the save dialog.
+        /// </summary>
+        /// <param name="editor">Editor instance to close</param>
+        /// <returns>TRUE if the editor has been closed</returns>
+        bool CloseEditor(IEditor editor);
+
+        /// <summary>
+        /// Shows the view with the given <paramref name="dataViewId"/> at the given <paramref name="viewPosition"/>, but there is no guarantee that 
         /// the view will be visible. For example, the <paramref name="dataViewId"/> must not be known by the framework. In that case, no instance 
         /// can be created. Therefore, this method is more a hint than a reliable operation.
         /// A new instance of the data view will not be created at any time. For instance, if the view already exists, but it's not visible to the 
@@ -72,8 +84,11 @@ namespace motoi.workbench.model {
         /// <param name="listener">Listener to unsubscribe</param>
         void RemovePerspectiveListener(IPerspectiveListener listener);
 
-
-        IWidgetCompound GetPane();
+        /// <summary>
+        /// Returns the panel all controls of the perspective are drawn onto.
+        /// </summary>
+        /// <returns>Panel that contains all controls of the perspective</returns>
+        IWidgetCompound GetPanel();
     }
 
     /// <summary>
