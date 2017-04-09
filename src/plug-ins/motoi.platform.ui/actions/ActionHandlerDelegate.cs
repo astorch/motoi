@@ -7,7 +7,7 @@ namespace motoi.platform.ui.actions {
     /// is being called by the framework.
     /// </summary>
     public class ActionHandlerDelegate : AbstractActionHandler {
-
+        private static readonly Func<bool> TrueFunc = () => true;
         private readonly Action iAction;
         private readonly Func<bool> iIsEnabledFunc;
 
@@ -17,7 +17,7 @@ namespace motoi.platform.ui.actions {
         /// </summary>
         /// <param name="action">Delegate to execute - must not be NULL</param>
         /// <exception cref="ArgumentNullException"/>
-        public ActionHandlerDelegate(Action action) : this(action, () => true) {
+        public ActionHandlerDelegate(Action action) : this(action, TrueFunc) {
             // Currently nothing to do here
         }
 
