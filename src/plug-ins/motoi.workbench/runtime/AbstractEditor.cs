@@ -1,5 +1,4 @@
 ﻿using motoi.platform.resources.model.editors;
-using motoi.platform.ui.toolbars;
 using motoi.workbench.model;
 using Xcite.Csharp.lang;
 
@@ -10,9 +9,7 @@ namespace motoi.workbench.runtime {
     public abstract class AbstractEditor : AbstractSaveableWorkbenchPart, IEditor {
         private string iEditorTabText;
 
-        /// <summary>
-        /// Returns name of the current editor tab text.
-        /// </summary>
+        /// <inheritdoc />
         public virtual string EditorTabText {
             get { return iEditorTabText; }
             protected set {
@@ -22,16 +19,7 @@ namespace motoi.workbench.runtime {
             }
         }
 
-        /// <summary>
-        /// Tells the editor to add additional tool bar controls if desired.
-        /// </summary>
-        /// <param name="toolBar">Tool bar to configure</param>
-        public abstract void ConfigureToolBar(IToolBar toolBar);
-
-        /// <summary>
-        /// Tells the editor to use the given <paramref name="editorInput"/>.
-        /// </summary>
-        /// <param name="editorInput">Editor input</param>
+        /// <inheritdoc />
         public abstract void SetEditorInput(IEditorInput editorInput);
     }
 }
