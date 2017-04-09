@@ -11,8 +11,8 @@ namespace motoi.platform.ui.shells {
         /// <summary> A standard window with title bar and border elements. </summary>
         public static readonly EWindowStyle DefaultWindow = new EWindowStyle("DefaultWindow"); // SingleBorder | Three3dBorder
 
-        /// <summary> A fixed tool window. </summary>
-        public static readonly EWindowStyle ToolWindow = new EWindowStyle("ToolWindow"); // ToolWindow
+        /// <summary> A fixed dialog window. </summary>
+        public static readonly EWindowStyle DialogWindow = new EWindowStyle("DialogWindow"); // DialogWindow
 
         /// <inheritdoc />
         private EWindowStyle(object uniqueReference) : base(uniqueReference) {
