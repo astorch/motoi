@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using motoi.platform.ui;
 using motoi.platform.ui.images;
 using motoi.ui.windowsforms.controls;
+using motoi.ui.windowsforms.utils;
 using motoi.workbench.model;
 using motoi.workbench.runtime;
 using WeifenLuo.WinFormsUI.Docking;
@@ -63,41 +64,40 @@ namespace motoi.ui.windowsforms.shells {
         protected override void OnShowEditor(IEditor editor) {
             if (editor == null) return;
 
-            // If there is an open editor, close it before
-            if (iDocumentDockContent != null) {
-                iDocumentDockContent.Close();
-                iDocumentDockContent = null;
+            using (iDockPanel.DeferLayout()) {
+                // If there is an open editor, close it before
+                if (iDocumentDockContent != null) {
+                    iDocumentDockContent.Close();
+                    iDocumentDockContent = null;
+                }
+                
+                // Add ToolStripContainer to the top of the perspective
+                ToolStripContainer toolStripContainer = new ToolStripContainer { Dock = DockStyle.Top };
+
+                // Let the editor configure the tool bar
+                iCurrentToolBar = new ToolBar();
+                editor.ConfigureToolBar(iCurrentToolBar);
+
+                // Add the tool bar to the controls
+                toolStripContainer.TopToolStripPanel.Controls.Add(iCurrentToolBar);
+                iDockPanel.Controls.Add(iCurrentToolBar);
+
+                // Let the editor create its content
+                GridPanel editorPanel = new GridPanel { Dock = DockStyle.Fill };
+                editor.CreateContents(editorPanel);
+
+                // Place into a dock content
+                iDocumentDockContent = new DockContent { Tag = editor };
+                iDocumentDockContent.Controls.Add(editorPanel);
+                iDocumentDockContent.Show(iDockPanel, DockState.Document);
+
+                iDocumentDockContent.TabText = editor.EditorTabText;
+                iDocumentDockContent.Closing += OnDockContentClosing;
+                iDocumentDockContent.Closed += OnDockContentClosed;
+
+                editor.PropertyChanged += OnEditorPropertyChanged;
+                editor.DirtyChanged += OnEditorDirtyChanged;
             }
-            
-//            iDockPanel.SuspendLayout();
-
-            // Add ToolStripContainer to the top of the perspective
-            ToolStripContainer toolStripContainer = new ToolStripContainer { Dock = DockStyle.Top };
-
-            // Let the editor configure the tool bar
-            iCurrentToolBar = new ToolBar();
-            editor.ConfigureToolBar(iCurrentToolBar);
-
-            // Add the tool bar to the controls
-            toolStripContainer.TopToolStripPanel.Controls.Add(iCurrentToolBar);
-            iDockPanel.Controls.Add(iCurrentToolBar);
-
-            // Let the editor create its content
-            GridPanel editorPanel = new GridPanel { Dock = DockStyle.Fill };
-            editor.CreateContents(editorPanel);
-
-            // Place into a dock content
-            iDocumentDockContent = new DockContent {Tag = editor};
-            iDocumentDockContent.Controls.Add(editorPanel);
-            iDocumentDockContent.Show(iDockPanel, DockState.Document);
-
-            iDocumentDockContent.TabText = editor.EditorTabText;
-            iDocumentDockContent.Closed += OnDockContentClosed;
-            
-            editor.PropertyChanged += OnEditorPropertyChanged;
-            editor.DirtyChanged += OnEditorDirtyChanged;
-
-//            iDockPanel.ResumeLayout(true);
         }
 
         /// <summary>
@@ -141,6 +141,17 @@ namespace motoi.ui.windowsforms.shells {
         }
 
         /// <summary>
+        /// Is invoked when the user requested the close of a dock content.
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="cancelEventArgs">Event arguments</param>
+        private void OnDockContentClosing(object sender, CancelEventArgs cancelEventArgs) {
+            DockContent dockContent = sender as DockContent;
+            if (dockContent == null) return;
+            cancelEventArgs.Cancel = !CanCloseEditor(dockContent.Tag as IEditor);
+        }
+
+        /// <summary>
         /// Tells the instance to close the given <paramref name="editor"/>.
         /// </summary>
         /// <param name="editor">Editor to close</param>
@@ -154,6 +165,7 @@ namespace motoi.ui.windowsforms.shells {
             editor.DirtyChanged -= OnEditorDirtyChanged;
 
             iDocumentDockContent.Closed -= OnDockContentClosed;
+            iDocumentDockContent.Closing -= OnDockContentClosing;
 
             if (iCurrentToolBar != null) {
                 iCurrentToolBar.Dispose();
