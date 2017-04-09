@@ -110,23 +110,26 @@ namespace motoi.ui.windowsforms.shells {
 
         /// <inheritdoc />
         void IShell.SetContent(IWidgetCompound widgetCompound) {
-            Control newContentControl = CastUtil.Cast<Control>(widgetCompound);
-            newContentControl.Dock = DockStyle.Fill;
+            using (this.DeferLayout()) {
+                // Remove the old content 
+                if (WindowContent != null) {
+                    Control oldContentControl = CastUtil.Cast<Control>(WindowContent);
+                    Controls.Remove(oldContentControl);
+                }
 
-            // Remove the old content 
-            if (WindowContent != null) {
-                Control oldContentControl = CastUtil.Cast<Control>(WindowContent);
-                Controls.Remove(oldContentControl);
+                // Store current window content
+                WindowContent = widgetCompound;
+                if (widgetCompound == null) return;
+
+                Control newContentControl = CastUtil.Cast<Control>(widgetCompound);
+                newContentControl.Dock = DockStyle.Fill;
+
+                // Add the new content
+                Controls.Add(newContentControl);
+
+                // Due to a bug of WeifenLou DockPanel the content panel should be at first position
+                Controls.SetChildIndex(newContentControl, 0);
             }
-
-            // Add the new content
-            Controls.Add(newContentControl);
-
-            // Due to a bug of WeifenLou DockPanel the content panel should be at first position
-            Controls.SetChildIndex(newContentControl, 0);
-            
-            // Store current window content
-            WindowContent = widgetCompound; 
         }
 
         /// <inheritdoc />
@@ -172,23 +175,23 @@ namespace motoi.ui.windowsforms.shells {
                 MinimizeBox = false;
                 MaximizeBox = false;
 
-                FormBorderStyle = windowStyle == EWindowStyle.ToolWindow
-                    ? FormBorderStyle.FixedToolWindow
+                FormBorderStyle = windowStyle == EWindowStyle.DialogWindow
+                    ? FormBorderStyle.FixedDialog
                     : FormBorderStyle.FixedSingle
                     ;
             } else if (resizeMode == EWindowResizeMode.CanMinimize) {
                 MinimizeBox = true;
                 MaximizeBox = false;
 
-                FormBorderStyle = windowStyle == EWindowStyle.ToolWindow
-                    ? FormBorderStyle.FixedToolWindow
+                FormBorderStyle = windowStyle == EWindowStyle.DialogWindow
+                    ? FormBorderStyle.FixedDialog
                     : FormBorderStyle.FixedSingle
                     ;
             } else { // CanResize
                 MinimizeBox = true;
                 MaximizeBox = true;
 
-                FormBorderStyle = windowStyle == EWindowStyle.ToolWindow
+                FormBorderStyle = windowStyle == EWindowStyle.DialogWindow
                     ? FormBorderStyle.SizableToolWindow
                     : FormBorderStyle.Sizable
                     ;
