@@ -50,7 +50,8 @@ namespace motoi.ui.windowsforms.shells {
         /// Performs an initialization of the used components.
         /// </summary>
         private void InitializeComponent() {
-            ClientSize = new Size(486, 404);
+            ClientSize = new Size(600, 404);
+            AutoSize = true;
             ((IDialogWindow)this).WindowResizeMode = EWindowResizeMode.CanResize;
         }
 
