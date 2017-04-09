@@ -7,7 +7,6 @@ using motoi.platform.ui;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.shells;
 using motoi.workbench.events;
-using motoi.workbench.exceptions;
 using motoi.workbench.model;
 using motoi.workbench.registries;
 using Xcite.Csharp.oop;
@@ -22,20 +21,12 @@ namespace motoi.workbench.runtime {
 
         private readonly List<IDataView> iActiveDataViews = new List<IDataView>();
 
-        /// <summary>Constructor</summary>
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
         protected AbstractPerspective() {
             iLog = LogManager.GetLogger(GetType());
         }
-
-        /// <summary>
-        /// Returns the currently active editor. May be NULL.
-        /// </summary>
-        public IEditor ActiveEditor { get; private set; }
-
-        /// <summary>
-        /// Returns the collection of currently active data views. May be empty.
-        /// </summary>
-        public IDataView[] ActiveViews { get { return iActiveDataViews.ToArray(); } }
 
         /// <summary>
         /// Returns the underlying perspective event manager to dispatch events.
@@ -47,38 +38,35 @@ namespace motoi.workbench.runtime {
         /// </summary>
         protected List<IDataView> ActiveDataViews { get { return iActiveDataViews; } }
 
-        /// <summary>
-        /// Advices the perspective to make the editor with the given <paramref name="editorId"/> visible.
-        /// </summary>
-        /// <param name="editorId">Id of the editor</param>
-        public virtual void OpenEditor(string editorId) {
+        /// <inheritdoc />
+        public IEditor ActiveEditor { get; private set; }
+
+        /// <inheritdoc />
+        public IDataView[] ActiveViews { get { return iActiveDataViews.ToArray(); } }
+
+        /// <inheritdoc />
+        public virtual IEditor OpenEditor(string editorId) {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Opens an editor within the perspective that can handle the given <paramref name="editorInput"/>.
-        /// </summary>
-        /// <param name="editorInput">Input for the editor</param>
-        /// <exception cref="WorkbenchPartInitializationException">If an error during the process occurs</exception>
-        public virtual void OpenEditor(IEditorInput editorInput) {
-            if (editorInput == null) return;
+        /// <inheritdoc />
+        public virtual IEditor OpenEditor(IEditorInput editorInput) {
+            if (editorInput == null) return null;
 
             string fileExtension = editorInput.Name.Split('.').Last();
-            if (string.IsNullOrWhiteSpace(fileExtension)) return;
+            if (string.IsNullOrWhiteSpace(fileExtension)) return null;
             
             IEditor editor = EditorRegistry.Instance.GetEditorForExtension(fileExtension);
-            if (editor == null) return;
+            if (editor == null) return null;
 
             ShowEditor(editor, editorInput);
+            return editor;
         }
 
-        /// <summary>
-        /// Closes the currently opened editor. If none is open, nothing will happen. Note, there is no guarantee the editor is closed. 
-        /// The user may cancel the process when the editor is dirty and the user refuses the save dialog.
-        /// </summary>
-        public void CloseEditor() {
-            if (ActiveEditor == null) return;
-            CloseEditor(ActiveEditor);
+        /// <inheritdoc />
+        public bool CloseEditor() {
+            if (ActiveEditor == null) return false;
+            return CloseEditor(ActiveEditor);
         }
 
         /// <summary>
@@ -141,21 +129,31 @@ namespace motoi.workbench.runtime {
             return true;
         }
 
+        /// <inheritdoc />
+        public virtual bool CloseEditor(IEditor editor) {
+            return CloseEditor(editor, false);
+        }
+
         /// <summary>
-        /// Advices the perspective to close the given <paramref name="editor"/>.
+        /// Closes the editor referenced by the given instance. If none is open, nothing will happen. Note, there is no guarantee the editor is closed. 
+        /// The user may cancel the process when the editor is dirty and the user refuses the save dialog.
         /// </summary>
-        /// <param name="editor">Editor to close</param>
-        public virtual void CloseEditor(IEditor editor) {
-            if (editor == null) return;
-            if (!Equals(ActiveEditor, editor)) return;
-            if (!CanCloseEditor(editor)) return;
+        /// <param name="editor">Editor instance to close</param>
+        /// <param name="silently">If TRUE the editor is closed silently</param>
+        /// <returns></returns>
+        protected virtual bool CloseEditor(IEditor editor, bool silently) {
+            if (editor == null) return false;
+            if (!Equals(ActiveEditor, editor)) return false;
+            if (!silently && !CanCloseEditor(editor)) return false;
 
             try {
                 OnCloseEditor(editor);
                 ActiveEditor = null;
                 iPerspectiveEventManager.Dispatch(lstnr => lstnr.OnWorkbenchPartClosed(editor), OnDispatchWorkbenchEventException);
+                return true;
             } catch (Exception ex) {
                 iLog.ErrorFormat("Error on closing editor '{0}' by perspective '{1}'. Reason: {2}", editor, this, ex);
+                return false;
             }
         }
 
@@ -168,29 +166,13 @@ namespace motoi.workbench.runtime {
             iLog.ErrorFormat("Error on dispatching perspective event to '{0}'. Reason: {1}", perspectiveListener, exception);
         }
 
-        /// <summary>
-        /// Shows the view with the given <paramref name="dataViewId"/> at the given <see cref="viewPosition"/>, but there is no guarantee that 
-        /// the view will be visible. For example, the <paramref name="dataViewId"/> must not be known by the framework. In that case, no instance 
-        /// can be created. Therefore, this method is more a hint than a reliable operation.
-        /// A new instance of the data view will not be created at any time. For instance, if the view already exists, but it's not visible to the 
-        /// user, it will be brought to top.
-        /// </summary>
-        /// <param name="dataViewId">Id of the data view to (re)open</param>
-        /// <param name="viewPosition">View position</param>
+        /// <inheritdoc />
         public virtual void OpenView(string dataViewId, EViewPosition viewPosition) {
             IDataView dataView = DataViewRegistry.Instance.GetDataView(dataViewId);
             ShowView(dataView, viewPosition);
         }
 
-        /// <summary>
-        /// Shows the view with the given <typeparamref name="TDataView"/> type at the given <paramref name="viewPosition"/>, but there is no guarantee that 
-        /// the view will be visible. For example, the <typeparamref name="TDataView"/> type must not be known by the framework. In that case, no instance 
-        /// can be created. Therefore, this method is more a hint than a reliable operation.
-        /// A new instance of the data view will not be created at any time. For instance, if the view already exists, but it's not visible to the 
-        /// user, it will be brought to top.
-        /// </summary>
-        /// <typeparam name="TDataView">Type of data view to (re)open</typeparam>
-        /// <param name="viewPosition">View position</param>
+        /// <inheritdoc />
         public virtual void OpenView<TDataView>(EViewPosition viewPosition) where TDataView : class, IDataView {
             TDataView dataView = DataViewRegistry.Instance.GetDataView<TDataView>();
             ShowView(dataView, viewPosition);
@@ -223,21 +205,18 @@ namespace motoi.workbench.runtime {
             }
         }
 
-        /// <summary>
-        /// Subscribes the given <paramref name="listener"/> to perspective events.
-        /// </summary>
-        /// <param name="listener">Listener to subscribe</param>
+        /// <inheritdoc />
         public virtual void AddPerspectiveListener(IPerspectiveListener listener) {
             iPerspectiveEventManager.AddListener(listener);
         }
 
-        /// <summary>
-        /// Unsubscribes the given <paramref name="listener"/> from perspective events.
-        /// </summary>
-        /// <param name="listener">Listener to unsubscribe</param>
+        /// <inheritdoc />
         public virtual void RemovePerspectiveListener(IPerspectiveListener listener) {
             iPerspectiveEventManager.RemoveListener(listener);
         }
+
+        /// <inheritdoc />
+        public abstract IWidgetCompound GetPanel();
 
         /// <summary>
         /// Tells the instance to make the given <paramref name="editor"/> visible to the user.
@@ -259,7 +238,6 @@ namespace motoi.workbench.runtime {
         /// <param name="viewPosition">Target view position</param>
         protected abstract void OnShowDataView(IDataView dataView, EViewPosition viewPosition);
 
-        /// <inheritdoc />
-        public abstract IWidgetCompound GetPane();
+        
     }
 }
