@@ -40,7 +40,7 @@ namespace motoi.workbench.runtime {
             if (string.IsNullOrEmpty(perspectiveId)) return null;
 
             IPerspective newPerspective = PerspectiveFactory.Instance.GetPerspective(perspectiveId);
-            IWidgetCompound widgetCompound = newPerspective.GetPane();
+            IWidgetCompound widgetCompound = newPerspective.GetPanel();
             MainWindow.SetContent(widgetCompound);
 
             IPerspective oldPerspective = ActivePerspective;
