@@ -20,6 +20,16 @@ namespace motoi.platform.ui.shells {
         /// <param name="actionHandler">Handle of the action to be performed when the button is clicked</param>
         /// <returns>Handle of the button</returns>
         IButton AddButton(string label, IActionHandler actionHandler);
+
+        /// <summary>
+        /// Adds a button to the dialog button area. Additionally, the button can be set as 
+        /// default button of the dialog.
+        /// </summary>
+        /// <param name="label">Label of the button</param>
+        /// <param name="actionHandler">Handle of the action to be performed when the button is clicked</param>
+        /// <param name="isDefault">If TRUE the button is set as default button of the dialog</param>
+        /// <returns>Handle of the button</returns>
+        IButton AddButton(string label, IActionHandler actionHandler, bool isDefault);
     }
 
     /// <summary>
