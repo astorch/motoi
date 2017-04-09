@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using motoi.platform.ui;
 using motoi.platform.ui.actions;
 using motoi.platform.ui.widgets;
@@ -8,6 +9,13 @@ namespace motoi.ui.windowsforms.controls {
     /// Provides an implementation of <see cref="IButton"/>.
     /// </summary>
     public class Button : System.Windows.Forms.Button, IButton {
+        /// <inheritdoc />
+        public Button() {
+            InitializeComponent();
+        }
+
+        #region IButton
+
         /// <inheritdoc />
         EVisibility IWidget.Visibility {
             get { return PButton.GetModelValue(this, PButton.VisibilityProperty); }
@@ -30,6 +38,15 @@ namespace motoi.ui.windowsforms.controls {
         IActionHandler IButton.ActionHandler {
             get { return PButton.GetModelValue(this, PButton.ActionHandlerProperty); }
             set { PButton.SetModelValue(this, PButton.ActionHandlerProperty, value); } 
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Performs an initialization of the used components.
+        /// </summary>
+        private void InitializeComponent() {
+            MinimumSize = new Size(120, 32);
         }
 
         /// <inheritdoc />
