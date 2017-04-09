@@ -69,9 +69,9 @@ namespace motoi.ui.windowsforms.shells {
 
         private string LocalizeText(EMessageDialogResult item) {
             if (item == EMessageDialogResult.Ok) return "OK";
-            if (item == EMessageDialogResult.Cancel) return "Abbrechen";
-            if (item == EMessageDialogResult.No) return "Nein";
-            if (item == EMessageDialogResult.Yes) return "Ja";
+            if (item == EMessageDialogResult.Cancel) return "Cancel";
+            if (item == EMessageDialogResult.No) return "No";
+            if (item == EMessageDialogResult.Yes) return "Yes";
             return string.Empty;
         }
 
