@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -216,6 +217,31 @@ namespace motoi.ui.windowsforms.shells {
         private void InitializeComponents() {
             WindowStyle = EWindowStyle.DefaultWindow;
             WindowResizeMode = EWindowResizeMode.CanResize;
+            Closing += OnClosing;
+            Closed += OnClosed;
+        }
+
+        /// <summary>
+        /// Is invoked when the form has been closed.
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="eventArgs">Event arguments</param>
+        private void OnClosed(object sender, EventArgs eventArgs) {
+            OnWindowClosed();
+
+            // Clean up
+            Closing -= OnClosing;
+            Closed -= OnClosed;
+            Controls.Clear();
+        }
+
+        /// <summary>
+        /// Is invoked before the form will be closed.
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="cancelEventArgs">Event arguments</param>
+        private void OnClosing(object sender, CancelEventArgs cancelEventArgs) {
+            cancelEventArgs.Cancel = !OnWindowClosing();
         }
 
         /// <inheritdoc />
@@ -232,6 +258,25 @@ namespace motoi.ui.windowsforms.shells {
 
             PWindow.SetModelValue(this, PWindow.WidthProperty, Width, EBindingSourceUpdateReason.PropertyChanged);
             PWindow.SetModelValue(this, PWindow.HeightProperty, Height, EBindingSourceUpdateReason.PropertyChanged);
+        }
+
+        /// <summary>
+        /// Is invoked when a window close request has been received. Return TRUE if 
+        /// window can be closed. This method is intended to be overriden by clients. 
+        /// The default implementation returns TRUE.
+        /// </summary>
+        /// <returns>TRUE if the window can be closed</returns>
+        protected virtual bool OnWindowClosing() {
+            // Clients may override
+            return true;
+        }
+
+        /// <summary>
+        /// Is invoked when the window has been closed. This method is intended 
+        /// to be overriden by clients.
+        /// </summary>
+        protected virtual void OnWindowClosed() {
+            // Clients may override
         }
     }
 }
