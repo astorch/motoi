@@ -93,7 +93,7 @@ namespace motoi.workbench.runtime {
                 // Close active editor if there is any
                 IEditor activeEditor = ActiveEditor;
                 if (activeEditor != null) {
-                    if (!CloseEditor(activeEditor)) return;
+                    if (!CanCloseEditor(activeEditor)) return;
                 }
 
                 // Set up new editor
@@ -112,31 +112,43 @@ namespace motoi.workbench.runtime {
         }
 
         /// <summary>
+        /// Returns TRUE if the given editor instance can be closed. If the editor is dirty, a question dialog 
+        /// is shown. If the user decides to save the modified content, <see cref="ISaveableWorkbenchPart.ExecuteSave"/> 
+        /// is called.
+        /// </summary>
+        /// <param name="editor">Editor instance to check</param>
+        /// <returns>TRUE or FALSE</returns>
+        protected virtual bool CanCloseEditor(IEditor editor) {
+            if (editor == null) return true;
+            if (!editor.IsDirty) return true;
+
+            EMessageDialogResult questionResult = MessageDialog.ShowQuestion("Information", "Save modified content?",
+                "The document contains unsaved changes. If you continue closing the editor without saving they will be lost.",
+                new[] { EMessageDialogResult.Yes, EMessageDialogResult.No, EMessageDialogResult.Cancel });
+
+            // User has canceled
+            if (questionResult == EMessageDialogResult.Cancel) return false;
+
+            // User wants to save
+            if (questionResult == EMessageDialogResult.Yes) {
+                try {
+                    editor.ExecuteSave(null);
+                } catch (Exception ex){
+                    iLog.ErrorFormat("Error on execute save on active editor. Reason: {0}", ex);
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Advices the perspective to close the given <paramref name="editor"/>.
         /// </summary>
         /// <param name="editor">Editor to close</param>
-        public virtual bool CloseEditor(IEditor editor) {
-            if (editor == null) return true;
-            if (!Equals(ActiveEditor, editor)) return true;
-
-            if (editor.IsDirty) {
-                EMessageDialogResult questionResult = MessageDialog.ShowQuestion("Hinweis", "Änderungen speichern?",
-                    "Das Dokument besitzt noch ungespeicherte Änderungen. Wenn Sie den Vorgang fortsetzen, gehen " +
-                    "diese möglicherweise verloren.",
-                    new[] {EMessageDialogResult.Yes, EMessageDialogResult.No, EMessageDialogResult.Cancel});
-
-                // User has canceled
-                if (questionResult == EMessageDialogResult.Cancel) return false;
-
-                // User wants to save
-                if (questionResult == EMessageDialogResult.Yes) {
-                    try {
-                        editor.ExecuteSave(null);
-                    } catch (Exception ex) {
-                        iLog.ErrorFormat("Error on execute save on active editor. Reason: {0}", ex);
-                    }
-                }
-            }
+        public virtual void CloseEditor(IEditor editor) {
+            if (editor == null) return;
+            if (!Equals(ActiveEditor, editor)) return;
+            if (!CanCloseEditor(editor)) return;
 
             try {
                 OnCloseEditor(editor);
@@ -145,8 +157,6 @@ namespace motoi.workbench.runtime {
             } catch (Exception ex) {
                 iLog.ErrorFormat("Error on closing editor '{0}' by perspective '{1}'. Reason: {2}", editor, this, ex);
             }
-
-            return true;
         }
 
         /// <summary>
