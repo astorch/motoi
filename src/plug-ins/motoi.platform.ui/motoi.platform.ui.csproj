@@ -173,7 +173,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bindings\runtime\" />
-    <Folder Include="controls\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj">
