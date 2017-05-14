@@ -15,6 +15,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("0b4b0a6f-800e-43c2-804b-bc9014c288a2")]
-
-namespace motoi.platform.ui.properties {
-}
