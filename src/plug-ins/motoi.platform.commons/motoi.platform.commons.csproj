@@ -86,8 +86,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\ProductAssemblyInfo.cs">
+      <Link>properties\ProductAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="IMessageConsumer.cs" />
+    <Compile Include="LocalizationException.cs" />
     <Compile Include="MessageDispatcher.cs" />
+    <Compile Include="NLS.cs" />
+    <Compile Include="properties\AssemblyInfo.cs" />
     <Compile Include="ResourceLoader.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +104,10 @@
     <ProjectReference Include="..\..\libs\Xcite.Csharp\Xcite.Csharp.csproj">
       <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
       <Name>Xcite.Csharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\motoi.platform.application\motoi.platform.application.csproj">
+      <Project>{c501885f-20ec-424f-ba03-bf3762ac99e6}</Project>
+      <Name>motoi.platform.application</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
