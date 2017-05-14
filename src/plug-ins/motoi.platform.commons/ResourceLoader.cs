@@ -1,14 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Xcite.Csharp.assertions;
 
 namespace motoi.platform.commons {
-    /// <summary>
-    /// Provides methods to open streams or load data from a resource of an assembly.
-    /// </summary>
+    /// <summary> Provides methods to open streams or load data from a resource of an assembly. </summary>
     public static class ResourceLoader {
-
         /// <summary>
         /// Opens a stream to a resource with the given <paramref name="resourceUrl"/>. The stream is fully copied 
         /// into a buffer that is returned. The stream will be closed afterwards. The resource must be an 
@@ -71,7 +67,9 @@ namespace motoi.platform.commons {
         /// <returns>Stream</returns>
         /// <exception cref="ArgumentNullException">If any argument is NULL</exception>
         public static Stream OpenStream(Assembly assembly, string resourceUrl) {
-            Assert.NotNullOrEmpty(() => resourceUrl);
+            if (string.IsNullOrEmpty(resourceUrl)) throw new ArgumentNullException(nameof(resourceUrl));
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+
             string dotNetUrl = resourceUrl.Replace('/', '.');
             string fullQualifiedDotNetUrl = string.Format("{0}.{1}", assembly.GetName().Name, dotNetUrl);
             Stream memoryStream = assembly.GetManifestResourceStream(fullQualifiedDotNetUrl);
