@@ -15,7 +15,7 @@ namespace motoi.workbench.stub.wizards {
         /// </summary>
         protected override void OnInitialize() {
             AddWizardPage(iOpeningPage);
-            Title = "New";
+            Title = Messages.NewWizard_Title;
         }
 
         /// <summary>

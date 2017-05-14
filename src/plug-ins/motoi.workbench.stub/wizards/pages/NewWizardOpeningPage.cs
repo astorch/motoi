@@ -24,8 +24,8 @@ namespace motoi.workbench.stub.wizards.pages {
         /// <param name="gridComposite">Element container</param>
         /// <param name="widgetFactory">Factory to create widgets</param>
         public override void Initialize(IGridPanel gridComposite, IWidgetFactory widgetFactory) {
-            Title = "Select a category";
-            Description = "Select the type you want to create";
+            Title = Messages.NewWizardOpeningPage_Title;
+            Description = Messages.NewWizardOpeningPage_Description;
 
             ITreeViewer treeViewer = UIFactory.NewWidget<ITreeViewer>(gridComposite);
             gridComposite.AddWidget(treeViewer);

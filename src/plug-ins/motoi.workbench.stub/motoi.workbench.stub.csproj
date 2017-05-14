@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="menu\FileMenuSaveAsHandler.cs" />
     <Compile Include="menu\FileMenuSaveHandler.cs" />
+    <Compile Include="Messages.cs" />
     <Compile Include="registries\CategoryContribution.cs" />
     <Compile Include="registries\Contribution.cs" />
     <Compile Include="registries\WizardContribution.cs" />
@@ -89,6 +90,10 @@
       <Project>{c501885f-20ec-424f-ba03-bf3762ac99e6}</Project>
       <Name>motoi.platform.application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj">
+      <Project>{3e6c6d06-c212-448e-bb34-11cdafa697e8}</Project>
+      <Name>motoi.platform.commons</Name>
+    </ProjectReference>
     <ProjectReference Include="..\motoi.platform.ui\motoi.platform.ui.csproj">
       <Project>{04339bf5-52cf-4f60-a947-a09aa42990d4}</Project>
       <Name>motoi.platform.ui</Name>
@@ -118,6 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="resources\images\File-Save-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\texts\messages.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\texts\messages_de.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

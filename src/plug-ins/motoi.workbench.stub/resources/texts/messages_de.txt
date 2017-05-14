@@ -1,0 +1,3 @@
+﻿NewWizard_Title=Neu
+NewWizardOpeningPage_Title=Wählen Sie eine Kategorie
+NewWizardOpeningPage_Description=Wählen Sie den zu erzeugenen Typ aus
