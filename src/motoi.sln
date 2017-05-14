@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AC480322-E26F-431F-8B31-D58B8CB04B06}"
 EndProject
@@ -10,8 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoPluginRef", "tests\plug-ins\DemoPluginRef\DemoPluginRef.csproj", "{25FE4D4B-56E5-48FE-9A7C-3653E3BAC3C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoPluginInvalid", "tests\plug-ins\DemoPluginInvalid\DemoPluginInvalid.csproj", "{E0AC7741-C811-4BEB-876A-4190BD8E5528}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Motoi.PlatformTest", "tests\Motoi.PlatformTest\Motoi.PlatformTest.csproj", "{F65009ED-1895-4155-9ED0-549D6CC4231B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApplication", "tests\plug-ins\DemoApplication\DemoApplication.csproj", "{A11DE2A0-F449-4EB5-9BBF-30A90D322411}"
 EndProject
@@ -80,6 +78,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ProductAssemblyInfo.cs = ProductAssemblyInfo.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.application.tests", "tests\motoi.platform.application.tests\motoi.platform.application.tests.csproj", "{F65009ED-1895-4155-9ED0-549D6CC4231B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,15 +114,6 @@ Global
 		{E0AC7741-C811-4BEB-876A-4190BD8E5528}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0AC7741-C811-4BEB-876A-4190BD8E5528}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E0AC7741-C811-4BEB-876A-4190BD8E5528}.Release|x86.ActiveCfg = Release|Any CPU
-		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Default|Any CPU.ActiveCfg = Debug|Any CPU
-		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Default|Any CPU.Build.0 = Debug|Any CPU
-		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Default|x86.ActiveCfg = Debug|Any CPU
-		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Release|x86.ActiveCfg = Release|Any CPU
 		{A11DE2A0-F449-4EB5-9BBF-30A90D322411}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A11DE2A0-F449-4EB5-9BBF-30A90D322411}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{A11DE2A0-F449-4EB5-9BBF-30A90D322411}.Default|Any CPU.ActiveCfg = Debug|Any CPU
@@ -353,6 +344,18 @@ Global
 		{71A712F1-9E59-444A-B268-E4EBD8ED4E0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71A712F1-9E59-444A-B268-E4EBD8ED4E0F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{71A712F1-9E59-444A-B268-E4EBD8ED4E0F}.Release|x86.ActiveCfg = Release|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Debug|x86.Build.0 = Debug|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Default|x86.ActiveCfg = Debug|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Default|x86.Build.0 = Debug|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Release|x86.ActiveCfg = Release|Any CPU
+		{F65009ED-1895-4155-9ED0-549D6CC4231B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -361,7 +364,6 @@ Global
 		{657B29BE-A069-4DAA-80B0-CAA04F84ACA6} = {D89E9583-5F2F-44BB-BF53-9CE8C6C8BC67}
 		{25FE4D4B-56E5-48FE-9A7C-3653E3BAC3C8} = {D89E9583-5F2F-44BB-BF53-9CE8C6C8BC67}
 		{E0AC7741-C811-4BEB-876A-4190BD8E5528} = {D89E9583-5F2F-44BB-BF53-9CE8C6C8BC67}
-		{F65009ED-1895-4155-9ED0-549D6CC4231B} = {AC480322-E26F-431F-8B31-D58B8CB04B06}
 		{A11DE2A0-F449-4EB5-9BBF-30A90D322411} = {D89E9583-5F2F-44BB-BF53-9CE8C6C8BC67}
 		{A069CD61-568C-4467-A691-948EADC7D868} = {2D625362-0E98-490D-AD94-190C16329052}
 		{7CA52CC3-7E14-46DD-AD71-BC7BF858D7A8} = {ADFEE464-B721-4422-95E5-992493B92A69}
@@ -383,6 +385,7 @@ Global
 		{C501885F-20EC-424F-BA03-BF3762AC99E6} = {6C435A6E-D4CF-43AA-9B24-60DD2DCB9343}
 		{3A6C9293-31EE-41BB-B7FC-B36AA5FD19EF} = {2D625362-0E98-490D-AD94-190C16329052}
 		{71A712F1-9E59-444A-B268-E4EBD8ED4E0F} = {2D625362-0E98-490D-AD94-190C16329052}
+		{F65009ED-1895-4155-9ED0-549D6CC4231B} = {AC480322-E26F-431F-8B31-D58B8CB04B06}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = SharpUltra.vsmdi

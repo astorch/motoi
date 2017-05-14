@@ -1,10 +1,9 @@
-﻿using motoi.platform.application;
-using motoi.platform.application.annotations;
+﻿using motoi.platform.application.annotations;
 using motoi.platform.application.model;
 using motoi.platform.ui.shells;
 using NUnit.Framework;
 
-namespace Motoi.PlatformTest
+namespace motoi.platform.application.tests
 {
     [TestFixture]
     public class MotoiBootloaderTest {
