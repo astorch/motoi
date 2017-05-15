@@ -1,3 +1,8 @@
-﻿NewWizard_Title=Neu
+﻿Extensions_Menu_File_Name=&Datei
+Extensions_Menu_File_New=&Neu...
+Extensions_Menu_File_SaveAs=&Speichern unter...
+Extensions_Menu_File_Save=&Speichern
+Extensions_Menu_File_Exit=&Exit
+NewWizard_Title=Neu
 NewWizardOpeningPage_Title=Wählen Sie eine Kategorie
 NewWizardOpeningPage_Description=Wählen Sie den zu erzeugenen Typ aus

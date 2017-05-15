@@ -12,6 +12,11 @@ namespace motoi.workbench.stub {
             LoadMessages();
         }
 
+        public static readonly string Extensions_Menu_File_Name;
+        public static readonly string Extensions_Menu_File_New;
+        public static readonly string Extensions_Menu_File_SaveAs;
+        public static readonly string Extensions_Menu_File_Save;
+        public static readonly string Extensions_Menu_File_Exit;
         public static readonly string NewWizard_Title;
         public static readonly string NewWizardOpeningPage_Title;
         public static readonly string NewWizardOpeningPage_Description;
