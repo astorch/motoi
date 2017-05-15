@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace motoi.platform.ui.menus {
-    /// <summary>
-    /// Defines a menu contribtion.
-    /// </summary>
+    /// <summary> Defines a menu contribtion. </summary>
     public class MenuContribution {
         /// <summary>
         /// Creates a new instance.
@@ -16,19 +14,13 @@ namespace motoi.platform.ui.menus {
             MenuItems = new List<MenuItemContribution>(10);
         }
 
-        /// <summary>
-        /// Returns the id of the menu.
-        /// </summary>
+        /// <summary> Returns the id of the menu. </summary>
         public string Id { get; private set; }
 
-        /// <summary>
-        /// Returns the label of the menu.
-        /// </summary>
+        /// <summary>  Returns the label of the menu. </summary>
         public string Label { get; private set; }
 
-        /// <summary>
-        /// Returns the associated menu items.
-        /// </summary>
+        /// <summary>  Returns the associated menu items. </summary>
         public IList<MenuItemContribution> MenuItems { get; private set; }
     }
 }
