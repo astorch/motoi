@@ -54,7 +54,6 @@
     <Compile Include="events\IPerspectiveListener.cs" />
     <Compile Include="events\IWorkbenchListener.cs" />
     <Compile Include="exceptions\WorkbenchPartInitializationException.cs" />
-    <Compile Include="menu\ShowViewsMenuHandler.cs" />
     <Compile Include="model\jobs\IJobHandle.cs" />
     <Compile Include="model\jobs\IJobService.cs" />
     <Compile Include="model\jobs\IProgressMonitor.cs" />
@@ -123,6 +122,7 @@
       <Name>motoi.platform.ui</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)..\bin\debug\Tessa.exe" "$(ProjectPath)" "$(TargetPath)" "$(SolutionDir)..\bin\debug"</PostBuildEvent>

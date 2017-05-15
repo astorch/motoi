@@ -8,12 +8,12 @@ using motoi.workbench.model;
 using motoi.workbench.registries;
 using Xcite.Collections;
 
-namespace motoi.workbench.menu {
+namespace motoi.workbench.stub.menu {
     /// <summary>
     /// Implements an action that displays all available views in a dialog window and provides 
     /// the option to open a selected one.
     /// </summary>
-    public class ShowViewsMenuHandler : AbstractActionHandler {
+    public class WindowMenuShowViewsMenuHandler : AbstractActionHandler {
         /// <inheritdoc />
         public override void Run() {
             ITitledAreaDialog dialogWindow = UIFactory.NewShell<ITitledAreaDialog>();

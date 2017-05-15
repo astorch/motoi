@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="menu\FileMenuSaveAsHandler.cs" />
     <Compile Include="menu\FileMenuSaveHandler.cs" />
+    <Compile Include="menu\WindowMenuShowViewsMenuHandler.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="registries\CategoryContribution.cs" />
     <Compile Include="registries\Contribution.cs" />

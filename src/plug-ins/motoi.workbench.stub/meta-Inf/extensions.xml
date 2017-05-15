@@ -1,14 +1,18 @@
 ﻿<?xml version="1.0" ?>
 <extensions>
   <extension point="org.motoi.application.menu">
+    <menu id="windowMenu" label="%Extensions_Menu_Window_Name" />
     <menu id="motoi.workbench.stub.fileMenu" label="%Extensions_Menu_File_Name"/>
-<!--    <menu id="helpMenu" label="&#38;Help"/>-->
     <menuItem id="motoi.workbench.stub.fileMenuNew" menu="motoi.workbench.stub.fileMenu" label="%Extensions_Menu_File_New" handler="menu.FileMenuNewHandler" shortcut="N, Control" image="resources/images/File-New-24.png"/>
     <separator id="motoi.workbench.stub.fileMenuNewSeparator" menu="motoi.workbench.stub.fileMenu" insertAfter="motoi.workbench.stub.fileMenuNew"/>
     <menuItem id="motoi.workbench.stub.fileMenuSaveAs" menu="motoi.workbench.stub.fileMenu" label="%Extensions_Menu_File_SaveAs" handler="menu.FileMenuSaveAsHandler" shortcut="S, Control | Shift" image="resources/images/File-Save-as-32.png" />
     <menuItem id="motoi.workbench.stub.fileMenuSave" menu="motoi.workbench.stub.fileMenu" label="%Extensions_Menu_File_Save" handler="menu.FileMenuSaveHandler" shortcut="S, Control" image="resources/images/File-Save-32.png" />
     <separator id="motoi.workbench.stub.fileMenuCloseSeparator" menu="motoi.workbench.stub.fileMenu" insertBefore="motoi.workbench.stub.fileMenuExit"/>
     <menuItem id="motoi.workbench.stub.fileMenuExit" menu="motoi.workbench.stub.fileMenu" label="%Extensions_Menu_File_Exit" handler="menu.FileMenuExitHandler" shortcut="Q, Control" image="resources/images/Exit-24.png"/>
+    
+    <menuItem id="windowMenuShowViews" menu="windowMenu" label="%Extensions_Menu_Window_ShowViews" handler="menu.WindowMenuShowViewsMenuHandler" />
+    
+    <!--    <menu id="helpMenu" label="&#38;Help"/>-->
     <!--    <menuItem id="helpMenuAbout" menu="helpMenu" label="&#38;About" image="images/About-64.png"/>-->
   </extension>
   <extension point="org.motoi.application.toolbar">
