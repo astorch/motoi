@@ -45,8 +45,7 @@ namespace motoi.platform.nls {
 
             try {
                 // Set up platform language
-//                NL = PlatformSettings.Instance.Get("nl") ?? "en_US";
-                NL = "de";
+                NL = (string) Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Process)["motoi:nl"] ?? "en_US";
 
                 // Grab fields to set up
                 FieldInfo[] fields = nlsAccessType.GetFields(FieldBindingFlags);
