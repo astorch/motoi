@@ -191,6 +191,10 @@
       <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
       <Name>Xcite.Csharp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj">
+      <Project>{3af75cde-1d3d-40ed-8e79-eb8c6f499b3b}</Project>
+      <Name>motoi.platform.nls</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

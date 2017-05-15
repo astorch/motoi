@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using log4net;
 using motoi.extensions;
 using motoi.extensions.core;
+using motoi.platform.nls;
 using motoi.platform.ui.actions;
 using motoi.platform.ui.shells;
 using motoi.plugins.model;
@@ -57,6 +59,17 @@ namespace motoi.platform.ui.menus {
                     IConfigurationElement element = itr.Current;
                     string id = element["id"];
                     string label = element["label"];
+
+                    // NLS support
+                    if (label.StartsWith("%")) {
+                        string nlsKey = label.Substring(1);
+                        string assemblyName = ExtensionService.Instance.GetProvidingBundle(element).Name;
+                        // We cannot use the AppDomain here, because the assembly must not have been loaded yet
+                        Assembly assembly = Assembly.Load(assemblyName); // TODO Check if this may be an issue
+                        string localizationId = NLS.GetLocalizationId(assembly);
+                        label = NLS.GetText(localizationId, nlsKey);
+                    }
+
                     MenuContribution menu = new MenuContribution(id, label);
                     iIdToMenuMap.Add(id, menu);
                 }
@@ -88,6 +101,13 @@ namespace motoi.platform.ui.menus {
                     if (!string.IsNullOrEmpty(image)) {
                         imageStream = providingBundle.GetAssemblyResourceAsStream(image);
                         streamList.AddLast(imageStream);
+                    }
+
+                    // NLS support
+                    if (label.StartsWith("%")) {
+                        string nlsKey = label.Substring(1);
+                        string localizationId = NLS.GetLocalizationId(actionHandler);
+                        label = NLS.GetText(localizationId, nlsKey);
                     }
 
                     MenuItemContribution menuItem = new MenuItemContribution(id, label, menu, actionHandler, shortcut, imageStream);
