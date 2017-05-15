@@ -81,8 +81,7 @@ namespace motoi.platform.nls {
                     string fieldName = field.Name;
                     string fieldValue;
                     if (!messageSet.TryGetValue(fieldName, out fieldValue)) {
-                        fLogWriter.WarnFormat("{0} declares a message that has not been set by a NLS resource file",
-                            nlsAccessType);
+                        fLogWriter.WarnFormat("{0} declares a message that has not been set by a NLS resource file", nlsAccessType);
                         continue;
                     }
 
