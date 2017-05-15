@@ -17,8 +17,8 @@ namespace motoi.workbench.stub.menu {
         /// <inheritdoc />
         public override void Run() {
             ITitledAreaDialog dialogWindow = UIFactory.NewShell<ITitledAreaDialog>();
-            dialogWindow.Title = "Registered Views";
-            dialogWindow.Description = "Select a view to open";
+            dialogWindow.Title = Messages.WindowMenuShowViewsMenuHandler_DialogTitle;
+            dialogWindow.Description = Messages.WindowMenuShowViewsMenuHandler_DialogDescription;
             dialogWindow.Width = 440;
             
             IGridPanel gridComposite = UIFactory.NewWidget<IGridPanel>(dialogWindow);
@@ -35,11 +35,13 @@ namespace motoi.workbench.stub.menu {
             listViewer.Input = DataViewRegistry.Instance.GetViewReferences().ToArray();
             listViewer.Update();
             listViewer.SelectionChanged += (sender, args) => selectedViewReference = (IViewReference) args.Selection;
-            dialogWindow.AddButton("Cancel", new ActionHandlerDelegate(() => dialogWindow.Close()));
-            dialogWindow.AddButton("OK", new ActionHandlerDelegate(() => {
-                closedOk = true;
-                dialogWindow.Close();
-            }));
+            dialogWindow.AddButton(Messages.WindowMenuShowViewsMenuHandler_DialogButtonCancel, 
+                                   new ActionHandlerDelegate(() => dialogWindow.Close()));
+            dialogWindow.AddButton(Messages.WindowMenuShowViewsMenuHandler_DialogButtonOk, 
+                                   new ActionHandlerDelegate(() => {
+                                        closedOk = true;
+                                        dialogWindow.Close();
+                                   }));
 
             dialogWindow.SetContent(gridComposite);
             dialogWindow.Show(true);

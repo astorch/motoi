@@ -8,3 +8,7 @@ Extensions_Menu_Window_ShowViews=&Zeige Sichten...
 NewWizard_Title=Neu
 NewWizardOpeningPage_Title=Wählen Sie eine Kategorie
 NewWizardOpeningPage_Description=Wählen Sie den zu erzeugenen Typ aus
+WindowMenuShowViewsMenuHandler_DialogTitle=Registrierte Sichten
+WindowMenuShowViewsMenuHandler_DialogDescription=Wählen Sie eine zu öffnende Sicht aus
+WindowMenuShowViewsMenuHandler_DialogButtonOk=OK
+WindowMenuShowViewsMenuHandler_DialogButtonCancel=Abbrechen

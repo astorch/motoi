@@ -8,3 +8,7 @@ Extensions_Menu_Window_ShowViews=&Show Views...
 NewWizard_Title=New
 NewWizardOpeningPage_Title=Select a category
 NewWizardOpeningPage_Description=Select the type you want to create
+WindowMenuShowViewsMenuHandler_DialogTitle=Registered Views
+WindowMenuShowViewsMenuHandler_DialogDescription=Select a view to open
+WindowMenuShowViewsMenuHandler_DialogButtonOk=OK
+WindowMenuShowViewsMenuHandler_DialogButtonCancel=Cancel
