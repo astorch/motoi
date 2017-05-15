@@ -12,13 +12,9 @@ using PTP.Core;
 using PTP.Parsers;
 
 namespace motoi.platform.application {
-    /// <summary>
-    /// Provides the common entry point of any motoi application.
-    /// </summary>
+    /// <summary> Provides the common entry point of any motoi application. </summary>
     public class MotoiBootloader {
-        /// <summary>
-        /// Log instance.
-        /// </summary>
+        /// <summary> Log instance. </summary>
         private static ILog iLogger;
 
         /// <summary>
@@ -86,6 +82,9 @@ namespace motoi.platform.application {
                     string[] values = pair.Value;
                     string value = (values.Length == 0 ? string.Empty : values[0]);
                     platformSettings.Add(key, value);
+
+                    // Make settings for all components available
+                    Environment.SetEnvironmentVariable($"motoi:{key}", value, EnvironmentVariableTarget.Process);
                 }
             }
         }
