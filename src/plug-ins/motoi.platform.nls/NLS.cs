@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using log4net;
-using motoi.platform.application;
 
 namespace motoi.platform.nls {
     /// <summary>
@@ -41,12 +40,13 @@ namespace motoi.platform.nls {
         static protected void LoadMessages(string localizationId) {
             Type nlsAccessType = typeof(TObject);
             localizationId = string.IsNullOrEmpty(localizationId)
-                                    ? nlsAccessType.Assembly.GetName().Name
+                                    ? GetLocalizationId(nlsAccessType)
                                     : localizationId;
 
             try {
                 // Set up platform language
-                NL = PlatformSettings.Instance.Get("nl") ?? "en_US";
+//                NL = PlatformSettings.Instance.Get("nl") ?? "en_US";
+                NL = "de";
 
                 // Grab fields to set up
                 FieldInfo[] fields = nlsAccessType.GetFields(FieldBindingFlags);
@@ -132,15 +132,67 @@ namespace motoi.platform.nls {
     /// <summary> Provides non-generic access to NLS features. </summary>
     public abstract class NLS {
         internal const BindingFlags FieldBindingFlags = BindingFlags.Public | BindingFlags.Static;
+        static private readonly ILog fLogWriter = LogManager.GetLogger(typeof(NLS));
 
-        static string GetText(string localizationId, string key) {
+        /// <summary>
+        /// Returns the localized text of the <paramref name="key"/> that is associated with the given 
+        /// <paramref name="localizationId"/>. If any argument is NULL or empty, the key is not mapped 
+        /// or the key is not accessible through a missing field in the provider type, NULL is returned. 
+        /// However, a waring log entry is written that describes the error in detail.
+        /// </summary>
+        /// <param name="localizationId">Localization id</param>
+        /// <param name="key">NLS key</param>
+        /// <returns>Localized text or NULL</returns>
+        static public string GetText(string localizationId, string key) {
             if (string.IsNullOrEmpty(localizationId)) return null;
             if (string.IsNullOrEmpty(key)) return null;
 
+            // Resolve provider
             Type providerType = NLSRegistry.Instance.GetProviderType(localizationId);
+            if (providerType == null) {
+                fLogWriter.WarnFormat("There is no NLS provider for the localization id '{0}'", localizationId);
+                return null;
+            }
+
+            // Resolve provider field
             FieldInfo field = providerType.GetField(key, FieldBindingFlags);
-            if (field == null) return null;
-            return (string)field.GetValue(null);
+            if (field == null) {
+                fLogWriter.WarnFormat("NLS provider '{0}' defines no field for key '{1}'", providerType, key);
+                return null;
+            }
+
+            // Return value
+            return (string) field.GetValue(null);
+        }
+
+        /// <summary>
+        /// Returns the localization id of the given <paramref name="assembly"/>. If the given 
+        /// assembly is NULL, NULL is returned.
+        /// </summary>
+        /// <param name="assembly">Assembly the localization id is derived from</param>
+        /// <returns>Localization id or NULL</returns>
+        static public string GetLocalizationId(Assembly assembly) {
+            return assembly?.GetName().Name;
+        }
+
+        /// <summary>
+        /// Returns the localization id based on the assembly of the given <paramref name="type"/>. 
+        /// If the given type is NULL, NULL is returned.
+        /// </summary>
+        /// <param name="type">Type the localization id is derived from</param>
+        /// <returns>Localization id or NULL</returns>
+        static public string GetLocalizationId(Type type) {
+            return GetLocalizationId(type?.Assembly);
+        }
+
+        /// <summary>
+        /// Returns the localization id based on the assembly that provides the given <paramref name="obj"/>. 
+        /// If hte given object is NULL, NULL is returned.
+        /// </summary>
+        /// <param name="obj">Object the localization id is derived from</param>
+        /// <returns>Localization id or NULL</returns>
+        static public string GetLocalizationId(object obj) {
+            return GetLocalizationId(obj?.GetType());
         }
     }
 }
