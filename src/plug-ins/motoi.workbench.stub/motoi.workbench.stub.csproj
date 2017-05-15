@@ -45,9 +45,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -90,9 +87,9 @@
       <Project>{c501885f-20ec-424f-ba03-bf3762ac99e6}</Project>
       <Name>motoi.platform.application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj">
-      <Project>{3e6c6d06-c212-448e-bb34-11cdafa697e8}</Project>
-      <Name>motoi.platform.commons</Name>
+    <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj">
+      <Project>{3af75cde-1d3d-40ed-8e79-eb8c6f499b3b}</Project>
+      <Name>motoi.platform.nls</Name>
     </ProjectReference>
     <ProjectReference Include="..\motoi.platform.ui\motoi.platform.ui.csproj">
       <Project>{04339bf5-52cf-4f60-a947-a09aa42990d4}</Project>

@@ -1,4 +1,4 @@
-﻿using motoi.platform.commons;
+﻿using motoi.platform.nls;
 
 namespace motoi.workbench.stub {
     // ReSharper disable UnassignedReadonlyField
@@ -9,7 +9,7 @@ namespace motoi.workbench.stub {
     public class Messages : NLS<Messages> {
 
         static Messages() {
-            LoadMessages("resources/texts/messages");
+            LoadMessages();
         }
 
         public static readonly string NewWizard_Title;

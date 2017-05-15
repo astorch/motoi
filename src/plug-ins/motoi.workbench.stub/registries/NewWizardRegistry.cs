@@ -11,9 +11,7 @@ using Xcite.Collections;
 using Xcite.Csharp.generics;
 
 namespace motoi.workbench.stub.registries {
-    /// <summary>
-    /// Implements a registry that manages all New Wizard contributions.
-    /// </summary>
+    /// <summary> Implements a registry that manages all New Wizard contributions. </summary>
     class NewWizardRegistry : GenericSingleton<NewWizardRegistry> {
 
         /// <summary> Extension point id. </summary>
@@ -21,21 +19,13 @@ namespace motoi.workbench.stub.registries {
         
         private static readonly ILog iLog = LogManager.GetLogger(typeof(NewWizardRegistry));
 
-        /// <summary>
-        /// Collection of resolved contributions.
-        /// </summary>
+        /// <summary> Collection of resolved contributions. </summary>
         private readonly LinearList<Contribution> iContributions = new LinearList<Contribution>();
 
-        /// <summary>
-        /// Returns all registered contributions.
-        /// </summary>
-        public Contribution[] Contributions {
-            get { return iContributions.ToArray(); }
-        }
+        /// <summary> Returns all registered contributions. </summary>
+        public Contribution[] Contributions { get { return iContributions.ToArray(); } }
 
-        /// <summary>
-        /// Will be called directly after this instance has been created.
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnInitialize() {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(ExtensionPointId);
 
@@ -99,9 +89,7 @@ namespace motoi.workbench.stub.registries {
             }
         }
 
-        /// <summary>
-        /// Will be called when <see cref="GenericSingleton{TClass}.Destroy"/> has been called for this instance.
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnDestroy() {
             // Currently nothing to do here
         }
