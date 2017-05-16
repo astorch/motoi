@@ -97,6 +97,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\PlatformProductAssemblyInfo.cs">
+      <Link>properties\PlatformProductAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="annotations\MotoiApplicationAttribute.cs" />
     <Compile Include="model\ApplicationManager.cs" />
     <Compile Include="model\IMotoiApplication.cs" />
@@ -106,7 +109,7 @@
     <Compile Include="MotoiBootloader.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="PlatformSettings.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">

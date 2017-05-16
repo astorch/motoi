@@ -60,8 +60,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\ProductAssemblyInfo.cs">
-      <Link>properties\ProductAssemblyInfo.cs</Link>
+    <Compile Include="..\..\PlatformProductAssemblyInfo.cs">
+      <Link>properties\PlatformProductAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="actions\AbstractActionHandler.cs" />
     <Compile Include="actions\ActionHandlerDelegate.cs" />

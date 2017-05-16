@@ -86,8 +86,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\ProductAssemblyInfo.cs">
-      <Link>properties\ProductAssemblyInfo.cs</Link>
+    <Compile Include="..\..\PlatformProductAssemblyInfo.cs">
+      <Link>properties\PlatformProductAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="IMessageConsumer.cs" />
     <Compile Include="MessageDispatcher.cs" />

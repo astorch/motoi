@@ -46,6 +46,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\PlatformProductAssemblyInfo.cs">
+      <Link>properties\PlatformProductAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="model\editors\IEditorInput.cs" />
     <Compile Include="model\IWorkspace.cs" />
     <Compile Include="model\IWorkspaceArtefact.cs" />
@@ -56,6 +59,7 @@
     <Compile Include="model\preference\EStoreScope.cs" />
     <Compile Include="model\preference\IPreferenceStore.cs" />
     <Compile Include="model\preference\IPreferenceStoreManager.cs" />
+    <Compile Include="properties\AssemblyInfo.cs" />
     <Compile Include="ResourceService.cs" />
     <Compile Include="runtime\editors\FileEditorInput.cs" />
     <Compile Include="runtime\editors\MemoryFileEditorInput.cs" />
