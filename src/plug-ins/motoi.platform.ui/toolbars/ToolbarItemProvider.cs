@@ -71,14 +71,19 @@ namespace motoi.platform.ui.toolbars {
                     menuInstance.GroupItems.Add(menuItem);
             }
 
-            for (IEnumerator<ToolbarGroupContribution> enmtor = iIdToMenuMap.Values.GetEnumerator(); enmtor.MoveNext(); )
-                mainWindow.AddToolbarGroup(enmtor.Current);
+            using (IEnumerator<ToolbarGroupContribution> itr = iIdToMenuMap.Values.GetEnumerator()) {
+                while (itr.MoveNext()) {
+                    ToolbarGroupContribution contribution = itr.Current;
+                    mainWindow.AddToolbarGroup(contribution);
+                }
+            }
 
             // Disposing all opened streams
-            for (IEnumerator<Stream> enmtor = streamList.GetEnumerator(); enmtor.MoveNext(); ) {
-                Stream stream = enmtor.Current;
-                if (stream != null)
-                    stream.Dispose();
+            using (IEnumerator<Stream> itr = streamList.GetEnumerator()) {
+                while (itr.MoveNext()) {
+                    Stream stream = itr.Current;
+                    stream?.Dispose();
+                }
             }
         }
     }
