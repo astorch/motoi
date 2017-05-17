@@ -110,8 +110,10 @@ namespace motoi.workbench.runtime {
             if (editor == null) return true;
             if (!editor.IsDirty) return true;
 
-            EMessageDialogResult questionResult = MessageDialog.ShowQuestion("Information", "Save modified content?",
-                "The document contains unsaved changes. If you continue closing the editor without saving they will be lost.",
+            EMessageDialogResult questionResult = MessageDialog.ShowQuestion(
+                Messages.AbstractPerspective_CanCloseEditor_Dialog_Title, 
+                Messages.AbstractPerspective_CanCloseEditor_Dialog_Header,
+                Messages.AbstractPerspective_CanCloseEditor_Dialog_Text,
                 new[] { EMessageDialogResult.Yes, EMessageDialogResult.No, EMessageDialogResult.Cancel });
 
             // User has canceled

@@ -57,6 +57,7 @@
     <Compile Include="events\IPerspectiveListener.cs" />
     <Compile Include="events\IWorkbenchListener.cs" />
     <Compile Include="exceptions\WorkbenchPartInitializationException.cs" />
+    <Compile Include="Messages.cs" />
     <Compile Include="model\jobs\IJobHandle.cs" />
     <Compile Include="model\jobs\IJobService.cs" />
     <Compile Include="model\jobs\IProgressMonitor.cs" />
@@ -116,6 +117,10 @@
       <Project>{c501885f-20ec-424f-ba03-bf3762ac99e6}</Project>
       <Name>motoi.platform.application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj">
+      <Project>{3af75cde-1d3d-40ed-8e79-eb8c6f499b3b}</Project>
+      <Name>motoi.platform.nls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\motoi.platform.resources\motoi.platform.resources.csproj">
       <Project>{4208230d-11f4-47d9-843a-493e89c5417e}</Project>
       <Name>motoi.platform.resources</Name>
@@ -125,7 +130,12 @@
       <Name>motoi.platform.ui</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="resources\texts\messages.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\texts\messages_de.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)..\bin\debug\Tessa.exe" "$(ProjectPath)" "$(TargetPath)" "$(SolutionDir)..\bin\debug"</PostBuildEvent>

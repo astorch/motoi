@@ -1,4 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <extensions>
-
+  <extension point="org.motoi.platform.localization" >
+    <localization id="motoi.workbench" provider="Messages" resourcePath="resources/texts/messages" />
+  </extension>
 </extensions>
