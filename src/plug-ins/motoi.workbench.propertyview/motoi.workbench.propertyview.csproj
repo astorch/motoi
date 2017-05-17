@@ -50,6 +50,7 @@
       <Link>properties\WorkbenchProductAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="IPropertyViewItemsProvider.cs" />
+    <Compile Include="Messages.cs" />
     <Compile Include="PropertyDataView.cs" />
     <Compile Include="properties\AssemblyInfo.cs" />
     <Compile Include="PropertyViewItemsProviderRegistry.cs" />
@@ -66,6 +67,10 @@
     <ProjectReference Include="..\..\libs\Xcite.Csharp\Xcite.Csharp.csproj">
       <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
       <Name>Xcite.Csharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj">
+      <Project>{3af75cde-1d3d-40ed-8e79-eb8c6f499b3b}</Project>
+      <Name>motoi.platform.nls</Name>
     </ProjectReference>
     <ProjectReference Include="..\motoi.platform.resources\motoi.platform.resources.csproj">
       <Project>{4208230d-11f4-47d9-843a-493e89c5417e}</Project>
@@ -87,6 +92,12 @@
     </None>
     <None Include="meta-inf\signature.mf" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\texts\messages.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\texts\messages_de.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

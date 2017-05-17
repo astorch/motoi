@@ -1,5 +1,4 @@
-﻿using motoi.platform.ui;
-using motoi.platform.ui.factories;
+﻿using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
 using motoi.platform.ui.widgets;
 using motoi.workbench.runtime;
@@ -32,7 +31,7 @@ namespace motoi.workbench.propertyview {
         }
 
         /// <inheritdoc />
-        public override string Name { get { return "Properties"; } }
+        public override string Name { get { return Messages.PropertyDataView_Name; } }
 
         /// <inheritdoc />
         public override ImageDescriptor Image { get { return null; } }
