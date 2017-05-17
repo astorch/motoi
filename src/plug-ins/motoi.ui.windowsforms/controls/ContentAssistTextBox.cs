@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 using FastColoredTextBoxNS;
 using motoi.platform.ui.widgets;
 
@@ -220,12 +221,10 @@ namespace motoi.ui.windowsforms.controls {
                         string itemText = item.Text;
 
                         // Calculate minimum size of the menu
-                        // Todo Check if this is an performance issue
-                        using (Graphics gr = fAutocompleteMenu.CreateGraphics()) {
-                            SizeF size = gr.MeasureString(itemText, fAutocompleteMenu.Font);
-                            if (size.Width > fAutocompleteMenu.MinimumSize.Width)
-                                fAutocompleteMenu.MinimumSize = new Size((int) size.Width + 10, 0);
-                        }
+                        Size size = TextRenderer.MeasureText(itemText, fAutocompleteMenu.Font);
+                        size.Width += 10;
+                        if (size.Width > fAutocompleteMenu.MinimumSize.Width)
+                            fAutocompleteMenu.MinimumSize = new Size(size.Width, 0);
 
                         // Note: text     = text to replace
                         //       menuText = text as shown in the menu list
