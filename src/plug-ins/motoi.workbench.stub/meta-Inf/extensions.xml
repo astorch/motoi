@@ -17,9 +17,9 @@
   </extension>
   <extension point="org.motoi.application.toolbar">
     <toolbarGroup id="groupApplication" />
-    <toolbarItem id="appToolbarFileNew" group="groupApplication" handler="menu.FileMenuNewHandler" image="resources/images/File-New-24.png" label="New..."/>
+    <toolbarItem id="appToolbarFileNew" group="groupApplication" handler="menu.FileMenuNewHandler" image="resources/images/File-New-24.png" label="%Extensions_Toolbar_File_New"/>
     <!--<toolbarItem id="appToolbarFileOpen" group="groupApplication" handler="menu.FileMenuOpenHandler" image="resources/images/File-Open-24.png" label="Open..." />-->
-    <toolbarItem id="appToolbarFileSave" group="groupApplication" handler="menu.FileMenuSaveHandler" image="resources/images/File-Save-32.png" label="Save"/>
+    <toolbarItem id="appToolbarFileSave" group="groupApplication" handler="menu.FileMenuSaveHandler" image="resources/images/File-Save-32.png" label="%Extensions_Toolbar_File_Save"/>
   </extension>
   <extension point="org.motoi.platform.localization" >
     <localization id="motoi.workbench.stub" provider="Messages" resourcePath="resources/texts/messages" />

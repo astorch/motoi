@@ -21,6 +21,9 @@ namespace motoi.workbench.stub {
         public static readonly string Extensions_Menu_Window_Name;
         public static readonly string Extensions_Menu_Window_ShowViews;
 
+        public static readonly string Extensions_Toolbar_File_New;
+        public static readonly string Extensions_Toolbar_File_Save;
+
         public static readonly string NewWizard_Title;
         public static readonly string NewWizardOpeningPage_Title;
         public static readonly string NewWizardOpeningPage_Description;
