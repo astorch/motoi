@@ -1,3 +1,7 @@
 ﻿AbstractPerspective_CanCloseEditor_Dialog_Title=Hinweis
 AbstractPerspective_CanCloseEditor_Dialog_Header=Geänderte Inhalte speichern?
 AbstractPerspective_CanCloseEditor_Dialog_Text=Das Dokument beinhaltet ungespeicherte Änderungen. Wenn Sie ohne zu speichern fortfahren, gehen diese verloren.
+AbstractWizard_Button_Cancel=Abbrechen
+AbstractWizard_Button_Finish=Fertig
+AbstractWizard_Button_Next=Weiter >
+AbstractWizard_Button_Back=< Zurück

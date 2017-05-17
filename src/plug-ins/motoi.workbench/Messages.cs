@@ -14,5 +14,10 @@ namespace motoi.workbench {
         public static readonly string AbstractPerspective_CanCloseEditor_Dialog_Title;
         public static readonly string AbstractPerspective_CanCloseEditor_Dialog_Header;
         public static readonly string AbstractPerspective_CanCloseEditor_Dialog_Text;
+
+        public static readonly string AbstractWizard_Button_Cancel;
+        public static readonly string AbstractWizard_Button_Finish;
+        public static readonly string AbstractWizard_Button_Next;
+        public static readonly string AbstractWizard_Button_Back;
     }
 }

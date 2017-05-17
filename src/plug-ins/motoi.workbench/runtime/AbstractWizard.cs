@@ -37,10 +37,10 @@ namespace motoi.workbench.runtime {
             iDialog = UIFactory.NewShell<ITitledAreaDialog>();
             if (iDialog == null) return; // TODO Use throwHelper
 
-            iDialog.AddButton("Cancel", new ActionHandlerDelegate(Cancel));
-            iBtnFinish = iDialog.AddButton("Finish", new ActionHandlerDelegate(Finish));
-            iBtnNext = iDialog.AddButton("Next >", new ActionHandlerDelegate(NavigateNext));
-            iBtnPrev = iDialog.AddButton("< Back", new ActionHandlerDelegate(NavigateBack));
+            iDialog.AddButton(Messages.AbstractWizard_Button_Cancel, new ActionHandlerDelegate(Cancel));
+            iBtnFinish = iDialog.AddButton(Messages.AbstractWizard_Button_Finish, new ActionHandlerDelegate(Finish));
+            iBtnNext = iDialog.AddButton(Messages.AbstractWizard_Button_Next, new ActionHandlerDelegate(NavigateNext));
+            iBtnPrev = iDialog.AddButton(Messages.AbstractWizard_Button_Back, new ActionHandlerDelegate(NavigateBack));
 
             iBtnPrev.Enabled = false;
             iBtnFinish.Enabled = false;

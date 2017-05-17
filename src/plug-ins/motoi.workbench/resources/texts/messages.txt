@@ -1,3 +1,7 @@
 ﻿AbstractPerspective_CanCloseEditor_Dialog_Title=Information
 AbstractPerspective_CanCloseEditor_Dialog_Header=Save modified content?
 AbstractPerspective_CanCloseEditor_Dialog_Text=The document contains unsaved changes. If you continue closing the editor without saving they will be lost.
+AbstractWizard_Button_Cancel=Cancel
+AbstractWizard_Button_Finish=Finish
+AbstractWizard_Button_Next=Next >
+AbstractWizard_Button_Back=< Back
