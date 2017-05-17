@@ -76,6 +76,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{33BFCE94-04D9-4ED5-A5A0-F0D30CE92915}"
 	ProjectSection(SolutionItems) = preProject
 		ProductAssemblyInfo.cs = ProductAssemblyInfo.cs
+		WorkbenchProductAssemblyInfo.cs = WorkbenchProductAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.application.tests", "tests\motoi.platform.application.tests\motoi.platform.application.tests.csproj", "{F65009ED-1895-4155-9ED0-549D6CC4231B}"
