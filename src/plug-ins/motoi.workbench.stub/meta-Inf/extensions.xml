@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" ?>
 <extensions>
   <extension point="org.motoi.application.menu">
-    <menu id="windowMenu" label="%Extensions_Menu_Window_Name" />
+    <menu id="motoi.workbench.stub.windowMenu" label="%Extensions_Menu_Window_Name" />
     <menu id="motoi.workbench.stub.fileMenu" label="%Extensions_Menu_File_Name"/>
     <menuItem id="motoi.workbench.stub.fileMenuNew" menu="motoi.workbench.stub.fileMenu" label="%Extensions_Menu_File_New" handler="menu.FileMenuNewHandler" shortcut="N, Control" image="resources/images/File-New-24.png"/>
     <separator id="motoi.workbench.stub.fileMenuNewSeparator" menu="motoi.workbench.stub.fileMenu" insertAfter="motoi.workbench.stub.fileMenuNew"/>
