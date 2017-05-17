@@ -1,6 +1,8 @@
 bin
 obj
 packages
+tools
+.binaries
 _ReSharper.*/
 *.testsettings
 *.user
