@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using log4net;
 using motoi.extensions;
 using motoi.extensions.core;
+using motoi.platform.nls;
 using motoi.plugins.model;
 using motoi.platform.ui.images;
 using motoi.workbench.model;
@@ -38,6 +40,17 @@ namespace motoi.workbench.stub.registries {
                 IConfigurationElement category = categories[i];
                 string id = category["id"];
                 string label = category["label"];
+
+                // NLS support
+                if (label.StartsWith("%")){
+                    string nlsKey = label.Substring(1);
+                    string assemblyName = ExtensionService.Instance.GetProvidingBundle(category).Name;
+                    // We cannot use the AppDomain here, because the assembly must not have been loaded yet
+                    Assembly assembly = Assembly.Load(assemblyName); // TODO Check if this may be an issue
+                    string localizationId = NLS.GetLocalizationId(assembly);
+                    label = NLS.GetText(localizationId, nlsKey);
+                }
+
                 CategoryContribution contribution = new CategoryContribution { Id = id, Label = label };
                 idToCategoryMap.Add(id, contribution);
                 iContributions.Add(contribution);
@@ -73,7 +86,14 @@ namespace motoi.workbench.stub.registries {
                         iLog.ErrorFormat("Error on resolving image of wizard '{0}'. Reason: {1}", id, ex);
                     }
                 }
-                
+
+                // NLS support
+                if (label.StartsWith("%")) {
+                    string nlsKey = label.Substring(1);
+                    string localizationId = NLS.GetLocalizationId(wizardImpl);
+                    label = NLS.GetText(localizationId, nlsKey);
+                }
+
                 WizardContribution contribution = new WizardContribution { Id = id, Label = label, Category = category, Wizard = wizardImpl, Image = imageDescriptor};
 
                 // Is it a categorized item?
