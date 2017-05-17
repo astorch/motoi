@@ -92,6 +92,9 @@
     <Compile Include="controls\ListViewer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="controls\ContentAssistTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\RichTextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>

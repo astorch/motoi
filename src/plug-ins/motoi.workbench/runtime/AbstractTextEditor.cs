@@ -12,10 +12,7 @@ namespace motoi.workbench.runtime {
     public abstract class AbstractTextEditor : AbstractEditor, ITextEditor {
         private string iEditorText;
 
-        /// <summary>
-        /// Returns the text that is edited or does set it. Note that the setter won't raise 
-        /// a property changed event.
-        /// </summary>
+        /// <inheritdoc />
         public virtual string EditorText {
             get { return iEditorText; }
             set {
@@ -24,15 +21,10 @@ namespace motoi.workbench.runtime {
             }
         }
 
-        /// <summary>
-        /// Returns the editor input.
-        /// </summary>
+        /// <summary> Returns the editor input. </summary>
         public virtual IEditorInput EditorInput { get; private set; }
 
-        /// <summary>
-        /// Tells the editor to use the given <paramref name="editorInput"/>.
-        /// </summary>
-        /// <param name="editorInput">Editor input</param>
+        /// <inheritdoc />
         public override void SetEditorInput(IEditorInput editorInput) {
             IEditorInput input = editorInput;
 
@@ -50,21 +42,16 @@ namespace motoi.workbench.runtime {
             IsDirty = false;
         }
 
-        /// <summary>
-        /// Returns the currently used rich text box to display the text.
-        /// </summary>
-        protected IRichTextBox RichTextBox { get; private set; }
+        /// <summary> Returns the currently used rich text box to display the text. </summary>
+        protected IRichTextBox TextBox { get; private set; }
 
-        /// <summary>
-        /// Tells the instance to create its content using the given widget factory.
-        /// </summary>
-        /// <param name="gridComposite">Panel to place the content widgets of the editor</param>
+        /// <inheritdoc />
         public override void CreateContents(IGridPanel gridComposite) {
             gridComposite.GridColumns = 1;
             gridComposite.GridRows = 1;
-            IRichTextBox richTextBox = WidgetFactory.CreateInstance<IRichTextBox>(gridComposite);
+            IContentAssistTextBox richTextBox = WidgetFactory.CreateInstance<IContentAssistTextBox>(gridComposite);
             gridComposite.AddWidget(richTextBox);
-            RichTextBox = richTextBox;
+            TextBox = richTextBox;
 
             DataBindingOperator.Apply(richTextBox, PRichTextBox.TextProperty, new DataBinding(this, Name.Of(() => EditorText)));
         }

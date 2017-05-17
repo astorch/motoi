@@ -34,6 +34,9 @@ namespace motoi.ui.windowsforms {
             if (type.IsAssignableFrom(typeof(IRichTextBox)))
                 return new RichTextBox() as TWidget;
 
+            if (type.IsAssignableFrom(typeof(IContentAssistTextBox)))
+                return new ContentAssistTextBox() as TWidget;
+
             if (type.IsAssignableFrom(typeof(IComboBox)))
                 return new ComboBox() as TWidget;
 
