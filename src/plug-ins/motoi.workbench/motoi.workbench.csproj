@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{691F9CA7-639F-4FDD-AFF9-0BEAE6948288}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AppDesignerFolder>properties</AppDesignerFolder>
     <RootNamespace>motoi.workbench</RootNamespace>
     <AssemblyName>motoi.workbench</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
@@ -50,6 +50,9 @@
     <None Include="meta-Inf\extensions.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
+      <Link>properties\WorkbenchProductAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="bindings\WorkbenchPropertyChangedDispatcher.cs" />
     <Compile Include="events\IPerspectiveListener.cs" />
     <Compile Include="events\IWorkbenchListener.cs" />
@@ -72,7 +75,7 @@
     <Compile Include="model\IWorkbenchPart.cs" />
     <Compile Include="PerspectiveFactory.cs" />
     <Compile Include="PlatformUI.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="properties\AssemblyInfo.cs" />
     <Compile Include="registries\DataViewRegistry.cs" />
     <Compile Include="registries\EditorRegistry.cs" />
     <Compile Include="registries\IViewReference.cs" />

@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7CA52CC3-7E14-46DD-AD71-BC7BF858D7A8}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AppDesignerFolder>properties</AppDesignerFolder>
     <RootNamespace>motoi.workbench.workspaceexplorer</RootNamespace>
     <AssemblyName>motoi.workbench.workspaceexplorer</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
@@ -45,8 +45,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
+      <Link>properties\WorkbenchProductAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="WorkspaceDataView.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="meta-Inf\signature.mf" />

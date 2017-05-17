@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A20550E4-D0CA-451A-8D8C-CBDCF7E5A5B4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AppDesignerFolder>properties</AppDesignerFolder>
     <RootNamespace>motoi.workbench.problemsview</RootNamespace>
     <AssemblyName>motoi.workbench.problemsview</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
@@ -47,12 +47,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
+      <Link>properties\WorkbenchProductAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="EProblemsViewItemType.cs" />
     <Compile Include="IProblemsViewItemProvider.cs" />
     <Compile Include="ProblemsDataView.cs" />
     <Compile Include="ProblemsViewItemCollection.cs" />
     <Compile Include="ProblemsViewItem.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="meta-inf\signature.mf" />
