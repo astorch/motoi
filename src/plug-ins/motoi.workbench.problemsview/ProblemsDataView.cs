@@ -60,7 +60,7 @@ namespace motoi.workbench.problemsview {
         }
 
         /// <inheritdoc />
-        public override string Name { get { return "Problems"; } }
+        public override string Name { get { return Messages.ProblemsDataView_Name; } }
 
         /// <inheritdoc />
         public override ImageDescriptor Image { get { return null; } } // TODO Add image
@@ -134,10 +134,10 @@ namespace motoi.workbench.problemsview {
         /// Provides an implementation of <see cref="IListContentProvider"/> for the Problems Data View.
         /// </summary>
         class ProblemsViewListContentProvider : IListContentProvider {
-            public static readonly ColumnDescriptor DescriptionColumn = new ColumnDescriptor("Description", 600);
-            public static readonly ColumnDescriptor FileColumn = new ColumnDescriptor("File", 120);
-            public static readonly ColumnDescriptor LineColumn = new ColumnDescriptor("Line", 80);
-            public static readonly ColumnDescriptor ColumnColumn = new ColumnDescriptor("Column", 80);
+            public static readonly ColumnDescriptor DescriptionColumn = new ColumnDescriptor(Messages.ProblemsDataView_ColumnDescription_Name, 600);
+            public static readonly ColumnDescriptor FileColumn = new ColumnDescriptor(Messages.ProblemsDataView_ColumnFile_Name, 120);
+            public static readonly ColumnDescriptor LineColumn = new ColumnDescriptor(Messages.ProblemsDataView_ColumnLine_Name, 80);
+            public static readonly ColumnDescriptor ColumnColumn = new ColumnDescriptor(Messages.ProblemsDataView_ColumnColumn_Name, 80);
 
             /// <inheritdoc />
             public object[] GetElements(object input) {
@@ -170,7 +170,13 @@ namespace motoi.workbench.problemsview {
             public string GetText(object item) {
                 ProblemsViewItemCollection itemCollection = item as ProblemsViewItemCollection;
                 if (itemCollection == null) return null;
-                return itemCollection.Kind.ToString();
+
+                EProblemsViewItemType itemType = itemCollection.Kind;
+                if (itemType == EProblemsViewItemType.Error) return Messages.ProblemsViewItemType_Error;
+                if (itemType == EProblemsViewItemType.Warning) return Messages.ProblemsViewItemType_Warning;
+                if (itemType == EProblemsViewItemType.Info) return Messages.ProblemsViewItemType_Info;
+                
+                return itemType.ToString();
             }
 
             /// <inheritdoc />

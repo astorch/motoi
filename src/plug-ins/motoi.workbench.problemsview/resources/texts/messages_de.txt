@@ -1,0 +1,8 @@
+﻿ProblemsDataView_Name=Probleme
+ProblemsDataView_ColumnDescription_Name=Beschreibung
+ProblemsDataView_ColumnFile_Name=Datei
+ProblemsDataView_ColumnLine_Name=Zeile
+ProblemsDataView_ColumnColumn_Name=Spalte
+ProblemsViewItemType_Error=Fehler
+ProblemsViewItemType_Warning=Warnung
+ProblemsViewItemType_Info=Hinweis

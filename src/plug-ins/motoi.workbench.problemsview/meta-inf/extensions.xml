@@ -3,4 +3,7 @@
   <extension point="org.motoi.ui.dataview">
     <editor id="motoi.workbench.problemsview.problemsDataView" class="ProblemsDataView"/>
   </extension>
+  <extension point="org.motoi.platform.localization" >
+    <localization id="motoi.workbench.problemsview" provider="Messages" resourcePath="resources/texts/messages" />
+  </extension>
 </extensions>
