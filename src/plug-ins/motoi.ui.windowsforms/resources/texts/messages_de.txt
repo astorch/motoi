@@ -1,0 +1,4 @@
+﻿MessageDialogWindow_Button_Ok=OK
+MessageDialogWindow_Button_Cancel=Abbrechen
+MessageDialogWindow_Button_No=Nein
+MessageDialogWindow_Button_Yes=Ja

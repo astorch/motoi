@@ -3,4 +3,7 @@
   <extension point="org.motoi.ui.provider">
     <provider id="motoi.ui.windowsforms" class="WinformsUIProvider" />
   </extension>
+  <extension point="org.motoi.platform.localization" >
+    <localization id="motoi.ui.windowsforms" provider="Messages" resourcePath="resources/texts/messages" />
+  </extension>
 </extensions>

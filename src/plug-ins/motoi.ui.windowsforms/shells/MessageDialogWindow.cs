@@ -67,12 +67,17 @@ namespace motoi.ui.windowsforms.shells {
             return dialogResult;
         }
 
-        private string LocalizeText(EMessageDialogResult item) {
-            if (item == EMessageDialogResult.Ok) return "OK";
-            if (item == EMessageDialogResult.Cancel) return "Cancel";
-            if (item == EMessageDialogResult.No) return "No";
-            if (item == EMessageDialogResult.Yes) return "Yes";
-            return string.Empty;
+        /// <summary>
+        /// Returns the localized text of the given <paramref name="resultItem"/>.
+        /// </summary>
+        /// <param name="resultItem">Item to localize</param>
+        /// <returns>Localized result item text</returns>
+        private string LocalizeText(EMessageDialogResult resultItem) {
+            if (resultItem == EMessageDialogResult.Ok) return Messages.MessageDialogWindow_Button_Ok;
+            if (resultItem == EMessageDialogResult.Cancel) return Messages.MessageDialogWindow_Button_Cancel;
+            if (resultItem == EMessageDialogResult.No) return Messages.MessageDialogWindow_Button_No;
+            if (resultItem == EMessageDialogResult.Yes) return Messages.MessageDialogWindow_Button_Yes;
+            return resultItem.ToString();
         }
 
         private Image GetImageForDialogType(EMessageDialogType dialogType) {

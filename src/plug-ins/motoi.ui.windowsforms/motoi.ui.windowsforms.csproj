@@ -114,6 +114,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="jobs\ProgressMonitor.cs" />
+    <Compile Include="Messages.cs" />
     <Compile Include="messaging\MessageReceivedEventArgs.cs" />
     <Compile Include="messaging\UIMessageDispatchListener.cs" />
     <Compile Include="ServiceFactory.cs" />
@@ -169,6 +170,10 @@
     <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj">
       <Project>{3e6c6d06-c212-448e-bb34-11cdafa697e8}</Project>
       <Name>motoi.platform.commons</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj">
+      <Project>{3af75cde-1d3d-40ed-8e79-eb8c6f499b3b}</Project>
+      <Name>motoi.platform.nls</Name>
     </ProjectReference>
     <ProjectReference Include="..\motoi.platform.resources\motoi.platform.resources.csproj">
       <Project>{4208230d-11f4-47d9-843a-493e89c5417e}</Project>
@@ -230,6 +235,12 @@
   <ItemGroup>
     <EmbeddedResource Include="resources\images\Info-64.png" />
     <EmbeddedResource Include="resources\images\Question-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\texts\messages.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\texts\messages_de.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
