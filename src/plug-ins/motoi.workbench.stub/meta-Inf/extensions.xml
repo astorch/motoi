@@ -10,7 +10,7 @@
     <separator id="motoi.workbench.stub.fileMenuCloseSeparator" menu="motoi.workbench.stub.fileMenu" insertBefore="motoi.workbench.stub.fileMenuExit"/>
     <menuItem id="motoi.workbench.stub.fileMenuExit" menu="motoi.workbench.stub.fileMenu" label="%Extensions_Menu_File_Exit" handler="menu.FileMenuExitHandler" shortcut="Q, Control" image="resources/images/Exit-24.png"/>
     
-    <menuItem id="windowMenuShowViews" menu="windowMenu" label="%Extensions_Menu_Window_ShowViews" handler="menu.WindowMenuShowViewsMenuHandler" />
+    <menuItem id="motoi.workbench.stub.windowMenuShowViews" menu="motoi.workbench.stub.windowMenu" label="%Extensions_Menu_Window_ShowViews" handler="menu.WindowMenuShowViewsMenuHandler" />
     
     <!--    <menu id="helpMenu" label="&#38;Help"/>-->
     <!--    <menuItem id="helpMenuAbout" menu="helpMenu" label="&#38;About" image="images/About-64.png"/>-->
