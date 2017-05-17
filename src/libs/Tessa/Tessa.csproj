@@ -70,6 +70,7 @@
     <OutputPath>..\..\..\bin\debug\</OutputPath>
     <DocumentationFile>..\..\..\bin\debug\Tessa.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -78,6 +79,8 @@
     <DocumentationFile>bin\Release\Tessa.XML</DocumentationFile>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
