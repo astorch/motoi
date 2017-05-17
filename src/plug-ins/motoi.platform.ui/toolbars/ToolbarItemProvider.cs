@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using motoi.extensions;
 using motoi.extensions.core;
+using motoi.platform.nls;
 using motoi.platform.ui.actions;
 using motoi.platform.ui.shells;
 using motoi.plugins.model;
@@ -63,6 +64,13 @@ namespace motoi.platform.ui.toolbars {
                 if (!string.IsNullOrEmpty(image)) {
                     imageStream = providingBundle.GetAssemblyResourceAsStream(image);
                     streamList.Add(imageStream);
+                }
+
+                // NLS support
+                if (label.StartsWith("%")) {
+                    string nlsKey = label.Substring(1);
+                    string localizationId = NLS.GetLocalizationId(actionHandler);
+                    label = NLS.GetText(localizationId, nlsKey);
                 }
 
                 ToolbarItemContribution menuItem = new ToolbarItemContribution(id, group, actionHandler, label, imageStream);
