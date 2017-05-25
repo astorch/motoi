@@ -1,4 +1,5 @@
-﻿using motoi.platform.ui.actions;
+﻿using System.Linq;
+using motoi.platform.ui.actions;
 using motoi.platform.ui.data;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
@@ -6,7 +7,6 @@ using motoi.platform.ui.shells;
 using motoi.platform.ui.widgets;
 using motoi.workbench.model;
 using motoi.workbench.registries;
-using Xcite.Collections;
 
 namespace motoi.workbench.stub.menu {
     /// <summary>
@@ -32,7 +32,7 @@ namespace motoi.workbench.stub.menu {
             bool closedOk = false;
             listViewer.ContentProvider = new ListViewerContentProviderImpl();
             listViewer.LabelProvider = new ListViewerLabelProviderImpl();
-            listViewer.Input = DataViewRegistry.Instance.GetViewReferences().ToArray();
+            listViewer.Input = DataViewRegistry.Instance.GetViewReferences().OrderBy(view => view.Title).ToArray();
             listViewer.Update();
             listViewer.SelectionChanged += (sender, args) => selectedViewReference = (IViewReference) args.Selection;
             dialogWindow.AddButton(Messages.WindowMenuShowViewsMenuHandler_DialogButtonCancel, 
