@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" ?>
 <extensions>
   <extension point="org.motoi.ui.dataview">
-    <editor id="motoi.workbench.problemsview.problemsDataView" class="ProblemsDataView"/>
+    <editor id="motoi.workbench.problemsview.problemsDataView" class="ProblemsDataView" label="%Extensions_ProblemsView_Label"/>
   </extension>
   <extension point="org.motoi.platform.localization" >
     <localization id="motoi.workbench.problemsview" provider="Messages" resourcePath="resources/texts/messages" />

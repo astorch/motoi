@@ -1,4 +1,5 @@
-﻿ProblemsDataView_Name=Problems
+﻿Extensions_ProblemsView_Label=Problems
+ProblemsDataView_Name=Problems
 ProblemsDataView_ColumnDescription_Name=Description
 ProblemsDataView_ColumnFile_Name=File
 ProblemsDataView_ColumnLine_Name=Line

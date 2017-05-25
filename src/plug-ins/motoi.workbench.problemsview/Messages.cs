@@ -11,6 +11,8 @@ namespace motoi.workbench.problemsview {
             LoadMessages();
         }
 
+        public static readonly string Extensions_ProblemsView_Label;
+
         public static readonly string ProblemsDataView_Name;
         public static readonly string ProblemsDataView_ColumnDescription_Name;
         public static readonly string ProblemsDataView_ColumnFile_Name;
