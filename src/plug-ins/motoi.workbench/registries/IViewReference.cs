@@ -1,9 +1,7 @@
 ﻿using motoi.platform.ui;
 
 namespace motoi.workbench.registries {
-    /// <summary>
-    /// Describes a reference of a view.
-    /// </summary>
+    /// <summary> Describes a reference of a view. </summary>
     public interface IViewReference {
         /// <summary> Returns the id of the view. </summary>
         string Id { get; }

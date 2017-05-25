@@ -4,6 +4,7 @@ using System.Linq;
 using log4net;
 using motoi.extensions;
 using motoi.extensions.core;
+using motoi.platform.nls;
 using motoi.platform.ui;
 using motoi.plugins.model;
 using motoi.workbench.model;
@@ -30,7 +31,7 @@ namespace motoi.workbench.registries {
         public IEnumerable<IViewReference> GetViewReferences() {
             for (int i = -1; ++i != iRegisteredDataViews.Count;) {
                 DataViewContribution dataViewContribution = iRegisteredDataViews[i];
-                yield return new ViewReferenceImpl(dataViewContribution.DataViewId, dataViewContribution.DataViewType.Name);
+                yield return new ViewReferenceImpl(dataViewContribution.DataViewId, dataViewContribution.DataViewLabel);
             }
         }
 
@@ -104,8 +105,12 @@ namespace motoi.workbench.registries {
 
                 string id = configurationElement["id"];
                 string cls = configurationElement["class"];
+                string label = configurationElement["label"];
 
-                iLog.DebugFormat("Registering contribution {{id: '{0}', cls: '{1}'}}", id, cls);
+                if (string.IsNullOrEmpty(label))
+                    label = id;
+
+                iLog.DebugFormat("Registering contribution {{id: '{0}', cls: '{1}', label: '{2}'}}", id, cls, label);
 
                 if (string.IsNullOrWhiteSpace(id)) {
                     iLog.ErrorFormat("Id attribute of data view extension contribution is null or empty!");
@@ -120,10 +125,20 @@ namespace motoi.workbench.registries {
                 IBundle providingBundle = ExtensionService.Instance.GetProvidingBundle(configurationElement);
                 try {
                     Type dataViewType = TypeLoader.TypeForName(providingBundle, cls);
+
+                    // NLS support
+                    if (label.StartsWith("%")) {
+                        string nlsKey = label.Substring(1);
+                        string localizationId = NLS.GetLocalizationId(dataViewType);
+                        label = NLS.GetText(localizationId, nlsKey);
+                    }
+
                     DataViewContribution dataViewContribution = new DataViewContribution {
                         DataViewId = id,
                         DataViewType = dataViewType,
+                        DataViewLabel = label
                     };
+
                     iRegisteredDataViews.Add(dataViewContribution);
                     iLog.InfoFormat("Data view contribution '{0}' registered.", id);
                 } catch (Exception ex) {
@@ -146,8 +161,8 @@ namespace motoi.workbench.registries {
         class ViewReferenceImpl : IViewReference {
             /// <inheritdoc />
             public ViewReferenceImpl(string id, string title) {
-                if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("id");
-                if (string.IsNullOrEmpty(title)) throw new ArgumentNullException("title");
+                if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
+                if (string.IsNullOrEmpty(title)) throw new ArgumentNullException(nameof(title));
                 Id = id;
                 Title = title;
             }
@@ -164,19 +179,16 @@ namespace motoi.workbench.registries {
             public string Title { get; private set; }
         }
 
-        /// <summary>
-        /// Describes a contribution of a data view.
-        /// </summary>
+        /// <summary> Describes a contribution of a data view. </summary>
         class DataViewContribution {
-            /// <summary>
-            /// Returns the id of the data view or does set it.
-            /// </summary>
+            /// <summary> Returns the id of the data view or does set it. </summary>
             public string DataViewId { get; set; }
 
-            /// <summary>
-            /// Returns the <see cref="Type"/> of the data view or does set it.
-            /// </summary>
+            /// <summary> Returns the <see cref="Type"/> of the data view or does set it. </summary>
             public Type DataViewType { get; set; }
+
+            /// <summary> Returns the label of the data view. </summary>
+            public string DataViewLabel { get; set; }
         }
     }
 }
