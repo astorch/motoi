@@ -133,6 +133,42 @@ namespace motoi.platform.nls {
         static private readonly ILog fLogWriter = LogManager.GetLogger(typeof(NLS));
 
         /// <summary>
+        /// Localizes the given <paramref name="key"/> by deriving the localization id from 
+        /// the given <paramref name="assembly"/>. If the key doesn't start with a '%', 
+        /// the key itself is returned.
+        /// </summary>
+        /// <param name="key">Key to localize. Should start with an '%'</param>
+        /// <param name="assembly">Assembly the localization id is derived from</param>
+        /// <returns>The key itself or the localized text</returns>
+        static public string Localize(string key, Assembly assembly) {
+            return LocalizeInternal(key, assembly, GetLocalizationId);
+        }
+
+        /// <summary>
+        /// Localizes the given <paramref name="key"/> by deriving the localization id from 
+        /// the given <paramref name="type"/>. If the key doesn't start with a '%', 
+        /// the key itself is returned.
+        /// </summary>
+        /// <param name="key">Key to localize. Should start with an '%'</param>
+        /// <param name="type">Type the localization id is derived from</param>
+        /// <returns>The key itself or the localized text</returns>
+        static public string Localize(string key, Type type) {
+            return LocalizeInternal(key, type, GetLocalizationId);
+        }
+
+        /// <summary>
+        /// Localizes the given <paramref name="key"/> by deriving the localization id from 
+        /// the given <paramref name="obj"/>. If the key doesn't start with a '%', 
+        /// the key itself is returned.
+        /// </summary>
+        /// <param name="key">Key to localize. Should start with an '%'</param>
+        /// <param name="obj">Object the localization id is derived from</param>
+        /// <returns>The key itself or the localized text</returns>
+        static public string Localize(string key, object obj) {
+            return LocalizeInternal(key, obj, GetLocalizationId);
+        }
+
+        /// <summary>
         /// Returns the localized text of the <paramref name="key"/> that is associated with the given 
         /// <paramref name="localizationId"/>. If any argument is NULL or empty, the key is not mapped 
         /// or the key is not accessible through a missing field in the provider type, NULL is returned. 
@@ -191,6 +227,35 @@ namespace motoi.platform.nls {
         /// <returns>Localization id or NULL</returns>
         static public string GetLocalizationId(object obj) {
             return GetLocalizationId(obj?.GetType());
+        }
+
+        /// <summary>
+        /// Localizes the given <paramref name="key"/> with the help of the given <paramref name="getLocalizationId"/> 
+        /// method. The key is checked if it's localized before. If the key is not localized, this method 
+        /// returns the key itself.
+        /// </summary>
+        /// <typeparam name="TArg">Argument type of the <paramref name="getLocalizationId"/> method</typeparam>
+        /// <param name="key">Key to localize</param>
+        /// <param name="arg">Argument of the <paramref name="getLocalizationId"/> method</param>
+        /// <param name="getLocalizationId">Method that provides the localization id based on the given <paramref name="arg"/></param>
+        /// <returns>The key itself or the localized text</returns>
+        static private string LocalizeInternal<TArg>(string key, TArg arg, Func<TArg, string> getLocalizationId) {
+            if (!IsLocalized(key)) return key;
+            string baseKey = key.Substring(1);
+            string localizationId = getLocalizationId(arg);
+            return GetText(localizationId, baseKey);
+        }
+
+        /// <summary>
+        /// Returns TRUE if the given <paramref name="key"/> indicates a localization. This is the case 
+        /// if the key starts with an '%' character.
+        /// </summary>
+        /// <param name="key">Key to check</param>
+        /// <returns>TRUE or FALSE</returns>
+        static private bool IsLocalized(string key) {
+            if (string.IsNullOrEmpty(key)) return false;
+            if (key[0] != '%') return false;
+            return true;
         }
     }
 }
