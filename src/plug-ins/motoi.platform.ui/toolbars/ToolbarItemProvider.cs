@@ -67,11 +67,7 @@ namespace motoi.platform.ui.toolbars {
                 }
 
                 // NLS support
-                if (label.StartsWith("%")) {
-                    string nlsKey = label.Substring(1);
-                    string localizationId = NLS.GetLocalizationId(actionHandler);
-                    label = NLS.GetText(localizationId, nlsKey);
-                }
+                label = NLS.Localize(label, actionHandler);
 
                 ToolbarItemContribution menuItem = new ToolbarItemContribution(id, group, actionHandler, label, imageStream);
                 ToolbarGroupContribution menuInstance;

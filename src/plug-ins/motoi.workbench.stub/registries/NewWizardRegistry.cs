@@ -88,11 +88,7 @@ namespace motoi.workbench.stub.registries {
                 }
 
                 // NLS support
-                if (label.StartsWith("%")) {
-                    string nlsKey = label.Substring(1);
-                    string localizationId = NLS.GetLocalizationId(wizardImpl);
-                    label = NLS.GetText(localizationId, nlsKey);
-                }
+                label = NLS.Localize(label, wizardImpl);
 
                 WizardContribution contribution = new WizardContribution { Id = id, Label = label, Category = category, Wizard = wizardImpl, Image = imageDescriptor};
 

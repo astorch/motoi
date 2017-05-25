@@ -127,11 +127,7 @@ namespace motoi.workbench.registries {
                     Type dataViewType = TypeLoader.TypeForName(providingBundle, cls);
 
                     // NLS support
-                    if (label.StartsWith("%")) {
-                        string nlsKey = label.Substring(1);
-                        string localizationId = NLS.GetLocalizationId(dataViewType);
-                        label = NLS.GetText(localizationId, nlsKey);
-                    }
+                    label = NLS.Localize(label, dataViewType);
 
                     DataViewContribution dataViewContribution = new DataViewContribution {
                         DataViewId = id,

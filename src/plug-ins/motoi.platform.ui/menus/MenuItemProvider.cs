@@ -104,11 +104,7 @@ namespace motoi.platform.ui.menus {
                     }
 
                     // NLS support
-                    if (label.StartsWith("%")) {
-                        string nlsKey = label.Substring(1);
-                        string localizationId = NLS.GetLocalizationId(actionHandler);
-                        label = NLS.GetText(localizationId, nlsKey);
-                    }
+                    label = NLS.Localize(label, actionHandler);
 
                     MenuItemContribution menuItem = new MenuItemContribution(id, label, menu, actionHandler, shortcut, imageStream);
                     MenuContribution menuInstance;
