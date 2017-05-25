@@ -3,7 +3,6 @@ using System.IO;
 using motoi.platform.resources;
 using motoi.platform.resources.model;
 using motoi.platform.resources.runtime.editors;
-using motoi.platform.ui;
 using motoi.platform.ui.data;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
@@ -78,7 +77,7 @@ namespace motoi.workbench.workspaceexplorer {
         /// <summary>
         /// Returns the name of the data view.
         /// </summary>
-        public string Name { get { return "Workspace Explorer"; } }
+        public string Name { get { return Messages.WorkspaceDataView_Name; } }
 
         /// <summary>
         /// Returns the image of the data view.

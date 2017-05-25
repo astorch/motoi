@@ -1,1 +1,2 @@
 ﻿Extensions_WorkspaceExploreryView_Label=Arbeitsbereich
+WorkspaceDataView_Name=Arbeitsbereich

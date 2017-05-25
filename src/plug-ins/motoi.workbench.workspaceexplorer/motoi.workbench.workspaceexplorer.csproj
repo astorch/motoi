@@ -48,6 +48,7 @@
     <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
       <Link>properties\WorkbenchProductAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Messages.cs" />
     <Compile Include="WorkspaceDataView.cs" />
     <Compile Include="properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -69,6 +70,10 @@
       <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
       <Name>Xcite.Csharp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj">
+      <Project>{3af75cde-1d3d-40ed-8e79-eb8c6f499b3b}</Project>
+      <Name>motoi.platform.nls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\motoi.platform.resources\motoi.platform.resources.csproj">
       <Project>{4208230d-11f4-47d9-843a-493e89c5417e}</Project>
       <Name>motoi.platform.resources</Name>
@@ -88,6 +93,10 @@
   <ItemGroup>
     <EmbeddedResource Include="resources\images\File-32.png" />
     <EmbeddedResource Include="resources\images\Folder-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\texts\messages_de.txt" />
+    <EmbeddedResource Include="resources\texts\messages.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

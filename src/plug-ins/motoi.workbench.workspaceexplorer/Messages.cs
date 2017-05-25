@@ -12,5 +12,7 @@ namespace motoi.workbench.workspaceexplorer {
         }
 
         public static readonly string Extensions_WorkspaceExploreryView_Label;
+
+        public static readonly string WorkspaceDataView_Name;
     }
 }

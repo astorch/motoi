@@ -1,1 +1,2 @@
 ﻿Extensions_WorkspaceExploreryView_Label=Workspace Explorer
+WorkspaceDataView_Name=Workspace Explorer
