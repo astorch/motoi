@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" ?>
 <extensions>
   <extension point="org.motoi.ui.dataview">
-    <editor id="motoi.workbench.workspaceexplorer.workspaceDataView" class="WorkspaceDataView"/>
+    <editor id="motoi.workbench.workspaceexplorer.workspaceDataView" class="WorkspaceDataView" label="%Extensions_WorkspaceExploreryView_Label"/>
+  </extension>
+  <extension point="org.motoi.platform.localization" >
+    <localization id="motoi.workbench.workspaceexplorer" provider="Messages" resourcePath="resources/texts/messages" />
   </extension>
 </extensions>

@@ -1,0 +1,1 @@
+﻿Extensions_WorkspaceExploreryView_Label=Arbeitsbereich
