@@ -1,1 +1,2 @@
-﻿PropertyDataView_Name=Eigenschaften
+﻿Extensions_PropertyView_Label=Eigenschaften
+PropertyDataView_Name=Eigenschaften

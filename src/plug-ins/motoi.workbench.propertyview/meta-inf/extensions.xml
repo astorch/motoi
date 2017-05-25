@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" ?>
 <extensions>
   <extension point="org.motoi.ui.dataview">
-    <editor id="motoi.workbench.propertyview.propertyDataView" class="PropertyDataView"/>
+    <editor id="motoi.workbench.propertyview.propertyDataView" class="PropertyDataView" label="%Extensions_PropertyView_Label"/>
   </extension>
   <extension point="org.motoi.platform.localization" >
     <localization id="motoi.workbench.propertyview" provider="Messages" resourcePath="resources/texts/messages" />

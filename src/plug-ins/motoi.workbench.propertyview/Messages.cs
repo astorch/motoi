@@ -11,6 +11,8 @@ namespace motoi.workbench.propertyview {
             LoadMessages();
         }
 
+        public static readonly string Extensions_PropertyView_Label;
+
         public static readonly string PropertyDataView_Name;
     }
 }
