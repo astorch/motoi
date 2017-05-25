@@ -28,10 +28,10 @@ namespace motoi.workbench.stub {
         public static readonly string NewWizardOpeningPage_Title;
         public static readonly string NewWizardOpeningPage_Description;
 
+        public static readonly string WindowMenuShowViewsMenuHandler_ColumnViews_Name;
         public static readonly string WindowMenuShowViewsMenuHandler_DialogTitle;
         public static readonly string WindowMenuShowViewsMenuHandler_DialogDescription;
         public static readonly string WindowMenuShowViewsMenuHandler_DialogButtonOk;
         public static readonly string WindowMenuShowViewsMenuHandler_DialogButtonCancel;
-
     }
 }

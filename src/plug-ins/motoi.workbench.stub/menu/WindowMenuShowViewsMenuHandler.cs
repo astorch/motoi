@@ -107,7 +107,7 @@ namespace motoi.workbench.stub.menu {
             }
 
             /// <inheritdoc />
-            public ColumnDescriptor[] Columns { get { return new[] {new ColumnDescriptor("Views", 400)}; } }
+            public ColumnDescriptor[] Columns { get { return new[] {new ColumnDescriptor(Messages.WindowMenuShowViewsMenuHandler_ColumnViews_Name, 400)}; } }
         }
     }
 }
