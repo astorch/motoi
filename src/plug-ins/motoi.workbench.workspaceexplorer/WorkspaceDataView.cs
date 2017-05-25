@@ -7,15 +7,12 @@ using motoi.platform.ui.data;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
 using motoi.platform.ui.widgets;
-using motoi.workbench.model;
 using motoi.workbench.runtime;
 using Xcite.Collections;
 
 namespace motoi.workbench.workspaceexplorer {
-    /// <summary>
-    /// Provides a view of the current workspace content.
-    /// </summary>
-    public class WorkspaceDataView : AbstractWorkbenchPart, IDataView {
+    /// <summary> Provides a view of the current workspace content. </summary>
+    public class WorkspaceDataView : AbstractDataView {
         /// <summary>
         /// Data view id of this class.
         /// </summary>
@@ -24,16 +21,11 @@ namespace motoi.workbench.workspaceexplorer {
         private static readonly ImageDescriptor DataViewImage = ImageDescriptor.Create("images.explorer", "resources/images/Explorer-32.png");
         
         private IWorkspace iWorkspaceReference;
-        
-        /// <summary>
-        /// Returns the widget factory that can be used to create widgets or does set it.
-        /// </summary>
+
+        /// <inheritdoc />
         public override IWidgetFactory WidgetFactory { get; set; }
 
-        /// <summary>
-        /// Tells the editor to create its content using the given widget factory.
-        /// </summary>
-        /// <param name="gridComposite">Panel to place the content widgets of the editor</param>
+        /// <inheritdoc />
         public override void CreateContents(IGridPanel gridComposite) {
             gridComposite.GridColumns = 1;
             gridComposite.GridRows = 1;
@@ -67,22 +59,16 @@ namespace motoi.workbench.workspaceexplorer {
             PlatformUI.Instance.Workbench.ActivePerspective.OpenEditor(fileEditorInput);
         }
 
-        /// <summary>
-        /// Tells the instance to initialize its state.
-        /// </summary>
-        public void Init() {
+        /// <inheritdoc />
+        public override void Init() {
             iWorkspaceReference = ResourceService.Instance.Workspace;
         }
 
-        /// <summary>
-        /// Returns the name of the data view.
-        /// </summary>
-        public string Name { get { return Messages.WorkspaceDataView_Name; } }
+        /// <inheritdoc />
+        public override string Name { get { return Messages.WorkspaceDataView_Name; } }
 
-        /// <summary>
-        /// Returns the image of the data view.
-        /// </summary>
-        public ImageDescriptor Image { get { return DataViewImage; } }
+        /// <inheritdoc />
+        public override ImageDescriptor Image { get { return DataViewImage; } }
 
         /// <summary>
         /// Provides an implementation of <see cref="ITreeLabelProvider"/> for <see cref="IWorkspace"/> data.

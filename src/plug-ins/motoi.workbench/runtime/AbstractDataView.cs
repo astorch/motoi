@@ -6,19 +6,13 @@ namespace motoi.workbench.runtime {
     /// Provides an abstract implementation of <see cref="IDataView"/> based on <see cref="AbstractWorkbenchPart"/>.
     /// </summary>
     public abstract class AbstractDataView : AbstractWorkbenchPart, IDataView {
-        /// <summary>
-        /// Tells the instance to initialize its state.
-        /// </summary>
+        /// <summary> Tells the instance to initialize its state. </summary>
         public abstract void Init();
 
-        /// <summary>
-        /// Returns the name of the data view.
-        /// </summary>
+        /// <summary> Returns the name of the data view. </summary>
         public abstract string Name { get; }
 
-        /// <summary>
-        /// Returns the image of the data view.
-        /// </summary>
+        /// <summary> Returns the image of the data view. </summary>
         public abstract ImageDescriptor Image { get; }
     }
 }
