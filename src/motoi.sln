@@ -83,6 +83,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.application.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.nls", "plug-ins\motoi.platform.nls\motoi.platform.nls.csproj", "{3AF75CDE-1D3D-40ED-8E79-EB8C6F499B3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench.errorsview", "plug-ins\motoi.workbench.errorsview\motoi.workbench.errorsview.csproj", "{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -371,6 +373,18 @@ Global
 		{3AF75CDE-1D3D-40ED-8E79-EB8C6F499B3B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3AF75CDE-1D3D-40ED-8E79-EB8C6F499B3B}.Release|x86.ActiveCfg = Release|Any CPU
 		{3AF75CDE-1D3D-40ED-8E79-EB8C6F499B3B}.Release|x86.Build.0 = Release|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Debug|x86.Build.0 = Debug|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Default|x86.ActiveCfg = Debug|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Default|x86.Build.0 = Debug|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Release|x86.ActiveCfg = Release|Any CPU
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -402,6 +416,7 @@ Global
 		{71A712F1-9E59-444A-B268-E4EBD8ED4E0F} = {2D625362-0E98-490D-AD94-190C16329052}
 		{F65009ED-1895-4155-9ED0-549D6CC4231B} = {AC480322-E26F-431F-8B31-D58B8CB04B06}
 		{3AF75CDE-1D3D-40ED-8E79-EB8C6F499B3B} = {6C435A6E-D4CF-43AA-9B24-60DD2DCB9343}
+		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A} = {ADFEE464-B721-4422-95E5-992493B92A69}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = SharpUltra.vsmdi
