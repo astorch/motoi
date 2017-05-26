@@ -44,9 +44,6 @@ namespace motoi.platform.nls {
                                     : localizationId;
 
             try {
-                // Set up platform language
-                NL = (string) Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Process)["motoi:nl"] ?? "en_US";
-
                 // Grab fields to set up
                 FieldInfo[] fields = nlsAccessType.GetFields(FieldBindingFlags);
 
@@ -122,15 +119,21 @@ namespace motoi.platform.nls {
                 messageSet[key] = text;
             }
         }
-
-        /// <summary> Returns the current set natural language of the platform. </summary>
-        static public string NL { get; private set; }
     }
 
     /// <summary> Provides non-generic access to NLS features. </summary>
     public abstract class NLS {
         internal const BindingFlags FieldBindingFlags = BindingFlags.Public | BindingFlags.Static;
         static private readonly ILog fLogWriter = LogManager.GetLogger(typeof(NLS));
+
+        /// <summary>  Set up NL property once </summary>
+        static NLS() {
+            // Set up platform language
+            NL = (string)Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Process)["motoi:nl"] ?? "en_US";
+        }
+
+        /// <summary> Returns the current set natural language of the platform. </summary>
+        static public string NL { get; private set; }
 
         /// <summary>
         /// Localizes the given <paramref name="key"/> by deriving the localization id from 
@@ -253,7 +256,7 @@ namespace motoi.platform.nls {
         /// <param name="key">Key to check</param>
         /// <returns>TRUE or FALSE</returns>
         static private bool IsLocalized(string key) {
-            if (string.IsNullOrEmpty(key)) return false;
+            if (String.IsNullOrEmpty(key)) return false;
             if (key[0] != '%') return false;
             return true;
         }
