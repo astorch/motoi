@@ -1,0 +1,6 @@
+﻿Name: Motoi Workbench Error Log View
+SymbolicName: motoi.workbench.errorlogview
+Version: 0.0.1
+Activator: -
+Vendor: bumblebee dev team
+Dependencies: 

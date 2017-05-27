@@ -4,8 +4,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("motoi.workbench.errorsview")]
-[assembly: AssemblyDescription("Implements the workbench errors view")]
+[assembly: AssemblyTitle("motoi.workbench.errorlogview")]
+[assembly: AssemblyDescription("Implements the workbench error log view")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

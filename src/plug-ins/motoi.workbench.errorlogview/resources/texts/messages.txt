@@ -1,0 +1,5 @@
+﻿Extensions_ErrorLogView_Label=Error Log
+ErrorLogDataView_Name=Error Log
+ErrorLogDataView_ColumnMessage_Name=Message
+ErrorLogDataView_ColumnPlugin_Name=Plug-in
+ErrorLogDataView_ColumnDate_Name=Date

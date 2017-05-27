@@ -83,7 +83,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.application.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.nls", "plug-ins\motoi.platform.nls\motoi.platform.nls.csproj", "{3AF75CDE-1D3D-40ED-8E79-EB8C6F499B3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench.errorsview", "plug-ins\motoi.workbench.errorsview\motoi.workbench.errorsview.csproj", "{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench.errorlogview", "plug-ins\motoi.workbench.errorlogview\motoi.workbench.errorlogview.csproj", "{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
