@@ -13,9 +13,7 @@ using motoi.workbench.runtime;
 using Xcite.Csharp.lang;
 
 namespace motoi.workbench.problemsview {
-    /// <summary>
-    /// Provides a view of problems that occurred within an opened editor.
-    /// </summary>
+    /// <summary> Implements a view of problems that occurred within an opened editor. </summary>
     public class ProblemsDataView : AbstractDataView, IPerspectiveListener, IMessageConsumer {
         /// <summary> Data view id of this class. </summary>
         // ReSharper disable once UnusedMember.Global

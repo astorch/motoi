@@ -1,9 +1,7 @@
 ﻿using motoi.platform.resources.model;
 
 namespace motoi.workbench.problemsview {
-    /// <summary>
-    /// Defines an item that can be displayed by the <see cref="ProblemsDataView"/>.
-    /// </summary>
+    /// <summary> Defines an item that can be displayed by the <see cref="ProblemsDataView"/>. </summary>
     public class ProblemsViewItem {
         /// <summary>
         /// Creates a new instance with the given arguments and 1 as line and column value.
@@ -32,34 +30,22 @@ namespace motoi.workbench.problemsview {
             Column = column;
         }
 
-        /// <summary>
-        /// Returns the type of the item.
-        /// </summary>
+        /// <summary> Returns the type of the item. </summary>
         public EProblemsViewItemType ItemType { get; private set; }
 
-        /// <summary>
-        /// Returns the description of the item.
-        /// </summary>
+        /// <summary> Returns the description of the item. </summary>
         public string Description { get; private set; }
 
-        /// <summary>
-        /// Returns the affected workspace artefact.
-        /// </summary>
+        /// <summary> Returns the affected workspace artefact. </summary>
         public IWorkspaceArtefact WorkspaceArtefact { get; private set; }
 
-        /// <summary>
-        /// Returns the line number that is associated with the item.
-        /// </summary>
+        /// <summary> Returns the line number that is associated with the item. </summary>
         public uint Line { get; private set; }
 
-        /// <summary>
-        /// Returns the column number that is associated with the item.
-        /// </summary>
+        /// <summary>  Returns the column number that is associated with the item. </summary>
         public uint Column { get; set; }
 
-        /// <summary>Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.</summary>
-        /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
-        /// <param name="obj">The object to compare with the current object. </param>
+        /// <inheritdoc />
         public override bool Equals(object obj) {
             if (ReferenceEquals(this, obj)) return true;
             ProblemsViewItem item = obj as ProblemsViewItem;
@@ -74,8 +60,7 @@ namespace motoi.workbench.problemsview {
             return true;
         }
 
-        /// <summary>Serves as a hash function for a particular type. </summary>
-        /// <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
+        /// <inheritdoc />
         public override int GetHashCode() {
             int result = 31;
             result = 17*result + ItemType.GetHashCode();
