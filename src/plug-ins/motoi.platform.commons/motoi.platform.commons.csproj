@@ -91,6 +91,7 @@
     </Compile>
     <Compile Include="IMessageConsumer.cs" />
     <Compile Include="MessageDispatcher.cs" />
+    <Compile Include="PlatformErrorLog.cs" />
     <Compile Include="properties\AssemblyInfo.cs" />
     <Compile Include="ResourceLoader.cs" />
   </ItemGroup>
