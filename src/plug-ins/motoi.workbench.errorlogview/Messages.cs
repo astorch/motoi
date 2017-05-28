@@ -3,10 +3,10 @@
 namespace motoi.workbench.errorlogview {
     // ReSharper disable UnassignedReadonlyField
     // ReSharper disable InconsistentNaming
-    #pragma warning disable 1591
+    #pragma warning disable 649
 
     /// <summary> Provides the messages of the plug-in. </summary>
-    public class Messages : NLS<Messages> {
+    internal class Messages : NLS<Messages> {
         static Messages() {
             LoadMessages();
         }
