@@ -104,9 +104,9 @@ namespace motoi.ui.windowsforms.shells {
         /// Returns the dialog header or does set it.
         /// </summary>
         string IMessageDialog.Header {
-            get { return PMessageDialogWindow.GetModelValue(this, PMessageDialogWindow.HeaderProperty); }
+            get { return PMessageDialog.GetModelValue(this, PMessageDialog.HeaderProperty); }
             set {
-                PMessageDialogWindow.SetModelValue(this, PMessageDialogWindow.HeaderProperty, value);
+                PMessageDialog.SetModelValue(this, PMessageDialog.HeaderProperty, value);
                 iHeaderLabel.Text = value;
             }
         }
@@ -115,9 +115,9 @@ namespace motoi.ui.windowsforms.shells {
         /// Returns the dialog text or does set it.
         /// </summary>
         string IMessageDialog.Text {
-            get { return PMessageDialogWindow.GetModelValue(this, PMessageDialogWindow.TextProperty); }
+            get { return PMessageDialog.GetModelValue(this, PMessageDialog.TextProperty); }
             set {
-                PMessageDialogWindow.SetModelValue(this, PMessageDialogWindow.TextProperty, value);
+                PMessageDialog.SetModelValue(this, PMessageDialog.TextProperty, value);
                 iTextLabel.Text = value;
             }
         }
