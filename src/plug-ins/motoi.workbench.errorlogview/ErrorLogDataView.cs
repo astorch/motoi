@@ -44,8 +44,6 @@ namespace motoi.workbench.errorlogview {
             fListViewer.LabelProvider = new ErrorsViewListLabelProvider();
             fListViewer.Input = fErrorViewItemSet;
             fListViewer.Update();
-
-            PlatformErrorLog.Instance.Add(ELogEntryType.Error, "me", null, new Exception("This is a test"));
         }
 
         /// <inheritdoc />
