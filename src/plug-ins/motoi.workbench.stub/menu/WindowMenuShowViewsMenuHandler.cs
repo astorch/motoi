@@ -19,7 +19,7 @@ namespace motoi.workbench.stub.menu {
             ITitledAreaDialog dialogWindow = UIFactory.NewShell<ITitledAreaDialog>();
             dialogWindow.Title = Messages.WindowMenuShowViewsMenuHandler_DialogTitle;
             dialogWindow.Description = Messages.WindowMenuShowViewsMenuHandler_DialogDescription;
-            dialogWindow.Width = 440;
+            dialogWindow.Width = 460;
             
             IGridPanel gridComposite = UIFactory.NewWidget<IGridPanel>(dialogWindow);
 
