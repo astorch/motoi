@@ -25,7 +25,14 @@ namespace motoi.platform.ui.shells {
     /// <summary>
     /// Provides the property meta data of <see cref="IMessageDialog"/> that is used by data binding operations.
     /// </summary>
-    public class PMessageDialogWindow : PDialogWindowControl<IMessageDialog> {
+    public class PMessageDialog : PMessageDialogControl<IMessageDialog> {
+
+    }
+
+    /// <summary>
+    /// Provides the property meta data of <see cref="IMessageDialog"/> that is used by data binding operations.
+    /// </summary>
+    public class PMessageDialogControl<TDialogWindow> : PDialogWindowControl<TDialogWindow> where TDialogWindow : class, IMessageDialog {
         /// <summary> Header property meta data </summary>
         public static readonly IBindableProperty<string> HeaderProperty = CreatePropertyInfo(_ => _.Header, string.Empty);
 

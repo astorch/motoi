@@ -90,6 +90,7 @@
     <Compile Include="bindings\IDataBindingSupport.cs" />
     <Compile Include="bindings\PropertyChangedDispatcher.cs" />
     <Compile Include="bindings\PropertyDescriptor.cs" />
+    <Compile Include="shells\IExceptionDialog.cs" />
     <Compile Include="widgets\IContentAssistTextBox.cs" />
     <Compile Include="widgets\IButton.cs" />
     <Compile Include="data\ArrayContentProvider.cs" />
