@@ -7,9 +7,9 @@ using motoi.platform.ui.shells;
 
 namespace motoi.ui.windowsforms.shells {
     /// <summary>
-    /// Provides an implementation of <see cref="IMessageDialogWindow"/>.
+    /// Provides an implementation of <see cref="IMessageDialog"/>.
     /// </summary>
-    public class MessageDialogWindow : DialogWindow, IMessageDialogWindow {
+    public class MessageDialog : DialogWindow, IMessageDialog {
         private TableLayoutPanel iTableLayoutPanel;
         private Label iHeaderLabel;
         private PictureBox iPictureBox;
@@ -18,7 +18,7 @@ namespace motoi.ui.windowsforms.shells {
         /// <summary>
         /// Creates a new instance.
         /// </summary>
-        public MessageDialogWindow() {
+        public MessageDialog() {
             InitializeComponent();
         }
 
@@ -27,20 +27,20 @@ namespace motoi.ui.windowsforms.shells {
         /// <summary>
         /// Returns the dialog type or does set it.
         /// </summary>
-        EMessageDialogType IMessageDialogWindow.DialogType { get; set; }
+        EMessageDialogType IMessageDialog.DialogType { get; set; }
 
         /// <summary>
         /// Returns the set of dialog results that are available to the user.
         /// </summary>
-        EMessageDialogResult[] IMessageDialogWindow.DialogResultSet { get; set; }
+        EMessageDialogResult[] IMessageDialog.DialogResultSet { get; set; }
 
         /// <summary>
         /// Creates the dialog and makes it visible to the user.
         /// </summary>
         /// <returns>Dialog close result</returns>
-        EMessageDialogResult IMessageDialogWindow.Show() {
+        EMessageDialogResult IMessageDialog.Show() {
             // Add dialog buttons
-            EMessageDialogResult[] resultSet = ((IMessageDialogWindow) this).DialogResultSet ?? new[] {EMessageDialogResult.Ok};
+            EMessageDialogResult[] resultSet = ((IMessageDialog) this).DialogResultSet ?? new[] {EMessageDialogResult.Ok};
             EMessageDialogResult dialogResult = EMessageDialogResult.Cancel;
             
             for (int i = resultSet.Length; --i != -1;) {
@@ -54,7 +54,7 @@ namespace motoi.ui.windowsforms.shells {
             }
 
             // Add dialog image
-            EMessageDialogType dialogType = ((IMessageDialogWindow) this).DialogType;
+            EMessageDialogType dialogType = ((IMessageDialog) this).DialogType;
             Image dialogImage = GetImageForDialogType(dialogType);
             iPictureBox.Image = dialogImage;
 
@@ -103,7 +103,7 @@ namespace motoi.ui.windowsforms.shells {
         /// <summary>
         /// Returns the dialog header or does set it.
         /// </summary>
-        string IMessageDialogWindow.Header {
+        string IMessageDialog.Header {
             get { return PMessageDialogWindow.GetModelValue(this, PMessageDialogWindow.HeaderProperty); }
             set {
                 PMessageDialogWindow.SetModelValue(this, PMessageDialogWindow.HeaderProperty, value);
@@ -114,7 +114,7 @@ namespace motoi.ui.windowsforms.shells {
         /// <summary>
         /// Returns the dialog text or does set it.
         /// </summary>
-        string IMessageDialogWindow.Text {
+        string IMessageDialog.Text {
             get { return PMessageDialogWindow.GetModelValue(this, PMessageDialogWindow.TextProperty); }
             set {
                 PMessageDialogWindow.SetModelValue(this, PMessageDialogWindow.TextProperty, value);

@@ -3,9 +3,7 @@ using motoi.platform.ui.messaging;
 using motoi.platform.ui.toolbars;
 
 namespace motoi.platform.ui.shells {
-    /// <summary>
-    /// Defines the properties of an application main window.
-    /// </summary>
+    /// <summary> Defines the properties of an application main window. </summary>
     public interface IMainWindow : IWindow, IUIInvoker {
         /// <summary>
         /// Tells the window to add the given menu.

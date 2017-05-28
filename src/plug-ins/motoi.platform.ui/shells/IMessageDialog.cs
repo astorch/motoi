@@ -1,28 +1,18 @@
 ﻿using motoi.platform.ui.bindings;
 
 namespace motoi.platform.ui.shells {
-    /// <summary>
-    /// Defines a message dialog.
-    /// </summary>
-    public interface IMessageDialogWindow : IDialogWindow {
-        /// <summary>
-        /// Returns the dialog type or does set it.
-        /// </summary>
+    /// <summary> Defines a message dialog. </summary>
+    public interface IMessageDialog : IDialogWindow {
+        /// <summary> Returns the dialog type or does set it. </summary>
         EMessageDialogType DialogType { get; set; }
 
-        /// <summary>
-        /// Returns the set of dialog results that are available to the user.
-        /// </summary>
+        /// <summary> Returns the set of dialog results that are available to the user. </summary>
         EMessageDialogResult[] DialogResultSet { get; set; }
 
-        /// <summary>
-        /// Returns the dialog header or does set it.
-        /// </summary>
+        /// <summary> Returns the dialog header or does set it. </summary>
         string Header { get; set; }
 
-        /// <summary>
-        /// Returns the dialog text or does set it.
-        /// </summary>
+        /// <summary> Returns the dialog text or does set it. </summary>
         string Text { get; set; }
 
         /// <summary>
@@ -33,9 +23,9 @@ namespace motoi.platform.ui.shells {
     }
 
     /// <summary>
-    /// Provides the property meta data of <see cref="IMessageDialogWindow"/> that is used by data binding operations.
+    /// Provides the property meta data of <see cref="IMessageDialog"/> that is used by data binding operations.
     /// </summary>
-    public class PMessageDialogWindow : PDialogWindowControl<IMessageDialogWindow> {
+    public class PMessageDialogWindow : PDialogWindowControl<IMessageDialog> {
         /// <summary> Header property meta data </summary>
         public static readonly IBindableProperty<string> HeaderProperty = CreatePropertyInfo(_ => _.Header, string.Empty);
 

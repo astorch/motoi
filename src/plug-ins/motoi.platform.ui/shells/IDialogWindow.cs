@@ -2,9 +2,7 @@
 using motoi.platform.ui.widgets;
 
 namespace motoi.platform.ui.shells {
-    /// <summary>
-    /// Defines the properties of a dialog window.
-    /// </summary>
+    /// <summary> Defines the properties of a dialog window. </summary>
     public interface IDialogWindow : IWindow {
         /// <summary>
         /// Creates the dialogs and makes it visible to the user. If the flag 

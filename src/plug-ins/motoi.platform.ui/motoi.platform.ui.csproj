@@ -123,7 +123,7 @@
     <Compile Include="shells\EWindowStyle.cs" />
     <Compile Include="shells\IDialogWindow.cs" />
     <Compile Include="shells\IMainWindow.cs" />
-    <Compile Include="shells\IMessageDialogWindow.cs" />
+    <Compile Include="shells\IMessageDialog.cs" />
     <Compile Include="shells\ITitledAreaDialog.cs" />
     <Compile Include="shells\IWindow.cs" />
     <Compile Include="factories\FactoryProvider.cs" />

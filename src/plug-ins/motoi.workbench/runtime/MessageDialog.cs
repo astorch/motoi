@@ -16,7 +16,7 @@ namespace motoi.workbench.runtime {
         /// <param name="resultSet">Set of possible dialog results</param>
         /// <returns>Selected dialog result</returns>
         public static EMessageDialogResult Show(EMessageDialogType dialogType, string title, string header, string text, EMessageDialogResult[] resultSet) {
-            IMessageDialogWindow msgDlg = UIFactory.NewShell<IMessageDialogWindow>();
+            IMessageDialog msgDlg = UIFactory.NewShell<IMessageDialog>();
             msgDlg.DialogType = dialogType;
             msgDlg.WindowTitle = title;
             msgDlg.Header = header;

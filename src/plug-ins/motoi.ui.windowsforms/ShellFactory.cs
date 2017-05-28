@@ -25,8 +25,8 @@ namespace motoi.ui.windowsforms {
                 return new TitledAreaDialog() as TShell;
             }
 
-            if (type.IsAssignableFrom(typeof(IMessageDialogWindow))) {
-                return new MessageDialogWindow() as TShell;
+            if (type.IsAssignableFrom(typeof(IMessageDialog))) {
+                return new MessageDialog() as TShell;
             }
 
             return null; // TODO Throw exception

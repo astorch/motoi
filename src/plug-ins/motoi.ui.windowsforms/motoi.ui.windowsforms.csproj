@@ -129,7 +129,7 @@
     <Compile Include="shells\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="shells\MessageDialogWindow.cs">
+    <Compile Include="shells\MessageDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="shells\MultiViewPerspective.cs" />
@@ -215,8 +215,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="shells\MessageDialogWindow.resx">
-      <DependentUpon>MessageDialogWindow.cs</DependentUpon>
+    <EmbeddedResource Include="shells\MessageDialog.resx">
+      <DependentUpon>MessageDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="shells\TitledAreaDialog.resx">
       <DependentUpon>TitledAreaDialog.cs</DependentUpon>

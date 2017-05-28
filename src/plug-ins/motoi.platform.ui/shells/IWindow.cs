@@ -2,9 +2,7 @@ using motoi.platform.ui.bindings;
 using motoi.platform.ui.images;
 
 namespace motoi.platform.ui.shells {
-    /// <summary>
-    /// Defines common properties of a window.
-    /// </summary>
+    /// <summary> Defines common properties of a window. </summary>
     public interface IWindow : IShell {
         /// <summary> Returns the title of the window or does set it. </summary>
         string WindowTitle { get; set; }
