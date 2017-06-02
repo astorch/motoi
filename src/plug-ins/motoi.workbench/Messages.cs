@@ -20,5 +20,7 @@ namespace motoi.workbench {
         public static readonly string AbstractWizard_Button_Finish;
         public static readonly string AbstractWizard_Button_Next;
         public static readonly string AbstractWizard_Button_Back;
+
+        public static readonly string MessageDialog_ExceptionDialog_Header;
     }
 }

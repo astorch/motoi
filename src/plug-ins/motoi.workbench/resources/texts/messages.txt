@@ -5,3 +5,4 @@ AbstractWizard_Button_Cancel=Cancel
 AbstractWizard_Button_Finish=Finish
 AbstractWizard_Button_Next=Next >
 AbstractWizard_Button_Back=< Back
+MessageDialog_ExceptionDialog_Header=There was an error

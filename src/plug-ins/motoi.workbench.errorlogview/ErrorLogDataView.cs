@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using motoi.platform.commons;
 using motoi.platform.ui.data;
@@ -43,7 +42,19 @@ namespace motoi.workbench.errorlogview {
             fListViewer.ContentProvider = new ErrorsViewListContentProvider();
             fListViewer.LabelProvider = new ErrorsViewListLabelProvider();
             fListViewer.Input = fErrorViewItemSet;
+            fListViewer.SelectionDoubleClicked += OnSelectionDoubleClicked;
             fListViewer.Update();
+        }
+
+        /// <summary>
+        /// Is invoked when a list viewer item has been double clicked.
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="selectionEventArgs">Event arguments</param>
+        private void OnSelectionDoubleClicked(object sender, SelectionEventArgs selectionEventArgs) {
+            ErrorLogEntry entry = selectionEventArgs.Selection as ErrorLogEntry;
+            if (entry == null) return;
+            MessageDialog.ShowException(entry.Exception, entry.Message);
         }
 
         /// <inheritdoc />

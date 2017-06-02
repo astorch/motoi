@@ -1,4 +1,5 @@
-﻿using motoi.platform.ui.factories;
+﻿using System;
+using motoi.platform.ui.factories;
 using motoi.platform.ui.shells;
 
 namespace motoi.workbench.runtime {
@@ -46,6 +47,21 @@ namespace motoi.workbench.runtime {
         /// <param name="text">Dialog text</param>
         public static void ShowError(string title, string header, string text) {
             Show(EMessageDialogType.Error, title, header, text, new[] {EMessageDialogResult.Ok});
+        }
+
+        /// <summary>
+        /// Shows an exception message and detail dialog.
+        /// </summary>
+        /// <param name="exception">Exception to display</param>
+        /// <param name="title">Optional dialog title</param>
+        public static void ShowException(Exception exception, string title) {
+            IExceptionDialog exDlg = UIFactory.NewShell<IExceptionDialog>();
+            exDlg.DialogType = EMessageDialogType.Error;
+            exDlg.WindowTitle = title ?? string.Empty;
+            exDlg.Header = Messages.MessageDialog_ExceptionDialog_Header;
+            exDlg.Exception = exception;
+            exDlg.DialogResultSet = new[] {EMessageDialogResult.Close};
+            exDlg.Show();
         }
     }
 }
