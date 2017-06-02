@@ -15,5 +15,7 @@ namespace motoi.ui.windowsforms {
         public static readonly string MessageDialogWindow_Button_Cancel;
         public static readonly string MessageDialogWindow_Button_No;
         public static readonly string MessageDialogWindow_Button_Yes;
+        public static readonly string MessageDialogWindow_Button_None;
+        public static readonly string MessageDialogWindow_Button_Close;
     }
 }

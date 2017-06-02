@@ -2,3 +2,5 @@
 MessageDialogWindow_Button_Cancel=Cancel
 MessageDialogWindow_Button_No=No
 MessageDialogWindow_Button_Yes=Yes
+MessageDialogWindow_Button_None=None
+MessageDialogWindow_Button_Close=Close
