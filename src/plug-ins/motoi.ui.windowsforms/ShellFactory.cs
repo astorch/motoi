@@ -13,21 +13,20 @@ namespace motoi.ui.windowsforms {
         public TShell CreateInstance<TShell>() where TShell : class, IShell {
             Type type = typeof(TShell);
 
-            if (type.IsAssignableFrom(typeof (IMainWindow))) {
+            if (typeof(IMainWindow).IsAssignableFrom(type))
                 return new MainWindow() as TShell;
-            }
 
-            if (type.IsAssignableFrom(typeof (IDialogWindow))) {
-                return new DialogWindow() as TShell;
-            }
-
-            if (type.IsAssignableFrom(typeof (ITitledAreaDialog))) {
+            if (typeof(ITitledAreaDialog).IsAssignableFrom(type))
                 return new TitledAreaDialog() as TShell;
-            }
 
-            if (type.IsAssignableFrom(typeof(IMessageDialog))) {
+            if (typeof(IExceptionDialog).IsAssignableFrom(type))
+                return new ExceptionDialog() as TShell;
+
+            if (typeof(IMessageDialog).IsAssignableFrom(type))
                 return new MessageDialog() as TShell;
-            }
+
+            if (typeof(IDialogWindow).IsAssignableFrom(type))
+                return new DialogWindow() as TShell;
 
             return null; // TODO Throw exception
         }

@@ -6,52 +6,48 @@ using motoi.platform.ui.actions;
 using motoi.platform.ui.shells;
 
 namespace motoi.ui.windowsforms.shells {
-    /// <summary>
-    /// Provides an implementation of <see cref="IMessageDialog"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IMessageDialog"/>. </summary>
     public class MessageDialog : DialogWindow, IMessageDialog {
         private TableLayoutPanel iTableLayoutPanel;
         private Label iHeaderLabel;
         private PictureBox iPictureBox;
         private Label iTextLabel;
 
-        /// <summary>
-        /// Creates a new instance.
-        /// </summary>
+        /// <summary> Creates a new instance. </summary>
         public MessageDialog() {
             InitializeComponent();
         }
 
         #region IMessageDialogWindow
 
-        /// <summary>
-        /// Returns the dialog type or does set it.
-        /// </summary>
+        /// <inheritdoc />
+        string IMessageDialog.Header {
+            get { return PMessageDialog.GetModelValue(this, PMessageDialog.HeaderProperty); }
+            set {
+                PMessageDialog.SetModelValue(this, PMessageDialog.HeaderProperty, value);
+                iHeaderLabel.Text = value;
+            }
+        }
+
+        /// <inheritdoc />
+        string IMessageDialog.Text {
+            get { return PMessageDialog.GetModelValue(this, PMessageDialog.TextProperty); }
+            set {
+                PMessageDialog.SetModelValue(this, PMessageDialog.TextProperty, value);
+                iTextLabel.Text = value;
+            }
+        }
+
+        /// <inheritdoc />
         EMessageDialogType IMessageDialog.DialogType { get; set; }
 
-        /// <summary>
-        /// Returns the set of dialog results that are available to the user.
-        /// </summary>
+        /// <inheritdoc />
         EMessageDialogResult[] IMessageDialog.DialogResultSet { get; set; }
 
-        /// <summary>
-        /// Creates the dialog and makes it visible to the user.
-        /// </summary>
-        /// <returns>Dialog close result</returns>
+        /// <inheritdoc />
         EMessageDialogResult IMessageDialog.Show() {
             // Add dialog buttons
-            EMessageDialogResult[] resultSet = ((IMessageDialog) this).DialogResultSet ?? new[] {EMessageDialogResult.Ok};
-            EMessageDialogResult dialogResult = EMessageDialogResult.Cancel;
-            
-            for (int i = resultSet.Length; --i != -1;) {
-                EMessageDialogResult resultItem = resultSet[i];
-                string buttonText = LocalizeText(resultItem);
-
-                ((IDialogWindow) this).AddButton(buttonText, new ActionHandlerDelegate(() => {
-                    dialogResult = resultItem;
-                    Close();
-                })); // XXX Closure
-            }
+            AddMessageDialogButtons(((IMessageDialog) this).DialogResultSet ?? new[] {EMessageDialogResult.Ok});
 
             // Add dialog image
             EMessageDialogType dialogType = ((IMessageDialog) this).DialogType;
@@ -61,10 +57,27 @@ namespace motoi.ui.windowsforms.shells {
             PerformLayout();
 
             // Show dialog
-            ((IDialogWindow)this).Show();
+            MessageDialogResult = EMessageDialogResult.None;
+            ((IDialogWindow) this).Show();
 
             // Return result
-            return dialogResult;
+            return MessageDialogResult;
+        }
+
+        /// <summary>
+        /// Creates and adds a button for each result item of the given collection.
+        /// </summary>
+        /// <param name="resultSet">Collection of avaiable result items</param>
+        protected virtual void AddMessageDialogButtons(EMessageDialogResult[] resultSet) {
+            for (int i = resultSet.Length; --i != -1;) {
+                EMessageDialogResult resultItem = resultSet[i];
+                string buttonText = LocalizeText(resultItem);
+
+                ((IDialogWindow) this).AddButton(buttonText, new ActionHandlerDelegate(() => {
+                    MessageDialogResult = resultItem;
+                    Close();
+                })); // XXX Closure
+            }
         }
 
         /// <summary>
@@ -77,9 +90,16 @@ namespace motoi.ui.windowsforms.shells {
             if (resultItem == EMessageDialogResult.Cancel) return Messages.MessageDialogWindow_Button_Cancel;
             if (resultItem == EMessageDialogResult.No) return Messages.MessageDialogWindow_Button_No;
             if (resultItem == EMessageDialogResult.Yes) return Messages.MessageDialogWindow_Button_Yes;
+            if (resultItem == EMessageDialogResult.None) return Messages.MessageDialogWindow_Button_None;
+            if (resultItem == EMessageDialogResult.Close) return Messages.MessageDialogWindow_Button_Close;
             return resultItem.ToString();
         }
 
+        /// <summary>
+        /// Returns an image that expresses the given <paramref name="dialogType"/>.
+        /// </summary>
+        /// <param name="dialogType">Dialog type</param>
+        /// <returns>Image</returns>
         private Image GetImageForDialogType(EMessageDialogType dialogType) {
             string pathFormat = "resources/images/{0}";
             string imageName;
@@ -100,29 +120,10 @@ namespace motoi.ui.windowsforms.shells {
             }
         }
 
-        /// <summary>
-        /// Returns the dialog header or does set it.
-        /// </summary>
-        string IMessageDialog.Header {
-            get { return PMessageDialog.GetModelValue(this, PMessageDialog.HeaderProperty); }
-            set {
-                PMessageDialog.SetModelValue(this, PMessageDialog.HeaderProperty, value);
-                iHeaderLabel.Text = value;
-            }
-        }
-
-        /// <summary>
-        /// Returns the dialog text or does set it.
-        /// </summary>
-        string IMessageDialog.Text {
-            get { return PMessageDialog.GetModelValue(this, PMessageDialog.TextProperty); }
-            set {
-                PMessageDialog.SetModelValue(this, PMessageDialog.TextProperty, value);
-                iTextLabel.Text = value;
-            }
-        }
-
         #endregion
+
+        /// <summary> Returns the dialog result or does set it. </summary>
+        protected EMessageDialogResult MessageDialogResult { get; set; }
 
         /// <inheritdoc />
         protected override Control CreateContentControl(Panel contentContainer) {
@@ -144,8 +145,7 @@ namespace motoi.ui.windowsforms.shells {
             base.OnWindowClosed();
         }
 
-        /// <summary>
-        /// Performs an initialization of the used components.
+        /// <summary> Performs an initialization of the used components.
         /// </summary>
         private void InitializeComponent() {
             ClientSize = new Size(600, 300);
@@ -180,7 +180,7 @@ namespace motoi.ui.windowsforms.shells {
             iTableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
             iTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             iTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 50f));
-            iTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            iTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize, 100F));
             
             iTableLayoutPanel.Controls.Add(iHeaderLabel, 0, 0);
             iTableLayoutPanel.Controls.Add(iPictureBox, 0, 1);

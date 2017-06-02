@@ -126,6 +126,9 @@
     <Compile Include="shells\DialogWindow.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="shells\ExceptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="shells\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
