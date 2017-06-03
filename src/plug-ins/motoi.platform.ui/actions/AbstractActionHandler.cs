@@ -1,29 +1,21 @@
 ﻿using motoi.platform.ui.bindings;
 
 namespace motoi.platform.ui.actions {
-    /// <summary>
-    /// Provides a basic implementation of <see cref="IActionHandler"/>.
-    /// </summary>
+    /// <summary> Provides a basic implementation of <see cref="IActionHandler"/>. </summary>
     public abstract class AbstractActionHandler : PropertyChangedDispatcher, IActionHandler {
-        /// <summary>
-        /// Backing variable for the enabled flag.
-        /// </summary>
-        private bool iIsEnabled = true;
+        
+        private bool fIsEnabled = true;
 
-        /// <summary>
-        /// Returns true if the handler is enabled or does set it.
-        /// </summary>
+        /// <inheritdoc />
         public virtual bool IsEnabled {
-            get { return iIsEnabled; }
+            get { return fIsEnabled; }
             set { 
-                iIsEnabled = value;
-                DispatchPropertyChanged(() => IsEnabled);
+                fIsEnabled = value;
+                DispatchPropertyChanged(nameof(IsEnabled));
             }
         }
 
-        /// <summary>
-        /// Tells the handler to invoke his action.
-        /// </summary>
+        /// <inheritdoc />
         public abstract void Run();
     }
 }
