@@ -56,6 +56,7 @@
     <Compile Include="bindings\WorkbenchPropertyChangedDispatcher.cs" />
     <Compile Include="events\IPerspectiveListener.cs" />
     <Compile Include="events\IWorkbenchListener.cs" />
+    <Compile Include="events\SelectionChangedEvent.cs" />
     <Compile Include="exceptions\WorkbenchPartInitializationException.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="model\jobs\IJobHandle.cs" />
