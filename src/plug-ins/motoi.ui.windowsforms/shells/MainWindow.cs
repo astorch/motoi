@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using motoi.platform.ui.actions;
 using motoi.platform.ui.menus;
 using motoi.platform.ui.messaging;
 using motoi.platform.ui.shells;
@@ -68,8 +69,13 @@ namespace motoi.ui.windowsforms.shells {
                     }
 
                     menuItemContribution.ActionHandler.PropertyChanged += (sender, args) => {
-                        if (args.PropertyName == "IsEnabled")
-                            menuItem.Enabled = menuItemContribution.ActionHandler.IsEnabled;
+                        if (args.PropertyName != nameof(IActionHandler.IsEnabled)) return;
+
+                        // Get current value
+                        bool isEnabled = ((IActionHandler) sender).IsEnabled;
+
+                        // Delegate to UI thread
+                        BeginInvoke(new Action(() => menuItem.Enabled = isEnabled));
                     };
                 }
             }
