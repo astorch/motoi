@@ -5,21 +5,15 @@ using motoi.workbench.events;
 using motoi.workbench.model;
 
 namespace motoi.workbench.stub.menu {
-    /// <summary>
-    /// Provides an action handler for the menu item 'Save as'.
-    /// </summary>
+    /// <summary> Provides an action handler for the menu item 'Save as'. </summary>
     public class FileMenuSaveAsHandler : AbstractActionHandler, IWorkbenchListener, IPerspectiveListener {
-        /// <summary>
-        /// Creates a new instance.
-        /// </summary>
+        /// <summary> Creates a new instance. </summary>
         public FileMenuSaveAsHandler() {
             PlatformUI.Instance.Workbench.AddWorkbenchListener(this);
             IsEnabled = false;
         }
 
-        /// <summary>
-        /// Tells the handler to invoke his action.
-        /// </summary>
+        /// <inheritdoc />
         public override void Run() {
             try {
                 PlatformUI.Instance.Workbench.ActivePerspective.ActiveEditor.ExecuteSaveAs();
@@ -28,33 +22,26 @@ namespace motoi.workbench.stub.menu {
             }
         }
 
-        /// <summary>
-        /// Tells the instance that the given <paramref name="workbenchPart"/> has been opened.
-        /// </summary>
-        /// <param name="workbenchPart">Opened workbench part</param>
+        /// <inheritdoc />
         public void OnWorkbenchPartOpened(IWorkbenchPart workbenchPart) {
             IsEnabled = PlatformUI.Instance.Workbench.ActivePerspective.ActiveEditor != null;
         }
 
-        /// <summary>
-        /// Tells the instance that the given <paramref name="workbenchPart"/> has been closed.
-        /// </summary>
-        /// <param name="workbenchPart">Closed workbench part</param>
+
+        /// <inheritdoc />
         public void OnWorkbenchPartClosed(IWorkbenchPart workbenchPart) {
             IsEnabled = PlatformUI.Instance.Workbench.ActivePerspective.ActiveEditor != null;
         }
 
-        /// <summary>
-        /// Tells the instance that the active perspective of the workbench has been change.
-        /// </summary>
-        /// <param name="oldPerspective">Previous perspective</param>
-        /// <param name="newPerspective">New perspective</param>
-        public void OnPerspectiveChanged(IPerspective oldPerspective, IPerspective newPerspective) {
-            if (oldPerspective != null)
-                oldPerspective.RemovePerspectiveListener(this);
+        /// <inheritdoc />
+        public void OnWorkbenchPartActivated(IWorkbenchPart workbenchPart) {
+            // Nothing to do
+        }
 
-            if (newPerspective != null)
-                newPerspective.AddPerspectiveListener(this);
+        /// <inheritdoc />
+        public void OnPerspectiveChanged(IPerspective oldPerspective, IPerspective newPerspective) {
+            oldPerspective?.RemovePerspectiveListener(this);
+            newPerspective?.AddPerspectiveListener(this);
         }
     }
 }

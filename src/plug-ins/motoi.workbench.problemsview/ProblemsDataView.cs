@@ -65,24 +65,23 @@ namespace motoi.workbench.problemsview {
 
         #region IPerspectiveListener
 
-        /// <summary>
-        /// Tells the instance that the given <paramref name="workbenchPart"/> has been closed.
-        /// </summary>
-        /// <param name="workbenchPart">Closed workbench part</param>
+        /// <inheritdoc />
         public void OnWorkbenchPartClosed(IWorkbenchPart workbenchPart) {
             IProblemsViewItemProvider itemProvider = workbenchPart as IProblemsViewItemProvider;
             if (itemProvider == null) return;
             itemProvider.ItemsFound -= OnItemProviderItemsFound;
         }
 
-        /// <summary>
-        /// Tells the instance that the given <paramref name="workbenchPart"/> has been opened.
-        /// </summary>
-        /// <param name="workbenchPart">Opened workbench part</param>
+        /// <inheritdoc />
         public void OnWorkbenchPartOpened(IWorkbenchPart workbenchPart) {
             IProblemsViewItemProvider itemProvider = workbenchPart as IProblemsViewItemProvider;
             if (itemProvider == null) return;
             itemProvider.ItemsFound += OnItemProviderItemsFound;
+        }
+
+        /// <inheritdoc />
+        public void OnWorkbenchPartActivated(IWorkbenchPart workbenchPart) {
+            // Nothing to do
         }
 
         /// <summary>

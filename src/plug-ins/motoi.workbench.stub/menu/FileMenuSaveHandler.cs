@@ -5,22 +5,16 @@ using motoi.workbench.events;
 using motoi.workbench.model;
 
 namespace motoi.workbench.stub.menu {
-    /// <summary>
-    /// Provides an action handler for the menu item 'Save'.
-    /// </summary>
+    /// <summary> Provides an action handler for the menu item 'Save'. </summary>
     public class FileMenuSaveHandler : AbstractActionHandler, IWorkbenchListener, IPerspectiveListener {
 
-        /// <summary>
-        /// Creates a new instance.
-        /// </summary>
+        /// <summary> Creates a new instance. </summary>
         public FileMenuSaveHandler() {
             PlatformUI.Instance.Workbench.AddWorkbenchListener(this);
             IsEnabled = false;
         }
 
-        /// <summary>
-        /// Tells the handler to invoke his action.
-        /// </summary>
+        /// <inheritdoc />
         public override void Run() {
             try {
                 PlatformUI.Instance.Workbench.ActivePerspective.ActiveEditor.ExecuteSave(null);
@@ -29,10 +23,7 @@ namespace motoi.workbench.stub.menu {
             }
         }
 
-        /// <summary>
-        /// Tells the instance that the given <paramref name="workbenchPart"/> has been opened.
-        /// </summary>
-        /// <param name="workbenchPart">Opened workbench part</param>
+        /// <inheritdoc />
         public void OnWorkbenchPartOpened(IWorkbenchPart workbenchPart) {
             IEditor editor = workbenchPart as IEditor;
             if (editor == null) return;
@@ -40,15 +31,17 @@ namespace motoi.workbench.stub.menu {
             editor.DirtyChanged += OnEditorIsDirtyChanged;
         }
 
-        /// <summary>
-        /// Tells the instance that the given <paramref name="workbenchPart"/> has been closed.
-        /// </summary>
-        /// <param name="workbenchPart">Closed workbench part</param>
+        /// <inheritdoc />
         public void OnWorkbenchPartClosed(IWorkbenchPart workbenchPart) {
             IEditor editor = workbenchPart as IEditor;
             if (editor == null) return;
             IsEnabled = false;
             editor.DirtyChanged -= OnEditorIsDirtyChanged;
+        }
+
+        /// <inheritdoc />
+        public void OnWorkbenchPartActivated(IWorkbenchPart workbenchPart) {
+            // Nothing to do
         }
 
         /// <summary>
@@ -61,17 +54,10 @@ namespace motoi.workbench.stub.menu {
             IsEnabled = editor.IsDirty;
         }
 
-        /// <summary>
-        /// Tells the instance that the active perspective of the workbench has been change.
-        /// </summary>
-        /// <param name="oldPerspective">Previous perspective</param>
-        /// <param name="newPerspective">New perspective</param>
+        /// <inheritdoc />
         public void OnPerspectiveChanged(IPerspective oldPerspective, IPerspective newPerspective) {
-            if (oldPerspective != null)
-                oldPerspective.RemovePerspectiveListener(this);
-
-            if (newPerspective != null)
-                newPerspective.AddPerspectiveListener(this);
+            oldPerspective?.RemovePerspectiveListener(this);
+            newPerspective?.AddPerspectiveListener(this);
         }
     }
 }
