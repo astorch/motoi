@@ -91,9 +91,11 @@ namespace motoi.ui.windowsforms.shells {
                 iDocumentDockContent.Controls.Add(editorPanel);
                 iDocumentDockContent.Show(iDockPanel, DockState.Document);
 
+                // Register events
                 iDocumentDockContent.TabText = editor.EditorTabText;
                 iDocumentDockContent.Closing += OnDockContentClosing;
                 iDocumentDockContent.Closed += OnDockContentClosed;
+                iDocumentDockContent.Enter += OnDockContentGotFocus;
 
                 editor.PropertyChanged += OnEditorPropertyChanged;
                 editor.DirtyChanged += OnEditorDirtyChanged;
@@ -127,6 +129,19 @@ namespace motoi.ui.windowsforms.shells {
             bool isDirty = editor.IsDirty;
             string tabName = string.Format("{1}{0}", editor.EditorTabText, (isDirty ? "*" : string.Empty));
             iDocumentDockContent.TabText = tabName;
+        }
+
+        /// <summary>
+        /// Is invoked when the dock content got the focus.
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="eventArgs">Event arguments</param>
+        private void OnDockContentGotFocus(object sender, EventArgs eventArgs) {
+            DockContent dockContent = sender as DockContent;
+            if (dockContent == null) return;
+            IWorkbenchPart workbenchPart = dockContent.Tag as IWorkbenchPart;
+            if (workbenchPart == null) return;
+            PerspectiveEventManager.Dispatch(lstnr => lstnr.OnWorkbenchPartActivated(workbenchPart), OnDispatchWorkbenchEventException);
         }
 
         /// <summary>
@@ -166,6 +181,7 @@ namespace motoi.ui.windowsforms.shells {
 
             iDocumentDockContent.Closed -= OnDockContentClosed;
             iDocumentDockContent.Closing -= OnDockContentClosing;
+            iDocumentDockContent.Enter -= OnDockContentGotFocus;
 
             if (iCurrentToolBar != null) {
                 iCurrentToolBar.Dispose();
