@@ -4,16 +4,12 @@ using log4net;
 using motoi.extensions;
 using motoi.extensions.core;
 using motoi.plugins.model;
-using Xcite.Csharp.generics;
+using xcite.csharp;
 
 namespace motoi.platform.ui.factories {
-    /// <summary>
-    /// Provides access to the registered UI Factories.
-    /// </summary>
+    /// <summary> Provides access to the registered UI Factories. </summary>
     public class FactoryProvider : GenericSingleton<FactoryProvider> {
-        /// <summary>
-        /// Extension Point id.
-        /// </summary>
+        /// <summary> Extension Point id. </summary>
         private const string FactoryExtensionPointId = "org.motoi.ui.provider";
 
         private IUIProvider iUIProvider;

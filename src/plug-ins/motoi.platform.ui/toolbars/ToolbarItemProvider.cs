@@ -8,8 +8,8 @@ using motoi.platform.nls;
 using motoi.platform.ui.actions;
 using motoi.platform.ui.shells;
 using motoi.plugins.model;
-using Xcite.Collections;
-using Xcite.Csharp.generics;
+using xcite.collections;
+using xcite.csharp;
 
 namespace motoi.platform.ui.toolbars {
     /// <summary>

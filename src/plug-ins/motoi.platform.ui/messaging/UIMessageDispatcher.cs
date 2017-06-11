@@ -1,12 +1,10 @@
 ﻿using System;
 using log4net;
-using Xcite.Csharp.generics;
-using Xcite.Csharp.oop;
+using xcite.csharp;
+using xcite.csharp.oop;
 
 namespace motoi.platform.ui.messaging {
-    /// <summary>
-    /// Implements a dispatcher of messages to the UI elements.
-    /// </summary>
+    /// <summary> Implements a dispatcher of messages to the UI elements. </summary>
     public class UIMessageDispatcher : GenericSingleton<UIMessageDispatcher> {
         private static readonly ILog iLog = LogManager.GetLogger(typeof(UIMessageDispatcher));
 

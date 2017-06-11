@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using motoi.platform.ui.bindings;
-using Xcite.Csharp.lang;
 
 namespace motoi.platform.ui.widgets {
     /// <summary>
@@ -23,8 +22,8 @@ namespace motoi.platform.ui.widgets {
     /// <summary>
     /// Provides the property meta data of <see cref="IItemsHost"/> that is used by data binding operations.
     /// </summary>
-    public class PItemsHostControl<TControl> : PWidgetControl<TControl> where TControl : class, IWidget {
+    public class PItemsHostControl<TControl> : PWidgetControl<TControl> where TControl : class, IItemsHost {
         /// <summary>Items Source property meta data</summary>
-        public static readonly IBindableProperty<ICollection> ItemsSourceProperty = CreatePropertyInfo(Name.Of<IItemsHost,ICollection>(_=>_.ItemsSource), (ICollection)null);
+        public static readonly IBindableProperty<ICollection> ItemsSourceProperty = CreatePropertyInfo(nameof(IItemsHost.ItemsSource), (ICollection)null);
     }
 }

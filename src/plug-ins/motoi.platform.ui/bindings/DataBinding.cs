@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Reflection;
 using log4net;
 using motoi.platform.ui.bindings.exceptions;
-using Xcite.Csharp.assertions;
-using Xcite.Csharp.lang;
+using xcite.csharp;
+using xcite.csharp.assertions;
 
 namespace motoi.platform.ui.bindings {
     /// <summary>

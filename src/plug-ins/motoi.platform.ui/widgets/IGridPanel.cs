@@ -1,7 +1,7 @@
 ﻿using System;
 using motoi.platform.ui.bindings;
 using motoi.platform.ui.layouts;
-using Xcite.Csharp.assertions;
+using xcite.csharp.assertions;
 
 namespace motoi.platform.ui.widgets {
     /// <summary>

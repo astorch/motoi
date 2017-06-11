@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Xcite.Csharp.lang;
+using xcite.csharp;
 
 namespace motoi.platform.ui.bindings {
     /// <summary>
@@ -20,8 +20,8 @@ namespace motoi.platform.ui.bindings {
         /// <exception cref="ArgumentNullException">If any parameter is NULL</exception>
         /// <exception cref="ArgumentException">If <paramref name="defaultSourceUpdateTrigger"/> is <see cref="EDataBindingSourceUpdateTrigger.Default"/></exception>
         public static IBindableProperty<TValue> CreateInfo<TValue>(Type controlType, string propertyName, TValue defaultValue, bool bindsTwoByDefault = false, EDataBindingSourceUpdateTrigger defaultSourceUpdateTrigger = null) {
-            if (controlType == null) throw new ArgumentNullException("controlType");
-            if (string.IsNullOrEmpty(propertyName)) throw new ArgumentNullException("propertyName");
+            if (controlType == null) throw new ArgumentNullException(nameof(controlType));
+            if (string.IsNullOrEmpty(propertyName)) throw new ArgumentNullException(nameof(propertyName));
 
             if (defaultSourceUpdateTrigger == EDataBindingSourceUpdateTrigger.Default) throw new ArgumentException(string.Format("Default source update trigger cannot be '{0}'!", EDataBindingSourceUpdateTrigger.Default));
 

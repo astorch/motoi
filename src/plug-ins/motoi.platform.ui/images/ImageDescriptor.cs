@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Xcite.Csharp.assertions;
+using xcite.csharp.assertions;
 
 namespace motoi.platform.ui.images {
     /// <summary>
@@ -16,7 +16,7 @@ namespace motoi.platform.ui.images {
         /// <exception cref="ArgumentNullException">If any argument is NULL</exception>
         public ImageDescriptor(string id, Stream imageStream) {
             Id = Assert.NotNullOrEmpty(() => id);
-            ImageStream = Assert.NotNull(() => imageStream);
+            ImageStream = imageStream ?? throw new ArgumentNullException(nameof(imageStream));
         }
 
         /// <summary>

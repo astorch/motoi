@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Xcite.Csharp.expressions;
+using xcite.csharp;
 
 namespace motoi.platform.ui.bindings {
     /// <summary>

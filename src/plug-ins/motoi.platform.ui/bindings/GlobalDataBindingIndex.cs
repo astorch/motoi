@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Xcite.Csharp.generics;
+using xcite.csharp;
 
 namespace motoi.platform.ui.bindings {
     /// <summary>

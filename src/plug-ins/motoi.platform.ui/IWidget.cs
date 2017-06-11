@@ -1,5 +1,4 @@
 ﻿using motoi.platform.ui.bindings;
-using Xcite.Csharp.lang;
 
 namespace motoi.platform.ui {
     /// <summary>
@@ -29,9 +28,9 @@ namespace motoi.platform.ui {
     /// </summary>
     public class PWidgetControl<TControl> : BindableObject<TControl> where TControl : class, IWidget {
         /// <summary> Enabled property meta data </summary>
-        public static readonly IBindableProperty<bool> EnabledProperty = CreatePropertyInfo(Name.Of<IWidget, bool>(_ => _.Enabled), true, true);
+        public static readonly IBindableProperty<bool> EnabledProperty = CreatePropertyInfo(nameof(IWidget.Enabled), true, true);
 
         /// <summary> Visibility property meta data </summary>
-        public static readonly IBindableProperty<EVisibility> VisibilityProperty = CreatePropertyInfo(Name.Of<IWidget, EVisibility>(_ => _.Visibility), EVisibility.Visible);
+        public static readonly IBindableProperty<EVisibility> VisibilityProperty = CreatePropertyInfo(nameof(IWidget.Visibility), EVisibility.Visible);
     }
 }

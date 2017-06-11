@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 using System.Reflection;
-using Xcite.Collections;
+using xcite.collections;
 
 namespace motoi.platform.ui.data {
     /// <summary>
@@ -64,7 +64,7 @@ namespace motoi.platform.ui.data {
             }
 
             public object[] ArrayConvert<T>(T[] input) {
-                object[] rawObjects = EnumerableExtensions.ToArray(input.Cast<object>());
+                object[] rawObjects = EnumerableExtensionMethods.ToArray(input.Cast<object>());
                 return rawObjects;
             }
         }

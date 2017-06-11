@@ -1,5 +1,4 @@
 ﻿using System;
-using Xcite.Csharp.assertions;
 
 namespace motoi.platform.ui.actions {
     /// <summary>
@@ -29,8 +28,8 @@ namespace motoi.platform.ui.actions {
         /// <param name="isEnabledFunc">Delegate to check IsEnabled state - must not be NULL</param>
         /// <exception cref="ArgumentNullException"/>
         public ActionHandlerDelegate(Action action, Func<bool> isEnabledFunc) {
-            iAction = Assert.NotNull(() => action);
-            iIsEnabledFunc = Assert.NotNull(() => isEnabledFunc);
+            iAction = action ?? throw new ArgumentNullException(nameof(action));
+            iIsEnabledFunc = isEnabledFunc ?? throw new ArgumentNullException(nameof(isEnabledFunc));
         }
 
         /// <summary>
