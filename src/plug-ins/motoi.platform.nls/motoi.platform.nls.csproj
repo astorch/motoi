@@ -9,7 +9,7 @@
     <AppDesignerFolder>properties</AppDesignerFolder>
     <RootNamespace>motoi.platform.nls</RootNamespace>
     <AssemblyName>motoi.platform.nls</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -37,8 +37,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="xcite.csharp, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xcite.csharp.3.0.2\lib\netstandard1.4\xcite.csharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\PlatformProductAssemblyInfo.cs">
@@ -61,10 +62,6 @@
     <ProjectReference Include="..\..\libs\motoi.plugins\motoi.plugins.csproj">
       <Project>{dc59f99b-75a5-4877-b71b-3c865e4876a3}</Project>
       <Name>motoi.plugins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\libs\Xcite.Csharp\Xcite.Csharp.csproj">
-      <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
-      <Name>Xcite.Csharp</Name>
     </ProjectReference>
     <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj">
       <Project>{3e6c6d06-c212-448e-bb34-11cdafa697e8}</Project>
