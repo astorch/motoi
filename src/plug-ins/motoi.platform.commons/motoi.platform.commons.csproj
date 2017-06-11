@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>motoi.platform.commons</RootNamespace>
     <AssemblyName>motoi.platform.commons</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -58,6 +58,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="xcite.csharp, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xcite.csharp.3.0.2\lib\netstandard1.4\xcite.csharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -89,21 +92,9 @@
     <Compile Include="..\..\PlatformProductAssemblyInfo.cs">
       <Link>properties\PlatformProductAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="IMessageConsumer.cs" />
-    <Compile Include="MessageDispatcher.cs" />
     <Compile Include="PlatformErrorLog.cs" />
     <Compile Include="properties\AssemblyInfo.cs" />
     <Compile Include="ResourceLoader.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\libs\Xcite.Collections\Xcite.Collections.csproj">
-      <Project>{251e8ae0-6ded-4701-8767-88001d931374}</Project>
-      <Name>Xcite.Collections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\libs\Xcite.Csharp\Xcite.Csharp.csproj">
-      <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
-      <Name>Xcite.Csharp</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

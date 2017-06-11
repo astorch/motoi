@@ -1,7 +1,6 @@
 ﻿using System;
 using log4net;
-using Xcite.Csharp.generics;
-using Xcite.Csharp.lang;
+using xcite.csharp;
 
 namespace motoi.platform.commons {
     /// <summary>
