@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using motoi.platform.commons;
 using motoi.platform.ui.data;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
@@ -10,7 +9,8 @@ using motoi.platform.ui.widgets;
 using motoi.workbench.events;
 using motoi.workbench.model;
 using motoi.workbench.runtime;
-using Xcite.Csharp.lang;
+using xcite.csharp;
+using xcite.messaging;
 
 namespace motoi.workbench.problemsview {
     /// <summary> Implements a view of problems that occurred within an opened editor. </summary>
