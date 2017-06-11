@@ -4,7 +4,7 @@ using log4net;
 using motoi.extensions;
 using motoi.extensions.core;
 using motoi.plugins.model;
-using Xcite.Csharp.generics;
+using xcite.csharp;
 
 namespace motoi.workbench.propertyview {
     /// <summary>
