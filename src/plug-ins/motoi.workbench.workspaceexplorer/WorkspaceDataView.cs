@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using motoi.platform.resources;
 using motoi.platform.resources.model;
 using motoi.platform.resources.runtime.editors;
@@ -8,7 +9,6 @@ using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
 using motoi.platform.ui.widgets;
 using motoi.workbench.runtime;
-using Xcite.Collections;
 
 namespace motoi.workbench.workspaceexplorer {
     /// <summary> Provides a view of the current workspace content. </summary>
