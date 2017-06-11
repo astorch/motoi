@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Xcite.Collections;
+using xcite.collections;
 
 namespace motoi.workbench.stub.registries {
     /// <summary>

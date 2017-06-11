@@ -9,7 +9,7 @@
     <AppDesignerFolder>properties</AppDesignerFolder>
     <RootNamespace>motoi.workbench.stub</RootNamespace>
     <AssemblyName>motoi.workbench.stub</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -45,8 +45,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="xcite.collections, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xcite.collections.3.0.1\lib\netstandard1.4\xcite.collections.dll</HintPath>
+    </Reference>
+    <Reference Include="xcite.csharp, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xcite.csharp.3.0.2\lib\netstandard1.4\xcite.csharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
@@ -78,14 +82,6 @@
     <ProjectReference Include="..\..\libs\motoi.plugins\motoi.plugins.csproj">
       <Project>{dc59f99b-75a5-4877-b71b-3c865e4876a3}</Project>
       <Name>motoi.plugins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\libs\Xcite.Collections\Xcite.Collections.csproj">
-      <Project>{251e8ae0-6ded-4701-8767-88001d931374}</Project>
-      <Name>Xcite.Collections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\libs\Xcite.Csharp\Xcite.Csharp.csproj">
-      <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
-      <Name>Xcite.Csharp</Name>
     </ProjectReference>
     <ProjectReference Include="..\motoi.platform.application\motoi.platform.application.csproj">
       <Project>{c501885f-20ec-424f-ba03-bf3762ac99e6}</Project>

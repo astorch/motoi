@@ -9,8 +9,8 @@ using motoi.platform.nls;
 using motoi.plugins.model;
 using motoi.platform.ui.images;
 using motoi.workbench.model;
-using Xcite.Collections;
-using Xcite.Csharp.generics;
+using xcite.collections;
+using xcite.csharp;
 
 namespace motoi.workbench.stub.registries {
     /// <summary> Implements a registry that manages all New Wizard contributions. </summary>

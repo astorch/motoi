@@ -5,7 +5,7 @@ using motoi.platform.ui.widgets;
 using motoi.workbench.model;
 using motoi.workbench.runtime;
 using motoi.workbench.stub.registries;
-using Xcite.Collections;
+using xcite.collections;
 
 namespace motoi.workbench.stub.wizards.pages {
     /// <summary>
