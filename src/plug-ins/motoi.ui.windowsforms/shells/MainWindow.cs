@@ -9,7 +9,7 @@ using motoi.platform.ui.shells;
 using motoi.platform.ui.toolbars;
 using motoi.ui.windowsforms.controls;
 using motoi.ui.windowsforms.jobs;
-using Xcite.Collections;
+using xcite.collections;
 using ToolBar = motoi.ui.windowsforms.toolbars.ToolBar;
 
 namespace motoi.ui.windowsforms.shells {

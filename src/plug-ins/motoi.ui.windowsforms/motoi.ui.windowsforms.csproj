@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>motoi.ui.windowsforms</RootNamespace>
     <AssemblyName>motoi.ui.windowsforms</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -70,6 +70,12 @@
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015, Version=2.13.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DockPanelSuite.ThemeVS2015.2.14.0\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
+    </Reference>
+    <Reference Include="xcite.collections, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xcite.collections.3.0.1\lib\netstandard1.4\xcite.collections.dll</HintPath>
+    </Reference>
+    <Reference Include="xcite.csharp, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xcite.csharp.3.0.2\lib\netstandard1.4\xcite.csharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -165,14 +171,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\libs\Xcite.Collections\Xcite.Collections.csproj">
-      <Project>{251e8ae0-6ded-4701-8767-88001d931374}</Project>
-      <Name>Xcite.Collections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\libs\Xcite.Csharp\Xcite.Csharp.csproj">
-      <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
-      <Name>Xcite.Csharp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj">
       <Project>{3e6c6d06-c212-448e-bb34-11cdafa697e8}</Project>
       <Name>motoi.platform.commons</Name>
@@ -180,10 +178,6 @@
     <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj">
       <Project>{3af75cde-1d3d-40ed-8e79-eb8c6f499b3b}</Project>
       <Name>motoi.platform.nls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\motoi.platform.resources\motoi.platform.resources.csproj">
-      <Project>{4208230d-11f4-47d9-843a-493e89c5417e}</Project>
-      <Name>motoi.platform.resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\motoi.platform.ui\motoi.platform.ui.csproj">
       <Project>{04339bf5-52cf-4f60-a947-a09aa42990d4}</Project>

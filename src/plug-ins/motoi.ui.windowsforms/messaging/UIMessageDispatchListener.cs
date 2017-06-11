@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using motoi.platform.ui.messaging;
-using Xcite.Csharp.generics;
+using xcite.csharp;
 
 namespace motoi.ui.windowsforms.messaging {
     /// <summary>

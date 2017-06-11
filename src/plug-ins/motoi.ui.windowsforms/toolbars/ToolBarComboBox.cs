@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using motoi.platform.ui.bindings;
 using motoi.platform.ui.toolbars;
-using Xcite.Collections;
+using xcite.collections;
 
 namespace motoi.ui.windowsforms.toolbars {
     /// <summary>
