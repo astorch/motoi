@@ -9,7 +9,7 @@
     <AppDesignerFolder>properties</AppDesignerFolder>
     <RootNamespace>motoi.workbench.errorlogview</RootNamespace>
     <AssemblyName>motoi.workbench.errorlogview</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -34,7 +34,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
+    <Reference Include="xcite.csharp, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xcite.csharp.3.0.2\lib\netstandard1.4\xcite.csharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
@@ -46,12 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="meta-inf\signature.mf" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\libs\Xcite.Csharp\Xcite.Csharp.csproj">
-      <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
-      <Name>Xcite.Csharp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj">
       <Project>{3e6c6d06-c212-448e-bb34-11cdafa697e8}</Project>
       <Name>motoi.platform.commons</Name>
