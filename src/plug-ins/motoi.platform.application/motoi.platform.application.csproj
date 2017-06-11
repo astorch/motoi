@@ -10,7 +10,7 @@
     <RootNamespace>motoi.platform.application</RootNamespace>
     <AssemblyName>motoi.platform.application</AssemblyName>
     <TargetFrameworkProfile />
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -118,6 +118,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.XML" />
+    <Reference Include="xcite.csharp, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xcite.csharp.3.0.2\lib\netstandard1.4\xcite.csharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -132,10 +135,6 @@
     <ProjectReference Include="..\..\libs\PTP\PTP.csproj">
       <Project>{7aa07a65-1baa-4ce7-85b6-c3b801a685e0}</Project>
       <Name>PTP</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\libs\Xcite.Csharp\Xcite.Csharp.csproj">
-      <Project>{2c899abf-330f-4241-8986-2b2667173b8f}</Project>
-      <Name>Xcite.Csharp</Name>
     </ProjectReference>
     <ProjectReference Include="..\motoi.platform.resources\motoi.platform.resources.csproj">
       <Project>{4208230d-11f4-47d9-843a-493e89c5417e}</Project>
