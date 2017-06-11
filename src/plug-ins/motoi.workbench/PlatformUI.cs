@@ -5,7 +5,7 @@ using motoi.workbench.model;
 using motoi.workbench.model.jobs;
 using motoi.workbench.runtime;
 using motoi.workbench.runtime.jobs;
-using Xcite.Csharp.generics;
+using xcite.csharp;
 
 namespace motoi.workbench {
     /// <summary>

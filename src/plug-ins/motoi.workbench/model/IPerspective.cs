@@ -2,7 +2,7 @@
 using motoi.platform.ui;
 using motoi.workbench.events;
 using motoi.workbench.exceptions;
-using Xcite.Csharp.lang;
+using xcite.csharp;
 
 namespace motoi.workbench.model {
     /// <summary>

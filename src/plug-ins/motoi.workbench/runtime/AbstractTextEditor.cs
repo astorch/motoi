@@ -3,7 +3,6 @@ using motoi.platform.resources.model.editors;
 using motoi.platform.ui.bindings;
 using motoi.platform.ui.widgets;
 using motoi.workbench.model;
-using Xcite.Csharp.lang;
 
 namespace motoi.workbench.runtime {
     /// <summary>
@@ -37,7 +36,7 @@ namespace motoi.workbench.runtime {
 
             EditorInput = input;
             EditorText = fileContent;
-            DispatchPropertyChanged(Name.Of(() => EditorText));
+            DispatchPropertyChanged(nameof(EditorText));
             EditorTabText = input.Name;
             IsDirty = false;
         }
@@ -53,7 +52,7 @@ namespace motoi.workbench.runtime {
             gridComposite.AddWidget(richTextBox);
             TextBox = richTextBox;
 
-            DataBindingOperator.Apply(richTextBox, PRichTextBox.TextProperty, new DataBinding(this, Name.Of(() => EditorText)));
+            DataBindingOperator.Apply(richTextBox, PRichTextBox.TextProperty, new DataBinding(this, nameof(EditorText)));
         }
     }
 }

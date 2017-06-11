@@ -6,8 +6,8 @@ using motoi.platform.ui.factories;
 using motoi.platform.ui.shells;
 using motoi.platform.ui.widgets;
 using motoi.workbench.model;
-using Xcite.Collections;
-using Xcite.Csharp.lang;
+using xcite.collections;
+using xcite.csharp;
 
 namespace motoi.workbench.runtime {
     /// <summary>

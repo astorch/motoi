@@ -1,6 +1,5 @@
 ﻿using motoi.platform.resources.model.editors;
 using motoi.workbench.model;
-using Xcite.Csharp.lang;
 
 namespace motoi.workbench.runtime {
     /// <summary>
@@ -15,7 +14,7 @@ namespace motoi.workbench.runtime {
             protected set {
                 if (iEditorTabText == value) return;
                 iEditorTabText = value;
-                DispatchPropertyChanged(Name.Of(() => EditorTabText));
+                DispatchPropertyChanged(nameof(EditorTabText));
             }
         }
 

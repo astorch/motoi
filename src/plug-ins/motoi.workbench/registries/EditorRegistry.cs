@@ -5,8 +5,8 @@ using motoi.extensions;
 using motoi.extensions.core;
 using motoi.plugins.model;
 using motoi.workbench.model;
-using Xcite.Collections;
-using Xcite.Csharp.generics;
+using xcite.collections;
+using xcite.csharp;
 
 namespace motoi.workbench.registries {
     /// <summary>

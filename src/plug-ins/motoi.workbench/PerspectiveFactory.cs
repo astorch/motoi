@@ -1,6 +1,6 @@
 ﻿using motoi.platform.ui.factories;
 using motoi.workbench.model;
-using Xcite.Csharp.generics;
+using xcite.csharp;
 
 namespace motoi.workbench {
     /// <summary>

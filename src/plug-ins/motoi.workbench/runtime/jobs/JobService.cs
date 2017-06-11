@@ -4,7 +4,7 @@ using System.Threading;
 using log4net;
 using motoi.platform.ui.factories;
 using motoi.workbench.model.jobs;
-using Xcite.Csharp.lang;
+using xcite.csharp;
 
 namespace motoi.workbench.runtime.jobs {
     /// <summary>
@@ -17,7 +17,7 @@ namespace motoi.workbench.runtime.jobs {
 
         /// <inheritdoc />
         public IJobHandle Schedule(JobExecutionHandler onExecute, object state, string jobName) {
-            if (onExecute == null) throw new ArgumentNullException("onExecute");
+            if (onExecute == null) throw new ArgumentNullException(nameof(onExecute));
 
             JobHandle jobHandle = new JobHandle(onExecute, state, jobName);
             lock (iJobQueue) {

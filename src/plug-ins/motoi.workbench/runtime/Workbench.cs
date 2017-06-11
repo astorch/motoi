@@ -4,7 +4,7 @@ using motoi.platform.ui;
 using motoi.platform.ui.shells;
 using motoi.workbench.events;
 using motoi.workbench.model;
-using Xcite.Csharp.oop;
+using xcite.csharp.oop;
 
 namespace motoi.workbench.runtime {
     /// <summary>

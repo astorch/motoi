@@ -9,7 +9,7 @@ using motoi.platform.ui.shells;
 using motoi.workbench.events;
 using motoi.workbench.model;
 using motoi.workbench.registries;
-using Xcite.Csharp.oop;
+using xcite.csharp.oop;
 
 namespace motoi.workbench.runtime {
     /// <summary> Provides an abstract implementation of <see cref="IPerspective"/>. </summary>

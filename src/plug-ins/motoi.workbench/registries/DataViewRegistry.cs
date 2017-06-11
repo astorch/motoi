@@ -8,7 +8,7 @@ using motoi.platform.nls;
 using motoi.platform.ui;
 using motoi.plugins.model;
 using motoi.workbench.model;
-using Xcite.Csharp.generics;
+using xcite.csharp;
 
 namespace motoi.workbench.registries {
     /// <summary>

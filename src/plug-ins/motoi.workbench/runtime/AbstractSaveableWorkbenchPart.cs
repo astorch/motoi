@@ -2,7 +2,7 @@
 using log4net;
 using motoi.workbench.model;
 using motoi.workbench.model.jobs;
-using Xcite.Csharp.lang;
+using xcite.csharp;
 
 namespace motoi.workbench.runtime {
     /// <summary>
@@ -46,7 +46,7 @@ namespace motoi.workbench.runtime {
             protected set {
                 if (value == iIsDirty) return;
                 iIsDirty = value;
-                DispatchPropertyChanged(Name.Of(() => IsDirty));
+                DispatchPropertyChanged(nameof(IsDirty));
                 RaiseDirtyChangedEvent();
             }
         }
