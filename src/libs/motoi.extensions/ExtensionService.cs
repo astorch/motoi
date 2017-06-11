@@ -6,7 +6,7 @@ using motoi.extensions.core;
 using motoi.extensions.parser;
 using motoi.plugins;
 using motoi.plugins.model;
-using Xcite.Collections;
+using xcite.collections;
 
 namespace motoi.extensions {
     /// <summary>

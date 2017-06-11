@@ -5,7 +5,7 @@ using motoi.moose.events;
 using motoi.moose.exceptions;
 using motoi.plugins;
 using motoi.plugins.model;
-using Xcite.Csharp.lang;
+using xcite.csharp;
 
 namespace motoi.moose {
     /// <summary>

@@ -8,8 +8,7 @@ using log4net;
 using motoi.plugins.enums;
 using motoi.plugins.exceptions;
 using motoi.plugins.model;
-using Xcite.Csharp.generics;
-using Xcite.Csharp.lang;
+using xcite.csharp;
 
 namespace motoi.plugins {
     /// <summary>

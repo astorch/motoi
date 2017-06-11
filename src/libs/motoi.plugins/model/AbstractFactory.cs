@@ -1,4 +1,4 @@
-﻿using Xcite.Csharp.generics;
+﻿using xcite.csharp;
 
 namespace motoi.plugins.model {
     /// <summary>
