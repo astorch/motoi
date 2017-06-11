@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using motoi.platform.resources.model;
-using Xcite.Csharp.assertions;
 
 namespace motoi.platform.resources.runtime.filesystem {
     /// <summary>
@@ -14,7 +13,7 @@ namespace motoi.platform.resources.runtime.filesystem {
         /// <param name="file">File system file</param>
         /// <exception cref="ArgumentNullException">If <paramref name="file"/> is NULL</exception>
         protected AbstractFileSystemWorkspaceFile(FileInfo file) {
-            FileSystemFile = Assert.NotNull(() => file);
+            FileSystemFile = file ?? throw new ArgumentNullException(nameof(file));
             Name = file.Name;
             Location = new Uri(file.FullName);
         }

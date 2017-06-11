@@ -1,4 +1,4 @@
-﻿using Xcite.Csharp.lang;
+﻿using xcite.csharp;
 
 namespace motoi.platform.resources.model.preference {
     /// <summary>

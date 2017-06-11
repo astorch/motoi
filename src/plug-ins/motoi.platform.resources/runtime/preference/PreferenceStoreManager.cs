@@ -5,7 +5,7 @@ using motoi.extensions;
 using motoi.extensions.core;
 using motoi.platform.resources.model.preference;
 using motoi.plugins.model;
-using Xcite.Csharp.generics;
+using xcite.csharp;
 
 namespace motoi.platform.resources.runtime.preference {
     /// <summary>

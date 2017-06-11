@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Xcite.Csharp.lang;
+using xcite.csharp;
 
 namespace motoi.platform.resources.model {
     /// <summary>

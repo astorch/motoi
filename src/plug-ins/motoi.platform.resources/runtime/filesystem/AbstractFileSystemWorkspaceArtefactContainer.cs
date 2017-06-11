@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using motoi.platform.resources.model;
-using Xcite.Csharp.assertions;
-using Xcite.Csharp.lang;
+using xcite.csharp;
 
 namespace motoi.platform.resources.runtime.filesystem {
     /// <summary>
@@ -16,7 +15,7 @@ namespace motoi.platform.resources.runtime.filesystem {
         /// <param name="directoryInfo">Directory info</param>
         /// <exception cref="ArgumentNullException">If the given directory reference is NULL</exception>
         protected AbstractFileSystemWorkspaceArtefactContainer(DirectoryInfo directoryInfo) {
-            FileSystemDirectory = Assert.NotNull(() => directoryInfo);
+            FileSystemDirectory = directoryInfo ?? throw new ArgumentNullException(nameof(directoryInfo));
             Name = directoryInfo.Name;
             Location = new Uri(directoryInfo.FullName);
             ContainerArtefacts = new List<IWorkspaceArtefact>();

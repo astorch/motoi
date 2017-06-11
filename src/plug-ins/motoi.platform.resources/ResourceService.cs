@@ -4,8 +4,8 @@ using System.Runtime.Serialization;
 using log4net;
 using motoi.platform.resources.model;
 using motoi.platform.resources.runtime.filesystem;
-using Xcite.Csharp.generics;
-using Xcite.Csharp.io;
+using xcite.csharp;
+using xcite.io;
 
 namespace motoi.platform.resources
 {

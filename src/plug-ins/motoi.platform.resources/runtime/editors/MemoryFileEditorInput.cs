@@ -2,7 +2,6 @@
 using System.IO;
 using motoi.platform.resources.model;
 using motoi.platform.resources.model.editors;
-using Xcite.Csharp.assertions;
 
 namespace motoi.platform.resources.runtime.editors {
     /// <summary>
@@ -25,7 +24,7 @@ namespace motoi.platform.resources.runtime.editors {
         /// <param name="name">Name of the editor input</param>
         /// <param name="fileData">Data of the editor input</param>
         public MemoryFileEditorInput(string name, byte[] fileData) {
-            Name = Assert.NotNull(() => name);
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             iFileData = fileData ?? new byte[0];
         }
 
