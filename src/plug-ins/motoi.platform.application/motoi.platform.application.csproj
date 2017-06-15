@@ -118,8 +118,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.XML" />
-    <Reference Include="xcite.csharp, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xcite.csharp.3.0.2\lib\netstandard1.4\xcite.csharp.dll</HintPath>
+    <Reference Include="xcite.csharp, Version=3.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xcite.csharp.3.0.3\lib\net462\xcite.csharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup />
