@@ -42,8 +42,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="xcite.csharp, Version=3.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xcite.csharp.3.0.3\lib\net462\xcite.csharp.dll</HintPath>
+    <Reference Include="xcite.csharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xcite.csharp.3.0.4\lib\net462\xcite.csharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
