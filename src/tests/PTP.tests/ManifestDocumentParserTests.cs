@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using NUnit.Framework;
-using PTP.Core;
-using PTP.Parsers;
+using PTP;
 
 namespace PTP.tests {
     [TestFixture]

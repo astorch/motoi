@@ -7,8 +7,7 @@ using motoi.platform.resources;
 using motoi.platform.resources.runtime.preference;
 using motoi.plugins;
 using NLog;
-using PTP.Core;
-using PTP.Parsers;
+using PTP;
 
 namespace motoi.platform.application {
     /// <summary> Provides the common entry point of any motoi application. </summary>

@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-  </PropertyGroup>
-  <PropertyGroup>
     <TargetFramework>net47</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputType>Exe</OutputType>
     <Authors>Arian Storch</Authors>
     <Product>Motoi RCP</Product>
@@ -19,7 +17,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\..\bin\debug\motoi.moose.xml</DocumentationFile>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -34,10 +31,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\motoi.plugins\motoi.plugins.csproj" />
+    <PackageReference Include="xcite.csharp" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.5" />
-    <PackageReference Include="xcite.csharp" Version="6.0.0" />
+    <ProjectReference Include="..\motoi.plugins\motoi.plugins.csproj" />
   </ItemGroup>
 </Project>

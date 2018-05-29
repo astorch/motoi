@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 using NUnit.Framework;
-using PTP.Core;
+using PTP;
 
 namespace PTP.tests {
 	[TestFixture]
