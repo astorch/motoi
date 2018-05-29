@@ -15,19 +15,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApplication", "tests\pl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ui-provider", "ui-provider", "{2D625362-0E98-490D-AD94-190C16329052}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.ui.windowsforms", "plug-ins\Motoi.UI.WindowsForms\motoi.ui.windowsforms.csproj", "{A069CD61-568C-4467-A691-948EADC7D868}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.ui.windowsforms", "plug-ins\Motoi.UI.WindowsForms\motoi.ui.windowsforms.csproj", "{A069CD61-568C-4467-A691-948EADC7D868}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo plug-ins", "demo plug-ins", "{D89E9583-5F2F-44BB-BF53-9CE8C6C8BC67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench.workspaceexplorer", "plug-ins\motoi.workbench.workspaceexplorer\motoi.workbench.workspaceexplorer.csproj", "{7CA52CC3-7E14-46DD-AD71-BC7BF858D7A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.workbench.workspaceexplorer", "plug-ins\motoi.workbench.workspaceexplorer\motoi.workbench.workspaceexplorer.csproj", "{7CA52CC3-7E14-46DD-AD71-BC7BF858D7A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench", "plug-ins\motoi.workbench\motoi.workbench.csproj", "{691F9CA7-639F-4FDD-AFF9-0BEAE6948288}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.workbench", "plug-ins\motoi.workbench\motoi.workbench.csproj", "{691F9CA7-639F-4FDD-AFF9-0BEAE6948288}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench.problemsview", "plug-ins\motoi.workbench.problemsview\motoi.workbench.problemsview.csproj", "{A20550E4-D0CA-451A-8D8C-CBDCF7E5A5B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.workbench.problemsview", "plug-ins\motoi.workbench.problemsview\motoi.workbench.problemsview.csproj", "{A20550E4-D0CA-451A-8D8C-CBDCF7E5A5B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench.stub", "plug-ins\motoi.workbench.stub\motoi.workbench.stub.csproj", "{C788373F-1268-496C-BCCA-52F144A86440}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.workbench.stub", "plug-ins\motoi.workbench.stub\motoi.workbench.stub.csproj", "{C788373F-1268-496C-BCCA-52F144A86440}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench.propertyview", "plug-ins\motoi.workbench.propertyview\motoi.workbench.propertyview.csproj", "{4B81A7B7-FCB1-4B01-B0A6-DE7B1FCE8BF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.workbench.propertyview", "plug-ins\motoi.workbench.propertyview\motoi.workbench.propertyview.csproj", "{4B81A7B7-FCB1-4B01-B0A6-DE7B1FCE8BF7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.extensions", "libs\motoi.extensions\motoi.extensions.csproj", "{E85CB030-30D6-468D-9061-559F937F1904}"
 EndProject
@@ -53,13 +53,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.plugins.tests", "test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "platform", "platform", "{6C435A6E-D4CF-43AA-9B24-60DD2DCB9343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.resources", "plug-ins\motoi.platform.resources\motoi.platform.resources.csproj", "{4208230D-11F4-47D9-843A-493E89C5417E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.platform.resources", "plug-ins\motoi.platform.resources\motoi.platform.resources.csproj", "{4208230D-11F4-47D9-843A-493E89C5417E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.commons", "plug-ins\motoi.platform.commons\motoi.platform.commons.csproj", "{3E6C6D06-C212-448E-BB34-11CDAFA697E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.platform.commons", "plug-ins\motoi.platform.commons\motoi.platform.commons.csproj", "{3E6C6D06-C212-448E-BB34-11CDAFA697E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.ui", "plug-ins\motoi.platform.ui\motoi.platform.ui.csproj", "{04339BF5-52CF-4F60-A947-A09AA42990D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.platform.ui", "plug-ins\motoi.platform.ui\motoi.platform.ui.csproj", "{04339BF5-52CF-4F60-A947-A09AA42990D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.application", "plug-ins\motoi.platform.application\motoi.platform.application.csproj", "{C501885F-20EC-424F-BA03-BF3762AC99E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.platform.application", "plug-ins\motoi.platform.application\motoi.platform.application.csproj", "{C501885F-20EC-424F-BA03-BF3762AC99E6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workbench", "workbench", "{ADFEE464-B721-4422-95E5-992493B92A69}"
 EndProject
@@ -75,9 +75,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.application.tests", "tests\motoi.platform.application.tests\motoi.platform.application.tests.csproj", "{F65009ED-1895-4155-9ED0-549D6CC4231B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.platform.nls", "plug-ins\motoi.platform.nls\motoi.platform.nls.csproj", "{3AF75CDE-1D3D-40ED-8E79-EB8C6F499B3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.platform.nls", "plug-ins\motoi.platform.nls\motoi.platform.nls.csproj", "{3AF75CDE-1D3D-40ED-8E79-EB8C6F499B3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench.errorlogview", "plug-ins\motoi.workbench.errorlogview\motoi.workbench.errorlogview.csproj", "{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.workbench.errorlogview", "plug-ins\motoi.workbench.errorlogview\motoi.workbench.errorlogview.csproj", "{B34BEB6E-03E2-4482-93BE-4D3B989FB93A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -204,16 +204,16 @@ Global
 		{7AA07A65-1BAA-4CE7-85B6-C3B801A685E0}.Release|x86.ActiveCfg = Release|Any CPU
 		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Debug|x86.ActiveCfg = Debug|x86
-		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Debug|x86.Build.0 = Debug|x86
+		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Debug|x86.Build.0 = Debug|Any CPU
 		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Default|Any CPU.ActiveCfg = Debug|Any CPU
 		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Default|Any CPU.Build.0 = Debug|Any CPU
-		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Default|x86.ActiveCfg = Debug|x86
-		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Default|x86.Build.0 = Debug|x86
+		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Default|x86.ActiveCfg = Debug|Any CPU
+		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Default|x86.Build.0 = Debug|Any CPU
 		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Release|x86.ActiveCfg = Release|x86
-		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Release|x86.Build.0 = Release|x86
+		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Release|x86.ActiveCfg = Release|Any CPU
+		{F39169A7-75C4-47D3-9672-EC98557FCDA1}.Release|x86.Build.0 = Release|Any CPU
 		{A9090E88-9F3B-493A-8AA2-571A6F455FDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A9090E88-9F3B-493A-8AA2-571A6F455FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9090E88-9F3B-493A-8AA2-571A6F455FDB}.Debug|x86.ActiveCfg = Debug|Any CPU
