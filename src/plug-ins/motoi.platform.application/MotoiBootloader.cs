@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using log4net;
 using motoi.extensions;
-using motoi.platform.application.model;
 using motoi.platform.resources;
 using motoi.platform.resources.runtime.preference;
 using motoi.plugins;
+using NLog;
 using PTP.Core;
 using PTP.Parsers;
 
@@ -15,15 +14,12 @@ namespace motoi.platform.application {
     /// <summary> Provides the common entry point of any motoi application. </summary>
     public class MotoiBootloader {
         /// <summary> Log instance. </summary>
-        private static ILog iLogger;
+        private static Logger _logger;
 
-        /// <summary>
-        /// Entry point of the application.
-        /// </summary>
+        /// <summary> Entry point of the application. </summary>
         /// <param name="args"></param>
         public static void Main(string[] args) {
-            LogConfigurer.Configurate();
-            iLogger = LogManager.GetLogger(typeof (MotoiBootloader));
+            _logger = LogManager.GetCurrentClassLogger(typeof(MotoiBootloader));
 
             try {
                 // Load platform settings
@@ -44,7 +40,7 @@ namespace motoi.platform.application {
                 // Start Application Manager
                 ApplicationManager.Instance.DoWork();
             } catch (Exception ex) {
-                iLogger.Error(ex.Message, ex);
+                _logger.Error(ex, ex.Message);
                 Environment.Exit(-1);
             } finally {
                 ApplicationManager.Instance.HomeTime();

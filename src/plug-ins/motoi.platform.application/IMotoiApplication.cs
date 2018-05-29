@@ -1,6 +1,6 @@
 ﻿using motoi.platform.ui.shells;
 
-namespace motoi.platform.application.model {
+namespace motoi.platform.application {
     /// <summary>
     /// Defines methods for an application to hookup within the application lifecycle.
     /// </summary>

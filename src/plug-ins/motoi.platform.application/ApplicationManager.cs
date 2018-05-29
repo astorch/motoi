@@ -1,55 +1,41 @@
 ﻿using System;
 using System.Threading;
-using log4net;
 using motoi.extensions;
-using motoi.extensions.core;
 using motoi.platform.resources.model.preference;
 using motoi.platform.resources.runtime.preference;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.menus;
 using motoi.platform.ui.shells;
 using motoi.platform.ui.toolbars;
-using motoi.plugins.model;
+using motoi.plugins;
+using NLog;
 
-namespace motoi.platform.application.model
-{
-    /// <summary>
-    /// Provides a manager for application instances.
-    /// </summary>
+namespace motoi.platform.application {
+    /// <summary> Provides a manager for application instances. </summary>
     class ApplicationManager {
+        /// <summary> Backing variable for the instance. </summary>
+        private static ApplicationManager _instance;
 
-        /// <summary>
-        /// Backing variable for the instance.
-        /// </summary>
-        private static ApplicationManager iInstance;
-
-        /// <summary>
-        /// Returns the current instance of the manager.
-        /// </summary>
-        public static ApplicationManager Instance {
-            get { return iInstance ?? (iInstance = new ApplicationManager()); }
-        }
+        /// <summary> Returns the current instance of the manager. </summary>
+        public static ApplicationManager Instance 
+            => _instance ?? (_instance = new ApplicationManager());
 
         /// <summary> Extension point id. </summary>
         private const string ApplicationExtensionPointId = "org.motoi.application";
-        private readonly ILog iLogger = LogManager.GetLogger(typeof (ApplicationManager));
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger(typeof(ApplicationManager));
 
         private IMotoiApplication iApplication;
         private IApplicationController iApplicationController;
         private IMainWindow iMainWindow;
 
-        /// <summary>
-        /// Private constructor.
-        /// </summary>
+        /// <summary> Private constructor. </summary>
         private ApplicationManager() {
             // Nothing to do here
         }
 
-        /// <summary>
-        /// Tells the manager to do his job.
-        /// </summary>
+        /// <summary> Tells the manager to do his job. </summary>
         public void DoWork() {
-            iLogger.Debug("Doing my work");
+            _logger.Debug("Doing my work");
 
             string applicationId = PlatformSettings.Instance["application"];
 
@@ -70,7 +56,7 @@ namespace motoi.platform.application.model
             uiThread.Name = "Motoi Application UI-Thread";
             uiThread.Start();
 
-            iLogger.Debug("Time to get some coffee");
+            _logger.Debug("Time to get some coffee");
 
             // Wait here until the UI thread has been finished
             uiThread.Join();
@@ -90,7 +76,7 @@ namespace motoi.platform.application.model
                 RestoreWindowState(iMainWindow);
                 iApplication.OnPostInitializeMainWindow(iMainWindow);
             } else {
-                iLogger.Info("Application will run headless");
+                _logger.Info("Application will run headless");
             }
 
             iApplication.OnApplicationRun();
@@ -99,7 +85,7 @@ namespace motoi.platform.application.model
                 iApplicationController = FactoryProvider.Instance.GetApplicationController();
                 iApplicationController.RunApplication(iMainWindow);
             } catch (Exception ex) {
-                iLogger.Error(ex.Message, ex);
+                _logger.Error(ex, ex.Message);
             }
 
             if (!iApplication.IsHeadless) {
@@ -113,7 +99,7 @@ namespace motoi.platform.application.model
         /// Tells the manager to stop and to release all its resources (dispose).
         /// </summary>
         public void HomeTime() {
-            iLogger.Debug("Time to go home");
+            _logger.Debug("Time to go home");
 
             iApplication.OnShutdown();
             iApplication = null;
@@ -121,9 +107,9 @@ namespace motoi.platform.application.model
             iApplicationController = null;
             iMainWindow = null;
 
-            iInstance = null;
+            _instance = null;
 
-            iLogger.Debug("Goodbye");
+            _logger.Debug("Goodbye");
         }
 
         /// <summary>
@@ -173,7 +159,7 @@ namespace motoi.platform.application.model
                 mainWindow.TopLocation = windowTop;
                 mainWindow.LeftLocation = windowLeft;
             } catch (Exception ex) {
-                iLogger.Error("Error on restoring window state.", ex);
+                _logger.Error(ex, "Error on restoring window state.");
             }
         }
 
@@ -200,17 +186,14 @@ namespace motoi.platform.application.model
                 preferenceStore.SetValue(WindowLeftKey, windowLeft);
                 preferenceStore.Flush();
             } catch (Exception ex) {
-                iLogger.Error("Error on memorizing window state.", ex);
+                _logger.Error(ex, "Error on memorizing window state.");
             }
         }
 
-        /// <summary>
-        /// Returns the associated preference store.
-        /// </summary>
+        /// <summary> Returns the associated preference store. </summary>
         /// <returns>Associated preference store</returns>
-        private IPreferenceStore GetPreferenceStore() {
-            return PreferenceStoreManager.GetInstance().GetStore(PreferenceStoreName, EStoreScope.User);
-        }
+        private IPreferenceStore GetPreferenceStore() 
+            => PreferenceStoreManager.GetInstance().GetStore(PreferenceStoreName, EStoreScope.User);
 
         private const string PreferenceStoreName = "org.motoi.platform";
         private const string WindowStateKey = "application.window.state";

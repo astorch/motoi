@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using log4net;
 using motoi.extensions;
-using motoi.extensions.core;
 using motoi.platform.ui.shells;
 using xcite.csharp;
 
