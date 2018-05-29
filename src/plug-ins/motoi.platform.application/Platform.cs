@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using log4net;
 using motoi.extensions;
 using motoi.platform.ui.shells;
+using NLog;
 using xcite.csharp;
 
 namespace motoi.platform.application {
@@ -13,22 +13,20 @@ namespace motoi.platform.application {
         /// <summary> Extension point id </summary>
         private const string PlatformServiceExtensionPointId = "org.motoi.platform.service";
 
-        private static readonly ILog iPlatformLog = LogManager.GetLogger(typeof(Platform));
-        private readonly Dictionary<Type, IPlatformService> iRegisteredPlatformServices = new Dictionary<Type, IPlatformService>();
+        private static readonly Logger _platformLog = LogManager.GetCurrentClassLogger(typeof(Platform));
+        private readonly Dictionary<Type, IPlatformService> _platformServices = new Dictionary<Type, IPlatformService>();
 
         public TService GetService<TService>() where TService : class, IPlatformService {
             Type serviceType = typeof(TService);
-            
-            IPlatformService serviceInstance;
-            if (!iRegisteredPlatformServices.TryGetValue(serviceType, out serviceInstance)) return null;
+
+            if (!_platformServices.TryGetValue(serviceType, out IPlatformService serviceInstance)) return null;
 
             return (TService) serviceInstance;
         }
 
-        /// <summary>
-        /// Returns the platform log.
-        /// </summary>
-        public ILog PlatformLog { get { return iPlatformLog; } }
+        /// <summary> Returns the platform log. </summary>
+        public Logger PlatformLog 
+            => _platformLog;
 
         /// <summary>
         /// Returns the current main window of the application. May be NULL if the application runs headless.
@@ -39,7 +37,7 @@ namespace motoi.platform.application {
         /// Will be called when <see cref="GenericSingleton{TClass}.Destroy"/> has been called for this instance.
         /// </summary>
         protected override void OnDestroy() {
-            iRegisteredPlatformServices.Clear();
+            _platformServices.Clear();
         }
 
         /// <summary>
