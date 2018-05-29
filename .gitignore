@@ -3,6 +3,8 @@ obj
 packages
 tools
 .binaries
+.fake
+.vs
 _ReSharper.*/
 *.testsettings
 *.user
