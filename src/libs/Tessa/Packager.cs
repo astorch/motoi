@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PTP;
 
 namespace Tessa {
@@ -148,8 +150,8 @@ namespace Tessa {
                     FileInfo[] subDirFiles = subDirInfo.GetFiles();
                     for (int j = -1; ++j < subDirFiles.Length;) {
                         FileInfo file = subDirFiles[j];
-                        string target = "includes/" + include; // string.Format("{0}/includes/{1}", ZipBasePath, include);
-                        CopyInfo cpyInf = new CopyInfo { Source = file.FullName, Target = target };
+                        string target = "includes/" + include;
+                        CopyInfo cpyInf = new CopyInfo(file.FullName, target);
                         cpyInfos.AddLast(cpyInf);
                     }
                 }
@@ -207,8 +209,8 @@ namespace Tessa {
         /// <param name="assemblyPath">Path to the assembly to add</param>
         /// <param name="copyList">Collection the new entry is added</param>
 	    private void AddToCopyList(string assemblyPath, LinkedList<CopyInfo> copyList) {
-            string target = "includes/"; // string.Format("{0}/includes/{1}", ZipBasePath, string.Empty);
-            copyList.AddLast(new CopyInfo { Source = assemblyPath, Target = target });
+            string target = "includes";
+            copyList.AddLast(new CopyInfo(assemblyPath, target));
 	    }
 
         /// <summary>
@@ -318,52 +320,86 @@ namespace Tessa {
         /// <param name="fileContent">Content of the csproj file that is processed</param>
         /// <param name="referencesTable">Collection new references are added to</param>
 	    private void AddExternalReferences(FileInfo csprojFileInfo, string fileContent, IDictionary<string, string> referencesTable) {
-            Match includeMatch = Regex.Match(fileContent, "(\\<Reference Include=\"(?<include>[^\"]+)\"\\>)");
-            while (true) {
-                // Nothing found or left, we're done here
-                if (!includeMatch.Success) break;
+            string csprojFolderPath = csprojFileInfo.Directory?.FullName;
+            if (csprojFolderPath == null) throw new TessaException("Could not resolve csproj folder path");
 
-                // Extract the node content
-                int includeBegin = includeMatch.Index;
-                int includeFinish = fileContent.IndexOf("</Reference>", includeBegin);
-                string includeContent = fileContent.Substring(includeBegin, includeFinish - includeBegin);
+            string assetJsonPath = Path.Combine(csprojFolderPath, "obj", "project.assets.json");
+            JObject assets;
+            using (FileStream fileStream = File.OpenRead(assetJsonPath)) {
+                using (StreamReader reader = new StreamReader(fileStream)) {
+                    using (JsonTextReader jtr = new JsonTextReader(reader)) {
+                        assets = (JObject) JToken.ReadFrom(jtr);
+                    }
+                }
+            }
 
-                Match hintPath = Regex.Match(includeContent, "(\\<HintPath\\>(?<path>[^\\<]+)\\</HintPath\\>)");
+            ICollection<LibInfo> libSet = new LinkedList<LibInfo>();
+            
+            JObject targets = (JObject) assets["targets"];
+            JProperty targetEntry = (JProperty) targets.First;
+            JObject baseTarget = (JObject) targetEntry.Value;
+            using (IEnumerator<KeyValuePair<string, JToken>> itr = baseTarget.GetEnumerator()) {
+                while (itr.MoveNext()) {
+                    KeyValuePair<string, JToken> target = itr.Current;
+                    string id = target.Key;
+                    string[] idParts = id.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+                    string libName = idParts[0];
+                    string libVers = idParts[1];
+                    JObject obj = (JObject) target.Value;
+                    string type = (string) obj["type"];
+                    if (type != "package") continue;
+                    JObject runtime = (JObject) obj["runtime"];
+                    JProperty rtEntry = (JProperty) runtime.First;
+                    string libPath = rtEntry.Name;
+                    libSet.Add(new LibInfo(libName, libVers, libPath));
+                }
+            }
 
-                // Build name
-                string includeFullName = includeMatch.Groups["include"].Value;
-                string[] nameParts = includeFullName.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                string includeSimpleName = nameParts[0];
+            JObject packageFolders = (JObject) assets["packageFolders"];
+            string packageFolder = packageFolders.Properties().First().Name;
 
-                // Build path
-                string includePath = hintPath.Groups["path"].Value;
-
-                // The include path is relative to the csproj file, so we must re-align it
-                string basePath = csprojFileInfo.Directory.FullName;
-                string includeFilePath = Path.Combine(basePath, includePath);
-
-                FileInfo includeFileInfo = new FileInfo(includeFilePath);
-
-                // Add to table
-                referencesTable.Add(includeSimpleName, includeFileInfo.FullName);
-
-                // Navigate to next match
-                includeMatch = includeMatch.NextMatch();
+            using (IEnumerator<LibInfo> itr = libSet.GetEnumerator()) {
+                while (itr.MoveNext()) {
+                    LibInfo libNfo = itr.Current;
+                    string libName = libNfo.Name;
+                    string libVers = libNfo.Version;
+                    string libPath = libNfo.Path;
+                    string fullLibPath = Path.Combine(packageFolder, libName, libVers, libPath);
+                    string fqp = Path.GetFullPath(fullLibPath);
+                    if (!File.Exists(fqp)) throw new TessaException($"Could not resolve file '{fqp}'");
+                    string simpleName = Path.GetFileNameWithoutExtension(fqp);
+                    referencesTable.Add(simpleName, fqp);
+                }
             }
 	    }
 
-        /// <summary>
-        /// Defines a simple structure for internal copying purposes.
-        /// </summary>
+	    /// <summary> Simple structure for internal copying purposes. </summary>
         struct CopyInfo {
-            /// <summary>
-            /// Source path.
-            /// </summary>
-            public string Source { get; set; }
-            /// <summary>
-            /// Target path.
-            /// </summary>
-            public string Target { get; set; }
+
+            public CopyInfo(string source, string target) {
+                Source = source;
+                Target = target;
+            }
+
+            public string Source { get; }
+            
+            public string Target { get; }
         }
+
+        /// <summary> Simple structure to describe a library info </summary>
+	    struct LibInfo {
+
+	        public LibInfo(string name, string version, string path) {
+	            Name = name;
+	            Version = version;
+	            Path = path;
+	        }
+
+	        public string Name { get; }
+
+	        public string Version { get; }
+
+	        public string Path { get; }
+	    }
 	}
 }
