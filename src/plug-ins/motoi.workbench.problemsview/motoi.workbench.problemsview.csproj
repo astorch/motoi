@@ -1,111 +1,58 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A20550E4-D0CA-451A-8D8C-CBDCF7E5A5B4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>properties</AppDesignerFolder>
-    <RootNamespace>motoi.workbench.problemsview</RootNamespace>
-    <AssemblyName>motoi.workbench.problemsview</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard20</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <OutputPath>bin\debug\</OutputPath>
+    <DefineConstants />
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\motoi.workbench.problemsview.XML</DocumentationFile>
+    <DocumentationFile>bin\debug\motoi.workbench.problemsview.XML</DocumentationFile>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>embedded</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <OutputPath>bin\release\</OutputPath>
+    <DefineConstants />
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
-    <DocumentationFile>bin\Release\motoi.workbench.problemsview.XML</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="xcite.collections, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xcite.collections.3.0.3\lib\net462\xcite.collections.dll</HintPath>
-    </Reference>
-    <Reference Include="xcite.csharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xcite.csharp.3.0.4\lib\net462\xcite.csharp.dll</HintPath>
-    </Reference>
-    <Reference Include="xcite.messaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\xcite.messaging.1.0.3\lib\net462\xcite.messaging.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj" />
+    <ProjectReference Include="..\motoi.platform.resources\motoi.platform.resources.csproj" />
+    <ProjectReference Include="..\motoi.platform.ui\motoi.platform.ui.csproj" />
+    <ProjectReference Include="..\motoi.workbench\motoi.workbench.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="xcite.collections" Version="6.0.0" />
+    <PackageReference Include="xcite.csharp" Version="6.0.0" />
+    <PackageReference Include="xcite.messaging" Version="4.0.0" />
+  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
-      <Link>properties\WorkbenchProductAssemblyInfo.cs</Link>
+      <Link>WorkbenchProductAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="EProblemsViewItemType.cs" />
-    <Compile Include="IProblemsViewItemProvider.cs" />
-    <Compile Include="Messages.cs" />
-    <Compile Include="ProblemsDataView.cs" />
-    <Compile Include="ProblemsViewItemCollection.cs" />
-    <Compile Include="ProblemsViewItem.cs" />
-    <Compile Include="properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="meta-inf\signature.mf" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="meta-inf\extensions.xml">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj">
-      <Project>{3af75cde-1d3d-40ed-8e79-eb8c6f499b3b}</Project>
-      <Name>motoi.platform.nls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\motoi.platform.resources\motoi.platform.resources.csproj">
-      <Project>{4208230d-11f4-47d9-843a-493e89c5417e}</Project>
-      <Name>motoi.platform.resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\motoi.platform.ui\motoi.platform.ui.csproj">
-      <Project>{04339bf5-52cf-4f60-a947-a09aa42990d4}</Project>
-      <Name>motoi.platform.ui</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\motoi.workbench\motoi.workbench.csproj">
-      <Project>{691f9ca7-639f-4fdd-aff9-0beae6948288}</Project>
-      <Name>motoi.workbench</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="resources\texts\messages.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="resources\texts\messages_de.txt" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)..\bin\debug\Tessa.exe" "$(ProjectPath)" "$(TargetPath)" "$(SolutionDir)..\bin\debug"</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)..\bin\debug\Tessa.exe&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot; &quot;$(SolutionDir)..\bin\debug&quot;" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
