@@ -6,10 +6,10 @@
 [assembly: AssemblyConfiguration("release")]
 #endif
 
-[assembly: AssemblyCompany("motoi.org")]
-[assembly: AssemblyProduct("motoi .NET RCP")]
-[assembly: AssemblyCopyright("Copyright ©  2017 motoi.org")]
+[assembly: AssemblyCompany("Arian Storch")]
+[assembly: AssemblyProduct("Motoi RCP")]
+[assembly: AssemblyCopyright("© 2017 Arian Storch. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyInformationalVersion("1.0.0")]
+[assembly: AssemblyFileVersion("1.0.0")]
