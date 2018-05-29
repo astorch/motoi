@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
-using PTP.Core;
 
-namespace PTP.Parsers
+namespace PTP
 {
     /// <summary>
     /// Provides an abstract implementation of a plain document (text file) 

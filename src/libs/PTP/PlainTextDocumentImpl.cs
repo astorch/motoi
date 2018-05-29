@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PTP.Core
+namespace PTP
 {
 	/// <summary>
 	/// Provides a default implementation of <see cref="IPlainTextDocument"/>

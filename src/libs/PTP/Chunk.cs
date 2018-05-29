@@ -1,4 +1,4 @@
-namespace PTP.Core
+namespace PTP
 {
 	/// <summary>
 	/// Defines a chunk.

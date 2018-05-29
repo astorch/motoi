@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 
-namespace PTP.Core
+namespace PTP
 {
 	/// <summary>
 	/// Defines a PlainTextDocument.
 	/// </summary>
-	public interface IPlainTextDocument : IEnumerable<KeyValuePair<string,string[]>> {
+	public interface IPlainTextDocument : IEnumerable<KeyValuePair<string, string[]>> {
 		/// <summary>
 		/// Selects the value referenced by the given xplain query. If the value doesn't 
 		/// exists null will be returned.
