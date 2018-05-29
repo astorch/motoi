@@ -1,7 +1,7 @@
 ﻿using System;
-using log4net;
 using motoi.workbench.model;
 using motoi.workbench.model.jobs;
+using NLog;
 using xcite.csharp;
 
 namespace motoi.workbench.runtime {
@@ -11,17 +11,8 @@ namespace motoi.workbench.runtime {
     public abstract class AbstractSaveableWorkbenchPart : AbstractWorkbenchPart, ISaveableWorkbenchPart {
         private bool iIsDirty;
 
-        /// <summary>
-        /// Creates a new instance.
-        /// </summary>
-        protected AbstractSaveableWorkbenchPart() {
-            Log = LogManager.GetLogger(GetType());
-        }
-
-        /// <summary>
-        /// Returns a log instance to write to.
-        /// </summary>
-        protected ILog Log { get; private set; }
+        /// <summary> Returns a log instance to write to. </summary>
+        protected Logger Log { get; } = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Event that is raised when the <see cref="ISaveableWorkbenchPart.IsDirty"/> flag has been changed.
@@ -96,7 +87,7 @@ namespace motoi.workbench.runtime {
         /// <param name="exception">Exception</param>
         /// <param name="delegate">Handler</param>
         protected virtual void OnEventDispatchException(Exception exception, Delegate @delegate) {
-            Log.ErrorFormat("Error on dispatching event to '{0}'. Reason: {1}", @delegate, exception);
+            Log.Error(exception, $"Error on dispatching event to '{@delegate}'.");
         }
     }
 }

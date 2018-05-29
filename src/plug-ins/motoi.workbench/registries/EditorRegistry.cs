@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using log4net;
 using motoi.extensions;
-using motoi.extensions.core;
-using motoi.plugins.model;
+using motoi.plugins;
 using motoi.workbench.model;
+using NLog;
 using xcite.collections;
 using xcite.csharp;
 
@@ -16,7 +15,7 @@ namespace motoi.workbench.registries {
         /// <summary> Extension Point id. </summary>
         private const string EditorExtensionPointId = "org.motoi.ui.editor";
 
-        private static readonly ILog iLog = LogManager.GetLogger(typeof (EditorRegistry));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private readonly LinearList<EditorContribution> iRegisteredEditors = new LinearList<EditorContribution>();
 
@@ -56,10 +55,11 @@ namespace motoi.workbench.registries {
 
             Type editorType = editorContribution.EditorType;
             try {
-                IEditor editor = editorType.NewInstance<IEditor>();
+                // IEditor editor = editorType.NewInstance<IEditor>();
+                IEditor editor = (IEditor) Activator.CreateInstance(editorType);
                 return editor;
             } catch (Exception ex) {
-                iLog.ErrorFormat("Error on initiating a new instance of '{0}'. Reason: {1}", editorType, ex);
+                _log.Error(ex, $"Error on initiating a new instance of '{editorType}'.");
                 return null;
             }
         }
@@ -70,11 +70,11 @@ namespace motoi.workbench.registries {
         protected override void OnInitialize() {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(EditorExtensionPointId);
             if (configurationElements.Length == 0) {
-                iLog.Warn("No editor has been contributed by any extension point!");
+                _log.Warn("No editor has been contributed by any extension point!");
                 return;
             }
 
-            iLog.DebugFormat("{0} editor contributions has been found", configurationElements.Length);
+            _log.Debug($"{configurationElements.Length} editor contributions has been found");
             for (int i = -1; ++i != configurationElements.Length;) {
                 IConfigurationElement configurationElement = configurationElements[i];
 
@@ -82,26 +82,26 @@ namespace motoi.workbench.registries {
                 string cls = configurationElement["class"];
                 string fileExtension = configurationElement["fileExtension"];
 
-                iLog.DebugFormat("Registering contribution {{id: '{0}', cls: '{1}', fileExtension: '{2}'}}", id, cls, fileExtension);
+                _log.Debug($"Registering contribution {{id: '{id}', cls: '{cls}', fileExtension: '{fileExtension}'}}");
 
                 if (string.IsNullOrWhiteSpace(id)) {
-                    iLog.ErrorFormat("Id attribute of editor extension contribution is null or empty!");
+                    _log.Error("Id attribute of editor extension contribution is null or empty!");
                     continue;
                 }
 
                 if (string.IsNullOrWhiteSpace(cls)) {
-                    iLog.ErrorFormat("Class attribute of editor extension contribution is null or empty!. Contribution id: '{0}'", id);
+                    _log.Error($"Class attribute of editor extension contribution is null or empty!. Contribution id: '{id}'");
                     continue;
                 }
 
                 if (string.IsNullOrWhiteSpace(fileExtension)) {
-                    iLog.ErrorFormat("File extension attribute of editor extension contribution is null or empty! Contribution id: '{0}'", id);
+                    _log.Error($"File extension attribute of editor extension contribution is null or empty! Contribution id: '{id}'");
                     continue;
                 }
 
                 string[] fileExtensionParts = fileExtension.Split(new []{ ',' }, StringSplitOptions.RemoveEmptyEntries);
                 if (fileExtensionParts.Length == 0) {
-                    iLog.ErrorFormat("File extension declaration has unexpected format. Use comma separated values like 'txt,log'! Contribution id: '{0}'", id);
+                    _log.Error($"File extension declaration has unexpected format. Use comma separated values like 'txt,log'! Contribution id: '{id}'");
                     continue;
                 }
 
@@ -116,9 +116,9 @@ namespace motoi.workbench.registries {
                         SupportedFileExtensions = fileExtensionParts
                     };
                     iRegisteredEditors.Add(editorContribution);
-                    iLog.InfoFormat("Editor contribution '{0}' registered.", id);
+                    _log.Info($"Editor contribution '{id}' registered.");
                 } catch (Exception ex) {
-                    iLog.ErrorFormat("Error loading type '{0}'. Reason: {1}", cls, ex);
+                    _log.Error(ex, $"Error loading type '{cls}'.");
                 }
             }
         }

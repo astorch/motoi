@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using log4net;
 using motoi.extensions;
-using motoi.extensions.core;
 using motoi.platform.nls;
 using motoi.platform.ui;
-using motoi.plugins.model;
+using motoi.plugins;
 using motoi.workbench.model;
+using NLog;
 using xcite.csharp;
 
 namespace motoi.workbench.registries {
@@ -18,7 +17,7 @@ namespace motoi.workbench.registries {
         /// <summary> Extension Point id. </summary>
         private const string DataViewExtensionPointId = "org.motoi.ui.dataview";
 
-        private static readonly ILog iLog = LogManager.GetLogger(typeof (DataViewRegistry));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private readonly List<DataViewContribution> iRegisteredDataViews = new List<DataViewContribution>(31);
         private readonly Dictionary<Type, IDataView> iCreatedDataViews = new Dictionary<Type, IDataView>(31);
@@ -74,8 +73,7 @@ namespace motoi.workbench.registries {
         private TDataView GetOrCreateDataView<TDataView>(Type dataViewType) where TDataView : class, IDataView {
             try {
                 // Consult internal cache
-                IDataView rawDataViewInstance;
-                if (iCreatedDataViews.TryGetValue(dataViewType, out rawDataViewInstance)) return rawDataViewInstance as TDataView;
+                if (iCreatedDataViews.TryGetValue(dataViewType, out IDataView rawDataViewInstance)) return rawDataViewInstance as TDataView;
 
                 // Create new instance
                 TDataView dataViewInstance = dataViewType.NewInstance<TDataView>();
@@ -84,7 +82,7 @@ namespace motoi.workbench.registries {
                 // Exit
                 return dataViewInstance;
             } catch (Exception ex) {
-                iLog.ErrorFormat("Error on initiating a new instance of '{0}'. Reason: {1}", dataViewType, ex);
+                _log.Error(ex, $"Error on initiating a new instance of '{dataViewType}'.");
                 return null;
             }
         }
@@ -95,11 +93,11 @@ namespace motoi.workbench.registries {
         protected override void OnInitialize() {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(DataViewExtensionPointId);
             if (configurationElements.Length == 0) {
-                iLog.Warn("No data view has been contributed by any extension point!");
+                _log.Warn("No data view has been contributed by any extension point!");
                 return;
             }
 
-            iLog.DebugFormat("{0} data view contributions has been found", configurationElements.Length);
+            _log.Debug($"{configurationElements.Length} data view contributions has been found");
             for (int i = -1; ++i != configurationElements.Length; ) {
                 IConfigurationElement configurationElement = configurationElements[i];
 
@@ -110,15 +108,15 @@ namespace motoi.workbench.registries {
                 if (string.IsNullOrEmpty(label))
                     label = id;
 
-                iLog.DebugFormat("Registering contribution {{id: '{0}', cls: '{1}', label: '{2}'}}", id, cls, label);
+                _log.Debug($"Registering contribution {{id: '{id}', cls: '{cls}', label: '{label}'}}");
 
                 if (string.IsNullOrWhiteSpace(id)) {
-                    iLog.ErrorFormat("Id attribute of data view extension contribution is null or empty!");
+                    _log.Error("Id attribute of data view extension contribution is null or empty!");
                     continue;
                 }
 
                 if (string.IsNullOrWhiteSpace(cls)) {
-                    iLog.ErrorFormat("Class attribute of data view extension contribution is null or empty!. Contribution id: '{0}'", id);
+                    _log.Error($"Class attribute of data view extension contribution is null or empty!. Contribution id: '{id}'");
                     continue;
                 }
 
@@ -136,9 +134,9 @@ namespace motoi.workbench.registries {
                     };
 
                     iRegisteredDataViews.Add(dataViewContribution);
-                    iLog.InfoFormat("Data view contribution '{0}' registered.", id);
+                    _log.Info($"Data view contribution '{id}' registered.");
                 } catch (Exception ex) {
-                    iLog.ErrorFormat("Error loading type '{0}'. Reason: {1}", cls, ex);
+                    _log.Error(ex, $"Error loading type '{cls}'.");
                 }
             }
         }
@@ -169,10 +167,10 @@ namespace motoi.workbench.registries {
             }
 
             /// <inheritdoc />
-            public string Id { get; private set; }
+            public string Id { get; }
 
             /// <inheritdoc />
-            public string Title { get; private set; }
+            public string Title { get; }
         }
 
         /// <summary> Describes a contribution of a data view. </summary>

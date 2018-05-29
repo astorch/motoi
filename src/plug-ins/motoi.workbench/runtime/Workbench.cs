@@ -1,9 +1,9 @@
 ﻿using System;
-using log4net;
 using motoi.platform.ui;
 using motoi.platform.ui.shells;
 using motoi.workbench.events;
 using motoi.workbench.model;
+using NLog;
 using xcite.csharp.oop;
 
 namespace motoi.workbench.runtime {
@@ -11,7 +11,7 @@ namespace motoi.workbench.runtime {
     /// Provides an implementation of <see cref="IWorkbench"/>.
     /// </summary>
     public class Workbench : IWorkbench {
-        private static readonly ILog iLog = LogManager.GetLogger(typeof(Workbench));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private readonly AuxiliaryAudible<IWorkbenchListener> iWorkbenchEventManager = new AuxiliaryAudible<IWorkbenchListener>();
 
@@ -65,7 +65,7 @@ namespace motoi.workbench.runtime {
         /// <param name="exception">Exception</param>
         /// <param name="workbenchListener">Listener the exception happened to</param>
         private void OnPerspectiveChangedException(Exception exception, IWorkbenchListener workbenchListener) {
-            iLog.ErrorFormat("Error on dispatching event to '{0}'. Reason: {1}", workbenchListener, exception);
+            _log.Error(exception, $"Error on dispatching event to '{workbenchListener}'.");
         }
 
         /// <summary>

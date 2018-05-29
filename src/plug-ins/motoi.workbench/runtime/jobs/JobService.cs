@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using log4net;
 using motoi.platform.ui.factories;
 using motoi.workbench.model.jobs;
+using NLog;
 using xcite.csharp;
 
 namespace motoi.workbench.runtime.jobs {
@@ -11,23 +11,23 @@ namespace motoi.workbench.runtime.jobs {
     /// Provides an implementation of <see cref="IJobService"/>.
     /// </summary>
     public class JobService : IJobService {
-        private readonly ILog iLogWriter = LogManager.GetLogger(typeof(JobService));
-        private readonly Queue<JobHandle> iJobQueue = new Queue<JobHandle>(7);
-        private readonly AutoLockStruct<bool> iProcessingQueue = new AutoLockStruct<bool>();
+        private readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private readonly Queue<JobHandle> _jobQueue = new Queue<JobHandle>(7);
+        private readonly AutoLockStruct<bool> _processingQueue = new AutoLockStruct<bool>();
 
         /// <inheritdoc />
         public IJobHandle Schedule(JobExecutionHandler onExecute, object state, string jobName) {
             if (onExecute == null) throw new ArgumentNullException(nameof(onExecute));
 
             JobHandle jobHandle = new JobHandle(onExecute, state, jobName);
-            lock (iJobQueue) {
-                iJobQueue.Enqueue(jobHandle);
+            lock (_jobQueue) {
+                _jobQueue.Enqueue(jobHandle);
             }
 
-            using (iProcessingQueue.Lock()) {
-                if (!iProcessingQueue.Get()) {
-                    iProcessingQueue.Set(true);
-                    ThreadPool.QueueUserWorkItem(ProcessJobQueue, iJobQueue);
+            using (_processingQueue.Lock()) {
+                if (!_processingQueue.Get()) {
+                    _processingQueue.Set(true);
+                    ThreadPool.QueueUserWorkItem(ProcessJobQueue, _jobQueue);
                 }
             }
 
@@ -53,7 +53,7 @@ namespace motoi.workbench.runtime.jobs {
                 job.AcknowledgeFinish();
             }
 
-            iProcessingQueue.Set(false);
+            _processingQueue.Set(false);
         }
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace motoi.workbench.runtime.jobs {
                 }
             } catch (ThreadAbortException ex) {
                 Thread.ResetAbort();
-                iLogWriter.Fatal("Thread has been explicitly cancelled!", ex);
+                _log.Fatal("Thread has been explicitly cancelled!", ex);
             } catch (Exception ex) {
-                iLogWriter.ErrorFormat("Error on executing job '{0}'. Reason: {1}", jobName, ex);
+                _log.Error(ex, $"Error on executing job '{jobName}'.");
             }
         }
 
