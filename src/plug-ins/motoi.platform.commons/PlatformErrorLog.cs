@@ -1,5 +1,5 @@
 ﻿using System;
-using log4net;
+using NLog;
 using xcite.csharp;
 
 namespace motoi.platform.commons {
@@ -8,7 +8,7 @@ namespace motoi.platform.commons {
     /// and can be accessed even if the platform has been shut down.
     /// </summary>
     public class PlatformErrorLog : GenericSingleton<PlatformErrorLog> {
-        private readonly ILog fLogWriter = LogManager.GetLogger(typeof(PlatformErrorLog));
+        private readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(PlatformErrorLog));
 
         /// <summary> Event that is raised when an entry has been added. </summary>
         public event EventHandler<ErrorLogEntry> Added; 
@@ -29,9 +29,9 @@ namespace motoi.platform.commons {
             
             // Log entry
             if (logEntryType == ELogEntryType.Error)
-                fLogWriter.Error(errorLogEntry.Message + $" ({pluginName})", errorLogEntry.Exception);
+                _log.Error(errorLogEntry.Exception, errorLogEntry.Message + $" ({pluginName})");
             else
-                fLogWriter.Warn(errorLogEntry.Message + $" ({pluginName})", errorLogEntry.Exception);
+                _log.Warn(errorLogEntry.Exception, errorLogEntry.Message + $" ({pluginName})");
 
             // Dispatch event
             Added.Dispatch(new object[] {this, errorLogEntry}, OnDispatchError);
@@ -43,7 +43,7 @@ namespace motoi.platform.commons {
         /// <param name="exception">Occurred exception</param>
         /// <param name="delegate">Affected event handler</param>
         private void OnDispatchError(Exception exception, Delegate @delegate) {
-            fLogWriter.Error($"Error on dispatching added event to '{@delegate}'. Event handler is ", exception);
+            _log.Error(exception, $"Error on dispatching added event to '{@delegate}'. Event handler is ");
         }
 
         /// <inheritdoc />
@@ -75,19 +75,19 @@ namespace motoi.platform.commons {
         }
 
         /// <summary> Returns the log entry type. </summary>
-        public ELogEntryType LogEntryType { get; private set; }
+        public ELogEntryType LogEntryType { get; }
 
         /// <summary> Returns the name of the plug-in name that added the entry. </summary>
-        public string PluginName { get; private set; }
+        public string PluginName { get; }
 
         /// <summary> Returns the log entry message. </summary>
-        public string Message { get; private set; }
+        public string Message { get; }
 
         /// <summary> Returns the logged exception. </summary>
-        public Exception Exception { get; private set; }
+        public Exception Exception { get; }
 
         /// <summary> Returns the timestamp the log entry has been created. </summary>
-        public DateTime Timestamp { get; private set; }
+        public DateTime Timestamp { get; }
     }
 
     /// <summary> Defines kinds of log entry types. </summary>
