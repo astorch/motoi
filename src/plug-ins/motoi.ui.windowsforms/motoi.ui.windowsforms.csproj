@@ -1,166 +1,58 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A069CD61-568C-4467-A691-948EADC7D868}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>motoi.ui.windowsforms</RootNamespace>
-    <AssemblyName>motoi.ui.windowsforms</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <TargetFramework>net47</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\debug\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants />
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\debug\motoi.ui.windowsforms.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>embedded</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FastColoredTextBox, Version=2.16.23.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>libs\FastColoredTextBox.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.XML" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.15.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DockPanelSuite.2.15.0\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
-    </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2012, Version=2.15.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DockPanelSuite.ThemeVS2012.2.15.0\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2012.dll</HintPath>
-    </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2013, Version=2.15.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DockPanelSuite.ThemeVS2013.2.15.0\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2013.dll</HintPath>
-    </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015, Version=2.15.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DockPanelSuite.ThemeVS2015.2.15.0\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
-    </Reference>
-    <Reference Include="xcite.collections, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xcite.collections.3.0.3\lib\net462\xcite.collections.dll</HintPath>
-    </Reference>
-    <Reference Include="xcite.csharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xcite.csharp.3.0.4\lib\net462\xcite.csharp.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj" />
+    <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj" />
+    <ProjectReference Include="..\motoi.platform.ui\motoi.platform.ui.csproj" />
+    <ProjectReference Include="..\motoi.workbench\motoi.workbench.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationController.cs" />
-    <Compile Include="controls\Button.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="controls\CheckBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="controls\ComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="controls\GradientBackgroundPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="controls\GridPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="controls\ListViewer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="controls\ContentAssistTextBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="controls\RichTextBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="controls\Separator.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="controls\TextBlock.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="controls\TextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="controls\TextProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="controls\ToolStripLabelledProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="controls\TreeViewer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="jobs\ProgressMonitor.cs" />
-    <Compile Include="Messages.cs" />
-    <Compile Include="messaging\MessageReceivedEventArgs.cs" />
-    <Compile Include="messaging\UIMessageDispatchListener.cs" />
-    <Compile Include="ServiceFactory.cs" />
-    <Compile Include="shells\Converter.cs" />
-    <Compile Include="shells\Converter`2.cs" />
-    <Compile Include="shells\DialogWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="shells\ExceptionDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="shells\MainWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="shells\MessageDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="shells\MultiViewPerspective.cs" />
-    <Compile Include="shells\SingleViewPerspective.cs" />
-    <Compile Include="shells\TitledAreaDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="shells\Window.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="toolbars\ToolBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="toolbars\ToolBarComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="utils\CastUtil.cs" />
-    <Compile Include="ShellFactory.cs" />
-    <Compile Include="utils\ControlExtensionMethods.cs" />
-    <Compile Include="utils\LayoutSuspensionToken.cs" />
-    <Compile Include="WidgetFactory.cs" />
-    <Compile Include="WinformsUIProvider.cs" />
+    <PackageReference Include="DockPanelSuite" Version="3.0.4" />
+    <PackageReference Include="DockPanelSuite.ThemeVS2012" Version="3.0.4" />
+    <PackageReference Include="DockPanelSuite.ThemeVS2012Light" Version="2.10.0" />
+    <PackageReference Include="DockPanelSuite.ThemeVS2013" Version="3.0.4" />
+    <PackageReference Include="DockPanelSuite.ThemeVS2013Blue" Version="2.10.0" />
+    <PackageReference Include="DockPanelSuite.ThemeVS2015" Version="3.0.4" />
+    <PackageReference Include="FCTB" Version="2.16.21.0" />
+    <PackageReference Include="xcite.collections" Version="6.0.0" />
+    <PackageReference Include="xcite.csharp" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FastColoredTextBox, Version=2.16.23.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
+      <HintPath>libs\FastColoredTextBox.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <None Include="meta-Inf\build.properties" />
@@ -168,89 +60,78 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="meta-Inf\signature.mf" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj">
-      <Project>{3e6c6d06-c212-448e-bb34-11cdafa697e8}</Project>
-      <Name>motoi.platform.commons</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj">
-      <Project>{3af75cde-1d3d-40ed-8e79-eb8c6f499b3b}</Project>
-      <Name>motoi.platform.nls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\motoi.platform.ui\motoi.platform.ui.csproj">
-      <Project>{04339bf5-52cf-4f60-a947-a09aa42990d4}</Project>
-      <Name>motoi.platform.ui</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\motoi.workbench\motoi.workbench.csproj">
-      <Project>{691f9ca7-639f-4fdd-aff9-0beae6948288}</Project>
-      <Name>motoi.workbench</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 und x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="shells\MessageDialog.resx">
-      <DependentUpon>MessageDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="shells\TitledAreaDialog.resx">
-      <DependentUpon>TitledAreaDialog.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="libs\FastColoredTextBox.dll" />
     <None Include="libs\FastColoredTextBox.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="resources\images\Error-32.png" />
+    <Compile Update="controls\Button.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="controls\CheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="controls\ComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="controls\ContentAssistTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="controls\GradientBackgroundPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="controls\GridPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="controls\ListViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="controls\RichTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="controls\Separator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="controls\TextBlock.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="controls\TextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="controls\TextProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="controls\ToolStripLabelledProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="controls\TreeViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="shells\DialogWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="shells\ExceptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="shells\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="shells\MessageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="shells\TitledAreaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="shells\Window.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="toolbars\ToolBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="toolbars\ToolBarComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="resources\images\Warning-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="resources\images\Info-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="resources\images\Info-64.png" />
-    <EmbeddedResource Include="resources\images\Question-64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="resources\texts\messages.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="resources\texts\messages_de.txt" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)..\bin\debug\Tessa.exe" "$(ProjectPath)" "$(TargetPath)" "$(SolutionDir)..\bin\debug"</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)..\bin\debug\Tessa.exe&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot; &quot;$(SolutionDir)..\bin\debug&quot;" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using motoi.platform.ui;
 using motoi.platform.ui.bindings;
 using motoi.platform.ui.widgets;
-using xcite.collections;
+using xcite.collections.nogen;
 
 namespace motoi.ui.windowsforms.controls {
     /// <summary>
