@@ -1,4 +1,4 @@
-﻿using motoi.platform.application.model;
+﻿using motoi.platform.application;
 using motoi.platform.ui.shells;
 
 namespace DemoApplication {

@@ -1,5 +1,4 @@
-﻿using motoi.extensions.core;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace motoi.extensions.tests {
     [TestFixture]
