@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using log4net;
 using motoi.extensions;
-using motoi.extensions.core;
 using motoi.platform.nls;
-using motoi.plugins.model;
+using motoi.plugins;
 using motoi.platform.ui.images;
 using motoi.workbench.model;
+using NLog;
 using xcite.collections;
 using xcite.csharp;
 
@@ -18,14 +17,15 @@ namespace motoi.workbench.stub.registries {
 
         /// <summary> Extension point id. </summary>
         private const string ExtensionPointId = "org.motoi.workbench.stub.wizards.newWizard";
-        
-        private static readonly ILog iLog = LogManager.GetLogger(typeof(NewWizardRegistry));
+
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         /// <summary> Collection of resolved contributions. </summary>
         private readonly LinearList<Contribution> iContributions = new LinearList<Contribution>();
 
         /// <summary> Returns all registered contributions. </summary>
-        public Contribution[] Contributions { get { return iContributions.ToArray(); } }
+        public Contribution[] Contributions 
+            => iContributions.ToArray();
 
         /// <inheritdoc />
         protected override void OnInitialize() {
@@ -74,7 +74,7 @@ namespace motoi.workbench.stub.registries {
                     Type wizardType = TypeLoader.TypeForName(providingBundle, className);
                     wizardImpl = wizardType.NewInstance<IWizard>();
                 } catch (Exception ex) {
-                    iLog.ErrorFormat("Error on creating wizard of type '{0}'. Reason: {1}", className, ex);
+                    _log.Error(ex, $"Error on creating wizard of type '{className}'.");
                     continue;
                 }
 
@@ -83,7 +83,7 @@ namespace motoi.workbench.stub.registries {
                     try {
                         imageDescriptor = ImageDescriptor.Create(string.Format("image.{0}", id), wizardImpl.GetType().Assembly, imagePath);
                     } catch (Exception ex) {
-                        iLog.ErrorFormat("Error on resolving image of wizard '{0}'. Reason: {1}", id, ex);
+                        _log.Error(ex, $"Error on resolving image of wizard '{id}'.");
                     }
                 }
 
@@ -94,8 +94,7 @@ namespace motoi.workbench.stub.registries {
 
                 // Is it a categorized item?
                 if (!string.IsNullOrEmpty(category)) {
-                    CategoryContribution categoryContr;
-                    if (idToCategoryMap.TryGetValue(category, out categoryContr)) {
+                    if (idToCategoryMap.TryGetValue(category, out CategoryContribution categoryContr)) {
                         categoryContr.Wizards.Add(contribution);
                         continue;
                     }

@@ -33,7 +33,7 @@ namespace motoi.workbench.stub.wizards {
                 if (iOpeningPage.SelectedWizard != null)
                     iOpeningPage.SelectedWizard.Open();
             } catch (Exception ex) {
-                Platform.Instance.PlatformLog.ErrorFormat("Error on performing OnFinish(). Reason: {0}", ex);
+                Platform.Instance.PlatformLog.Error(ex, "Error on performing OnFinish().");
             }
         }
 

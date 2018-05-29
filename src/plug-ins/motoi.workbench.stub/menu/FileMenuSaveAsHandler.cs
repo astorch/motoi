@@ -18,7 +18,7 @@ namespace motoi.workbench.stub.menu {
             try {
                 PlatformUI.Instance.Workbench.ActivePerspective.ActiveEditor.ExecuteSaveAs();
             } catch (Exception ex) {
-                Platform.Instance.PlatformLog.ErrorFormat("Error on performing ExecuteSaveAs() on active editor. Reason: {0}", ex);
+                Platform.Instance.PlatformLog.Error(ex, "Error on performing ExecuteSaveAs() on active editor.");
             }
         }
 
