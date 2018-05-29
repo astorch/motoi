@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace motoi.plugins.model
+namespace motoi.plugins
 {
     /// <summary>
     /// Implements a factory for Bundles.

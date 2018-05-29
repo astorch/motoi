@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace motoi.plugins.exceptions {
+namespace motoi.plugins {
     /// <summary>
     /// Defines an exception that indicates an error during the activation process of a plug-in.
     /// </summary>

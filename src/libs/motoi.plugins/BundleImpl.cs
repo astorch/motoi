@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Ionic.Zip;
 
-namespace motoi.plugins.model {
+namespace motoi.plugins {
     /// <summary>
     /// Provides an implementation of <see cref="IBundle"/>
     /// </summary>

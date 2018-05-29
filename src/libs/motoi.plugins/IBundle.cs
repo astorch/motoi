@@ -1,9 +1,7 @@
 ﻿using System.IO;
 
-namespace motoi.plugins.model {
-    /// <summary>
-    /// Defines a bundle.
-    /// </summary>
+namespace motoi.plugins {
+    /// <summary> Defines a bundle. </summary>
     public interface IBundle {
         /// <summary>
         /// Returns a stream for the given resource within the bundle.

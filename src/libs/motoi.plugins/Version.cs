@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace motoi.plugins.model { 
+namespace motoi.plugins { 
     /// <summary>
     /// Defines a version definition.
     /// </summary>

@@ -1,4 +1,4 @@
-﻿namespace motoi.plugins.model {
+﻿namespace motoi.plugins {
     /// <summary>
     /// Defines the signature of a plug-in.
     /// </summary>

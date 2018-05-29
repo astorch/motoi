@@ -2,7 +2,7 @@
 using PTP.Core;
 using PTP.Parsers;
 
-namespace motoi.plugins.model {
+namespace motoi.plugins {
     /// <summary>
     /// Provides a factory for signature files.
     /// </summary>

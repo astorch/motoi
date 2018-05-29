@@ -1,6 +1,4 @@
-﻿using motoi.plugins.enums;
-
-namespace motoi.plugins.model {
+﻿namespace motoi.plugins {
     /// <summary>
     /// Provides a factory for creating instances of <see cref="IPluginInfo"/>.
     /// </summary>

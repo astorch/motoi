@@ -1,6 +1,6 @@
 ﻿using xcite.csharp;
 
-namespace motoi.plugins.model {
+namespace motoi.plugins {
     /// <summary>
     /// Defines the common stub of a factory.
     /// </summary>

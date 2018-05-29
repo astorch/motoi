@@ -1,4 +1,4 @@
-﻿namespace motoi.plugins.model {
+﻿namespace motoi.plugins {
     /// <summary>
     /// Provides an implementation of <see cref="IPluginSignature"/>.
     /// </summary>
