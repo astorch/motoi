@@ -3,12 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Ionic.Zip;
+using ICSharpCode.SharpZipLib.Zip;
+using xcite.collections.nogen;
 
 namespace motoi.plugins {
-    /// <summary>
-    /// Provides an implementation of <see cref="IBundle"/>
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IBundle"/> </summary>
     class BundleImpl : IBundle {
         private readonly FileInfo iMarcFile;
         private Assembly iBundledAssembly;
@@ -27,6 +26,7 @@ namespace motoi.plugins {
                     marcFile.FullName));
 
             iMarcFile = marcFile;
+            Name = Path.GetFileNameWithoutExtension(iMarcFile.FullName);
         }
 
         /// <summary>
@@ -36,24 +36,20 @@ namespace motoi.plugins {
         /// <returns>Stream or null</returns>
         public Stream GetResourceAsStream(string resource) {
             string filePath = iMarcFile.FullName;
-            byte[] buffer;
 
             using (ZipFile zipFile = new ZipFile(filePath)) {
-                ZipEntry signatureZipEntry = zipFile[resource];
+                ZipEntry signatureZipEntry = zipFile.GetEntry(resource);
+                if (signatureZipEntry == null) return null;
 
-                if (signatureZipEntry == null)
-                    return null;
-
-                long uncompressedSize = signatureZipEntry.UncompressedSize;
-                buffer = new byte[uncompressedSize];
-
-                using (MemoryStream memoryOutputStream = new MemoryStream(buffer)) {
-                    signatureZipEntry.Extract(memoryOutputStream);
+                MemoryStream buffer = new MemoryStream(new byte[signatureZipEntry.Size]);
+                using (Stream entryStream = zipFile.GetInputStream(signatureZipEntry)) {
+                    entryStream.CopyTo(buffer);
                 }
-            }
 
-            MemoryStream memoryInputStream = new MemoryStream(buffer);
-            return memoryInputStream;
+                // Rewind to make it readable
+                buffer.Position = 0;
+                return buffer;
+            }
         }
 
         /// <summary>
@@ -69,31 +65,32 @@ namespace motoi.plugins {
             string translatedResourceName = resource.Replace('/', '.');
             string assemblyQualifiedName = string.Format("{0}.{1}", Name, translatedResourceName);
 
-            if(iBundledAssembly == null)
-                throw new NullReferenceException("Bundled assembly is null");
+            if(iBundledAssembly == null) throw new NullReferenceException("Bundled assembly is null");
 
             Stream resourceStream = iBundledAssembly.GetManifestResourceStream(assemblyQualifiedName);
             return resourceStream;
         }
 
-        /// <summary>
-        /// Returns the name of the bundle.
-        /// </summary>
-        public string Name {
-            get { return Path.GetFileNameWithoutExtension(iMarcFile.FullName); }
-        }
+        /// <summary> Returns the name of the bundle. </summary>
+        public string Name { get; }
 
         /// <summary>
         /// Returns a collection of all available resources within the bundle.
         /// </summary>
         /// <returns>Array of resource paths</returns>
         public string[] GetResources() {
-            if (iResources != null)
-                return iResources;
+            if (iResources != null) return iResources;
 
             string filePath = iMarcFile.FullName;
             using (ZipFile zipFile = new ZipFile(filePath)) {
-                iResources = zipFile.EntryFileNames.ToArray();
+                string[] entryNames = new string[zipFile.Count];
+                int p = 0;
+                zipFile.ForEach(entry => {
+                    ZipEntry zipEntry = (ZipEntry) entry;
+                    entryNames[p++] = zipEntry.Name;
+                });
+
+                iResources = entryNames;
             }
 
             return iResources;

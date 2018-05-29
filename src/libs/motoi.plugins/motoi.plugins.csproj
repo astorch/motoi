@@ -34,8 +34,9 @@
     <ProjectReference Include="..\PTP\PTP.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetZip" Version="1.11.0" />
     <PackageReference Include="NLog" Version="4.5.5" />
+    <PackageReference Include="SharpZipLib.NETStandard" Version="1.0.7" />
+    <PackageReference Include="xcite.collections" Version="6.0.0" />
     <PackageReference Include="xcite.csharp" Version="6.0.0" />
   </ItemGroup>
 </Project>

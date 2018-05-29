@@ -1,6 +1,5 @@
 ﻿using System.IO;
-using PTP.Core;
-using PTP.Parsers;
+using PTP;
 
 namespace motoi.plugins {
     /// <summary>
