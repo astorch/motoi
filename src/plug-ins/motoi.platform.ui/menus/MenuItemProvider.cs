@@ -173,7 +173,7 @@ namespace motoi.platform.ui.menus {
                 Type instanceType = TypeLoader.TypeForName(providingBundle, clsName);
                 return instanceType.NewInstance<ICustomMenuConfigurer>();
             } catch (Exception ex) {
-                Logger logWriter = LogManager.GetCurrentClassLogger(typeof(MenuItemProvider));
+                Logger logWriter = LogManager.GetCurrentClassLogger();
                 logWriter.Error(ex, string.Format("Error on creating instance of custom menu configurer. " +
                                                   "Id is '{0}'. Providing bundle is '{1}'", id, providingBundle));
                 return null;

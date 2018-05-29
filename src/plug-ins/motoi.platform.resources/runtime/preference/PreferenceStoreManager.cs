@@ -40,7 +40,7 @@ namespace motoi.platform.resources.runtime.preference {
         /// default implementation.
         /// </returns>
         private static IPreferenceStoreManager CreatePreferenceStoreManager() {
-            Logger logWriter = LogManager.GetCurrentClassLogger(typeof(PreferenceStoreManager));
+            Logger logWriter = LogManager.GetCurrentClassLogger();
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(PreferenceStoreManagerExtensionPointId);
             
             // Default

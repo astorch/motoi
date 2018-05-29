@@ -6,7 +6,7 @@ using xcite.csharp.oop;
 namespace motoi.platform.ui.messaging {
     /// <summary> Implements a dispatcher of messages to the UI elements. </summary>
     public class UIMessageDispatcher : GenericSingleton<UIMessageDispatcher> {
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(UIMessageDispatcher));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private readonly AuxiliaryAudible<IUIMessageDispatchListener> iRegisteredListeners = new AuxiliaryAudible<IUIMessageDispatchListener>();
 

@@ -12,7 +12,7 @@ namespace motoi.platform.resources.runtime.preference {
     public class FilePreferenceStoreManager : IPreferenceStoreManager {
         private const string PreferencesFolderName = ".preferences";
         private readonly Dictionary<string, IPreferenceStore> iPreferenceStoreTable = new Dictionary<string, IPreferenceStore>(23);
-        private readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(PreferenceStoreManager));
+        private readonly Logger _log = LogManager.GetCurrentClassLogger();
         private string iPreferenceFolderBasePath;
 
         /// <inheritdoc />

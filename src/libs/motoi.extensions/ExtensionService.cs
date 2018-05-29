@@ -20,7 +20,7 @@ namespace motoi.extensions {
         private const string ExtensionFileName = "extensions.xml";
 
         /// <summary> Log instance. </summary>
-        private readonly Logger iLogger = LogManager.GetCurrentClassLogger(typeof(ExtensionService));
+        private readonly Logger iLogger = LogManager.GetCurrentClassLogger();
 
         private readonly ExtensionPointMap iExtensionPointMap = new ExtensionPointMap();
         private readonly IDictionary<IBundle, IList<IConfigurationElement>> iBundleToConfigurationElementMap = new Dictionary<IBundle, IList<IConfigurationElement>>(10);

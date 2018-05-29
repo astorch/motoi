@@ -19,7 +19,7 @@ namespace motoi.moose.applicationstarter {
 
             // Configure logging
             ConfigureLog();
-            Logger log = LogManager.GetCurrentClassLogger(typeof(EntryPoint));
+            Logger log = LogManager.GetCurrentClassLogger();
             log.Info("Log writer initialized");
 
             string platformPluginName = "motoi.platform.application";

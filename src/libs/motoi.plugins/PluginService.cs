@@ -12,7 +12,7 @@ namespace motoi.plugins {
     public class PluginService {
 
         /// <summary> Log instance. </summary>
-        private readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(PluginService));
+        private readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         /// <summary> Backing variable of the manager instance. </summary>
         private static PluginService _instance;

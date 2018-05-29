@@ -9,7 +9,7 @@ using xcite.csharp.assertions;
 namespace motoi.platform.ui.bindings {
     /// <summary> Describes a data binding. </summary>
     public class DataBinding : XObject {
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(DataBinding));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Creates a new instance using the given path.

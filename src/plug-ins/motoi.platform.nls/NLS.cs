@@ -21,7 +21,7 @@ namespace motoi.platform.nls {
     /// </summary>
     /// <typeparam name="TObject">Type of subclass that provides the fields to set up</typeparam>
     public abstract class NLS<TObject> : NLS where TObject : NLS<TObject> {
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(TObject));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Loads the messages according to the fields declared by the current class type. 
@@ -123,7 +123,7 @@ namespace motoi.platform.nls {
     /// <summary> Provides non-generic access to NLS features. </summary>
     public abstract class NLS {
         internal const BindingFlags FieldBindingFlags = BindingFlags.Public | BindingFlags.Static;
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(NLS));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         /// <summary>  Set up NL property once </summary>
         static NLS() {

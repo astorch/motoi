@@ -13,7 +13,7 @@ namespace motoi.platform.nls {
     /// <summary> Implements the registry for NLS contributions. </summary>
     public class NLSRegistry : GenericSingleton<NLSRegistry> {
         private const string ExtensionPointId = "org.motoi.platform.localization";
-        private readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(NLSRegistry));
+        private readonly Logger _log = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, LocalizationContribution> _registry = new Dictionary<string, LocalizationContribution>(97);
 
         /// <summary>

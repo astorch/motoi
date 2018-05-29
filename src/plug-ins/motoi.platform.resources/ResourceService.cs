@@ -17,7 +17,7 @@ namespace motoi.platform.resources
         private const string MetadataFolderName = ".metadata";
         private const string MetadataFileName = "resources.info";
 
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(ResourceService));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         // TODO Use another serializer cause to bad performance
         private readonly DataContractSerializer iXmlSerializer = new DataContractSerializer(typeof(PlatformMetaInformation));

@@ -8,7 +8,7 @@ namespace motoi.platform.commons {
     /// and can be accessed even if the platform has been shut down.
     /// </summary>
     public class PlatformErrorLog : GenericSingleton<PlatformErrorLog> {
-        private readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(PlatformErrorLog));
+        private readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         /// <summary> Event that is raised when an entry has been added. </summary>
         public event EventHandler<ErrorLogEntry> Added; 

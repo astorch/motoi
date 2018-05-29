@@ -19,7 +19,7 @@ namespace motoi.platform.application {
         /// <summary> Entry point of the application. </summary>
         /// <param name="args"></param>
         public static void Main(string[] args) {
-            _logger = LogManager.GetCurrentClassLogger(typeof(MotoiBootloader));
+            _logger = LogManager.GetCurrentClassLogger();
 
             try {
                 // Load platform settings

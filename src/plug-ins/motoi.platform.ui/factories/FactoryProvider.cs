@@ -59,7 +59,7 @@ namespace motoi.platform.ui.factories {
 
         /// <inheritdoc />
         protected override void OnInitialize() {
-            Logger logWriter = LogManager.GetCurrentClassLogger(typeof(FactoryProvider));
+            Logger logWriter = LogManager.GetCurrentClassLogger();
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(FactoryExtensionPointId);
             if (configurationElements.Length == 0) throw new InvalidOperationException("There is no registered UI provider!");
 

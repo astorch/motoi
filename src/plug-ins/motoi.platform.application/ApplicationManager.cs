@@ -22,7 +22,7 @@ namespace motoi.platform.application {
 
         /// <summary> Extension point id. </summary>
         private const string ApplicationExtensionPointId = "org.motoi.application";
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger(typeof(ApplicationManager));
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private IMotoiApplication iApplication;
         private IApplicationController iApplicationController;

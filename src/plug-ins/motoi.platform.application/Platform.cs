@@ -13,7 +13,7 @@ namespace motoi.platform.application {
         /// <summary> Extension point id </summary>
         private const string PlatformServiceExtensionPointId = "org.motoi.platform.service";
 
-        private static readonly Logger _platformLog = LogManager.GetCurrentClassLogger(typeof(Platform));
+        private static readonly Logger _platformLog = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<Type, IPlatformService> _platformServices = new Dictionary<Type, IPlatformService>();
 
         public TService GetService<TService>() where TService : class, IPlatformService {

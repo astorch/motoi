@@ -7,7 +7,7 @@ using xcite.csharp;
 namespace motoi.moose {
     /// <summary> Provides methods to start or stop plug-ins. </summary>
     public static class Moose {
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(Moose));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         /// <summary> Is invoked when a plug-in has been started properly. </summary>
         public static event EventHandler<MooseEventArgs> PluginStarted;
