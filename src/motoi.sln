@@ -29,9 +29,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench.stub", "plu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.workbench.propertyview", "plug-ins\motoi.workbench.propertyview\motoi.workbench.propertyview.csproj", "{4B81A7B7-FCB1-4B01-B0A6-DE7B1FCE8BF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.extensions", "libs\motoi.extensions\motoi.extensions.csproj", "{E85CB030-30D6-468D-9061-559F937F1904}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.extensions", "libs\motoi.extensions\motoi.extensions.csproj", "{E85CB030-30D6-468D-9061-559F937F1904}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.plugins", "libs\motoi.plugins\motoi.plugins.csproj", "{DC59F99B-75A5-4877-B71B-3C865E4876A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.plugins", "libs\motoi.plugins\motoi.plugins.csproj", "{DC59F99B-75A5-4877-B71B-3C865E4876A3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{6F471498-E481-4BC1-BDDD-8DCA73039C97}"
 EndProject
@@ -39,9 +39,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTP", "libs\PTP\PTP.csproj"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tessa", "libs\Tessa\Tessa.csproj", "{F39169A7-75C4-47D3-9672-EC98557FCDA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.moose", "libs\motoi.moose\motoi.moose.csproj", "{A9090E88-9F3B-493A-8AA2-571A6F455FDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.moose", "libs\motoi.moose\motoi.moose.csproj", "{A9090E88-9F3B-493A-8AA2-571A6F455FDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.moose.applicationstarter", "libs\motoi.moose.applicationstarter\motoi.moose.applicationstarter.csproj", "{6005D963-E42F-446D-9358-546324E5B3C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "motoi.moose.applicationstarter", "libs\motoi.moose.applicationstarter\motoi.moose.applicationstarter.csproj", "{6005D963-E42F-446D-9358-546324E5B3C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "motoi.extensions.tests", "tests\motoi.extensions.tests\motoi.extensions.tests.csproj", "{C80C3A7E-B82C-4865-83AA-5135A54ED84D}"
 EndProject
@@ -297,16 +297,16 @@ Global
 		{04339BF5-52CF-4F60-A947-A09AA42990D4}.Release|x86.ActiveCfg = Release|Any CPU
 		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Debug|x86.ActiveCfg = Debug|x86
-		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Debug|x86.Build.0 = Debug|x86
+		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Debug|x86.Build.0 = Debug|Any CPU
 		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Default|Any CPU.ActiveCfg = Debug|Any CPU
 		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Default|Any CPU.Build.0 = Debug|Any CPU
-		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Default|x86.ActiveCfg = Debug|x86
-		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Default|x86.Build.0 = Debug|x86
+		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Default|x86.ActiveCfg = Debug|Any CPU
+		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Default|x86.Build.0 = Debug|Any CPU
 		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Release|x86.ActiveCfg = Release|x86
-		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Release|x86.Build.0 = Release|x86
+		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Release|x86.ActiveCfg = Release|Any CPU
+		{C501885F-20EC-424F-BA03-BF3762AC99E6}.Release|x86.Build.0 = Release|Any CPU
 		{3A6C9293-31EE-41BB-B7FC-B36AA5FD19EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A6C9293-31EE-41BB-B7FC-B36AA5FD19EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A6C9293-31EE-41BB-B7FC-B36AA5FD19EF}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -391,6 +391,9 @@ Global
 		{F65009ED-1895-4155-9ED0-549D6CC4231B} = {AC480322-E26F-431F-8B31-D58B8CB04B06}
 		{3AF75CDE-1D3D-40ED-8E79-EB8C6F499B3B} = {6C435A6E-D4CF-43AA-9B24-60DD2DCB9343}
 		{B34BEB6E-03E2-4482-93BE-4D3B989FB93A} = {ADFEE464-B721-4422-95E5-992493B92A69}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {12A36FA9-CE4A-4A29-A4A1-CC1CC4A4A8BD}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = SharpUltra.vsmdi
