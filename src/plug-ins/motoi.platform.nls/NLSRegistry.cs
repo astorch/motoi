@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using log4net;
 using motoi.extensions;
-using motoi.extensions.core;
 using motoi.platform.commons;
-using motoi.plugins.model;
+using motoi.plugins;
+using NLog;
 using xcite.csharp;
 
 namespace motoi.platform.nls {
     /// <summary> Implements the registry for NLS contributions. </summary>
     public class NLSRegistry : GenericSingleton<NLSRegistry> {
         private const string ExtensionPointId = "org.motoi.platform.localization";
-        private readonly ILog fLogWriter = LogManager.GetLogger(typeof(NLSRegistry));
-        private readonly Dictionary<string, LocalizationContribution> fRegistry = new Dictionary<string, LocalizationContribution>(97);
+        private readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(NLSRegistry));
+        private readonly Dictionary<string, LocalizationContribution> _registry = new Dictionary<string, LocalizationContribution>(97);
 
         /// <summary>
         /// Returns the provider type of the specified <paramref name="localizationId"/>. If no provider type 
@@ -26,8 +25,9 @@ namespace motoi.platform.nls {
         public Type GetProviderType(string localizationId) {
             if (string.IsNullOrEmpty(localizationId)) return null;
 
-            LocalizationContribution localizationContribution;
-            if (fRegistry.TryGetValue(localizationId, out localizationContribution)) return localizationContribution.ProviderType;
+            if (_registry.TryGetValue(localizationId, out LocalizationContribution localizationContribution))
+                return localizationContribution.ProviderType;
+
             return null;
         }
 
@@ -47,7 +47,7 @@ namespace motoi.platform.nls {
             if (string.IsNullOrEmpty(localizationId)) return null;
             language = language ?? string.Empty;
 
-            IEnumerable<LocalizationContribution> locContrSet = fRegistry.Values.Where(c => c.LocalizationId == localizationId);
+            IEnumerable<LocalizationContribution> locContrSet = _registry.Values.Where(c => c.LocalizationId == localizationId);
             using (IEnumerator<LocalizationContribution> locContrSetItr = locContrSet.GetEnumerator()) {
                 while (locContrSetItr.MoveNext()) {
                     LocalizationContribution contr = locContrSetItr.Current;
@@ -85,32 +85,31 @@ namespace motoi.platform.nls {
                 string providerType = element["provider"];
                 string resourcePath = element["resourcePath"];
                 if (string.IsNullOrEmpty(id)) {
-                    fLogWriter.ErrorFormat("Bundle '{0}' declares a localization contribution with no id", bundle);
+                    _log.Error($"Bundle '{bundle}' declares a localization contribution with no id");
                     continue;
                 }
 
                 if (string.IsNullOrEmpty(providerType)) {
-                    fLogWriter.ErrorFormat("Bundle '{0}' declares the localization contribution '{1}' with no provider type", bundle, id);
+                    _log.Error($"Bundle '{bundle}' declares the localization contribution '{id}' with no provider type");
                     continue;
                 }
 
                 if (string.IsNullOrEmpty(resourcePath)) {
-                    fLogWriter.ErrorFormat("Bundle '{0}' declares the localization contribution '{1}' with an empty resource path", bundle, id);
+                    _log.Error($"Bundle '{bundle}' declares the localization contribution '{id}' with an empty resource path");
                     continue;
                 }
 
-                LocalizationContribution localizationContribution;
-                if (!fRegistry.TryGetValue(id, out localizationContribution)) {
+                if (!_registry.TryGetValue(id, out LocalizationContribution localizationContribution)) {
                     Type provider;
                     try {
                         provider = TypeLoader.TypeForName(bundle, providerType);
                     } catch (Exception ex) {
-                        fLogWriter.Error($"Error on resolving type of '{providerType}' provided by bundle '{bundle}' for localization contribution '{id}'", ex);
+                        _log.Error(ex, $"Error on resolving type of '{providerType}' provided by bundle '{bundle}' for localization contribution '{id}'");
                         continue;
                     }
 
                     localizationContribution = new LocalizationContribution(id, provider);
-                    fRegistry.Add(id, localizationContribution);
+                    _registry.Add(id, localizationContribution);
                 }
 
                 ResourcePathReference resourcePathReference = new ResourcePathReference(localizationContribution.ProviderType.Assembly, resourcePath);
@@ -120,7 +119,7 @@ namespace motoi.platform.nls {
 
         /// <inheritdoc />
         protected override void OnDestroy() {
-            fRegistry.Clear();
+            _registry.Clear();
         }
 
         /// <summary> Describes a localization contribution. </summary>
@@ -139,13 +138,13 @@ namespace motoi.platform.nls {
             }
 
             /// <summary> Returns the localization id. </summary>
-            public string LocalizationId { get; private set; }
+            public string LocalizationId { get; }
 
             /// <summary> Returns the provider type. </summary>
-            public Type ProviderType { get; private set; }
+            public Type ProviderType { get; }
 
             /// <summary> Returns the set of resource path references. </summary>
-            public IList<ResourcePathReference> Sources { get; private set; }
+            public IList<ResourcePathReference> Sources { get; }
         }
 
         /// <summary> Describes a resource path reference. </summary>
@@ -162,10 +161,10 @@ namespace motoi.platform.nls {
             }
 
             /// <summary> Returns the assembly that provides the resources. </summary>
-            public Assembly Assembly { get; private set; }
+            public Assembly Assembly { get; }
 
             /// <summary> Returns the resource path. </summary>
-            public string ResourcePath { get; private set; }
+            public string ResourcePath { get; }
         }
     }
 }

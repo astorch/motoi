@@ -1,75 +1,47 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3AF75CDE-1D3D-40ED-8E79-EB8C6F499B3B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>properties</AppDesignerFolder>
-    <RootNamespace>motoi.platform.nls</RootNamespace>
-    <AssemblyName>motoi.platform.nls</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>netstandard20</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\motoi.platform.nls.xml</DocumentationFile>
+    <DocumentationFile>bin\debug\motoi.platform.nls.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>embedded</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\motoi.platform.nls.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="xcite.csharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xcite.csharp.3.0.4\lib\net462\xcite.csharp.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj" />
+    <ProjectReference Include="..\..\libs\motoi.plugins\motoi.plugins.csproj" />
+    <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="4.5.5" />
+    <PackageReference Include="xcite.csharp" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="..\..\PlatformProductAssemblyInfo.cs">
-      <Link>properties\PlatformProductAssemblyInfo.cs</Link>
+      <Link>PlatformProductAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="LocalizationException.cs" />
-    <Compile Include="NLS.cs" />
-    <Compile Include="NLSRegistry.cs" />
-    <Compile Include="properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="meta-inf\signature.mf" />
-    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj">
-      <Project>{e85cb030-30d6-468d-9061-559f937f1904}</Project>
-      <Name>motoi.extensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\libs\motoi.plugins\motoi.plugins.csproj">
-      <Project>{dc59f99b-75a5-4877-b71b-3c865e4876a3}</Project>
-      <Name>motoi.plugins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj">
-      <Project>{3e6c6d06-c212-448e-bb34-11cdafa697e8}</Project>
-      <Name>motoi.platform.commons</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)..\bin\debug\Tessa.exe" "$(ProjectPath)" "$(TargetPath)" "$(SolutionDir)..\bin\debug"</PostBuildEvent>
-  </PropertyGroup>
 </Project>

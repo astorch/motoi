@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using log4net;
+using NLog;
 
 namespace motoi.platform.nls {
     /// <summary>
@@ -21,7 +21,7 @@ namespace motoi.platform.nls {
     /// </summary>
     /// <typeparam name="TObject">Type of subclass that provides the fields to set up</typeparam>
     public abstract class NLS<TObject> : NLS where TObject : NLS<TObject> {
-        static private readonly ILog fLogWriter = LogManager.GetLogger(typeof(TObject));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(TObject));
 
         /// <summary>
         /// Loads the messages according to the fields declared by the current class type. 
@@ -76,9 +76,8 @@ namespace motoi.platform.nls {
                 for (int i = -1; ++i != fields.Length;) {
                     FieldInfo field = fields[i];
                     string fieldName = field.Name;
-                    string fieldValue;
-                    if (!messageSet.TryGetValue(fieldName, out fieldValue)) {
-                        fLogWriter.WarnFormat("{0} declares a message that has not been set by a NLS resource file", nlsAccessType);
+                    if (!messageSet.TryGetValue(fieldName, out string fieldValue)) {
+                        _log.Warn($"{nlsAccessType} declares a message that has not been set by a NLS resource file");
                         continue;
                     }
 
@@ -86,7 +85,7 @@ namespace motoi.platform.nls {
                     try {
                         field.SetValue(null, fieldValue);
                     } catch (Exception ex) {
-                        fLogWriter.Error("Error on applying localized text", ex);
+                        _log.Error(ex, "Error on applying localized text");
                     }
                 }
 
@@ -95,11 +94,11 @@ namespace motoi.platform.nls {
                     while (itr.MoveNext()) {
                         KeyValuePair<string, string> entry = itr.Current;
                         string key = entry.Key;
-                        fLogWriter.WarnFormat("Unused message found for key '{0}'", key);
+                        _log.Warn($"Unused message found for key '{key}'");
                     }
                 }
             } catch (Exception ex) {
-                fLogWriter.Error($"Error on applying localized messages to '{nlsAccessType}'", ex);
+                _log.Error(ex, $"Error on applying localized messages to '{nlsAccessType}'");
             }
         }
 
@@ -124,7 +123,7 @@ namespace motoi.platform.nls {
     /// <summary> Provides non-generic access to NLS features. </summary>
     public abstract class NLS {
         internal const BindingFlags FieldBindingFlags = BindingFlags.Public | BindingFlags.Static;
-        static private readonly ILog fLogWriter = LogManager.GetLogger(typeof(NLS));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(NLS));
 
         /// <summary>  Set up NL property once </summary>
         static NLS() {
@@ -133,7 +132,7 @@ namespace motoi.platform.nls {
         }
 
         /// <summary> Returns the current set natural language of the platform. </summary>
-        static public string NL { get; private set; }
+        public static string NL { get; }
 
         /// <summary>
         /// Localizes the given <paramref name="key"/> by deriving the localization id from 
@@ -143,9 +142,8 @@ namespace motoi.platform.nls {
         /// <param name="key">Key to localize. Should start with an '%'</param>
         /// <param name="assembly">Assembly the localization id is derived from</param>
         /// <returns>The key itself or the localized text</returns>
-        static public string Localize(string key, Assembly assembly) {
-            return LocalizeInternal(key, assembly, GetLocalizationId);
-        }
+        public static string Localize(string key, Assembly assembly) 
+            => LocalizeInternal(key, assembly, GetLocalizationId);
 
         /// <summary>
         /// Localizes the given <paramref name="key"/> by deriving the localization id from 
@@ -155,9 +153,8 @@ namespace motoi.platform.nls {
         /// <param name="key">Key to localize. Should start with an '%'</param>
         /// <param name="type">Type the localization id is derived from</param>
         /// <returns>The key itself or the localized text</returns>
-        static public string Localize(string key, Type type) {
-            return LocalizeInternal(key, type, GetLocalizationId);
-        }
+        static public string Localize(string key, Type type) 
+            => LocalizeInternal(key, type, GetLocalizationId);
 
         /// <summary>
         /// Localizes the given <paramref name="key"/> by deriving the localization id from 
@@ -167,9 +164,8 @@ namespace motoi.platform.nls {
         /// <param name="key">Key to localize. Should start with an '%'</param>
         /// <param name="obj">Object the localization id is derived from</param>
         /// <returns>The key itself or the localized text</returns>
-        static public string Localize(string key, object obj) {
-            return LocalizeInternal(key, obj, GetLocalizationId);
-        }
+        static public string Localize(string key, object obj) 
+            => LocalizeInternal(key, obj, GetLocalizationId);
 
         /// <summary>
         /// Returns the localized text of the <paramref name="key"/> that is associated with the given 
@@ -180,21 +176,21 @@ namespace motoi.platform.nls {
         /// <param name="localizationId">Localization id</param>
         /// <param name="key">NLS key</param>
         /// <returns>Localized text or NULL</returns>
-        static public string GetText(string localizationId, string key) {
+        public static string GetText(string localizationId, string key) {
             if (string.IsNullOrEmpty(localizationId)) return null;
             if (string.IsNullOrEmpty(key)) return null;
 
             // Resolve provider
             Type providerType = NLSRegistry.Instance.GetProviderType(localizationId);
             if (providerType == null) {
-                fLogWriter.WarnFormat("There is no NLS provider for the localization id '{0}'", localizationId);
+                _log.Warn($"There is no NLS provider for the localization id '{localizationId}'");
                 return null;
             }
 
             // Resolve provider field
             FieldInfo field = providerType.GetField(key, FieldBindingFlags);
             if (field == null) {
-                fLogWriter.WarnFormat("NLS provider '{0}' defines no field for key '{1}'", providerType, key);
+                _log.Warn($"NLS provider '{providerType}' defines no field for key '{key}'");
                 return null;
             }
 
@@ -208,9 +204,8 @@ namespace motoi.platform.nls {
         /// </summary>
         /// <param name="assembly">Assembly the localization id is derived from</param>
         /// <returns>Localization id or NULL</returns>
-        static public string GetLocalizationId(Assembly assembly) {
-            return assembly?.GetName().Name;
-        }
+        public static string GetLocalizationId(Assembly assembly) 
+            => assembly?.GetName().Name;
 
         /// <summary>
         /// Returns the localization id based on the assembly of the given <paramref name="type"/>. 
@@ -218,9 +213,8 @@ namespace motoi.platform.nls {
         /// </summary>
         /// <param name="type">Type the localization id is derived from</param>
         /// <returns>Localization id or NULL</returns>
-        static public string GetLocalizationId(Type type) {
-            return GetLocalizationId(type?.Assembly);
-        }
+        public static string GetLocalizationId(Type type) 
+            => GetLocalizationId(type?.Assembly);
 
         /// <summary>
         /// Returns the localization id based on the assembly that provides the given <paramref name="obj"/>. 
@@ -228,9 +222,8 @@ namespace motoi.platform.nls {
         /// </summary>
         /// <param name="obj">Object the localization id is derived from</param>
         /// <returns>Localization id or NULL</returns>
-        static public string GetLocalizationId(object obj) {
-            return GetLocalizationId(obj?.GetType());
-        }
+        public static string GetLocalizationId(object obj) 
+            => GetLocalizationId(obj?.GetType());
 
         /// <summary>
         /// Localizes the given <paramref name="key"/> with the help of the given <paramref name="getLocalizationId"/> 
@@ -242,7 +235,7 @@ namespace motoi.platform.nls {
         /// <param name="arg">Argument of the <paramref name="getLocalizationId"/> method</param>
         /// <param name="getLocalizationId">Method that provides the localization id based on the given <paramref name="arg"/></param>
         /// <returns>The key itself or the localized text</returns>
-        static private string LocalizeInternal<TArg>(string key, TArg arg, Func<TArg, string> getLocalizationId) {
+        private static string LocalizeInternal<TArg>(string key, TArg arg, Func<TArg, string> getLocalizationId) {
             if (!IsLocalized(key)) return key;
             string baseKey = key.Substring(1);
             string localizationId = getLocalizationId(arg);
@@ -255,8 +248,8 @@ namespace motoi.platform.nls {
         /// </summary>
         /// <param name="key">Key to check</param>
         /// <returns>TRUE or FALSE</returns>
-        static private bool IsLocalized(string key) {
-            if (String.IsNullOrEmpty(key)) return false;
+        private static bool IsLocalized(string key) {
+            if (string.IsNullOrEmpty(key)) return false;
             if (key[0] != '%') return false;
             return true;
         }
