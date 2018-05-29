@@ -1,17 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reflection;
-using log4net;
 using motoi.platform.ui.bindings.exceptions;
+using NLog;
 using xcite.csharp;
 using xcite.csharp.assertions;
 
 namespace motoi.platform.ui.bindings {
-    /// <summary>
-    /// Describes a data binding.
-    /// </summary>
+    /// <summary> Describes a data binding. </summary>
     public class DataBinding : XObject {
-        private static readonly ILog iLog = LogManager.GetLogger(typeof (DataBinding));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(DataBinding));
 
         /// <summary>
         /// Creates a new instance using the given path.
@@ -29,44 +27,28 @@ namespace motoi.platform.ui.bindings {
             if (SourcePropertyInfo == null) throw new DataBindingException(string.Format("The given source object of type '{0}' does not have a property under the given path '{1}'", source.GetType(), path));
         }
 
-        /// <summary>
-        /// Returns the data binding mode or does set it.
-        /// </summary>
+        /// <summary> Returns the data binding mode or does set it. </summary>
         public EDataBindingMode BindingMode { get; set; }
 
-        /// <summary>
-        /// Returns the data binding update trigger.
-        /// </summary>
+        /// <summary> Returns the data binding update trigger. </summary>
         public EDataBindingSourceUpdateTrigger BindingSourceUpdateTrigger { get; set; }
 
-        /// <summary>
-        /// Returns the path to the bound source property.
-        /// </summary>
+        /// <summary> Returns the path to the bound source property. </summary>
         public string Path { get; private set; }
 
-        /// <summary>
-        /// Returns the source of the binding or does set it.
-        /// </summary>
+        /// <summary> Returns the source of the binding or does set it. </summary>
         public object Source { get; set; }
 
-        /// <summary>
-        /// Returns the info of the source property.
-        /// </summary>
+        /// <summary> Returns the info of the source property. </summary>
         public PropertyInfo SourcePropertyInfo { get; private set; }
 
-        /// <summary>
-        /// Returns the target of the binding or does set it.
-        /// </summary>
+        /// <summary> Returns the target of the binding or does set it. </summary>
         public object Target { get; private set; }
 
-        /// <summary>
-        /// Returns the info of the target property.
-        /// </summary>
+        /// <summary> Returns the info of the target property. </summary>
         public PropertyInfo TargetPropertyInfo { get; private set; }
 
-        /// <summary>
-        /// Returns TRUE if the binding supports to update the source.
-        /// </summary>
+        /// <summary> Returns TRUE if the binding supports to update the source. </summary>
         private bool ShallUpdateSource { get; set; }
 
         /// <summary>
@@ -105,8 +87,7 @@ namespace motoi.platform.ui.bindings {
             // OneWay and/or TwoWay
 
             // Add update listener to the source (if supported)
-            INotifyPropertyChanged propertyChangedDispatcher = Source as INotifyPropertyChanged;
-            if (propertyChangedDispatcher != null) {
+            if (Source is INotifyPropertyChanged propertyChangedDispatcher) {
                 propertyChangedDispatcher.PropertyChanged += OnSourcePropertyChanged;
             }
         }
@@ -128,8 +109,7 @@ namespace motoi.platform.ui.bindings {
         /// </summary>
         public void Dispose() {
             // Remove handler
-            INotifyPropertyChanged propertyChangedDispatcher = Source as INotifyPropertyChanged;
-            if (propertyChangedDispatcher != null)
+            if (Source is INotifyPropertyChanged propertyChangedDispatcher)
                 propertyChangedDispatcher.PropertyChanged -= OnSourcePropertyChanged;
         }
 
@@ -143,19 +123,18 @@ namespace motoi.platform.ui.bindings {
         private void ApplyValueToBindingSource(object source, PropertyInfo sourcePropertyInfo, object target, PropertyInfo targetPropertyInfo) {
             object targetValue = null;
             try {
-                if (target == null) throw new ArgumentNullException("target");
-                if (targetPropertyInfo == null) throw new ArgumentNullException("targetPropertyInfo");
-                if (source == null) throw new ArgumentNullException("source");
-                if (sourcePropertyInfo == null) throw new ArgumentNullException("sourcePropertyInfo");
+                if (target == null) throw new ArgumentNullException(nameof(target));
+                if (targetPropertyInfo == null) throw new ArgumentNullException(nameof(targetPropertyInfo));
+                if (source == null) throw new ArgumentNullException(nameof(source));
+                if (sourcePropertyInfo == null) throw new ArgumentNullException(nameof(sourcePropertyInfo));
                 
                 targetValue = targetPropertyInfo.GetValue(target, null);
                 ApplyValueChange(source, sourcePropertyInfo, targetValue);
             } catch (Exception ex) {
-                iLog.ErrorFormat("Error on applying target value to binding source. " +
-                                 "target: '{0}', target property: '{1}', " +
-                                 "source: '{2}, source property: '{3}', source property value: '{4}'. " +
-                                 "Reason: {5}",
-                                 target, targetPropertyInfo, source, sourcePropertyInfo, targetValue ?? "NULL", ex);
+                _log.Error(ex, "Error on applying target value to binding source. " +
+                              $"target: '{target}', target property: '{targetPropertyInfo}', " +
+                              $"source: '{source}, source property: '{sourcePropertyInfo}', source property value: '{targetValue ?? "NULL"}'."
+                              );
             }
         }
 
@@ -177,11 +156,10 @@ namespace motoi.platform.ui.bindings {
                 sourceValue = sourcePropertyInfo.GetValue(source, null);
                 ApplyValueChange(target, targetPropertyInfo, sourceValue);
             } catch (Exception ex) {
-                iLog.ErrorFormat("Error on applying source value to binding target. " +
-                                 "target: '{0}', target property: '{1}', " +
-                                 "source: '{2}, source property: '{3}', source property value: '{4}'. " +
-                                 "Reason: {5}",
-                                 target, targetPropertyInfo, source, sourcePropertyInfo, sourceValue ?? "NULL", ex);
+                _log.Error(ex, "Error on applying source value to binding target. " +
+                              $"target: '{target}', target property: '{targetPropertyInfo}', " +
+                              $"source: '{source}, source property: '{sourcePropertyInfo}', source property value: '{sourceValue ?? "NULL"}'. "
+                              );
             }
         }
 
@@ -207,8 +185,7 @@ namespace motoi.platform.ui.bindings {
                 // Update the property value
                 propertyInfo.SetValue(obj, value, null);
             } catch (Exception ex) {
-                iLog.ErrorFormat("Errror on performing binding update. Object is '{0}', property is '{1}' and value is '{2}'. Reason: {3}", 
-                    obj, propertyInfo, (value ?? "NULL"), ex);
+                _log.Error(ex, $"Errror on performing binding update. Object is '{obj}', property is '{propertyInfo}' and value is '{value ?? "NULL"}'");
             }
         }
 
@@ -219,12 +196,12 @@ namespace motoi.platform.ui.bindings {
         /// <param name="property">Data binding property</param>
         private void ApplyDefaultPropertyValue<TValue>(IDataBindingSupport target, IBindableProperty<TValue> property) {
             try {
-                if (target == null) throw new ArgumentNullException("target");
-                if (property == null) throw new ArgumentNullException("property");
+                if (target == null) throw new ArgumentNullException(nameof(target));
+                if (property == null) throw new ArgumentNullException(nameof(property));
 
                 ApplyValueChange(target, property.PropertyInfo, property.DefaultValue);
             } catch (Exception ex) {
-                iLog.ErrorFormat("Error on applying default property value to the binding target. Reason: {0}", ex);
+                _log.Error(ex, "Error on applying default property value to the binding target.");
             }
         }
 

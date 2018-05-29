@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using log4net;
 using motoi.extensions;
-using motoi.extensions.core;
 using motoi.platform.nls;
 using motoi.platform.ui.actions;
 using motoi.platform.ui.shells;
-using motoi.plugins.model;
+using motoi.plugins;
+using NLog;
 using xcite.collections;
 using xcite.csharp;
 
@@ -24,7 +23,7 @@ namespace motoi.platform.ui.menus {
         /// <summary> Extension point ID of custom menu configurer </summary>
         private const string ExtensionPointIdCustomMenuConfigurer = "org.motoi.application.menu.customconfigurer";
         
-        private static readonly Dictionary<string, MenuContribution> iIdToMenuMap = new Dictionary<string, MenuContribution>(10);
+        private static readonly Dictionary<string, MenuContribution> _idToMenuMap = new Dictionary<string, MenuContribution>(10);
 
         /// <summary>
         /// Resolves all registered menus and items and tells the main window to handle it.
@@ -71,7 +70,7 @@ namespace motoi.platform.ui.menus {
                     }
 
                     MenuContribution menu = new MenuContribution(id, label);
-                    iIdToMenuMap.Add(id, menu);
+                    _idToMenuMap.Add(id, menu);
                 }
             }
 
@@ -107,8 +106,7 @@ namespace motoi.platform.ui.menus {
                     label = NLS.Localize(label, actionHandler);
 
                     MenuItemContribution menuItem = new MenuItemContribution(id, label, menu, actionHandler, shortcut, imageStream);
-                    MenuContribution menuInstance;
-                    if (iIdToMenuMap.TryGetValue(menu, out menuInstance))
+                    if (_idToMenuMap.TryGetValue(menu, out MenuContribution menuInstance))
                         menuInstance.MenuItems.Add(menuItem);
                 }
             }
@@ -124,7 +122,7 @@ namespace motoi.platform.ui.menus {
 
                     MenuItemContribution menuItem = new MenuItemContribution(id, string.Empty, menu, null, null, null) { IsSeparator = true };
                     MenuContribution menuContribution;
-                    if (!iIdToMenuMap.TryGetValue(menu, out menuContribution)) continue;
+                    if (!_idToMenuMap.TryGetValue(menu, out menuContribution)) continue;
 
                     bool useInsertBefore = !string.IsNullOrEmpty(insertBefore);
                     string itemReference = useInsertBefore ? insertBefore : insertAfter;
@@ -139,7 +137,7 @@ namespace motoi.platform.ui.menus {
 
             // Support custom menu configurer
             ICustomMenuConfigurer customMenuConfigurer = GetCustomMenuConfigurer();
-            MenuContribution[] menuContributions = iIdToMenuMap.Values.ToArray();
+            MenuContribution[] menuContributions = _idToMenuMap.Values.ToArray();
             MenuContribution[] customMenuContributions = customMenuConfigurer != null
                 ? customMenuConfigurer.Configure(menuContributions)
                 : menuContributions;
@@ -151,8 +149,7 @@ namespace motoi.platform.ui.menus {
             using (LinkedList<Stream>.Enumerator enmtor = streamList.GetEnumerator()) {
                 while (enmtor.MoveNext()) {
                     Stream stream = enmtor.Current;
-                    if (stream != null)
-                        stream.Dispose();
+                    stream?.Dispose();
                 }
             }
         }
@@ -176,10 +173,9 @@ namespace motoi.platform.ui.menus {
                 Type instanceType = TypeLoader.TypeForName(providingBundle, clsName);
                 return instanceType.NewInstance<ICustomMenuConfigurer>();
             } catch (Exception ex) {
-                ILog logWriter = LogManager.GetLogger(typeof(MenuItemProvider));
-                logWriter.Error(string.Format("Error on creating instance of custom menu configurer. " +
-                                              "Id is '{0}'. Providing bundle is '{1}'", id, providingBundle), 
-                                              ex);
+                Logger logWriter = LogManager.GetCurrentClassLogger(typeof(MenuItemProvider));
+                logWriter.Error(ex, string.Format("Error on creating instance of custom menu configurer. " +
+                                                  "Id is '{0}'. Providing bundle is '{1}'", id, providingBundle));
                 return null;
             }
         }

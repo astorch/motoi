@@ -1,12 +1,12 @@
 ﻿using System;
-using log4net;
+using NLog;
 using xcite.csharp;
 using xcite.csharp.oop;
 
 namespace motoi.platform.ui.messaging {
     /// <summary> Implements a dispatcher of messages to the UI elements. </summary>
     public class UIMessageDispatcher : GenericSingleton<UIMessageDispatcher> {
-        private static readonly ILog iLog = LogManager.GetLogger(typeof(UIMessageDispatcher));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(UIMessageDispatcher));
 
         private readonly AuxiliaryAudible<IUIMessageDispatchListener> iRegisteredListeners = new AuxiliaryAudible<IUIMessageDispatchListener>();
 
@@ -54,7 +54,7 @@ namespace motoi.platform.ui.messaging {
         /// <param name="exception">Exception</param>
         /// <param name="uiMessageDispatchListener">Listener the exception happened to</param>
         private void OnDispatchingException(Exception exception, IUIMessageDispatchListener uiMessageDispatchListener) {
-            iLog.ErrorFormat("Error on dispatching event to '{0}'. Reason: {1}", uiMessageDispatchListener, exception);
+            _log.Error(exception, $"Error on dispatching event to '{uiMessageDispatchListener}'.");
         }
 
         /// <summary>

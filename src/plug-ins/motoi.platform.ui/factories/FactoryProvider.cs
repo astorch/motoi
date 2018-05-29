@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using log4net;
 using motoi.extensions;
-using motoi.extensions.core;
-using motoi.plugins.model;
+using motoi.plugins;
+using NLog;
 using xcite.csharp;
 
 namespace motoi.platform.ui.factories {
@@ -60,7 +59,7 @@ namespace motoi.platform.ui.factories {
 
         /// <inheritdoc />
         protected override void OnInitialize() {
-            ILog logWriter = LogManager.GetLogger(typeof(FactoryProvider));
+            Logger logWriter = LogManager.GetCurrentClassLogger(typeof(FactoryProvider));
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(FactoryExtensionPointId);
             if (configurationElements.Length == 0) throw new InvalidOperationException("There is no registered UI provider!");
 
@@ -68,7 +67,7 @@ namespace motoi.platform.ui.factories {
                 string[] viewPartFactories = configurationElements.Select(x => x.Id).ToArray();
                 string enumeration = string.Join(", ", viewPartFactories);
                 logWriter.Warn(string.Format("There is more than one UI provider registered: {0}", enumeration));
-                logWriter.WarnFormat("Taking first one ({0})", configurationElements[0].Id);
+                logWriter.Warn("Taking first one ({0})", configurationElements[0].Id);
                 configurationElements = new[] {configurationElements[0]};
             }
 

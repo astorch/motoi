@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using motoi.extensions;
-using motoi.extensions.core;
 using motoi.platform.nls;
 using motoi.platform.ui.actions;
 using motoi.platform.ui.shells;
-using motoi.plugins.model;
+using motoi.plugins;
 using xcite.collections;
 using xcite.csharp;
 
@@ -22,7 +21,7 @@ namespace motoi.platform.ui.toolbars {
         /// </summary>
         private const string ExtensionPointId = "org.motoi.application.toolbar";
 
-        private static readonly IDictionary<string, ToolbarGroupContribution> iIdToMenuMap = new Dictionary<string, ToolbarGroupContribution>(10);
+        private static readonly IDictionary<string, ToolbarGroupContribution> _idToMenuMap = new Dictionary<string, ToolbarGroupContribution>(10);
 
         /// <summary>
         /// Resolves all registered menus and items and tells the main window to handle it.
@@ -38,7 +37,7 @@ namespace motoi.platform.ui.toolbars {
                 IConfigurationElement element = groupElements[i];
                 string id = element["id"];
                 ToolbarGroupContribution menu = new ToolbarGroupContribution(id);
-                iIdToMenuMap.Add(id, menu);
+                _idToMenuMap.Add(id, menu);
             }
 
             // Collection of all opened streams
@@ -71,11 +70,11 @@ namespace motoi.platform.ui.toolbars {
 
                 ToolbarItemContribution menuItem = new ToolbarItemContribution(id, group, actionHandler, label, imageStream);
                 ToolbarGroupContribution menuInstance;
-                if (iIdToMenuMap.TryGetValue(group, out menuInstance))
+                if (_idToMenuMap.TryGetValue(group, out menuInstance))
                     menuInstance.GroupItems.Add(menuItem);
             }
 
-            using (IEnumerator<ToolbarGroupContribution> itr = iIdToMenuMap.Values.GetEnumerator()) {
+            using (IEnumerator<ToolbarGroupContribution> itr = _idToMenuMap.Values.GetEnumerator()) {
                 while (itr.MoveNext()) {
                     ToolbarGroupContribution contribution = itr.Current;
                     mainWindow.AddToolbarGroup(contribution);
