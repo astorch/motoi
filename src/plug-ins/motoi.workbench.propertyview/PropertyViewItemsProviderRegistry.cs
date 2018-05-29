@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using log4net;
 using motoi.extensions;
-using motoi.extensions.core;
-using motoi.plugins.model;
+using motoi.plugins;
+using NLog;
 using xcite.csharp;
 
 namespace motoi.workbench.propertyview {
@@ -14,7 +13,7 @@ namespace motoi.workbench.propertyview {
         /// <summary> Extension point id. </summary>
         private const string ExtensionPointId = "org.motoi.workbench.propertyview.provider";
 
-        private readonly ILog iLogWriter = LogManager.GetLogger(typeof(PropertyViewItemsProviderRegistry));
+        private readonly Logger _log = LogManager.GetCurrentClassLogger();
 
         private Dictionary<string, IPropertyViewItemsProvider> iRegisteredProviders;
 
@@ -25,15 +24,14 @@ namespace motoi.workbench.propertyview {
         /// <param name="fileExtension">File extension a provider may associated with</param>
         /// <returns>An instance of <see cref="IPropertyViewItemsProvider"/> or NULL</returns>
         public IPropertyViewItemsProvider GetProvider(string fileExtension) {
-            IPropertyViewItemsProvider provider;
-            if (iRegisteredProviders.TryGetValue(fileExtension, out provider)) return provider;
+            if (iRegisteredProviders.TryGetValue(fileExtension, out IPropertyViewItemsProvider provider)) return provider;
             return null;
         }
 
         /// <inheritdoc />
         protected override void OnInitialize() {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(ExtensionPointId);
-            iLogWriter.InfoFormat("{0} registered provider found", configurationElements.Length);
+            _log.Info($"{configurationElements.Length} registered provider found");
 
             iRegisteredProviders = new Dictionary<string, IPropertyViewItemsProvider>(configurationElements.Length);
 
@@ -44,12 +42,12 @@ namespace motoi.workbench.propertyview {
                 string cls = configurationElement["class"];
 
                 if (string.IsNullOrEmpty(fileExtension)) {
-                    iLogWriter.ErrorFormat("Bundle '{0}' provides a property view items provider with an empty file extension", providingBundle);
+                    _log.Error($"Bundle '{providingBundle}' provides a property view items provider with an empty file extension");
                     continue;
                 }
 
                 if (string.IsNullOrEmpty(cls)) {
-                    iLogWriter.ErrorFormat("Bundle '{0}' provides a property view items provider with an empty class reference", providingBundle);
+                    _log.Error($"Bundle '{providingBundle}' provides a property view items provider with an empty class reference");
                     continue;
                 }
 
@@ -59,18 +57,15 @@ namespace motoi.workbench.propertyview {
                     Type providerType = TypeLoader.TypeForName(providingBundle, cls);
                     provider = providerType.NewInstance<IPropertyViewItemsProvider>();
                 } catch (Exception ex) {
-                    iLogWriter.ErrorFormat("Error on creating instance of '{0}' provided by bundle '{1}'. Reason: {2}", 
-                        cls, providingBundle, ex);
+                    _log.Error(ex, $"Error on creating instance of '{cls}' provided by bundle '{providingBundle}'.");
                     continue;
                 }
 
                 try {
                     iRegisteredProviders.Add(fileExtension, provider);
-                    iLogWriter.InfoFormat("Provider '{0}' ({1}) successfully registered for file extension '{2}'",
-                        provider.GetType(), providingBundle, fileExtension);
+                    _log.Info($"Provider '{provider.GetType()}' ({providingBundle}) successfully registered for file extension '{fileExtension}'");
                 } catch (Exception ex) {
-                    iLogWriter.ErrorFormat("Error on registering '{0}' ({1}) as provider for file extension '{2}'. Reason: {3}",
-                        provider.GetType(), providingBundle, fileExtension, ex);
+                    _log.Error(ex, $"Error on registering '{provider.GetType()}' ({providingBundle}) as provider for file extension '{2}'. Reason: {fileExtension}");
                 }
             }
         }
