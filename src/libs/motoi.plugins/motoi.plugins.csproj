@@ -36,14 +36,6 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="_log4net.config" />
-    <None Remove="_nlog.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="_log4net.config" />
-    <EmbeddedResource Include="_nlog.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\PTP\PTP.csproj" />
   </ItemGroup>
   <ItemGroup>

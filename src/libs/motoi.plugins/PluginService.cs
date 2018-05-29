@@ -11,11 +11,6 @@ namespace motoi.plugins {
     /// <summary> Provides a service to handle all installed plug-ins. </summary>
     public class PluginService {
 
-        /// <summary> Static initializer. </summary>
-        static PluginService() {
-            LogConfigurer.Configurate();
-        }
-
         /// <summary> Log instance. </summary>
         private readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(PluginService));
 
@@ -265,7 +260,7 @@ namespace motoi.plugins {
             } catch (Exception ex) {
                 string message = string.Format("Could not process marc file '{0}'. Plug-in will not be available!",
                                                bundle);
-                _log.Error(message, ex);
+                _log.Error(ex, message);
             }
             return null;
         }
