@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using xcite.collections;
 
-namespace motoi.extensions.core
+namespace motoi.extensions
 {
     /// <summary>
     /// Implements a map for handling multiple configuration elements for one id.

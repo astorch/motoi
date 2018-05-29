@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using motoi.extensions.core;
-using motoi.extensions.exceptions;
 
-namespace motoi.extensions.parser
+namespace motoi.extensions
 {
     /// <summary>
     /// Provides a parser for extension.xml files.

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using xcite.collections;
 
-namespace motoi.extensions.core
+namespace motoi.extensions
 {
     /// <summary>
     /// Provides an implementation of <see cref="IConfigurationElement"/>.

@@ -1,4 +1,4 @@
-﻿namespace motoi.extensions.core {
+﻿namespace motoi.extensions {
     /// <summary>
     /// Defines the a Configuration Element.
     /// </summary>

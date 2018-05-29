@@ -1,5 +1,5 @@
 ﻿using System;
-using motoi.plugins.model;
+using motoi.plugins;
 
 namespace motoi.extensions {
     /// <summary>

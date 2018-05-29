@@ -1,89 +1,63 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using log4net;
-using motoi.extensions.core;
-using motoi.extensions.parser;
 using motoi.plugins;
-using motoi.plugins.model;
+using NLog;
 using xcite.collections;
 
 namespace motoi.extensions {
-    /// <summary>
-    /// Provides a service that handles Extension Points.
-    /// </summary>
+    /// <summary> Provides a service that handles Extension Points. </summary>
     public class ExtensionService {
 
-        /// <summary>
-        /// Static initializer.
-        /// </summary>
-        static ExtensionService() {
-            LogConfigurer.Configurate();
-        }
+        /// <summary> Backing variable for the service. </summary>
+        private static ExtensionService _service;
 
-        /// <summary>
-        /// Backing variable for the service.
-        /// </summary>
-        private static ExtensionService iService;
+        /// <summary> Returns the instance of this service. </summary>
+        public static ExtensionService Instance 
+            => _service ?? (_service = new ExtensionService());
 
-        /// <summary>
-        /// Returns the instance of this service.
-        /// </summary>
-        public static ExtensionService Instance {
-            get { return iService ?? (iService = new ExtensionService()); }
-        }
-
-        /// <summary>
-        /// Defines the name of an extension file.
-        /// </summary>
+        /// <summary> Defines the name of an extension file. </summary>
         private const string ExtensionFileName = "extensions.xml";
 
-        /// <summary>
-        /// Log instance.
-        /// </summary>
-        private readonly ILog iLogger = LogManager.GetLogger(typeof (ExtensionService));
+        /// <summary> Log instance. </summary>
+        private readonly Logger iLogger = LogManager.GetCurrentClassLogger(typeof(ExtensionService));
 
         private readonly ExtensionPointMap iExtensionPointMap = new ExtensionPointMap();
         private readonly IDictionary<IBundle, IList<IConfigurationElement>> iBundleToConfigurationElementMap = new Dictionary<IBundle, IList<IConfigurationElement>>(10);
 
-        private bool iStarted;
-        private bool iStopped;
+        private bool _started;
+        private bool _stopped;
 
-        /// <summary>
-        /// Private constructor.
-        /// </summary>
-        private ExtensionService() { Start(); }
+        /// <summary> Private constructor. </summary>
+        private ExtensionService() {
+            Start();
+        }
 
-        /// <summary>
-        /// Starts the Extension Service.
-        /// </summary>
+        /// <summary> Starts the Extension Service. </summary>
         public void Start() {
-            if (iStarted) return;
+            if (_started) return;
 
             iLogger.Debug("Starting Extension Service");
 
             IList<IPluginInfo> providedPlugins = PluginService.Instance.ProvidedPlugins;
-            using (IEnumerator<IPluginInfo> enmtor = providedPlugins.GetEnumerator()) {
-                while (enmtor.MoveNext()) {
-                    IPluginInfo plugin = enmtor.Current;
-                    Stream stream = plugin.Bundle.GetResourceAsStream(ExtensionFileName);
-                    if (stream == null) continue;
+            providedPlugins.ForEach(plugin => {
+                Stream stream = plugin.Bundle.GetResourceAsStream(ExtensionFileName);
+                if (stream == null) return;
 
-                    // Create a parser and parse the stream
-                    ExtensionFileParser parser = ExtensionFileParser.GetInstance(stream);
-                    ExtensionPointMap map = parser.Parse();
-                
-                    // Map bundle to Configuration Elements
-                    IList<IConfigurationElement> cfgElements = new List<IConfigurationElement>(map.Count);
-                    map.ForEach(x => cfgElements.AddAll(x.Value));
-                    iBundleToConfigurationElementMap.Add(plugin.Bundle, cfgElements);
+                // Create a parser and parse the stream
+                ExtensionFileParser parser = ExtensionFileParser.GetInstance(stream);
+                ExtensionPointMap map = parser.Parse();
 
-                    // Merge the new elements to the existing ones
-                    iExtensionPointMap.Merge(map);
-                }
-            }
+                // Map bundle to Configuration Elements
+                IList<IConfigurationElement> cfgElements = new List<IConfigurationElement>(map.Count);
+                map.ForEach(x => cfgElements.AddAll(x.Value));
+                iBundleToConfigurationElementMap.Add(plugin.Bundle, cfgElements);
 
-            iStarted = true;
+                // Merge the new elements to the existing ones
+                iExtensionPointMap.Merge(map);
+            });
+            
+            _started = true;
             iLogger.Debug("Extension Service started");
         }
 
@@ -91,15 +65,15 @@ namespace motoi.extensions {
         /// Stops the Extension Service.
         /// </summary>
         public void Stop() {
-            if (iStopped) return;
+            if (_stopped) return;
 
             iLogger.Debug("Stopping Extension Service");
 
             iBundleToConfigurationElementMap.Clear();
             iExtensionPointMap.Clear();
-            iService = null;
+            _service = null;
 
-            iStopped = true;
+            _stopped = true;
             iLogger.Debug("Extension Service stopped");
         }
 
