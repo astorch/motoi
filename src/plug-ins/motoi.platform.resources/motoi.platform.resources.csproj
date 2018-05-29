@@ -1,107 +1,51 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4208230D-11F4-47D9-843A-493E89C5417E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>motoi.platform.resources</RootNamespace>
-    <AssemblyName>motoi.platform.resources</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard20</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <OutputPath>bin\debug\</OutputPath>
+    <DefineConstants />
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\motoi.platform.resources.xml</DocumentationFile>
+    <DocumentationFile>bin\debug\motoi.platform.resources.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>embedded</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Release\motoi.platform.resources.XML</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.XML" />
-    <Reference Include="xcite.csharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xcite.csharp.3.0.4\lib\net462\xcite.csharp.dll</HintPath>
-    </Reference>
-    <Reference Include="xcite.io, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xcite.io.1.0.3\lib\net462\xcite.io.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj" />
+    <ProjectReference Include="..\..\libs\motoi.plugins\motoi.plugins.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="4.5.5" />
+    <PackageReference Include="xcite.csharp" Version="6.0.0" />
+    <PackageReference Include="xcite.io" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\PlatformProductAssemblyInfo.cs">
-      <Link>properties\PlatformProductAssemblyInfo.cs</Link>
+      <Link>PlatformProductAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="model\editors\IEditorInput.cs" />
-    <Compile Include="model\IWorkspace.cs" />
-    <Compile Include="model\IWorkspaceArtefact.cs" />
-    <Compile Include="model\IWorkspaceFile.cs" />
-    <Compile Include="model\IWorkspaceFileReference.cs" />
-    <Compile Include="model\IWorkspaceFolder.cs" />
-    <Compile Include="model\IWorkspaceArtefactContainer.cs" />
-    <Compile Include="model\preference\EStoreScope.cs" />
-    <Compile Include="model\preference\IPreferenceStore.cs" />
-    <Compile Include="model\preference\IPreferenceStoreManager.cs" />
-    <Compile Include="properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceService.cs" />
-    <Compile Include="runtime\editors\FileEditorInput.cs" />
-    <Compile Include="runtime\editors\MemoryFileEditorInput.cs" />
-    <Compile Include="runtime\filesystem\AbstractFileSystemWorkspaceFile.cs" />
-    <Compile Include="runtime\filesystem\AbstractFileSystemWorkspaceArtefactContainer.cs" />
-    <Compile Include="runtime\filesystem\FileSystemFile.cs" />
-    <Compile Include="runtime\filesystem\FileSystemWorkspaceFolder.cs" />
-    <Compile Include="runtime\filesystem\FileSystemWorkspace.cs" />
-    <Compile Include="runtime\preference\FilePreferenceStoreManager.cs" />
-    <Compile Include="runtime\preference\PreferenceStore.cs" />
-    <Compile Include="runtime\preference\PreferenceStoreManager.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
     <None Include="meta-Inf\signature.mf" />
-    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj">
-      <Project>{e85cb030-30d6-468d-9061-559f937f1904}</Project>
-      <Name>motoi.extensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\libs\motoi.plugins\motoi.plugins.csproj">
-      <Project>{dc59f99b-75a5-4877-b71b-3c865e4876a3}</Project>
-      <Name>motoi.plugins</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)..\bin\debug\Tessa.exe" "$(ProjectPath)" "$(TargetPath)" "$(SolutionDir)..\bin\debug"</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)..\bin\debug\Tessa.exe&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot; &quot;$(SolutionDir)..\bin\debug&quot;" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

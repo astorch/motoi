@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization;
-using log4net;
 using motoi.platform.resources.model;
 using motoi.platform.resources.runtime.filesystem;
+using NLog;
 using xcite.csharp;
 using xcite.io;
 
@@ -14,86 +14,81 @@ namespace motoi.platform.resources
     /// </summary>
     public class ResourceService : GenericSingleton<ResourceService> {
 
-        private const string iMetadataFolderName = ".metadata";
-        private const string iMetadataFileName = "resources.info";
+        private const string MetadataFolderName = ".metadata";
+        private const string MetadataFileName = "resources.info";
 
-        private static readonly ILog iLog = LogManager.GetLogger(typeof (ResourceService));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(ResourceService));
 
         // TODO Use another serializer cause to bad performance
         private readonly DataContractSerializer iXmlSerializer = new DataContractSerializer(typeof(PlatformMetaInformation));
         private PlatformMetaInformation iPlatformMetaInformation;
 
-        /// <summary>
-        /// Returns the current workspace.
-        /// </summary>
+        /// <summary> Returns the current workspace. </summary>
         public IWorkspace Workspace { get; private set; }
 
-        /// <summary>
-        /// Returns the meta data folder.
-        /// </summary>
+        /// <summary> Returns the meta data folder. </summary>
         internal string MetaDataFolder { get; private set; }
 
-        /// <summary>
-        /// Returns the log of the <see cref="ResourceService"/>.
-        /// </summary>
-        public ILog ResourceServiceLog { get { return iLog; } }
+        /// <summary> Returns the log of the <see cref="ResourceService"/>. </summary>
+        public Logger ResourceServiceLog 
+            => _log;
 
         /// <summary>
         /// Will be called directly after this instance has been created.
         /// </summary>
         protected override void OnInitialize() {
-            iLog.Info("Initializing...");
+            _log.Info("Initializing...");
 
-            string metaDataFilePath = Path.Combine(iMetadataFolderName, iMetadataFileName);
+            string metaDataFilePath = Path.Combine(MetadataFolderName, MetadataFileName);
             FileInfo metaDataFile = new FileInfo(metaDataFilePath);
             MetaDataFolder = metaDataFile.DirectoryName;
-            iLog.InfoFormat("Meta data file: '{0}'", metaDataFile.FullName);
+            _log.Info($"Meta data file: '{metaDataFile.FullName}'");
             
             if (!metaDataFile.Exists) {
                 iPlatformMetaInformation = CreatePlatformMetaInformation();
             } else {
-                iLog.Info("Deserializing platform meta information");
+                _log.Info("Deserializing platform meta information");
                 using (FileStream fileStream = metaDataFile.OpenRead()) // TODO Try catch
                     iPlatformMetaInformation = (PlatformMetaInformation) iXmlSerializer.ReadObject(fileStream);
 
                 if (iPlatformMetaInformation == null) {
-                    iLog.Error("Platform meta information null");
+                    _log.Error("Platform meta information null");
                     CreatePlatformMetaInformation();
                 }
 
-                iLog.Info("Deserialization finished");
+                _log.Info("Deserialization finished");
             }
 
-            iLog.InfoFormat("Workspace root path: {0}", iPlatformMetaInformation.WorkspaceDirectoryPath);
+            _log.Info($"Workspace root path: {iPlatformMetaInformation.WorkspaceDirectoryPath}");
             Workspace = new FileSystemWorkspace(new DirectoryInfo(iPlatformMetaInformation.WorkspaceDirectoryPath)); // TODO Introduce workspace provider extension point
             // Workspace.Refresh(); // XXX 07.11.2016 Is done by ctor
-            iLog.Info("Workspace successfully set");
+            _log.Info("Workspace successfully set");
 
-            iLog.Info("Finished");
+            _log.Info("Finished");
         }
 
         /// <summary>
         /// Will be called when <see cref="GenericSingleton{TClass}.Destroy"/> has been called for this instance.
         /// </summary>
         protected override void OnDestroy() {
-            iLog.Info("Destroying...");
+            _log.Info("Destroying...");
 
-            string metaDataFilePath = Path.Combine(iMetadataFolderName, iMetadataFileName);
+            string metaDataFilePath = Path.Combine(MetadataFolderName, MetadataFileName);
             FileInfo metaDataFile = new FileInfo(metaDataFilePath);
-            iLog.InfoFormat("Meta data file: '{0}'", metaDataFile);
+            _log.Info($"Meta data file: '{metaDataFile}'");
 
             if (!metaDataFile.Exists) {
-                iLog.Info("Platform meta information does not exist. Creating a new one.");
+                _log.Info("Platform meta information does not exist. Creating a new one.");
                 metaDataFile.CreateFile();
             }
 
-            iLog.Info("Serializing platform meta information");
+            _log.Info("Serializing platform meta information");
             using (FileStream fileStream = metaDataFile.OpenWrite())
                 iXmlSerializer.WriteObject(fileStream, iPlatformMetaInformation);
 
-            iLog.Info("Serialization finished");
+            _log.Info("Serialization finished");
    
-            iLog.Info("Finished");
+            _log.Info("Finished");
         }
 
         /// <summary>
@@ -101,7 +96,7 @@ namespace motoi.platform.resources
         /// </summary>
         /// <returns>Newly created platform meta information</returns>
         private PlatformMetaInformation CreatePlatformMetaInformation() {
-            iLog.Info("Platform meta information does not exist. Creating a new one.");
+            _log.Info("Platform meta information does not exist. Creating a new one.");
             
             PlatformMetaInformation platformMetaInformation = new PlatformMetaInformation();
 
@@ -125,12 +120,9 @@ namespace motoi.platform.resources
         }
     }
 
-    /// <summary>
-    /// Defines platform meta information.
-    /// </summary>
+    /// <summary> Defines platform meta information. </summary>
     [DataContract]
     class PlatformMetaInformation {
-
         /// <summary>
         /// Returns the path to the workspace root directory or does set it.
         /// </summary>

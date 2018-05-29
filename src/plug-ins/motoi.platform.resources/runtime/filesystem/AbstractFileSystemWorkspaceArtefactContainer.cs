@@ -28,15 +28,15 @@ namespace motoi.platform.resources.runtime.filesystem {
         /// <summary>
         /// Returns the associated file system directory.
         /// </summary>
-        protected virtual DirectoryInfo FileSystemDirectory { get; private set; }
+        protected virtual DirectoryInfo FileSystemDirectory { get; }
 
         /// <summary>
         /// Returns a collection containing the obtained container artefacts.
         /// </summary>
-        protected virtual List<IWorkspaceArtefact> ContainerArtefacts { get; private set; }
+        protected virtual List<IWorkspaceArtefact> ContainerArtefacts { get; }
 
         /// <inheritdoc />
-        public virtual string Name { get; private set; }
+        public virtual string Name { get; }
 
         /// <inheritdoc />
         public abstract string Nature { get; }
@@ -45,10 +45,11 @@ namespace motoi.platform.resources.runtime.filesystem {
         public abstract IWorkspaceArtefact Parent { get; }
 
         /// <inheritdoc />
-        public virtual Uri Location { get; private set; }
+        public virtual Uri Location { get; }
 
         /// <inheritdoc />
-        public virtual IEnumerable<IWorkspaceArtefact> Artefacts { get { return ContainerArtefacts; } }
+        public virtual IEnumerable<IWorkspaceArtefact> Artefacts 
+            => ContainerArtefacts;
 
         /// <inheritdoc />
         public virtual IWorkspaceArtefact GetArtefact(string name) {
@@ -57,14 +58,12 @@ namespace motoi.platform.resources.runtime.filesystem {
                 while (artItr.MoveNext()) {
                     IWorkspaceArtefact artefact = artItr.Current;
 
-                    IWorkspaceFile workspaceFile = artefact as IWorkspaceFile;
-                    if (workspaceFile != null) {
+                    if (artefact is IWorkspaceFile workspaceFile) {
                         if (workspaceFile.Name == name) return workspaceFile;
                         continue;
                     }
 
-                    IWorkspaceArtefactContainer fileContainer = artefact as IWorkspaceArtefactContainer;
-                    if (fileContainer != null) {
+                    if (artefact is IWorkspaceArtefactContainer fileContainer) {
                         if (fileContainer.Name == name) return fileContainer;
 
                         IWorkspaceArtefact file = fileContainer.GetArtefact(name);
@@ -82,13 +81,11 @@ namespace motoi.platform.resources.runtime.filesystem {
                 while (artItr.MoveNext()) {
                     IWorkspaceArtefact workspaceArtefact = artItr.Current;
 
-                    TElement targetElement = workspaceArtefact as TElement;
-                    if (targetElement != null) {
+                    if (workspaceArtefact is TElement targetElement) {
                         yield return targetElement;
                     }
 
-                    IWorkspaceArtefactContainer artefactContainer = workspaceArtefact as IWorkspaceArtefactContainer;
-                    if (artefactContainer != null) {
+                    if (workspaceArtefact is IWorkspaceArtefactContainer artefactContainer) {
                         using (IEnumerator<TElement> cntItr = artefactContainer.FlatHierarchy<TElement>().GetEnumerator()) {
                             while (cntItr.MoveNext()) {
                                 yield return cntItr.Current;
@@ -126,7 +123,7 @@ namespace motoi.platform.resources.runtime.filesystem {
         /// <param name="exception">Exception</param>
         /// <param name="delegate">Reference the exception happened to</param>
         private void OnDispatchEventException(Exception exception, Delegate @delegate) {
-            ResourceService.Instance.ResourceServiceLog.ErrorFormat("Error on dispatching event to '{0}'. Reason: {1}", @delegate, exception);
+            ResourceService.Instance.ResourceServiceLog.Error(exception, $"Error on dispatching event to '{@delegate}'.");
         }
 
         /// <summary>Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.</summary>

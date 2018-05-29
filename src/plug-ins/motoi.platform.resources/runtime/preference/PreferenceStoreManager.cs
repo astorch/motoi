@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using log4net;
 using motoi.extensions;
-using motoi.extensions.core;
 using motoi.platform.resources.model.preference;
-using motoi.plugins.model;
+using motoi.plugins;
+using NLog;
 using xcite.csharp;
 
 namespace motoi.platform.resources.runtime.preference {
@@ -13,14 +12,14 @@ namespace motoi.platform.resources.runtime.preference {
     /// </summary>
     public class PreferenceStoreManager  {
         private const string PreferenceStoreManagerExtensionPointId = "org.motoi.resources.preferenceStoreManager";
-        private static IPreferenceStoreManager iPreferenceStoreManager;
+        private static IPreferenceStoreManager _preferenceStoreManager;
 
         /// <summary>
         /// Returns the currently used <see cref="IPreferenceStoreManager"/>.
         /// </summary>
         /// <returns>Currently used <see cref="IPreferenceStoreManager"/></returns>
         public static IPreferenceStoreManager GetInstance() {
-            return iPreferenceStoreManager ?? (iPreferenceStoreManager = CreatePreferenceStoreManager());
+            return _preferenceStoreManager ?? (_preferenceStoreManager = CreatePreferenceStoreManager());
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace motoi.platform.resources.runtime.preference {
         /// default implementation.
         /// </returns>
         private static IPreferenceStoreManager CreatePreferenceStoreManager() {
-            ILog logWriter = LogManager.GetLogger(typeof(PreferenceStoreManager));
+            Logger logWriter = LogManager.GetCurrentClassLogger(typeof(PreferenceStoreManager));
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(PreferenceStoreManagerExtensionPointId);
             
             // Default
@@ -60,14 +59,13 @@ namespace motoi.platform.resources.runtime.preference {
 
             // Grab the bundle
             IBundle providingBundle = ExtensionService.Instance.GetProvidingBundle(maxPriorityElement);
-            logWriter.DebugFormat("Plug-in '{0}' provides a custom preference store manager implementation with highest priority.", 
-                providingBundle);
+            logWriter.Debug($"Plug-in '{providingBundle}' provides a custom preference store manager implementation with highest priority.");
 
             // Grab the type
             string className = maxPriorityElement["class"];
             if (string.IsNullOrEmpty(className)) {
-                logWriter.ErrorFormat("Plug-in '{0}' provides a custom preference store manager implementation with an empty " +
-                                      "class attribute. Using default implementation.", providingBundle);
+                logWriter.Error($"Plug-in '{providingBundle}' provides a custom preference store manager implementation with an empty " +
+                                 "class attribute. Using default implementation.");
                 return GetDefaultPreferenceStoreManager();
             }
 
@@ -75,11 +73,10 @@ namespace motoi.platform.resources.runtime.preference {
             try {
                 Type instanceType = TypeLoader.TypeForName(providingBundle, className);
                 IPreferenceStoreManager preferenceStoreManager = instanceType.NewInstance<IPreferenceStoreManager>();
-                logWriter.InfoFormat("Preference store manager of type '{0}' successfully installed", preferenceStoreManager.GetType());
+                logWriter.Info($"Preference store manager of type '{preferenceStoreManager.GetType()}' successfully installed");
                 return preferenceStoreManager;
             } catch (Exception ex) {
-                logWriter.ErrorFormat("Error on installing preference store manager from plug-in '{0}' (Class '{1}'). Reason: {2}",
-                    providingBundle, className, ex);
+                logWriter.Error(ex, $"Error on installing preference store manager from plug-in '{providingBundle}' (Class '{className}').");
                 return GetDefaultPreferenceStoreManager();
             }
         }

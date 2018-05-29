@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using log4net;
 using motoi.platform.resources.model.preference;
+using NLog;
 
 namespace motoi.platform.resources.runtime.preference {
     /// <summary>
@@ -12,7 +12,7 @@ namespace motoi.platform.resources.runtime.preference {
     public class FilePreferenceStoreManager : IPreferenceStoreManager {
         private const string PreferencesFolderName = ".preferences";
         private readonly Dictionary<string, IPreferenceStore> iPreferenceStoreTable = new Dictionary<string, IPreferenceStore>(23);
-        private readonly ILog iLogWriter = LogManager.GetLogger(typeof(PreferenceStoreManager));
+        private readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(PreferenceStoreManager));
         private string iPreferenceFolderBasePath;
 
         /// <inheritdoc />
@@ -23,8 +23,7 @@ namespace motoi.platform.resources.runtime.preference {
             if (storeScope == EStoreScope.User)
                 storeBasePath = Path.Combine(storeBasePath, Environment.UserName.ToLowerInvariant());
 
-            IPreferenceStore prefStore;
-            if (!iPreferenceStoreTable.TryGetValue(storeName, out prefStore)) {
+            if (!iPreferenceStoreTable.TryGetValue(storeName, out IPreferenceStore prefStore)) {
                 // Create the store base path if neccessary
                 if (!Directory.Exists(storeBasePath))
                     Directory.CreateDirectory(storeBasePath);
@@ -61,7 +60,7 @@ namespace motoi.platform.resources.runtime.preference {
                     try {
                         store.Flush();
                     } catch (Exception ex) {
-                        iLogWriter.ErrorFormat("Error on flushing store. Reason: {0}", ex);
+                        _log.Error(ex, "Error on flushing store. Reason: {0}");
                     }
                 }
             }
