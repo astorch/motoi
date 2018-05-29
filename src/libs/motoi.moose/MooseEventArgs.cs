@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace motoi.moose.events {
+namespace motoi.moose {
     /// <summary>
     /// Describes a moose event.
     /// </summary>

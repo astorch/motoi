@@ -1,27 +1,18 @@
 ﻿using System;
 using System.Linq;
-using log4net;
-using motoi.moose.events;
-using motoi.moose.exceptions;
 using motoi.plugins;
-using motoi.plugins.model;
+using NLog;
 using xcite.csharp;
 
 namespace motoi.moose {
-    /// <summary>
-    /// Provides methods to start or stop plug-ins.
-    /// </summary>
+    /// <summary> Provides methods to start or stop plug-ins. </summary>
     public static class Moose {
-        private static readonly ILog iLog = LogManager.GetLogger(typeof(Moose));
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger(typeof(Moose));
 
-        /// <summary>
-        /// Is invoked when a plug-in has been started properly.
-        /// </summary>
+        /// <summary> Is invoked when a plug-in has been started properly. </summary>
         public static event EventHandler<MooseEventArgs> PluginStarted;
 
-        /// <summary>
-        /// Is invoked when a plug-in has been stopped.
-        /// </summary>
+        /// <summary> Is invoked when a plug-in has been stopped. </summary>
         public static event EventHandler<MooseEventArgs> PluginStopped; 
 
         /// <summary>
@@ -32,7 +23,7 @@ namespace motoi.moose {
         /// <exception cref="ArgumentNullException">If the given plug-in name is NULL or empty</exception>
         /// <exception cref="UnknownPluginException">If there is no plug-in with the given name</exception>
         public static void Start(string symbolicPluginName) {
-            if (string.IsNullOrWhiteSpace(symbolicPluginName)) throw new ArgumentNullException("symbolicPluginName");
+            if (string.IsNullOrWhiteSpace(symbolicPluginName)) throw new ArgumentNullException(nameof(symbolicPluginName));
             
             IPluginInfo plugin = PluginService.Instance.FoundPlugins.FirstOrDefault(plgn => plgn.Signature.SymbolicName == symbolicPluginName);
             if (plugin == null) throw new UnknownPluginException(symbolicPluginName);
@@ -43,26 +34,24 @@ namespace motoi.moose {
 
                 // TODO Remove multiple registration
                 // TODO Add error handling
-                PluginService.Instance.Stopped += (sender, args) => PluginStopped.Dispatch(new object[] {(object)null, new MooseEventArgs(symbolicPluginName)});
+                PluginService.Instance.Stopped += (sender, args) => PluginStopped.Dispatch(new[] {(object) null, new MooseEventArgs(symbolicPluginName)});
 
                 // Notify listener
                 PluginStarted.Dispatch(
                     new object[] { new MooseEventArgs(symbolicPluginName) },
-                    (ex, dlg) => iLog.ErrorFormat("Error on dispatching PluginStarted event to '{0}'. Reason: {1}", dlg, ex));
+                    (ex, dlg) => _log.Error(ex, $"Error on dispatching PluginStarted event to '{dlg}'"));
             } catch (Exception ex) {
-                iLog.ErrorFormat("Error on starting plug-in '{0}'. Reason: {1}", symbolicPluginName, ex);
+                _log.Error(ex, $"Error on starting plug-in '{symbolicPluginName}'");
             }   
         }
 
-        /// <summary>
-        /// Stops the plug-in with the given name.
-        /// </summary>
+        /// <summary> Stops the plug-in with the given name. </summary>
         /// <param name="symbolicPluginName">Name of the plug-in to stop</param>
         /// <exception cref="ArgumentNullException">If the given plug-in name is NULL or empty</exception>
         public static void Stop(string symbolicPluginName) {
             PluginStopped.Dispatch(
-                new object[] { (object)null, new MooseEventArgs(symbolicPluginName) },
-                (ex, dlg) => iLog.ErrorFormat("Error on dispatching PluginStopped event to '{0}'. Reason: {1}", dlg, ex));
+                new[] {(object) null, new MooseEventArgs(symbolicPluginName)},
+                (ex, dlg) => _log.Error(ex, $"Error on dispatching PluginStopped event to '{dlg}'"));
             throw new NotImplementedException();
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace motoi.moose.exceptions {
+namespace motoi.moose {
     /// <summary>
     /// Exception that indicates that a plug-in is not known by the service.
     /// </summary>

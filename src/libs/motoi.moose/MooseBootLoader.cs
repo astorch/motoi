@@ -7,16 +7,14 @@ namespace motoi.moose {
     /// Provides common entry point of a moose based application.
     /// </summary>
     class MooseBootLoader {
-        private static bool iDoLoop;
+        private static bool _doLoop;
 
-        /// <summary>
-        /// Defines the entry point of the application.
-        /// </summary>
+        /// <summary> Defines the entry point of the application. </summary>
         /// <param name="args">Program arguments</param>
         static void Main(string[] args) {
             ConsoleWriter consoleWriter = new ConsoleWriter(Console.Out, Console.Error);
-            iDoLoop = true;
-            while (iDoLoop) {
+            _doLoop = true;
+            while (_doLoop) {
                 Console.Out.Write("moose>");
                 string input = Console.In.ReadLine();
                 IMooseCommand command = BuildCommand(input);
@@ -71,7 +69,7 @@ namespace motoi.moose {
             /// Executes the command
             /// </summary>
             public void Execute(IConsoleWriter consoleWriter) {
-                iDoLoop = false;
+                _doLoop = false;
             }
         }
 
