@@ -35,7 +35,7 @@
     <ProjectReference Include="..\motoi.workbench\motoi.workbench.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="xcite.csharp" Version="5.0.0" />
+    <PackageReference Include="xcite.csharp" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -47,9 +47,6 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="" />
-  </Target>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="&quot;$(SolutionDir)..\bin\debug\Tessa.exe&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot; &quot;$(SolutionDir)..\bin\debug&quot;" />
   </Target>
