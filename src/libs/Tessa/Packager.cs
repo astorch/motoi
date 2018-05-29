@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Ionic.Zip;
-using PTP.Core;
-using PTP.Parsers;
+using ICSharpCode.SharpZipLib.Zip;
+using PTP;
 
-namespace Tessa.Core {
+namespace Tessa {
 	/// <summary>
 	/// Implements a packager that can be used to create Motoi plug-in packages.
 	/// </summary>
 	public class Packager {
-        /// <summary>
-        /// Backing variable of the packager instance.
-        /// </summary>
-	    private static Packager iInstance;
+	    /// <summary> Absolute output path format. </summary>
+	    private const string AbsoluteOutputPathFormat = "{0}{1}.marc";
 
-        /// <summary>
-        /// Returns an instance of the packager.
-        /// </summary>
-	    public static Packager Instance {
-            get { return iInstance ?? (iInstance = new Packager()); }
-	    }
+	    /// <summary> Wildcard definition for properties file </summary>
+	    private const string WildcardDefinition = "/.";
+
+        /// <summary> Backing variable of the packager instance. </summary>
+	    private static Packager _instance;
+
+        /// <summary> Returns an instance of the packager. </summary>
+	    public static Packager Instance 
+            => _instance ?? (_instance = new Packager());
 
 	    /// <summary>
 	    /// Creates a marc file for the given Assembly within the given output path.
@@ -57,48 +57,56 @@ namespace Tessa.Core {
                 marcDirectoryInfo.Create();
 
             // Zip the contents
-		    using(ZipFile zipFile = new ZipFile()) {
+	        using (FileStream fileStream = File.Create(absoluteOutputPath)) {
+	            using (ZipOutputStream zipStream = new ZipOutputStream(fileStream)) {
+	                // Processing the meta inf files
+	                for (int i = -1; ++i < metaInfFiles.Length;) {
+	                    FileInfo file = metaInfFiles[i];
+	                    AddToZipStream(zipStream, file, file.Name);
+	                }
 
-                // Processing the meta inf files
-                for (int i = -1; ++i < metaInfFiles.Length;) {
-                    FileInfo file = metaInfFiles[i];
-                    string filePath = file.FullName;
-                    zipFile.AddFile(filePath, ZipBasePath);
+	                // Processing the build properties files
+	                for (int i = -1; ++i < buildPropDefinedFiles.Length;) {
+	                    CopyInfo cpyInfo = buildPropDefinedFiles[i];
+	                    string srcPath = cpyInfo.Source;
+	                    string tgtPath = cpyInfo.Target;
+	                    AddToZipStream(zipStream, srcPath, tgtPath + "/" + Path.GetFileName(srcPath));
+	                }
+
+	                // Copy the assembly file
+	                AddToZipStream(zipStream, assemblyFilePath, Path.GetFileName(assemblyFilePath));
                 }
-
-                // Processing the build properties files
-                for (int i = -1; ++i < buildPropDefinedFiles.Length;) {
-                    CopyInfo cpyInfo = buildPropDefinedFiles[i];
-                    string srcPath = cpyInfo.Source;
-                    string tgtPath = cpyInfo.Target;
-                    zipFile.AddFile(srcPath, tgtPath);
-                }
-
-                // Copy the assembly file
-                zipFile.AddFile(assemblyFilePath, ZipBasePath);
-		    	
-		    	zipFile.Save(absoluteOutputPath);
-		    }
+            }
 
 	        return marcFileInfo;
         }
 
         /// <summary>
-        /// Absolute output path format.
+        /// Adds a file referenced by the given <paramref name="filePath"/> with the specified
+        /// <paramref name="entryName"/> to the <paramref name="zipStream"/>. 
         /// </summary>
-	    private const string AbsoluteOutputPathFormat = "{0}{1}.marc";
+        /// <param name="zipStream">Zip stream to add a new entry</param>
+        /// <param name="filePath">Path of the file to add</param>
+        /// <param name="entryName">Name of the entry</param>
+	    private void AddToZipStream(ZipOutputStream zipStream, string filePath, string entryName) 
+	        => AddToZipStream(zipStream, new FileInfo(filePath), entryName);
 
         /// <summary>
-        /// Wildcard definition for properties file
+        /// Adds the specified <paramref name="file"/> with the given <paramref name="entryName"/>
+        /// to the <paramref name="zipStream"/>.
         /// </summary>
-	    private const string WildcardDefinition = "/.";
-
-        /// <summary>
-        /// Base path within the zip file.
-        /// </summary>
-	    private const string ZipBasePath = "./";
-
-        /// <summary>
+        /// <param name="zipStream">Zip stream to add a new entry</param>
+        /// <param name="file">File to add</param>
+        /// <param name="entryName">Name of the entry</param>
+	    private void AddToZipStream(ZipOutputStream zipStream, FileInfo file, string entryName) {
+	        ZipEntry zipEntry = new ZipEntry(entryName) { DateTime = file.LastWriteTime, Size = file.Length };
+	        zipStream.PutNextEntry(zipEntry);
+	        using (FileStream fileStream = file.OpenRead()) {
+                fileStream.CopyTo(zipStream);
+	        }
+        }
+        
+	    /// <summary>
         /// Returns all files that has been placed within the 'meta-inf' directory within a plug-in.
         /// </summary>
         /// <param name="csprojFile">Name of the assembly</param>
@@ -117,8 +125,7 @@ namespace Tessa.Core {
         /// <param name="csprojFile">Path of a 'csproj' file</param>
         /// <returns>Array of CopyInfo</returns>
         private CopyInfo[] ResolveBuildPropertiesFiles(string csprojFile) {
-            FileInfo buildPropFile;
-            if (!HasBuildProperties(csprojFile, out buildPropFile)) return new CopyInfo[0];
+            if (!HasBuildProperties(csprojFile, out FileInfo buildPropFile)) return new CopyInfo[0];
 
             string dirPath = Path.GetDirectoryName(csprojFile);
             if (string.IsNullOrEmpty(dirPath)) throw new NullReferenceException("Directory path is null");
@@ -141,7 +148,7 @@ namespace Tessa.Core {
                     FileInfo[] subDirFiles = subDirInfo.GetFiles();
                     for (int j = -1; ++j < subDirFiles.Length;) {
                         FileInfo file = subDirFiles[j];
-                        string target = string.Format("{0}/includes/{1}", ZipBasePath, include);
+                        string target = "includes/" + include; // string.Format("{0}/includes/{1}", ZipBasePath, include);
                         CopyInfo cpyInf = new CopyInfo { Source = file.FullName, Target = target };
                         cpyInfos.AddLast(cpyInf);
                     }
@@ -200,7 +207,7 @@ namespace Tessa.Core {
         /// <param name="assemblyPath">Path to the assembly to add</param>
         /// <param name="copyList">Collection the new entry is added</param>
 	    private void AddToCopyList(string assemblyPath, LinkedList<CopyInfo> copyList) {
-            string target = string.Format("{0}/includes/{1}", ZipBasePath, string.Empty);
+            string target = "includes/"; // string.Format("{0}/includes/{1}", ZipBasePath, string.Empty);
             copyList.AddLast(new CopyInfo { Source = assemblyPath, Target = target });
 	    }
 

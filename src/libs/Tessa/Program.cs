@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Tessa.Core;
 
 namespace Tessa {
     /// <summary>

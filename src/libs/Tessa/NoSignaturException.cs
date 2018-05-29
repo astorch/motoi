@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tessa.Exceptions {
+namespace Tessa {
     /// <summary>
     /// Defines an exception that is thrown by the packager when no 'signatur.mf' 
     /// file could be found.
