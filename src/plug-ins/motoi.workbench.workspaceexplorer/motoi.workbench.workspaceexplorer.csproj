@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard20</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -39,11 +39,22 @@
     <PackageReference Include="NLog" Version="4.5.5" />
     <PackageReference Include="xcite.csharp" Version="6.0.0" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Remove="resources\images\Explorer-32.png" />
+    <None Remove="resources\images\File-32.png" />
+    <None Remove="resources\images\Folder-32.png" />
+    <None Remove="resources\texts\messages.txt" />
+    <None Remove="resources\texts\messages_de.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
       <Link>WorkbenchProductAssemblyInfo.cs</Link>
     </Compile>
+    <EmbeddedResource Include="resources\images\Explorer-32.png" />
+    <EmbeddedResource Include="resources\images\File-32.png" />
+    <EmbeddedResource Include="resources\images\Folder-32.png" />
+    <EmbeddedResource Include="resources\texts\messages.txt" />
+    <EmbeddedResource Include="resources\texts\messages_de.txt" />
     <None Include="meta-Inf\signature.mf" />
     <None Include="meta-Inf\extensions.xml">
       <SubType>Designer</SubType>

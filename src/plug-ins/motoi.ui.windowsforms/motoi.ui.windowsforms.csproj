@@ -30,6 +30,24 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="resources\images\Error-32.png" />
+    <None Remove="resources\images\Info-32.png" />
+    <None Remove="resources\images\Info-64.png" />
+    <None Remove="resources\images\Question-64.png" />
+    <None Remove="resources\images\Warning-32.png" />
+    <None Remove="resources\texts\messages.txt" />
+    <None Remove="resources\texts\messages_de.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\images\Error-32.png" />
+    <EmbeddedResource Include="resources\images\Info-32.png" />
+    <EmbeddedResource Include="resources\images\Info-64.png" />
+    <EmbeddedResource Include="resources\images\Question-64.png" />
+    <EmbeddedResource Include="resources\images\Warning-32.png" />
+    <EmbeddedResource Include="resources\texts\messages.txt" />
+    <EmbeddedResource Include="resources\texts\messages_de.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj" />
     <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj" />
     <ProjectReference Include="..\motoi.platform.ui\motoi.platform.ui.csproj" />

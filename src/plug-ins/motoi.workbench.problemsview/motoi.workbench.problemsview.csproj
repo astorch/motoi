@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard20</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -42,11 +42,16 @@
     <PackageReference Include="xcite.csharp" Version="6.0.0" />
     <PackageReference Include="xcite.messaging" Version="4.0.0" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Remove="resources\texts\messages.txt" />
+    <None Remove="resources\texts\messages_de.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
       <Link>WorkbenchProductAssemblyInfo.cs</Link>
     </Compile>
+    <EmbeddedResource Include="resources\texts\messages.txt" />
+    <EmbeddedResource Include="resources\texts\messages_de.txt" />
     <None Include="meta-inf\signature.mf" />
     <None Include="meta-inf\extensions.xml">
       <SubType>Designer</SubType>

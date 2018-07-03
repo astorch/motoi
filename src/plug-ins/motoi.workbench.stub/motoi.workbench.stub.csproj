@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard20</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -44,11 +44,26 @@
     <PackageReference Include="xcite.collections" Version="6.0.0" />
     <PackageReference Include="xcite.csharp" Version="6.0.0" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Remove="resources\images\Exit-24.png" />
+    <None Remove="resources\images\File-New-24.png" />
+    <None Remove="resources\images\File-Save-32.png" />
+    <None Remove="resources\images\File-Save-as-32.png" />
+    <None Remove="resources\images\Folder-32.png" />
+    <None Remove="resources\texts\messages.txt" />
+    <None Remove="resources\texts\messages_de.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
       <Link>WorkbenchProductAssemblyInfo.cs</Link>
     </Compile>
+    <EmbeddedResource Include="resources\images\Exit-24.png" />
+    <EmbeddedResource Include="resources\images\File-New-24.png" />
+    <EmbeddedResource Include="resources\images\File-Save-32.png" />
+    <EmbeddedResource Include="resources\images\File-Save-as-32.png" />
+    <EmbeddedResource Include="resources\images\Folder-32.png" />
+    <EmbeddedResource Include="resources\texts\messages.txt" />
+    <EmbeddedResource Include="resources\texts\messages_de.txt" />
     <None Include="meta-Inf\signature.mf" />
     <None Include="meta-Inf\extensions.xml">
       <SubType>Designer</SubType>
