@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework;
 
 namespace MotoiPluginCompilationTask {
@@ -21,6 +20,10 @@ namespace MotoiPluginCompilationTask {
         [Required]
         public string TessaFilePath { get; set; }
 
+        /// <summary> Target path the project is compiled to. </summary>
+        [Required]
+        public string TargetPath { get; set; }
+
         /// <summary> Returns TRUE if the task runs in debug mode. </summary>
         public bool Debug { get; set; }
 
@@ -28,9 +31,10 @@ namespace MotoiPluginCompilationTask {
         public override bool Execute() {
             if (Debug) System.Diagnostics.Debugger.Launch();
 
-            if (string.IsNullOrEmpty(MotoiBinFolder)) throw new ArgumentException("Must not be NULL or empty", "MotoiBinFolder");
-            if (string.IsNullOrEmpty(MotoiSrcFolder)) throw new ArgumentException("Must not be NULL or empty", "MotoiSrcFolder");
-            if (string.IsNullOrEmpty(TessaFilePath)) throw new ArgumentException("Must not be NULL or empty", "TessaBinFolder");
+            if (string.IsNullOrEmpty(MotoiBinFolder)) throw new ArgumentNullException(nameof(MotoiBinFolder));
+            if (string.IsNullOrEmpty(MotoiSrcFolder)) throw new ArgumentNullException(nameof(MotoiSrcFolder));
+            if (string.IsNullOrEmpty(TessaFilePath)) throw new ArgumentNullException(nameof(TessaFilePath));
+            if (string.IsNullOrEmpty(TargetPath)) throw new ArgumentNullException(nameof(TargetPath));
 
             Log.LogMessage(MessageImportance.Normal, "Starting Motoi Plug-in compilation task");
             Log.LogMessage(MessageImportance.Normal, "MotoiBinFolder: {0}", MotoiBinFolder);
@@ -39,7 +43,7 @@ namespace MotoiPluginCompilationTask {
 
             if (!File.Exists(TessaFilePath)) throw new ArgumentException("Tessa.exe not found. Check the file path!");
             if (!Directory.Exists(MotoiSrcFolder)) throw new ArgumentException("Motoi src folder not found. Check the folder path!");
-
+            
             try {
                 CopyDirectory(MotoiSrcFolder, MotoiBinFolder, true, false);
             } catch (Exception ex) {
@@ -48,14 +52,11 @@ namespace MotoiPluginCompilationTask {
                 return false;
             }
 
-            string projectFilePath = BuildEngine.ProjectFileOfTaskNode;
-            Project project = new Project(projectFilePath);
-           
-            string projectPath = project.GetProperty("ProjectPath").EvaluatedValue;
-            string targetPath = project.GetProperty("TargetPath").EvaluatedValue;
+            string projectPath = BuildEngine.ProjectFileOfTaskNode;
+            string targetPath = TargetPath;
 
             try {
-                string argLine = string.Format("\"{0}\" \"{1}\" \"{2}\"", projectPath, targetPath, MotoiBinFolder);
+                string argLine = $"\"{projectPath}\" \"{targetPath}\" \"{MotoiBinFolder}\"";
                 Log.LogMessage(MessageImportance.Normal, "Starting tessa using: {0} {1}", TessaFilePath, argLine);
                 System.Diagnostics.Process process = System.Diagnostics.Process.Start(TessaFilePath, argLine);
                 Log.LogMessage(MessageImportance.Normal, "Tessa started. Waiting for finish...");
@@ -71,8 +72,6 @@ namespace MotoiPluginCompilationTask {
                 Log.LogError("Error on starting tessa process");
                 Log.LogErrorFromException(ex);
                 return false;
-            } finally {
-                project.ProjectCollection.UnloadProject(project);
             }
         }
 
