@@ -37,11 +37,22 @@
   <ItemGroup>
     <PackageReference Include="xcite.csharp" Version="6.0.0" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Remove="resources\images\ErrorCircle-32.png" />
+    <None Remove="resources\images\File-Warning-32.png" />
+    <None Remove="resources\images\Warning-32.png" />
+    <None Remove="resources\texts\messages.txt" />
+    <None Remove="resources\texts\messages_de.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
       <Link>WorkbenchProductAssemblyInfo.cs</Link>
     </Compile>
+    <EmbeddedResource Include="resources\images\ErrorCircle-32.png" />
+    <EmbeddedResource Include="resources\images\File-Warning-32.png" />
+    <EmbeddedResource Include="resources\images\Warning-32.png" />
+    <EmbeddedResource Include="resources\texts\messages.txt" />
+    <EmbeddedResource Include="resources\texts\messages_de.txt" />
     <None Include="meta-inf\signature.mf" />
     <None Include="meta-inf\extensions.xml">
       <SubType>Designer</SubType>
