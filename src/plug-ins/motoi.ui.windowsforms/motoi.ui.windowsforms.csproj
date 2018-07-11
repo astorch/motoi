@@ -60,7 +60,6 @@
     <PackageReference Include="DockPanelSuite.ThemeVS2013" Version="3.0.4" />
     <PackageReference Include="DockPanelSuite.ThemeVS2013Blue" Version="2.10.0" />
     <PackageReference Include="DockPanelSuite.ThemeVS2015" Version="3.0.4" />
-    <PackageReference Include="FCTB" Version="2.16.21.0" />
     <PackageReference Include="xcite.collections" Version="6.0.0" />
     <PackageReference Include="xcite.csharp" Version="6.0.0" />
   </ItemGroup>
