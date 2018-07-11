@@ -255,10 +255,11 @@ namespace Tessa {
             if (!csprojFileInfo.Exists) throw new InvalidOperationException(string.Format("csproj file '{0}' does not exist!", csprojFileInfo));
 
 	        string fileContent = File.ReadAllText(csprojFileInfo.FullName);
-            Dictionary<string, string> referencesTable = new Dictionary<string, string>(20);
-            AddExternalReferences(csprojFileInfo, fileContent, referencesTable);
-            AddSolutionReferences(csprojFileInfo, fileContent, referencesTable);
-	        
+            Dictionary<string, string> referencesTable = new Dictionary<string, string>(50);
+            AddProjectReferences(csprojFileInfo, fileContent, referencesTable);
+            AddAssemblyReferences(csprojFileInfo, fileContent, referencesTable);
+            AddPackageReferences(csprojFileInfo, fileContent, referencesTable);
+
             return referencesTable;
 	    }
 
@@ -270,31 +271,26 @@ namespace Tessa {
         /// <param name="csprojFileInfo">Pointer to the csproj file that is processed</param>
         /// <param name="fileContent">Content of the csproj file that is processed</param>
         /// <param name="referencesTable">Collection new references are added to</param>
-	    private void AddSolutionReferences(FileInfo csprojFileInfo, string fileContent, IDictionary<string, string> referencesTable) {
-            Match includeMatch = Regex.Match(fileContent, "(\\<ProjectReference Include=\"(?<include>[^\"]+\"\\>))");
+	    private static void AddProjectReferences(FileInfo csprojFileInfo, string fileContent, IDictionary<string, string> referencesTable) {
+            if (csprojFileInfo == null) throw new ArgumentNullException(nameof(csprojFileInfo));
+            if (csprojFileInfo.Directory == null) throw new InvalidOperationException("Could not determine directory of csprojFileInfo: " + csprojFileInfo);
+
+            Match includeMatch = Regex.Match(fileContent, "(\\<ProjectReference Include=\"(?<include>[^\"]+)\" \\/\\>)");
 	        while (true) {
                 // Nothing found or left, we're done here
 	            if (!includeMatch.Success) break;
 
-                // Extract the node content
-	            int includeBegin = includeMatch.Index;
-	            int includeFinish = fileContent.IndexOf("</ProjectReference>", includeBegin);
-                string includeContent = fileContent.Substring(includeBegin, includeFinish - includeBegin);
+	            string includeReferencePath = includeMatch.Groups["include"].Value;
 
-                Match namePath = Regex.Match(includeContent, "(\\<Name\\>(?<name>[^\\<]+)\\</Name\\>)");
+	            // The include path is relative to the csproj file, so we must re-align it
+	            string basePath = csprojFileInfo.Directory.FullName;
+	            string projectReferencePath = Path.Combine(basePath, includeReferencePath);
 
-                // Build name
-                string includeSimpleName = namePath.Groups["name"].Value;
+	            FileInfo projectFileInfo = new FileInfo(projectReferencePath);
+	            DirectoryInfo projectDirectoryInfo = projectFileInfo.Directory;
+                if (projectDirectoryInfo == null) throw new InvalidOperationException("Could not determine directory of projectDirectoryInfo: " + projectFileInfo);
 
-                // Build path
-                string includeReferencePath = includeMatch.Groups["include"].Value.TrimEnd('"', '>');
-
-                // The include path is relative to the csproj file, so we must re-align it
-                string basePath = csprojFileInfo.Directory.FullName;
-                string projectReferencePath = Path.Combine(basePath, includeReferencePath);
-
-                FileInfo projectFileInfo = new FileInfo(projectReferencePath);
-                DirectoryInfo projectDirectoryInfo = projectFileInfo.Directory;
+	            string includeSimpleName = Path.GetFileNameWithoutExtension(projectFileInfo.FullName);
 
                 // Look up latest file
                 string assemblyFileName = string.Format("{0}.dll", includeSimpleName);
@@ -312,6 +308,61 @@ namespace Tessa {
 	    }
 
         /// <summary>
+        /// Parses the given <paramref name="fileContent"/> and resolves all (external) assembly references. All the found references
+        /// are added to the given <paramref name="referencesTable"/>. The parameter <paramref name="csprojFileInfo"/> must point
+        /// to the file which content is provided.
+        /// </summary>
+        /// <param name="csprojFileInfo">Pointer to the csproj file that is processed</param>
+        /// <param name="fileContent">Content of the csproj file that is processed</param>
+        /// <param name="referencesTable">Collection new references are added to</param>
+	    private static void AddAssemblyReferences(FileInfo csprojFileInfo, string fileContent, IDictionary<string, string> referencesTable) {
+            if (csprojFileInfo == null) throw new ArgumentNullException(nameof(csprojFileInfo));
+            if (csprojFileInfo.Directory == null) throw new InvalidOperationException("Could not determine directory of csprojFileInfo: " + csprojFileInfo);
+
+            Match includeMatch = Regex.Match(fileContent, "(\\<Reference Include=\"(?<include>[^\"]+)\"\\>)");
+	        while (true) {
+	            // Nothing found or left, we're done here
+	            if (!includeMatch.Success) break;
+
+	            // Extract the node content
+	            int includeBegin = includeMatch.Index;
+	            int includeFinish = fileContent.IndexOf("</Reference>", includeBegin);
+	            string includeContent = fileContent.Substring(includeBegin, includeFinish - includeBegin);
+
+	            Match hintPath = Regex.Match(includeContent, "(\\<HintPath\\>(?<path>[^\\<]+)\\</HintPath\\>)");
+
+	            // Reference name
+	            string includeSimpleName = includeMatch.Groups["include"].Value;
+	            includeSimpleName = includeSimpleName.Split(',')[0]; // The assembly might be fully specified
+
+	            // Referenced assembly path
+	            string includeReferencePath = hintPath.Groups["path"].Value;
+
+	            // The include path is relative to the csproj file, so we must re-align it
+	            string basePath = csprojFileInfo.Directory.FullName;
+	            string assemblyReferencePath = Path.Combine(basePath, includeReferencePath);
+
+	            FileInfo assemblyFileInfo = new FileInfo(assemblyReferencePath);
+	            DirectoryInfo assemblyDirectoryInfo = assemblyFileInfo.Directory;
+	            if (assemblyDirectoryInfo == null) throw new InvalidOperationException("Could not determine directory of assemblyDirectoryInfo: " + assemblyFileInfo);
+
+                // Look up latest file
+                string assemblyFileName = string.Format("{0}.dll", includeSimpleName);
+	            FileInfo[] assemblies = assemblyDirectoryInfo.GetFiles(assemblyFileName, SearchOption.TopDirectoryOnly);
+
+	            // To avoid conflicts between debug and release build, we take the last written one
+	            FileInfo includeAssembly = assemblies.FirstOrDefault();
+                if (includeAssembly == null) throw new InvalidOperationException("There is no file located at the declared path: " + assemblyReferencePath);
+
+	            // Add to table
+	            referencesTable.Add(includeSimpleName, includeAssembly.FullName);
+
+	            // Navigate to next match
+	            includeMatch = includeMatch.NextMatch();
+            }
+        }
+
+        /// <summary>
         /// Parses the given <paramref name="fileContent"/> and resolves all external references. All the found references 
         /// are added to the given <paramref name="referencesTable"/>. The parameter <paramref name="csprojFileInfo"/> must point 
         /// to the file which content is provided.
@@ -319,7 +370,7 @@ namespace Tessa {
         /// <param name="csprojFileInfo">Pointer to the csproj file that is processed</param>
         /// <param name="fileContent">Content of the csproj file that is processed</param>
         /// <param name="referencesTable">Collection new references are added to</param>
-	    private void AddExternalReferences(FileInfo csprojFileInfo, string fileContent, IDictionary<string, string> referencesTable) {
+	    private static void AddPackageReferences(FileInfo csprojFileInfo, string fileContent, IDictionary<string, string> referencesTable) {
             string csprojFolderPath = csprojFileInfo.Directory?.FullName;
             if (csprojFolderPath == null) throw new TessaException("Could not resolve csproj folder path");
 
