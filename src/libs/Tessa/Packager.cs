@@ -132,36 +132,37 @@ namespace Tessa {
             string dirPath = Path.GetDirectoryName(csprojFile);
             if (string.IsNullOrEmpty(dirPath)) throw new NullReferenceException("Directory path is null");
 
-            LinkedList<CopyInfo> cpyInfos = new LinkedList<CopyInfo>();
+            ICollection<CopyInfo> cpyInfos = new LinkedList<CopyInfo>();
 
             IPlainTextDocument document = new PropertiesDocumentParser(buildPropFile).Parse();
-            
+            IDictionary<string, string> referencesTable = GetReferencesTable(csprojFile);
+
             // Processing includes
             string[] inclDef = document.SelectValues("include") ?? new string[0];
             for (int i = -1; ++i < inclDef.Length;) {
                 string include = inclDef[i];
+                const string includeTarget = "includes"; // Name of the folder within the marc
 
                 // Wildcard?
-                if (include.EndsWith(WildcardDefinition)) {
-                    include = include.Replace(WildcardDefinition, string.Empty);
-                    string subDirPath = string.Format("{0}\\{1}", dirPath, include);
+                int wildCardIndex = include.IndexOf(WildcardDefinition);
+                if (wildCardIndex != -1) {
+                    string includeFolderName = include.Substring(0, wildCardIndex);
+                    string subDirPath = string.Format("{0}\\{1}", dirPath, includeFolderName);
                     DirectoryInfo subDirInfo = new DirectoryInfo(subDirPath);
                     if (!subDirInfo.Exists) throw new NullReferenceException(string.Format("The directory '{0}' does not exist!", subDirPath));
                     FileInfo[] subDirFiles = subDirInfo.GetFiles();
                     for (int j = -1; ++j < subDirFiles.Length;) {
                         FileInfo file = subDirFiles[j];
-                        string target = "includes/" + include;
-                        CopyInfo cpyInf = new CopyInfo(file.FullName, target);
-                        cpyInfos.AddLast(cpyInf);
+                        CopyInfo cpyInf = new CopyInfo(file.FullName, includeTarget);
+                        cpyInfos.Add(cpyInf);
                     }
+                } else {
+                    // TODO Support non-wildcard
                 }
-
-                // TODO non wildcard
             }
 
             // Processing add
             string[] addDefs = document.SelectValues("add") ?? new string[0];
-            IDictionary<string, string> referencesTable = GetReferencesTable(csprojFile);
             for (int i = -1; ++i != addDefs.Length;) {
                 string add = addDefs[i];
 
@@ -208,9 +209,9 @@ namespace Tessa {
         /// </summary>
         /// <param name="assemblyPath">Path to the assembly to add</param>
         /// <param name="copyList">Collection the new entry is added</param>
-	    private void AddToCopyList(string assemblyPath, LinkedList<CopyInfo> copyList) {
+	    private static void AddToCopyList(string assemblyPath, ICollection<CopyInfo> copyList) {
             string target = "includes";
-            copyList.AddLast(new CopyInfo(assemblyPath, target));
+            copyList.Add(new CopyInfo(assemblyPath, target));
 	    }
 
         /// <summary>
