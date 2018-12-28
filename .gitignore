@@ -5,6 +5,7 @@ tools
 .binaries
 .fake
 .vs
+.idea
 _ReSharper.*/
 *.testsettings
 *.user
