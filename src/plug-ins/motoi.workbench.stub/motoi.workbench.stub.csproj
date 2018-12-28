@@ -41,8 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.5.5" />
-    <PackageReference Include="xcite.collections" Version="6.0.0" />
-    <PackageReference Include="xcite.csharp" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="resources\images\Exit-24.png" />

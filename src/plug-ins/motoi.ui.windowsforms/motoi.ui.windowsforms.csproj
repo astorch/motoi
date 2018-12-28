@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net47</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -28,6 +28,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DebugSymbols>true</DebugSymbols>
+    <DocumentationFile>bin\release\motoi.ui.windowsforms.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="resources\images\Error-32.png" />
@@ -54,14 +55,14 @@
     <ProjectReference Include="..\motoi.workbench\motoi.workbench.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DockPanelSuite" Version="3.0.4" />
-    <PackageReference Include="DockPanelSuite.ThemeVS2012" Version="3.0.4" />
+    <PackageReference Include="DockPanelSuite" Version="3.0.6" />
+    <PackageReference Include="DockPanelSuite.ThemeVS2012" Version="3.0.6" />
     <PackageReference Include="DockPanelSuite.ThemeVS2012Light" Version="2.10.0" />
-    <PackageReference Include="DockPanelSuite.ThemeVS2013" Version="3.0.4" />
+    <PackageReference Include="DockPanelSuite.ThemeVS2013" Version="3.0.6" />
     <PackageReference Include="DockPanelSuite.ThemeVS2013Blue" Version="2.10.0" />
-    <PackageReference Include="DockPanelSuite.ThemeVS2015" Version="3.0.4" />
-    <PackageReference Include="xcite.collections" Version="6.0.0" />
-    <PackageReference Include="xcite.csharp" Version="6.0.0" />
+    <PackageReference Include="DockPanelSuite.ThemeVS2015" Version="3.0.6" />
+    <PackageReference Include="xcite.collections" Version="9.0.0" />
+    <PackageReference Include="xcite.csharp" Version="7.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FastColoredTextBox, Version=2.16.23.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">

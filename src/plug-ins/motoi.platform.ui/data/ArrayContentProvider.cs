@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using System.Reflection;
-using xcite.collections.nogen;
+using xcite.collections;
 
 namespace motoi.platform.ui.data {
     /// <summary>
@@ -58,13 +57,14 @@ namespace motoi.platform.ui.data {
             /// <param name="input">Object to convert</param>
             /// <returns>Converted real object array</returns>
             public object[] Convert(object input) {
-                MethodInfo convertMethod = GetType().GetMethod("ArrayConvert");
+                MethodInfo convertMethod = GetType().GetMethod(nameof(ArrayConvert));
                 MethodInfo paramConvertMethod = convertMethod.MakeGenericMethod(iObjectType);
                 return (object[]) paramConvertMethod.Invoke(this,new []{input});
             }
 
             public object[] ArrayConvert<T>(T[] input) {
-                object[] rawObjects = input.Cast<object>().ToArray();
+                object[] rawObjects = new object[input.Length];
+                Array.Copy(input, rawObjects, input.Length);
                 return rawObjects;
             }
         }

@@ -35,7 +35,7 @@
     <ProjectReference Include="..\motoi.workbench\motoi.workbench.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="xcite.csharp" Version="6.0.0" />
+    <PackageReference Include="xcite.csharp" Version="7.0.2" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="resources\images\ErrorCircle-32.png" />

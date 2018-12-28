@@ -1,10 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip;
-using xcite.collections.nogen;
+using xcite.collections;
 
 namespace motoi.plugins {
     /// <summary> Provides an implementation of <see cref="IBundle"/> </summary>
@@ -105,7 +104,15 @@ namespace motoi.plugins {
         public string[] GetResources(string searchPattern) {
             Regex regex = new Regex(searchPattern);
             string[] resources = GetResources();
-            string[] filtered = resources.Where(rsx => regex.IsMatch(rsx)).ToArray();
+            string[] filtered = new string[resources.Length];
+            int p = 0;
+            for (int i = -1; ++i != resources.Length;) {
+                string resource = resources[i];
+                if (!regex.IsMatch(resource)) continue;
+                filtered[p++] = resource;
+            }
+            
+            Array.Resize(ref filtered, p);
             return filtered;
         }
 

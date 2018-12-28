@@ -37,8 +37,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.5.5" />
-    <PackageReference Include="xcite.collections" Version="6.0.0" />
-    <PackageReference Include="xcite.csharp" Version="6.0.0" />
+    <PackageReference Include="xcite.collections" Version="9.0.0" />
+    <PackageReference Include="xcite.csharp" Version="7.0.2" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

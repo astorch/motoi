@@ -3,7 +3,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>net47</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <OutputType>WinExe</OutputType>
     <Authors>Arian Storch</Authors>
     <Product>Motoi RCP</Product>

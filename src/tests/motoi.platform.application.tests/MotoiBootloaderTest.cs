@@ -1,6 +1,4 @@
-﻿using motoi.platform.application.annotations;
-using motoi.platform.application.model;
-using motoi.platform.ui.shells;
+﻿using motoi.platform.ui.shells;
 using NUnit.Framework;
 
 namespace motoi.platform.application.tests

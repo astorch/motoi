@@ -38,8 +38,6 @@
     <ProjectReference Include="..\motoi.workbench\motoi.workbench.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="xcite.collections" Version="6.0.0" />
-    <PackageReference Include="xcite.csharp" Version="6.0.0" />
     <PackageReference Include="xcite.messaging" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>

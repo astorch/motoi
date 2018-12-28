@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-  </PropertyGroup>
-  <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Authors>Arian Storch</Authors>
     <Company>Arian Storch</Company>
     <Product>Motoi RCP</Product>
@@ -29,12 +27,13 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DebugSymbols>true</DebugSymbols>
+    <DocumentationFile>..\..\..\bin\release\motoi.extensions.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\motoi.plugins\motoi.plugins.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.5.5" />
-    <PackageReference Include="xcite.collections" Version="6.0.0" />
+    <PackageReference Include="xcite.collections" Version="9.0.0" />
   </ItemGroup>
 </Project>
