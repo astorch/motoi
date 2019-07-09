@@ -71,7 +71,7 @@ namespace motoi.platform.commons {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
 
             string dotNetUrl = resourceUrl.Replace('/', '.');
-            string fullQualifiedDotNetUrl = string.Format("{0}.{1}", assembly.GetName().Name, dotNetUrl);
+            string fullQualifiedDotNetUrl = $"{assembly.GetName().Name}.{dotNetUrl}";
             Stream memoryStream = assembly.GetManifestResourceStream(fullQualifiedDotNetUrl);
             return memoryStream;
         }

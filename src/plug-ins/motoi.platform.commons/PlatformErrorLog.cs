@@ -1,6 +1,6 @@
 ﻿using System;
-using NLog;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.platform.commons {
     /// <summary>
@@ -8,7 +8,7 @@ namespace motoi.platform.commons {
     /// and can be accessed even if the platform has been shut down.
     /// </summary>
     public class PlatformErrorLog : GenericSingleton<PlatformErrorLog> {
-        private readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private readonly ILog _log = LogManager.GetLog(typeof(PlatformErrorLog));
 
         /// <summary> Event that is raised when an entry has been added. </summary>
         public event EventHandler<ErrorLogEntry> Added; 
@@ -29,9 +29,9 @@ namespace motoi.platform.commons {
             
             // Log entry
             if (logEntryType == ELogEntryType.Error)
-                _log.Error(errorLogEntry.Exception, errorLogEntry.Message + $" ({pluginName})");
+                _log.Error(errorLogEntry.Message + $" ({pluginName})", errorLogEntry.Exception);
             else
-                _log.Warn(errorLogEntry.Exception, errorLogEntry.Message + $" ({pluginName})");
+                _log.Warning(errorLogEntry.Message + $" ({pluginName})", errorLogEntry.Exception);
 
             // Dispatch event
             Added.Dispatch(new object[] {this, errorLogEntry}, OnDispatchError);
@@ -43,7 +43,7 @@ namespace motoi.platform.commons {
         /// <param name="exception">Occurred exception</param>
         /// <param name="delegate">Affected event handler</param>
         private void OnDispatchError(Exception exception, Delegate @delegate) {
-            _log.Error(exception, $"Error on dispatching added event to '{@delegate}'. Event handler is ");
+            _log.Error($"Error on dispatching added event to '{@delegate}'. Event handler is ", exception);
         }
 
         /// <inheritdoc />
