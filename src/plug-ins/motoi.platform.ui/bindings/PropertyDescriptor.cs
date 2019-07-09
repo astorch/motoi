@@ -4,13 +4,9 @@ using System.Reflection;
 using xcite.csharp;
 
 namespace motoi.platform.ui.bindings {
-    /// <summary>
-    /// Provides methods to create instances of <see cref="IBindableProperty"/>.
-    /// </summary>
+    /// <summary> Provides methods to create instances of <see cref="IBindableProperty"/>. </summary>
     public static class PropertyDescriptor {
-        /// <summary>
-        /// Creates an instance of <see cref="IBindableProperty"/> based of the given parameters.
-        /// </summary>
+        /// <summary> Creates an instance of <see cref="IBindableProperty"/> based of the given parameters. </summary>
         /// <param name="controlType">Type of the control that provides the property</param>
         /// <param name="propertyName">Name of the property</param>
         /// <param name="defaultValue">Advised the default (initial) value</param>
@@ -23,7 +19,7 @@ namespace motoi.platform.ui.bindings {
             if (controlType == null) throw new ArgumentNullException(nameof(controlType));
             if (string.IsNullOrEmpty(propertyName)) throw new ArgumentNullException(nameof(propertyName));
 
-            if (defaultSourceUpdateTrigger == EDataBindingSourceUpdateTrigger.Default) throw new ArgumentException(string.Format("Default source update trigger cannot be '{0}'!", EDataBindingSourceUpdateTrigger.Default));
+            if (defaultSourceUpdateTrigger == EDataBindingSourceUpdateTrigger.Default) throw new ArgumentException($"Default source update trigger cannot be '{EDataBindingSourceUpdateTrigger.Default}'!");
 
             PropertyInfo[] controlTypeProperties = controlType.GetPublicProperties();
             PropertyInfo propertyInfo = controlTypeProperties.First(property => property.Name == propertyName);
@@ -35,13 +31,9 @@ namespace motoi.platform.ui.bindings {
             };
         }
 
-        /// <summary>
-        /// Provides an anonymous implementation of <see cref="IBindableProperty"/>.
-        /// </summary>
+        /// <summary> Provides an anonymous implementation of <see cref="IBindableProperty"/>. </summary>
         class BindablePropertyImpl<TValue> : IBindableProperty<TValue> {
-            /// <summary>
-            /// Creates a new instance based on the given parameters.
-            /// </summary>
+            /// <summary> Creates a new instance based on the given parameters. </summary>
             /// <param name="controlType">Type of the control that provides the property</param>
             /// <param name="name">Name of the property</param>
             /// <param name="propertyInfo">Property info of the property</param>
@@ -49,51 +41,34 @@ namespace motoi.platform.ui.bindings {
                 ControlType = controlType;
                 Name = name;
                 PropertyInfo = propertyInfo;
-                DefaultValue = default(TValue);
+                DefaultValue = default;
             }
-
-            /// <summary>
-            /// Returns the trigger mode when the binding source is being updated.
-            /// </summary>
+            
+            /// <inheritdoc />
             public EDataBindingSourceUpdateTrigger DefaultUpdateSourceUpdateTrigger { get; set; }
-
-            /// <summary>
-            /// Returns TRUE if the property advises two-way-binding by default.
-            /// </summary>
+            
+            /// <inheritdoc />
             public bool BindsTwoWayByDefault { get; set; }
-
-            /// <summary>
-            /// Returns the default property value.
-            /// </summary>
+            
+            /// <inheritdoc />
             public TValue DefaultValue { get; set; }
 
-            /// <summary>
-            /// Returns the default property value.
-            /// </summary>
-            object IBindableProperty.DefaultValue { get { return DefaultValue; } }
+            /// <inheritdoc />
+            object IBindableProperty.DefaultValue 
+                => DefaultValue;
 
-            /// <summary>
-            /// Returns the name of the bindable property.
-            /// </summary>
-            public string Name { get; private set; }
+            /// <inheritdoc />
+            public string Name { get; }
+            
+            /// <inheritdoc />
+            public Type ControlType { get; }
 
-            /// <summary>
-            /// Returns the type of the control that provides the property.
-            /// </summary>
-            public Type ControlType { get; private set; }
-
-            /// <summary>
-            /// Returns the property info of the property.
-            /// </summary>
-            public PropertyInfo PropertyInfo { get; private set; }
-
-            /// <summary>
-            /// Returns a string representation of the object.
-            /// </summary>
-            /// <returns>String representation of the object</returns>
+            /// <inheritdoc />
+            public PropertyInfo PropertyInfo { get; }
+            
+            /// <inheritdoc />
             public override string ToString() {
-                string result = string.Format("BindableProperty '{0}' ({1})", Name, PropertyInfo);
-                return result;
+                return $"BindableProperty '{Name}' ({PropertyInfo})";
             }
         }
     }

@@ -12,7 +12,7 @@ namespace motoi.platform.ui.factories {
         /// <typeparam name="TWidget">Type of the widget</typeparam>
         /// <returns>Instance or null</returns>
         public static TWidget NewWidget<TWidget>(IWidgetCompound composite) where TWidget : class, IWidget {
-            if (composite == null) throw new ArgumentNullException("composite");
+            if (composite == null) throw new ArgumentNullException(nameof(composite));
             return FactoryProvider.Instance.GetWidgetFactory().CreateInstance<TWidget>(composite);
         }
 

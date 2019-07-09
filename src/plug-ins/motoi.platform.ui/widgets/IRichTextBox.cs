@@ -9,7 +9,8 @@ namespace motoi.platform.ui.widgets {
     }
 
     /// <summary>
-    /// Provides the property meta data of <see cref="IRichTextBox"/> that is used by data binding operations.
+    /// Provides the property meta data of <see cref="IRichTextBox"/>
+    /// that is used by data binding operations.
     /// </summary>
     public class PRichTextBox : PRichTextBoxControl<IRichTextBox> {
         
@@ -25,9 +26,7 @@ namespace motoi.platform.ui.widgets {
 
     /// <summary> Describes a rich text box style definition. </summary>
     public class StyleDefinition {
-        /// <summary>
-        /// Creates a new instance with the given values.
-        /// </summary>
+        /// <summary> Creates a new instance with the given values. </summary>
         /// <param name="styleName">Name of the style</param>
         /// <param name="styleData">Style data</param>
         /// <exception cref="ArgumentNullException">If any argument is NULL</exception>
@@ -39,9 +38,9 @@ namespace motoi.platform.ui.widgets {
         }
 
         /// <summary> Returns the name of the style. </summary>
-        public string StyleName { get; private set; }
+        public string StyleName { get; }
 
         /// <summary> Returns the style data. </summary>
-        public byte[] StyleData { get; private set; }
+        public byte[] StyleData { get; }
     }
 }

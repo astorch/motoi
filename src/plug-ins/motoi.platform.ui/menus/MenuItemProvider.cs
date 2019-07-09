@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using motoi.extensions;
 using motoi.platform.nls;
 using motoi.platform.ui.actions;
 using motoi.platform.ui.shells;
 using motoi.plugins;
-using NLog;
-using xcite.collections;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.platform.ui.menus {
     /// <summary>
@@ -25,16 +25,14 @@ namespace motoi.platform.ui.menus {
         
         private static readonly Dictionary<string, MenuContribution> _idToMenuMap = new Dictionary<string, MenuContribution>(10);
 
-        /// <summary>
-        /// Resolves all registered menus and items and tells the main window to handle it.
-        /// </summary>
+        /// <summary> Resolves all registered menus and items and tells the main window to handle it. </summary>
         /// <param name="mainWindow">Main window</param>
         public static void AddExtensionPointMenuItems(IMainWindow mainWindow) {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(ExtensionPointIdMenuItems);
             
-            LinearList<IConfigurationElement> menuElementCollection = new LinearList<IConfigurationElement>();
-            LinearList<IConfigurationElement> menuItemElementsCollection = new LinearList<IConfigurationElement>();
-            LinearList<IConfigurationElement> menuItemSeparatorsCollection = new LinearList<IConfigurationElement>();
+            List<IConfigurationElement> menuElementCollection = new List<IConfigurationElement>(30);
+            List<IConfigurationElement> menuItemElementsCollection = new List<IConfigurationElement>(30);
+            List<IConfigurationElement> menuItemSeparatorsCollection = new List<IConfigurationElement>(30);
 
             Func<string, ICollection<IConfigurationElement>> getCollection = prefix => {
                 if (prefix == "menu") return menuElementCollection;
@@ -48,8 +46,7 @@ namespace motoi.platform.ui.menus {
                 IConfigurationElement element = configurationElements[i];
                 string prefix = element.Prefix;
                 ICollection<IConfigurationElement> collection = getCollection(prefix);
-                if (collection != null)
-                    collection.Add(element);
+                collection?.Add(element);
             }
 
             // Process registered menus
@@ -111,6 +108,15 @@ namespace motoi.platform.ui.menus {
                 }
             }
 
+            int findIndex(IList<MenuItemContribution> set, string itemRef) {
+                for (int i = -1; ++i != set.Count;) {
+                    MenuItemContribution mic = set[i];
+                    if (mic.Id == itemRef) return i;
+                }
+
+                return -1;
+            }
+            
             // Process registered separators
             using (IEnumerator<IConfigurationElement> itr = menuItemSeparatorsCollection.GetEnumerator()) {
                 while (itr.MoveNext()) {
@@ -121,13 +127,12 @@ namespace motoi.platform.ui.menus {
                     string insertAfter = element["insertAfter"];
 
                     MenuItemContribution menuItem = new MenuItemContribution(id, string.Empty, menu, null, null, null) { IsSeparator = true };
-                    MenuContribution menuContribution;
-                    if (!_idToMenuMap.TryGetValue(menu, out menuContribution)) continue;
+                    if (!_idToMenuMap.TryGetValue(menu, out MenuContribution menuContribution)) continue;
 
                     bool useInsertBefore = !string.IsNullOrEmpty(insertBefore);
                     string itemReference = useInsertBefore ? insertBefore : insertAfter;
                     IList<MenuItemContribution> menuItemCollection = menuContribution.MenuItems;
-                    int referenceIndex = menuItemCollection.IndexOf(item => item.Id == itemReference);
+                    int referenceIndex = findIndex(menuItemCollection, itemReference);
                     if (referenceIndex == -1) continue;
 
                     int insertIndex = useInsertBefore ? referenceIndex : referenceIndex + 1;
@@ -173,9 +178,10 @@ namespace motoi.platform.ui.menus {
                 Type instanceType = TypeLoader.TypeForName(providingBundle, clsName);
                 return instanceType.NewInstance<ICustomMenuConfigurer>();
             } catch (Exception ex) {
-                Logger logWriter = LogManager.GetCurrentClassLogger();
-                logWriter.Error(ex, string.Format("Error on creating instance of custom menu configurer. " +
-                                                  "Id is '{0}'. Providing bundle is '{1}'", id, providingBundle));
+                ILog logWriter = LogManager.GetLog(typeof(MenuItemProvider));
+                logWriter.Error(
+                    "Error on creating instance of custom menu configurer. " +
+                    $"Id is '{id}'. Providing bundle is '{providingBundle}'", ex);
                 return null;
             }
         }

@@ -1,7 +1,5 @@
 ﻿namespace motoi.platform.ui {
-    /// <summary>
-    /// Describes a widget that is composite of other widgets.
-    /// </summary>
+    /// <summary> Describes a widget that is composite of other widgets. </summary>
     public interface IWidgetCompound : IWidget {
         
     }

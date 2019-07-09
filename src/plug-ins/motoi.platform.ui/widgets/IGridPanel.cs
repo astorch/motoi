@@ -1,21 +1,14 @@
 ﻿using System;
 using motoi.platform.ui.bindings;
 using motoi.platform.ui.layouts;
-using xcite.csharp.assertions;
 
 namespace motoi.platform.ui.widgets {
-    /// <summary>
-    /// Defines a widget compound with a grid layout.
-    /// </summary>
+    /// <summary> Defines a widget compound with a grid layout. </summary>
     public interface IGridPanel : IWidgetCompound {
-        /// <summary>
-        /// Returns the number of layout columns or does set it.
-        /// </summary>
+        /// <summary> Returns the number of layout columns or does set it. </summary>
         int GridColumns { get; set; }
 
-        /// <summary>
-        /// Returns the number of layout rows or does set it.
-        /// </summary>
+        /// <summary> Returns the number of layout rows or does set it. </summary>
         int GridRows { get; set; }
 
         /// <summary>
@@ -51,24 +44,23 @@ namespace motoi.platform.ui.widgets {
     /// </summary>
     public class PGridPanel : PWidgetControl<IGridPanel> {
         /// <summary> Grid columns property meta data </summary>
-        public static readonly IBindableProperty<int> GridColumnsProperty = CreatePropertyInfo(_ => _.GridColumns, 1);
+        public static readonly IBindableProperty<int> GridColumnsProperty = CreatePropertyInfo(nameof(IGridPanel.GridColumns), 1);
 
         /// <summary> Grid rows property meta data </summary>
-        public static readonly IBindableProperty<int> GridRowsProperty = CreatePropertyInfo(_ => _.GridRows, 1);
+        public static readonly IBindableProperty<int> GridRowsProperty = CreatePropertyInfo(nameof(IGridPanel.GridRows), 1);
     }
 
-    /// <summary>
-    /// Provides a column definition.
-    /// </summary>
+    /// <summary> Provides a column definition. </summary>
     public class ColumnDefinition {
-        /// <summary>
-        /// Creates a new instance with the given <paramref name="value"/>.
-        /// </summary>
+        /// <summary> Creates a new instance with the given <paramref name="value"/>. </summary>
         /// <param name="value">Value</param>
         /// <exception cref="ArgumentNullException">If <paramref name="value"/> is NULL or empty</exception>
         /// <exception cref="FormatException">If <paramref name="value"/> cannot be parsed</exception>
         public ColumnDefinition(string value) {
-            string invariantValue = Assert.NotNullOrEmpty(() => value).ToLowerInvariant();
+            string invariantValue = (!string.IsNullOrEmpty(value)
+                    ? value
+                    : throw new ArgumentNullException(nameof(value))
+                ).ToLowerInvariant();
 
             if (invariantValue == "auto") {
                 Width = 0;
@@ -82,32 +74,22 @@ namespace motoi.platform.ui.widgets {
             }
         }
 
-        /// <summary>
-        /// Returns the column width.
-        /// </summary>
-        public uint Width { get; private set; }
+        /// <summary> Returns the column width. </summary>
+        public uint Width { get; }
 
-        /// <summary>
-        /// Returns the column width mode.
-        /// </summary>
-        public SizeBehavior Mode { get; private set; }
+        /// <summary> Returns the column width mode. </summary>
+        public SizeBehavior Mode { get; }
     }
 
-    /// <summary>
-    /// Defines kindes of column width modes.
-    /// </summary>
+    /// <summary> Defines kindes of column width modes. </summary>
     public enum SizeBehavior : ushort {
-        /// <summary>
-        ///  Indicates that the column width is determined automatically.
-        /// </summary>
+        /// <summary> Indicates that the column width is determined automatically. </summary>
         Auto,
-        /// <summary>
-        /// Indicates that the column width is as much as possible.
-        /// </summary>
+        
+        /// <summary> Indicates that the column width is as much as possible. </summary>
         Fill,
-        /// <summary>
-        /// Indicates that the column width is fixed.
-        /// </summary>
+        
+        /// <summary> Indicates that the column width is fixed. </summary>
         Fixed
     }
 }

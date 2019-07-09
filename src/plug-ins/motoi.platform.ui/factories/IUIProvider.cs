@@ -1,7 +1,5 @@
 ﻿namespace motoi.platform.ui.factories {
-    /// <summary>
-    /// Provides methods to get access to the UI platform specific factories.
-    /// </summary>
+    /// <summary> Provides methods to get access to the UI platform specific factories. </summary>
     /// <seealso cref="IApplicationController"/>
     /// <seealso cref="IShellFactory"/>
     /// <seealso cref="IWidgetFactory"/>

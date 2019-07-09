@@ -1,9 +1,7 @@
 ﻿using xcite.csharp;
 
 namespace motoi.platform.ui.shells {
-    /// <summary>
-    /// Defines kinds of window states.
-    /// </summary>
+    /// <summary> Defines kinds of window states. </summary>
     public class EWindowState : XEnum<EWindowState> {
 
         /// <summary> Indicates a normal window state. </summary>

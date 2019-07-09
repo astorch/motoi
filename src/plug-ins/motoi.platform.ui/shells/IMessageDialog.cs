@@ -15,28 +15,28 @@ namespace motoi.platform.ui.shells {
         /// <summary> Returns the dialog text or does set it. </summary>
         string Text { get; set; }
 
-        /// <summary>
-        /// Creates the dialog and makes it visible to the user.
-        /// </summary>
+        /// <summary> Creates the dialog and makes it visible to the user. </summary>
         /// <returns>Dialog close result</returns>
         new EMessageDialogResult Show();
     }
 
     /// <summary>
-    /// Provides the property meta data of <see cref="IMessageDialog"/> that is used by data binding operations.
+    /// Provides the property meta data of <see cref="IMessageDialog"/>
+    /// that is used by data binding operations.
     /// </summary>
     public class PMessageDialog : PMessageDialogControl<IMessageDialog> {
 
     }
 
     /// <summary>
-    /// Provides the property meta data of <see cref="IMessageDialog"/> that is used by data binding operations.
+    /// Provides the property meta data of <see cref="IMessageDialog"/>
+    /// that is used by data binding operations.
     /// </summary>
     public class PMessageDialogControl<TDialogWindow> : PDialogWindowControl<TDialogWindow> where TDialogWindow : class, IMessageDialog {
         /// <summary> Header property meta data </summary>
-        public static readonly IBindableProperty<string> HeaderProperty = CreatePropertyInfo(_ => _.Header, string.Empty);
+        public static readonly IBindableProperty<string> HeaderProperty = CreatePropertyInfo(nameof(IMessageDialog.Header), string.Empty);
 
         /// <summary> Text property meta data </summary>
-        public static readonly IBindableProperty<string> TextProperty = CreatePropertyInfo(_ => _.Text, string.Empty);
+        public static readonly IBindableProperty<string> TextProperty = CreatePropertyInfo(nameof(IMessageDialog.Text), string.Empty);
     }
 }

@@ -4,13 +4,9 @@ using System.Linq.Expressions;
 using xcite.csharp;
 
 namespace motoi.platform.ui.bindings {
-    /// <summary>
-    /// Provides a basic implementation of <see cref="INotifyPropertyChanged"/>.
-    /// </summary>
+    /// <summary> Provides a basic implementation of <see cref="INotifyPropertyChanged"/>. </summary>
     public class PropertyChangedDispatcher : INotifyPropertyChanged {
-        /// <summary>
-        /// Will be notified when a property has been changed.
-        /// </summary>
+        /// <summary> Will be notified when a property has been changed. </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -24,9 +20,7 @@ namespace motoi.platform.ui.bindings {
             DispatchPropertyChanged(propertyName);
         }
 
-        /// <summary>
-        /// Dispatches the property changed event for the given property name.
-        /// </summary>
+        /// <summary> Dispatches the property changed event for the given property name. </summary>
         /// <param name="propertyName">Name of the property</param>
         protected void DispatchPropertyChanged(string propertyName) {
             PropertyChangedEventHandler propertyChangedHandler = PropertyChanged;
@@ -35,13 +29,14 @@ namespace motoi.platform.ui.bindings {
         }
 
         /// <summary>
-        /// Tells the instance to dispatch the given <paramref name="eventArgs"/> to the given <paramref name="propertyChangedEventHandler"/>. 
+        /// Tells the instance to dispatch the given <paramref name="eventArgs"/>
+        /// to the given <paramref name="propertyChangedEventHandler"/>. 
         /// </summary>
         /// <param name="propertyChangedEventHandler">Event handler to to notify</param>
         /// <param name="eventArgs">Event arguments</param>
-        protected virtual void OnDispatchPropertyChanged(PropertyChangedEventHandler propertyChangedEventHandler, PropertyChangedEventArgs eventArgs) {
-            if (propertyChangedEventHandler == null) return;
-            propertyChangedEventHandler(this, eventArgs);
+        protected virtual void OnDispatchPropertyChanged(PropertyChangedEventHandler propertyChangedEventHandler, 
+            PropertyChangedEventArgs eventArgs) {
+            propertyChangedEventHandler?.Invoke(this, eventArgs);
         }
     }
 }

@@ -7,7 +7,8 @@ namespace motoi.platform.ui.data {
     /// </summary>
     public interface IListLabelProvider : ILabelProvider {
         /// <summary>
-        /// Return the text for the given <paramref name="element"/> that is shown in the given <paramref name="column"/>.
+        /// Return the text for the given <paramref name="element"/>
+        /// that is shown in the given <paramref name="column"/>.
         /// </summary>
         /// <param name="element">Element to provide text</param>
         /// <param name="column">Column where the text is shown</param>
@@ -15,8 +16,8 @@ namespace motoi.platform.ui.data {
         string GetText(object element, ColumnDescriptor column);
 
         /// <summary>
-        /// Return an <see cref="ImageDescriptor"/> for the <paramref name="element"/>. If you return NULL, 
-        /// no image is shown.
+        /// Return an <see cref="ImageDescriptor"/> for the <paramref name="element"/>.
+        /// If you return NULL, no image is shown.
         /// </summary>
         /// <param name="element">Element to provide an image</param>
         /// <param name="column">Column where the image is shown</param>

@@ -21,9 +21,7 @@ namespace motoi.platform.ui.shells {
         /// <summary> Indicates a close result. </summary>
         public static readonly EMessageDialogResult Close = new EMessageDialogResult("Close");
 
-        /// <summary>
-        /// Protected constructor.
-        /// </summary>
+        /// <summary> Protected constructor. </summary>
         /// <param name="uniqueReference">Unique reference to identify this instance</param>
         private EMessageDialogResult(string uniqueReference) : base(uniqueReference) {
             // Currently nothing to do here

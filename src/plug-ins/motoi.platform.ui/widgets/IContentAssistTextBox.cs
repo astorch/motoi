@@ -14,7 +14,8 @@ namespace motoi.platform.ui.widgets {
     }
 
     /// <summary>
-    /// Provides the property meta data of <see cref="IContentAssistTextBox"/> that is used by data binding operations.
+    /// Provides the property meta data of <see cref="IContentAssistTextBox"/>
+    /// that is used by data binding operations.
     /// </summary>
     public class PContentAssistTextBox : PRichTextBoxControl<IContentAssistTextBox> {
         /// <summary> Content assist model property meta data </summary>
@@ -39,8 +40,8 @@ namespace motoi.platform.ui.widgets {
         bool AllowTab { get; }
 
         /// <summary>
-        /// Returns TRUE if the infotip is permanently shown and won't disappear until the content assist 
-        /// box is closed.
+        /// Returns TRUE if the infotip is permanently shown and won't disappear
+        /// until the content assist box is closed.
         /// </summary>
         bool AlwaysShowInfotip { get; }
 
@@ -51,16 +52,15 @@ namespace motoi.platform.ui.widgets {
         IContentAssistItemProvider ItemProvider { get; }
 
         /// <summary>
-        /// Notifies the instance that an element of the <see cref="ItemProvider"/> has been inserted.
+        /// Notifies the instance that an element of the
+        /// <see cref="ItemProvider"/> has been inserted.
         /// </summary>
         /// <param name="item">Item that has been inserted</param>
         /// <param name="index">Index the item has been inserted</param>
         void OnItemInserted(ContentAssistItem item, int index);
     }
 
-    /// <summary>
-    /// Defines an autocomplete item provider that can be applied to an <see cref="IRichTextBox"/>.
-    /// </summary>
+    /// <summary> Defines an autocomplete item provider that can be applied to an <see cref="IRichTextBox"/>. </summary>
     public interface IContentAssistItemProvider {
         /// <summary>
         /// Notifies the instance to provide the content assist items according to the 
@@ -111,16 +111,16 @@ namespace motoi.platform.ui.widgets {
         }
 
         /// <summary> Returns the text of the item. </summary>
-        public string Text { get; private set; }
+        public string Text { get; }
 
         /// <summary> Returns the image descriptor of the item. </summary>
-        public ImageDescriptor Image { get; private set; }
+        public ImageDescriptor Image { get; }
 
         /// <summary> Returns the infotip title of the item. </summary>
-        public string InfotipTitle { get; private set; }
+        public string InfotipTitle { get; }
 
         /// <summary> Returns the infotip text of the item. </summary>
-        public string InfotipText { get; private set; }
+        public string InfotipText { get; }
 
         /// <summary> Returns the tag of this item or does set it. </summary>
         public object Tag { get; set; }

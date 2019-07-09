@@ -1,30 +1,26 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reflection;
-using motoi.platform.ui.bindings.exceptions;
-using NLog;
 using xcite.csharp;
-using xcite.csharp.assertions;
+using xcite.logging;
 
 namespace motoi.platform.ui.bindings {
     /// <summary> Describes a data binding. </summary>
     public class DataBinding : XObject {
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog _log = LogManager.GetLog(typeof(DataBinding));
 
-        /// <summary>
-        /// Creates a new instance using the given path.
-        /// </summary>
+        /// <summary> Creates a new instance using the given path. </summary>
         /// <param name="source">Binding source object - must not be NULL</param>
         /// <param name="path">Path to the property to bind</param>
         public DataBinding(object source, string path) {
-            Source = Assert.NotNull(() => source);
-            Path = Assert.NotNullOrEmpty(() => path);
+            Source = source ?? throw new ArgumentNullException(nameof(source));
+            Path = !string.IsNullOrEmpty(path) ? path : throw new ArgumentNullException(nameof(path)); 
             SourcePropertyInfo = DataBindingUtil.ResolvePropertyInfo(source, path);
 
             BindingMode = EDataBindingMode.Default;
             BindingSourceUpdateTrigger = EDataBindingSourceUpdateTrigger.Default;
             
-            if (SourcePropertyInfo == null) throw new DataBindingException(string.Format("The given source object of type '{0}' does not have a property under the given path '{1}'", source.GetType(), path));
+            if (SourcePropertyInfo == null) throw new DataBindingException($"The given source object of type '{source.GetType()}' does not have a property under the given path '{path}'");
         }
 
         /// <summary> Returns the data binding mode or does set it. </summary>
@@ -34,13 +30,13 @@ namespace motoi.platform.ui.bindings {
         public EDataBindingSourceUpdateTrigger BindingSourceUpdateTrigger { get; set; }
 
         /// <summary> Returns the path to the bound source property. </summary>
-        public string Path { get; private set; }
+        public string Path { get; }
 
         /// <summary> Returns the source of the binding or does set it. </summary>
         public object Source { get; set; }
 
         /// <summary> Returns the info of the source property. </summary>
-        public PropertyInfo SourcePropertyInfo { get; private set; }
+        public PropertyInfo SourcePropertyInfo { get; }
 
         /// <summary> Returns the target of the binding or does set it. </summary>
         public object Target { get; private set; }
@@ -57,8 +53,8 @@ namespace motoi.platform.ui.bindings {
         /// <param name="target">Data binding target to connect</param>
         /// <param name="property">Target property to bind</param>
         public void Connect<TValue>(IDataBindingSupport target, IBindableProperty<TValue> property) {
-            Target = Assert.NotNull(() => target);
-            TargetPropertyInfo = Assert.NotNull(() => property).PropertyInfo;
+            Target = target ?? throw new ArgumentNullException(nameof(target));
+            TargetPropertyInfo = (property ?? throw new ArgumentNullException(nameof(property))).PropertyInfo;
 
             // Apply default value to the target
             ApplyDefaultPropertyValue(target, property);
@@ -92,9 +88,7 @@ namespace motoi.platform.ui.bindings {
             }
         }
 
-        /// <summary>
-        /// Tells the data binding to update the source value.
-        /// </summary>
+        /// <summary> Tells the data binding to update the source value. </summary>
         /// <param name="sender">Method invocator</param>
         /// <param name="property">Property to update</param>
         /// <param name="value">New value</param>
@@ -105,7 +99,8 @@ namespace motoi.platform.ui.bindings {
         }
 
         /// <summary>
-        /// Tells the instance that it is going to be disposed and shall clean up its resources before.
+        /// Tells the instance that it is going to be disposed
+        /// and shall clean up its resources before.
         /// </summary>
         public void Dispose() {
             // Remove handler
@@ -113,9 +108,7 @@ namespace motoi.platform.ui.bindings {
                 propertyChangedDispatcher.PropertyChanged -= OnSourcePropertyChanged;
         }
 
-        /// <summary>
-        /// Applies the current value of the binding target to the binding source.
-        /// </summary>
+        /// <summary> Applies the current value of the binding target to the binding source. </summary>
         /// <param name="source">Data binding source</param>
         /// <param name="sourcePropertyInfo">Data binding source property</param>
         /// <param name="target">Data binding target</param>
@@ -131,16 +124,16 @@ namespace motoi.platform.ui.bindings {
                 targetValue = targetPropertyInfo.GetValue(target, null);
                 ApplyValueChange(source, sourcePropertyInfo, targetValue);
             } catch (Exception ex) {
-                _log.Error(ex, "Error on applying target value to binding source. " +
-                              $"target: '{target}', target property: '{targetPropertyInfo}', " +
-                              $"source: '{source}, source property: '{sourcePropertyInfo}', source property value: '{targetValue ?? "NULL"}'."
-                              );
+                _log.Error(
+                    "Error on applying target value to binding source. " + 
+                   $"target: '{target}', target property: '{targetPropertyInfo}', " +
+                   $"source: '{source}, source property: '{sourcePropertyInfo}', source property value: '{targetValue ?? "NULL"}'.",
+                    ex
+                );
             }
         }
 
-        /// <summary>
-        /// Applies the current value of the binding source to the binding target.
-        /// </summary>
+        /// <summary> Applies the current value of the binding source to the binding target. </summary>
         /// <param name="target">Data binding target</param>
         /// <param name="targetPropertyInfo">Data binding target property</param>
         /// <param name="source">Data binding source</param>
@@ -148,18 +141,20 @@ namespace motoi.platform.ui.bindings {
         private void ApplyValueToBindingTarget(object target, PropertyInfo targetPropertyInfo, object source, PropertyInfo sourcePropertyInfo) {
             object sourceValue = null;
             try {
-                Assert.NotNull(() => target);
-                Assert.NotNull(() => targetPropertyInfo);
-                Assert.NotNull(() => source);
-                Assert.NotNull(() => sourcePropertyInfo);
+                if (target == null) throw new ArgumentNullException(nameof(target));
+                if (targetPropertyInfo == null) throw new ArgumentNullException(nameof(targetPropertyInfo));
+                if (source == null) throw new ArgumentNullException(nameof(source));
+                if (sourcePropertyInfo == null) throw new ArgumentNullException(nameof(sourcePropertyInfo));
 
                 sourceValue = sourcePropertyInfo.GetValue(source, null);
                 ApplyValueChange(target, targetPropertyInfo, sourceValue);
             } catch (Exception ex) {
-                _log.Error(ex, "Error on applying source value to binding target. " +
-                              $"target: '{target}', target property: '{targetPropertyInfo}', " +
-                              $"source: '{source}, source property: '{sourcePropertyInfo}', source property value: '{sourceValue ?? "NULL"}'. "
-                              );
+                _log.Error(
+                    "Error on applying source value to binding target. " + 
+                   $"target: '{target}', target property: '{targetPropertyInfo}', " +
+                   $"source: '{source}, source property: '{sourcePropertyInfo}', source property value: '{sourceValue ?? "NULL"}'. ",
+                    ex
+                );
             }
         }
 
@@ -172,9 +167,9 @@ namespace motoi.platform.ui.bindings {
         /// <param name="value">Value</param>
         private void ApplyValueChange(object obj, PropertyInfo propertyInfo, object value) {
             try {
-                Assert.NotNull(() => obj);
-                Assert.NotNull(() => propertyInfo);
-
+                if (obj == null) throw new ArgumentNullException(nameof(obj));
+                if (propertyInfo == null) throw new ArgumentNullException(nameof(propertyInfo));
+                
                 // TODO Support type-safe
                 // TODO Support conversion
 
@@ -185,7 +180,7 @@ namespace motoi.platform.ui.bindings {
                 // Update the property value
                 propertyInfo.SetValue(obj, value, null);
             } catch (Exception ex) {
-                _log.Error(ex, $"Errror on performing binding update. Object is '{obj}', property is '{propertyInfo}' and value is '{value ?? "NULL"}'");
+                _log.Error($"Errror on performing binding update. Object is '{obj}', property is '{propertyInfo}' and value is '{value ?? "NULL"}'", ex);
             }
         }
 
@@ -201,24 +196,18 @@ namespace motoi.platform.ui.bindings {
 
                 ApplyValueChange(target, property.PropertyInfo, property.DefaultValue);
             } catch (Exception ex) {
-                _log.Error(ex, "Error on applying default property value to the binding target.");
+                _log.Error("Error on applying default property value to the binding target.", ex);
             }
         }
 
-        /// <summary>
-        /// Is invoked when the data binding source dispatches an property changed event.
-        /// </summary>
-        /// <param name="sender">Event sender</param>
-        /// <param name="args">Event arguments</param>
+        /// <summary> Is invoked when the data binding source dispatches an property changed event. </summary>
         private void OnSourcePropertyChanged(object sender, PropertyChangedEventArgs args) {
             if (args.PropertyName != SourcePropertyInfo.Name) return;
             ApplyValueToBindingTarget(Target, TargetPropertyInfo, Source, SourcePropertyInfo);
         }
     }
 
-    /// <summary>
-    /// Provides some tooling methods to support binding operations.
-    /// </summary>
+    /// <summary> Provides some tooling methods to support binding operations. </summary>
     static class DataBindingUtil {
         /// <summary>
         /// Resolves and returns the <see cref="PropertyInfo"/> of the <paramref name="obj"/> property that is target 
@@ -228,9 +217,9 @@ namespace motoi.platform.ui.bindings {
         /// <param name="path">Path to the property to look up</param>
         /// <returns>Resolved <see cref="PropertyInfo"/> or NULL</returns>
         public static PropertyInfo ResolvePropertyInfo(object obj, string path) {
-            Assert.NotNull(() => obj);
-            Assert.NotNullOrEmpty(() => path);
-
+            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
+            
             string[] pathFragments = path.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
             object navigationObject = obj;
             for (short i = -1; ++i != pathFragments.Length;) {

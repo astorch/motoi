@@ -7,31 +7,26 @@ using motoi.platform.nls;
 using motoi.platform.ui.actions;
 using motoi.platform.ui.shells;
 using motoi.plugins;
-using xcite.collections;
 using xcite.csharp;
 
 namespace motoi.platform.ui.toolbars {
     /// <summary>
-    /// Implements a provider which reads all registered toolbar items and tells the main window 
-    /// to handle it.
+    /// Implements a provider which reads all registered toolbar items
+    /// and tells the main window to handle it.
     /// </summary>
     public static class ToolbarItemProvider {
-        /// <summary>
-        /// Extension point id.
-        /// </summary>
+        /// <summary> Extension point id. </summary>
         private const string ExtensionPointId = "org.motoi.application.toolbar";
 
         private static readonly IDictionary<string, ToolbarGroupContribution> _idToMenuMap = new Dictionary<string, ToolbarGroupContribution>(10);
 
-        /// <summary>
-        /// Resolves all registered menus and items and tells the main window to handle it.
-        /// </summary>
+        /// <summary> Resolves all registered menus and items and tells the main window to handle it. </summary>
         /// <param name="mainWindow">Main window</param>
         public static void AddExtensionPointToolbarItems(IMainWindow mainWindow) {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(ExtensionPointId);
 
-            IConfigurationElement[] groupElements = Enumerable.ToArray(configurationElements.Where(x => x.Prefix == "toolbarGroup"));
-            IConfigurationElement[] groupItemElements = Enumerable.ToArray(configurationElements.Where(x => x.Prefix == "toolbarItem"));
+            IConfigurationElement[] groupElements = configurationElements.Where(x => x.Prefix == "toolbarGroup").ToArray();
+            IConfigurationElement[] groupItemElements = configurationElements.Where(x => x.Prefix == "toolbarItem").ToArray();
 
             for (int i = -1; ++i < groupElements.Length; ) {
                 IConfigurationElement element = groupElements[i];
@@ -41,7 +36,7 @@ namespace motoi.platform.ui.toolbars {
             }
 
             // Collection of all opened streams
-            LinearList<Stream> streamList = new LinearList<Stream>();
+            List<Stream> streamList = new List<Stream>(20);
 
             for (int i = -1; ++i < groupItemElements.Length; ) {
                 IConfigurationElement element = groupItemElements[i];

@@ -1,9 +1,7 @@
 ﻿using xcite.csharp;
 
 namespace motoi.platform.ui.shells {
-    /// <summary>
-    /// Defines window styles.
-    /// </summary>
+    /// <summary> Defines window styles. </summary>
     public class EWindowStyle : XEnum<EWindowStyle> {
         /// <summary> A window that has no title bar and no border elements. </summary>
         public static readonly EWindowStyle BlankWindow = new EWindowStyle("BlankWindow"); // None

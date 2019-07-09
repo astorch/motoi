@@ -1,9 +1,7 @@
 ﻿using xcite.csharp;
 
 namespace motoi.platform.ui {
-    /// <summary>
-    /// Defines kinds of visibility of widets.
-    /// </summary>
+    /// <summary> Defines kinds of visibility of widets. </summary>
     public class EVisibility : XEnum<EVisibility> {
         /// <summary> Indicates that the widget is fully visible. </summary>
         public static readonly EVisibility Visible = new EVisibility("Visible");

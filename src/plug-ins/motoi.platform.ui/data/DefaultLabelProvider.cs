@@ -1,13 +1,9 @@
 ﻿using motoi.platform.ui.images;
 
 namespace motoi.platform.ui.data {
-    /// <summary>
-    /// Provides a default implementation of <see cref="ILabelProvider"/>.
-    /// </summary>
+    /// <summary> Provides a default implementation of <see cref="ILabelProvider"/>. </summary>
     public class DefaultLabelProvider : ILabelProvider {
-        /// <summary>
-        /// Default instance.
-        /// </summary>
+        /// <summary> Default instance. </summary>
         public static readonly ILabelProvider Instance = new DefaultLabelProvider();
 
         /// <inheritdoc />

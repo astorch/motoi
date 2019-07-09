@@ -221,9 +221,9 @@ namespace motoi.ui.windowsforms.controls {
         /// </summary>
         /// <param name="orientation">Orientation to map</param>
         /// <returns>Corresponding <see cref="HorizontalAlignment"/></returns>
-        private HorizontalAlignment MapTextAlign(ColumnDescriptor.EColumnTextOrientation orientation) {
-            if (orientation == ColumnDescriptor.EColumnTextOrientation.Left) return HorizontalAlignment.Left;
-            if (orientation == ColumnDescriptor.EColumnTextOrientation.Right) return HorizontalAlignment.Right;
+        private HorizontalAlignment MapTextAlign(EColumnTextOrientation orientation) {
+            if (orientation == EColumnTextOrientation.Left) return HorizontalAlignment.Left;
+            if (orientation == EColumnTextOrientation.Right) return HorizontalAlignment.Right;
             return HorizontalAlignment.Center;
         }
 

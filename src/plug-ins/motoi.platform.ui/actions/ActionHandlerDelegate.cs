@@ -7,8 +7,8 @@ namespace motoi.platform.ui.actions {
     /// </summary>
     public class ActionHandlerDelegate : AbstractActionHandler {
         private static readonly Func<bool> TrueFunc = () => true;
-        private readonly Action iAction;
-        private readonly Func<bool> iIsEnabledFunc;
+        private readonly Action _action;
+        private readonly Func<bool> _isEnabledFunc;
 
         /// <summary>
         /// Creates a new instance with the given <paramref name="action"/>. The created action 
@@ -28,8 +28,8 @@ namespace motoi.platform.ui.actions {
         /// <param name="isEnabledFunc">Delegate to check IsEnabled state - must not be NULL</param>
         /// <exception cref="ArgumentNullException"/>
         public ActionHandlerDelegate(Action action, Func<bool> isEnabledFunc) {
-            iAction = action ?? throw new ArgumentNullException(nameof(action));
-            iIsEnabledFunc = isEnabledFunc ?? throw new ArgumentNullException(nameof(isEnabledFunc));
+            _action = action ?? throw new ArgumentNullException(nameof(action));
+            _isEnabledFunc = isEnabledFunc ?? throw new ArgumentNullException(nameof(isEnabledFunc));
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace motoi.platform.ui.actions {
         /// </summary>
         public override bool IsEnabled {
             get {
-                bool funcResult = iIsEnabledFunc();
+                bool funcResult = _isEnabledFunc();
                 return funcResult;
             }
             set { base.IsEnabled = value; }
@@ -47,7 +47,7 @@ namespace motoi.platform.ui.actions {
         /// Tells the handler to invoke his action.
         /// </summary>
         public override void Run() {
-            iAction();
+            _action();
         }
     }
 }

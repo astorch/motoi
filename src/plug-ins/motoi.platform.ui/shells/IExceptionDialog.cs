@@ -9,7 +9,8 @@ namespace motoi.platform.ui.shells {
     }
 
     /// <summary>
-    /// Provides the property meta data of <see cref="IExceptionDialog"/> that is used by data binding operations.
+    /// Provides the property meta data of <see cref="IExceptionDialog"/>
+    /// that is used by data binding operations.
     /// </summary>
     public class PExceptionDialog : PMessageDialogControl<IExceptionDialog> {
         /// <summary> Exception property meta data </summary>

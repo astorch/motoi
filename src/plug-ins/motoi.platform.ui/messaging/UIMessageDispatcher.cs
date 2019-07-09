@@ -1,72 +1,61 @@
 ﻿using System;
-using NLog;
 using xcite.csharp;
 using xcite.csharp.oop;
+using xcite.logging;
 
 namespace motoi.platform.ui.messaging {
     /// <summary> Implements a dispatcher of messages to the UI elements. </summary>
     public class UIMessageDispatcher : GenericSingleton<UIMessageDispatcher> {
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog _log = LogManager.GetLog(typeof(UIMessageDispatcher));
 
-        private readonly AuxiliaryAudible<IUIMessageDispatchListener> iRegisteredListeners = new AuxiliaryAudible<IUIMessageDispatchListener>();
+        private readonly AuxiliaryAudible<IUIMessageDispatchListener> _registeredListeners = new AuxiliaryAudible<IUIMessageDispatchListener>();
 
-        /// <summary>
-        /// Subscribes the given <paramref name="listener"/> to dispatching events. 
-        /// </summary>
+        /// <summary> Subscribes the given <paramref name="listener"/> to dispatching events. </summary>
         /// <param name="listener">Listener to subscribe</param>
         public void AddMessageDispatchListener(IUIMessageDispatchListener listener) {
-            iRegisteredListeners.AddListener(listener);
+            _registeredListeners.AddListener(listener);
         }
 
-        /// <summary>
-        /// Unsubscribes the given <paramref name="listener"/> from dispatching events.
-        /// </summary>
+        /// <summary> Unsubscribes the given <paramref name="listener"/> from dispatching events. </summary>
         /// <param name="listener">Listener to unsubscribe</param>
         public void RemoveMessageDispatchListener(IUIMessageDispatchListener listener) {
-            iRegisteredListeners.RemoveListener(listener);
+            _registeredListeners.RemoveListener(listener);
         }
 
-        /// <summary>
-        /// Dispatches a message to UI elements using the given parameters.
-        /// </summary>
+        /// <summary> Dispatches a message to UI elements using the given parameters. </summary>
         /// <param name="uiElement">UI element to notify</param>
         /// <param name="action">Action to perform</param>
         /// <param name="arguments">Action arguments</param>
         public void DispatchMessage(object uiElement, ushort action, object[] arguments) {
             UIMessage message = new UIMessage {UIElement = uiElement, Action = action, Arguments = arguments};
-            iRegisteredListeners.Dispatch(lstnr => lstnr.OnMessageDispatch(message), OnDispatchingException);
+            _registeredListeners.Dispatch(lstnr => lstnr.OnMessageDispatch(message), OnDispatchingException);
         }
 
-        /// <summary>
-        /// Dispatches a message asynchronously to UI elements using the given parameters.
-        /// </summary>
+        /// <summary> Dispatches a message asynchronously to UI elements using the given parameters. </summary>
         /// <param name="uiElement">UI element to notify</param>
         /// <param name="action">Action to perform</param>
         /// <param name="arguments">Action arguments</param>
         public void DispatchMessageAsync(object uiElement, ushort action, object[] arguments) {
             UIMessage message = new UIMessage { UIElement = uiElement, Action = action, Arguments = arguments };
-            iRegisteredListeners.Dispatch(lstnr => lstnr.OnAsyncMessageDispatch(message), OnDispatchingException);
+            _registeredListeners.Dispatch(lstnr => lstnr.OnAsyncMessageDispatch(message), OnDispatchingException);
         }
 
         /// <summary>
-        /// Is invoked when an exception during the dispatching to the <paramref name="uiMessageDispatchListener"/> occurred.
+        /// Is invoked when an exception during the dispatching
+        /// to the <paramref name="uiMessageDispatchListener"/> occurred.
         /// </summary>
         /// <param name="exception">Exception</param>
         /// <param name="uiMessageDispatchListener">Listener the exception happened to</param>
         private void OnDispatchingException(Exception exception, IUIMessageDispatchListener uiMessageDispatchListener) {
-            _log.Error(exception, $"Error on dispatching event to '{uiMessageDispatchListener}'.");
+            _log.Error($"Error on dispatching event to '{uiMessageDispatchListener}'.", exception);
         }
-
-        /// <summary>
-        /// Will be called directly after this instance has been created.
-        /// </summary>
+        
+        /// <inheritdoc />
         protected override void OnInitialize() {
             // Currently nothing to do here
         }
-
-        /// <summary>
-        /// Will be called when <see cref="GenericSingleton{TClass}.Destroy"/> has been called for this instance.
-        /// </summary>
+        
+        /// <inheritdoc />
         protected override void OnDestroy() {
             // Currently nothing to do here
         }

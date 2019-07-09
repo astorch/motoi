@@ -1,9 +1,7 @@
 ﻿using System;
 
 namespace motoi.platform.ui.messaging {
-    /// <summary>
-    /// Defines methods to perform actions on the UI thread.
-    /// </summary>
+    /// <summary> Defines methods to perform actions on the UI thread. </summary>
     public interface IUIInvoker {
         /// <summary>
         /// Returns TRUE if current thread is not the UI thread and therefore an <see cref="Invoke"/> is required 

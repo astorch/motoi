@@ -3,9 +3,7 @@ using motoi.platform.ui.actions;
 using motoi.platform.ui.images;
 
 namespace motoi.platform.ui.toolbars {
-    /// <summary>
-    /// Describes a tool bar.
-    /// </summary>
+    /// <summary> Describes a tool bar. </summary>
     public interface IToolBar {
         /// <summary>
         /// Adds a button to the tool bar with the given <paramref name="label"/>. If the button is clicked, the given 

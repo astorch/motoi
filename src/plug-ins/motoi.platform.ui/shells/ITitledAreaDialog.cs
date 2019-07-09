@@ -11,13 +11,14 @@ namespace motoi.platform.ui.shells {
     }
 
     /// <summary>
-    /// Provides the property meta data of <see cref="ITitledAreaDialog"/> that is used by data binding operations.
+    /// Provides the property meta data of <see cref="ITitledAreaDialog"/>
+    /// that is used by data binding operations.
     /// </summary>
     public class PTitledAreaDialog : PDialogWindowControl<ITitledAreaDialog> {
         /// <summary> Title property meta data </summary>
-        public static readonly IBindableProperty<string> TitleProperty = CreatePropertyInfo(_ => _.Title, string.Empty);
+        public static readonly IBindableProperty<string> TitleProperty = CreatePropertyInfo(nameof(ITitledAreaDialog.Title), string.Empty);
 
         /// <summary> Description property meta data </summary>
-        public static readonly IBindableProperty<string> DescriptionProperty = CreatePropertyInfo(_ => _.Description, string.Empty);
+        public static readonly IBindableProperty<string> DescriptionProperty = CreatePropertyInfo(nameof(ITitledAreaDialog.Description), string.Empty);
     }
 }

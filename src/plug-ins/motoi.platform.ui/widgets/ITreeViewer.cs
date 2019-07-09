@@ -2,15 +2,14 @@
 using motoi.platform.ui.data;
 
 namespace motoi.platform.ui.widgets {
-    /// <summary>
-    /// Defines the properties of a tree viewer.
-    /// </summary>
+    /// <summary> Defines the properties of a tree viewer. </summary>
     public interface ITreeViewer : IWidget, IDataViewer<ITreeContentProvider, ITreeLabelProvider> {
         ContextMenuItemProvider ContextMenuItemProvider { get; set; }
     }
 
     /// <summary>
-    /// Provides the property meta data of <see cref="ITreeViewer"/> that is used by data binding operations.
+    /// Provides the property meta data of <see cref="ITreeViewer"/>
+    /// that is used by data binding operations.
     /// </summary>
     public class PTreeViewer : PWidgetControl<ITreeViewer> {
         

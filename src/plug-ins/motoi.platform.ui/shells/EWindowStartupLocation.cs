@@ -1,9 +1,7 @@
 ﻿using xcite.csharp;
 
 namespace motoi.platform.ui.shells {
-    /// <summary>
-    /// Defines window startup locations.
-    /// </summary>
+    /// <summary> Defines window startup locations. </summary>
     public class EWindowStartupLocation : XEnum<EWindowStartupLocation> {
         /// <summary> The startup location is set by code or determined by the windows default location. </summary>
         public static readonly EWindowStartupLocation Manual = new EWindowStartupLocation("Manuel");

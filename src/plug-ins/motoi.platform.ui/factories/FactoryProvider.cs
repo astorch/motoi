@@ -2,8 +2,8 @@
 using System.Linq;
 using motoi.extensions;
 using motoi.plugins;
-using NLog;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.platform.ui.factories {
     /// <summary> Provides access to the registered UI Factories. </summary>
@@ -11,11 +11,11 @@ namespace motoi.platform.ui.factories {
         /// <summary> Extension Point id. </summary>
         private const string FactoryExtensionPointId = "org.motoi.ui.provider";
 
-        private IUIProvider iUIProvider;
-        private IShellFactory iShellFactory;
-        private IWidgetFactory iWidgetFactory;
-        private IUIServiceFactory iUIServiceFactory;
-        private IApplicationController iApplicationController;
+        private IUIProvider _uiProvider;
+        private IShellFactory _shellFactory;
+        private IWidgetFactory _widgetFactory;
+        private IUIServiceFactory _uiServiceFactory;
+        private IApplicationController _applicationController;
 
         /// <summary>
         /// Returns the controller of the UI platform application.
@@ -24,7 +24,7 @@ namespace motoi.platform.ui.factories {
         /// <seealso cref="IApplicationController"/>
         /// <returns>UI platform application controller</returns>
         public IApplicationController GetApplicationController() {
-            return iApplicationController ?? (iApplicationController = iUIProvider.GetApplicationController());
+            return _applicationController ?? (_applicationController = _uiProvider.GetApplicationController());
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace motoi.platform.ui.factories {
         /// </summary>
         /// <returns>Factory for creating services</returns>
         public IUIServiceFactory GetUIServiceFactory() {
-            return iUIServiceFactory ?? (iUIServiceFactory = iUIProvider.GetUIServiceFactory());
+            return _uiServiceFactory ?? (_uiServiceFactory = _uiProvider.GetUIServiceFactory());
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace motoi.platform.ui.factories {
         /// <seealso cref="IShell"/>
         /// <returns>Factory for creating shells</returns>
         public IShellFactory GetShellFactory() {
-            return iShellFactory ?? (iShellFactory = iUIProvider.GetShellFactory());
+            return _shellFactory ?? (_shellFactory = _uiProvider.GetShellFactory());
         }
 
         /// <summary>
@@ -54,20 +54,20 @@ namespace motoi.platform.ui.factories {
         /// <seealso cref="IWidgetCompound"/>
         /// <returns>Factory for creating widgets or compounds</returns>
         public IWidgetFactory GetWidgetFactory() {
-            return iWidgetFactory ?? (iWidgetFactory = iUIProvider.GetWidgetFactory());
+            return _widgetFactory ?? (_widgetFactory = _uiProvider.GetWidgetFactory());
         }
 
         /// <inheritdoc />
         protected override void OnInitialize() {
-            Logger logWriter = LogManager.GetCurrentClassLogger();
+            ILog logWriter = LogManager.GetLog(typeof(FactoryProvider));
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(FactoryExtensionPointId);
             if (configurationElements.Length == 0) throw new InvalidOperationException("There is no registered UI provider!");
 
             if (configurationElements.Length > 1) {
                 string[] viewPartFactories = configurationElements.Select(x => x.Id).ToArray();
                 string enumeration = string.Join(", ", viewPartFactories);
-                logWriter.Warn(string.Format("There is more than one UI provider registered: {0}", enumeration));
-                logWriter.Warn("Taking first one ({0})", configurationElements[0].Id);
+                logWriter.Warning($"There is more than one UI provider registered: {enumeration}");
+                logWriter.Warning($"Taking first one ({configurationElements[0].Id})");
                 configurationElements = new[] {configurationElements[0]};
             }
 
@@ -76,7 +76,7 @@ namespace motoi.platform.ui.factories {
             string className = element["class"];
 
             if (string.IsNullOrEmpty(className)) {
-                string msg = string.Format("Class attribute of UI provider contribution '{0}' is NULL or empty", id);
+                string msg = $"Class attribute of UI provider contribution '{id}' is NULL or empty";
                 logWriter.Fatal(msg);
                 throw new InvalidOperationException(msg);
             }
@@ -85,9 +85,9 @@ namespace motoi.platform.ui.factories {
                 IBundle providingBundle = ExtensionService.Instance.GetProvidingBundle(element);
                 Type uiProviderType = TypeLoader.TypeForName(providingBundle, className);
 
-                iUIProvider = uiProviderType.NewInstance<IUIProvider>();
+                _uiProvider = uiProviderType.NewInstance<IUIProvider>();
             } catch (Exception ex) {
-                string msg = string.Format("Error on creating UI provider instance of '{0}' contributed by '{1}'", className, id);
+                string msg = $"Error on creating UI provider instance of '{className}' contributed by '{id}'";
                 logWriter.Fatal(msg);
                 throw new InvalidOperationException(msg, ex);
             }

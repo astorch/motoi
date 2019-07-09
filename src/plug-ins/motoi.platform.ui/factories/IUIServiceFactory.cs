@@ -1,7 +1,5 @@
 ﻿namespace motoi.platform.ui.factories {
-    /// <summary>
-    /// Defines a factory for UI services.
-    /// </summary>
+    /// <summary> Defines a factory for UI services. </summary>
     /// <seealso cref="IUIService"/>
     public interface IUIServiceFactory {
         /// <summary>

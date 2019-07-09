@@ -11,9 +11,7 @@ namespace motoi.platform.ui.shells {
         /// <param name="modal">TRUE or FALSE</param>
         void Show(bool modal);
 
-        /// <summary>
-        /// Adds a button to dialog button area.
-        /// </summary>
+        /// <summary> Adds a button to dialog button area. </summary>
         /// <param name="label">Label of the button</param>
         /// <param name="actionHandler">Handle of the action to be performed when the button is clicked</param>
         /// <returns>Handle of the button</returns>
@@ -31,14 +29,16 @@ namespace motoi.platform.ui.shells {
     }
 
     /// <summary>
-    /// Provides the property meta data of <see cref="IDialogWindow"/> that is used by data binding operations.
+    /// Provides the property meta data of <see cref="IDialogWindow"/>
+    /// that is used by data binding operations.
     /// </summary>
     public class PDialogWindow : PDialogWindowControl<IDialogWindow> {
         
     }
 
     /// <summary>
-    /// Provides the property meta data of <see cref="IDialogWindow"/> that is used by data binding operations.
+    /// Provides the property meta data of <see cref="IDialogWindow"/>
+    /// that is used by data binding operations.
     /// </summary>
     public class PDialogWindowControl<TDialogWindow> : PWindowControl<TDialogWindow> where TDialogWindow : class, IDialogWindow {
         

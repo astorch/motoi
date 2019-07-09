@@ -4,11 +4,9 @@
     /// are used by data viewers to collect the data which shall be viewed.
     /// </summary>
     public interface IContentProvider {
-        /// <summary>
-        /// Return all elements that derive from the given input element.
-        /// </summary>
+        /// <summary> Return all elements that derive from the given input element. </summary>
         /// <param name="input">Input element</param>
-        /// <returns></returns>
+        /// <returns>Set of elements</returns>
         object[] GetElements(object input);
     }
 }

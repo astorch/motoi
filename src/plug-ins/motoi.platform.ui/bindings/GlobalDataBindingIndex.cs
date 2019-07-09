@@ -4,13 +4,11 @@ using System.Linq;
 using xcite.csharp;
 
 namespace motoi.platform.ui.bindings {
-    /// <summary>
-    /// Implements a global data binding cache that provides all data binding functionality.
-    /// </summary>
+    /// <summary> Implements a global data binding cache that provides all data binding functionality. </summary>
     class GlobalDataBindingIndex : GenericSingleton<GlobalDataBindingIndex> {
 
-        private readonly Dictionary<Tuple<IDataBindingSupport, IBindableProperty>, object> iGlobalValueCache = new Dictionary<Tuple<IDataBindingSupport, IBindableProperty>, object>();
-        private readonly Dictionary<Tuple<IDataBindingSupport, IBindableProperty>, DataBinding> iGlobalDataBindingCache = new Dictionary<Tuple<IDataBindingSupport, IBindableProperty>, DataBinding>(); 
+        private readonly Dictionary<Tuple<IDataBindingSupport, IBindableProperty>, object> _globalValueCache = new Dictionary<Tuple<IDataBindingSupport, IBindableProperty>, object>();
+        private readonly Dictionary<Tuple<IDataBindingSupport, IBindableProperty>, DataBinding> _globalDataBindingCache = new Dictionary<Tuple<IDataBindingSupport, IBindableProperty>, DataBinding>(); 
 
         /// <summary>
         /// Sets the given <paramref name="value"/> as current property value of the bound <paramref name="property"/> for 
@@ -24,20 +22,20 @@ namespace motoi.platform.ui.bindings {
         public bool SetValue<TValue>(IDataBindingSupport obj, IBindableProperty<TValue> property, TValue value) {
             Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, (IBindableProperty)property);
             
-            lock (iGlobalValueCache) {
+            lock (_globalValueCache) {
                 // Only update real new values
-                object currentValue;
-                iGlobalValueCache.TryGetValue(key, out currentValue);
+                _globalValueCache.TryGetValue(key, out object currentValue);
                 if (Equals(currentValue, value)) return false;
 
                 // Update the new value
-                iGlobalValueCache[key] = value;
+                _globalValueCache[key] = value;
                 return true;
             }
         }
 
         /// <summary>
-        /// Returns the current value of the given <paramref name="property"/> of the given data binding target <paramref name="obj"/>.
+        /// Returns the current value of the given <paramref name="property"/>
+        /// of the given data binding target <paramref name="obj"/>.
         /// </summary>
         /// <param name="obj">Data binding target</param>
         /// <param name="property">Data binding property</param>
@@ -46,8 +44,8 @@ namespace motoi.platform.ui.bindings {
             Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, (IBindableProperty)property);
 
             object result;
-            lock (iGlobalValueCache) {
-                iGlobalValueCache.TryGetValue(key, out result);
+            lock (_globalValueCache) {
+                _globalValueCache.TryGetValue(key, out result);
             }
             return (TValue)result;
         }
@@ -61,15 +59,15 @@ namespace motoi.platform.ui.bindings {
         /// <returns>Data binding or NULL</returns>
         public DataBinding GetDataBinding<TValue>(IDataBindingSupport obj, IBindableProperty<TValue> property) {
             Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, (IBindableProperty)property);
-            lock (iGlobalDataBindingCache) {
-                DataBinding dataBinding;
-                iGlobalDataBindingCache.TryGetValue(key, out dataBinding);
+            lock (_globalDataBindingCache) {
+                _globalDataBindingCache.TryGetValue(key, out DataBinding dataBinding);
                 return dataBinding;
             }
         }
 
         /// <summary>
-        /// Adds the given <paramref name="dataBinding"/> to the internal index for the given data binding target <paramref name="obj"/> 
+        /// Adds the given <paramref name="dataBinding"/> to the internal index for
+        /// the given data binding target <paramref name="obj"/> 
         /// with the given bound property <paramref name="property"/>.
         /// </summary>
         /// <param name="obj">Data binding target</param>
@@ -77,52 +75,52 @@ namespace motoi.platform.ui.bindings {
         /// <param name="dataBinding">Data binding to index</param>
         public void AddToIndex<TValue>(IDataBindingSupport obj, IBindableProperty<TValue> property, DataBinding dataBinding) {
             Tuple<IDataBindingSupport, IBindableProperty> key = Tuple.Create(obj, (IBindableProperty)property);
-            lock (iGlobalDataBindingCache) {
-                iGlobalDataBindingCache[key] = dataBinding;
+            lock (_globalDataBindingCache) {
+                _globalDataBindingCache[key] = dataBinding;
             }
         }
 
         /// <summary>
-        /// Removes all data bindings for the given data binding target <paramref name="obj"/> from the index. 
+        /// Removes all data bindings for the given data binding
+        /// target <paramref name="obj"/> from the index. 
         /// </summary>
         /// <param name="obj"></param>
         public void RemoveFromIndex(IDataBindingSupport obj) {
             // Remove cached values
-            lock (iGlobalValueCache) {
-                Tuple<IDataBindingSupport, IBindableProperty>[] keysToRemove = iGlobalValueCache.Keys.Where(k => Equals(obj, k.Item1)).ToArray();
+            lock (_globalValueCache) {
+                Tuple<IDataBindingSupport, IBindableProperty>[] keysToRemove = _globalValueCache.Keys.Where(k => Equals(obj, k.Item1)).ToArray();
                 for (short i = -1; ++i != keysToRemove.Length;) {
                     Tuple<IDataBindingSupport, IBindableProperty> key = keysToRemove[i];
-                    iGlobalValueCache.Remove(key);
+                    _globalValueCache.Remove(key);
                 }
             }
 
-            lock (iGlobalDataBindingCache) {
-                Tuple<IDataBindingSupport, IBindableProperty>[] keysToRemove = iGlobalDataBindingCache.Keys.Where(k => Equals(obj, k.Item1)).ToArray();
+            lock (_globalDataBindingCache) {
+                Tuple<IDataBindingSupport, IBindableProperty>[] keysToRemove = _globalDataBindingCache.Keys.Where(k => Equals(obj, k.Item1)).ToArray();
                 for (short i = -1; ++i != keysToRemove.Length;) {
                     Tuple<IDataBindingSupport, IBindableProperty> key = keysToRemove[i];
-                    DataBinding dataBinding = iGlobalDataBindingCache[key];
+                    DataBinding dataBinding = _globalDataBindingCache[key];
                     dataBinding.Dispose();
-                    iGlobalDataBindingCache.Remove(key);
+                    _globalDataBindingCache.Remove(key);
                 }
             }
         }
 
         /// <summary>
-        /// Will be called when <see cref="GenericSingleton{TClass}.Destroy"/> has been called for this instance.
+        /// Will be called when <see cref="GenericSingleton{TClass}.Destroy"/>
+        /// has been called for this instance.
         /// </summary>
         protected override void OnDestroy() {
-            lock (iGlobalValueCache) {
-                iGlobalValueCache.Clear();
+            lock (_globalValueCache) {
+                _globalValueCache.Clear();
             }
 
-            lock (iGlobalDataBindingCache) {
-                iGlobalDataBindingCache.Clear();
+            lock (_globalDataBindingCache) {
+                _globalDataBindingCache.Clear();
             }
         }
 
-        /// <summary>
-        /// Will be called directly after this instance has been created.
-        /// </summary>
+        /// <summary> Will be called directly after this instance has been created. </summary>
         protected override void OnInitialize() {
             // Currently nothing to do here
         }

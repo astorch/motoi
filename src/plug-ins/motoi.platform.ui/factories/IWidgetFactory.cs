@@ -1,7 +1,5 @@
 ﻿namespace motoi.platform.ui.factories {
-    /// <summary>
-    /// Defines a factory for widgets.
-    /// </summary>
+    /// <summary> Defines a factory for widgets. </summary>
     public interface IWidgetFactory {
         /// <summary>
         /// Return a new instance of the given type.
