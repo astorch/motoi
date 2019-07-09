@@ -1,11 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
-using System.Xml;
-using NLog;
-using NLog.Config;
+using xcite.logging;
 
 namespace motoi.moose.applicationstarter {
     /// <summary> Provides the entry point of an motoi based application. </summary>
@@ -19,7 +15,7 @@ namespace motoi.moose.applicationstarter {
 
             // Configure logging
             ConfigureLog();
-            Logger log = LogManager.GetCurrentClassLogger();
+            ILog log = LogManager.GetLog(typeof(EntryPoint));
             log.Info("Log writer initialized");
 
             string platformPluginName = "motoi.platform.application";
@@ -43,19 +39,13 @@ namespace motoi.moose.applicationstarter {
                 // Hide the console window
                 ConsoleManager.HideConsoleWindow();
             } catch (Exception ex) {
-                log.Error(ex, $"Error on starting plug-in '{platformPluginName}'");
+                log.Error($"Error on starting plug-in '{platformPluginName}'", ex);
             }
         }
 
         /// <summary> Configures the log4net framework. </summary>
         private static void ConfigureLog() {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("motoi.moose.applicationstarter._nlog.config")) {
-                if (stream == null) throw new InvalidOperationException("Could not read nlog.config stream");
-                using (XmlReader reader = XmlReader.Create(stream)) {
-                    XmlLoggingConfiguration config = new XmlLoggingConfiguration(reader, "nlog.config");
-                    LogManager.Configuration = config;
-                }
-            }
+            LogManager.Configuration = ConfigurationReader.ReadFile("_log.cfg", true);
         }
     }
 }
