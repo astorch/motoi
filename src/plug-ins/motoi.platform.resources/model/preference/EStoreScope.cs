@@ -1,9 +1,7 @@
 ﻿using xcite.csharp;
 
 namespace motoi.platform.resources.model.preference {
-    /// <summary>
-    /// Defines storage scopes of a preference store.
-    /// </summary>
+    /// <summary> Defines storage scopes of a preference store. </summary>
     public class EStoreScope : XEnum<EStoreScope> {
         /// <summary>
         /// Indicates that the settings are stored user specific. So, each user 

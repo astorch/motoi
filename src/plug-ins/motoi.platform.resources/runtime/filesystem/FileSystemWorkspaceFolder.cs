@@ -4,15 +4,11 @@ using System.IO;
 using motoi.platform.resources.model;
 
 namespace motoi.platform.resources.runtime.filesystem {
-    /// <summary>
-    /// Provides an implementation of <see cref="IWorkspaceFolder"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IWorkspaceFolder"/>. </summary>
     class FileSystemWorkspaceFolder : AbstractFileSystemWorkspaceArtefactContainer, IWorkspaceFolder {
-        private IWorkspaceArtefact iParent;
+        private IWorkspaceArtefact _parent;
 
-        /// <summary>
-        /// Creates a new instance using the given <paramref name="folderInfo"/>.
-        /// </summary>
+        /// <summary> Creates a new instance using the given <paramref name="folderInfo"/>. </summary>
         /// <param name="folderInfo">Directory info</param>
         /// <exception cref="ArgumentNullException">If the given directory reference is NULL</exception>
         public FileSystemWorkspaceFolder(DirectoryInfo folderInfo) : base(folderInfo) {
@@ -20,12 +16,12 @@ namespace motoi.platform.resources.runtime.filesystem {
         }
 
         /// <inheritdoc />
-        public override string Nature { get { return "FileSystem.Folder"; } }
+        public override string Nature 
+            => "FileSystem.Folder";
 
         /// <inheritdoc />
-        public override IWorkspaceArtefact Parent {
-            get { return iParent ?? (iParent = new FileSystemWorkspaceFolder(FileSystemDirectory.Parent)); }
-        }
+        public override IWorkspaceArtefact Parent 
+            => _parent ?? (_parent = new FileSystemWorkspaceFolder(FileSystemDirectory.Parent));
 
         /// <inheritdoc />
         protected override void PerformRefresh(ERefreshBehavior refreshBehavior, DirectoryInfo fileSystemDirectory, List<IWorkspaceArtefact> containerArtefacts) {

@@ -2,9 +2,7 @@
 using System.ComponentModel;
 
 namespace motoi.platform.resources.model.preference {
-    /// <summary>
-    /// Provides methods to store and read information as key value pair.
-    /// </summary>
+    /// <summary> Provides methods to store and read information as key value pair. </summary>
     public interface IPreferenceStore : INotifyPropertyChanged {
         /// <summary>
         /// Returns the value of the given <paramref name="key"/>. If there is no value, 
@@ -38,24 +36,21 @@ namespace motoi.platform.resources.model.preference {
         /// <returns>Value for the key</returns>
         TValue GetValue<TValue>(string key, TValue defaultValue) where TValue : IConvertible;
 
-        /// <summary>
-        /// Sets the value of the given <paramref name="key"/>.
-        /// </summary>
+        /// <summary> Sets the value of the given <paramref name="key"/>. </summary>
         /// <typeparam name="TValue">Type of value</typeparam>
         /// <param name="key">Key the value is assigned</param>
         /// <param name="value">Value to set</param>
         void SetValue<TValue>(string key, TValue value) where TValue : IConvertible;
 
         /// <summary>
-        /// Returns TRUE if the store contains a value with the given <paramref name="key"/>.
+        /// Returns TRUE if the store contains a value
+        /// with the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">Key to check</param>
         /// <returns>TRUE or FALSE</returns>
         bool HasValue(string key);
 
-        /// <summary>
-        /// Notifies the instance to store its data.
-        /// </summary>
+        /// <summary> Notifies the instance to store its data. </summary>
         void Flush();
     }
 }

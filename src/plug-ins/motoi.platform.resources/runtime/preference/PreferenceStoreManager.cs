@@ -3,13 +3,11 @@ using System.Linq;
 using motoi.extensions;
 using motoi.platform.resources.model.preference;
 using motoi.plugins;
-using NLog;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.platform.resources.runtime.preference {
-    /// <summary>
-    /// Provides access to the preference stores.
-    /// </summary>
+    /// <summary> Provides access to the preference stores. </summary>
     public class PreferenceStoreManager  {
         private const string PreferenceStoreManagerExtensionPointId = "org.motoi.resources.preferenceStoreManager";
         private static IPreferenceStoreManager _preferenceStoreManager;
@@ -22,9 +20,7 @@ namespace motoi.platform.resources.runtime.preference {
             return _preferenceStoreManager ?? (_preferenceStoreManager = CreatePreferenceStoreManager());
         }
 
-        /// <summary>
-        /// Returns always a new instance of <see cref="FilePreferenceStoreManager"/>.
-        /// </summary>
+        /// <summary> Returns always a new instance of <see cref="FilePreferenceStoreManager"/>. </summary>
         /// <returns>A new instance of <see cref="FilePreferenceStoreManager"/></returns>
         private static IPreferenceStoreManager GetDefaultPreferenceStoreManager() {
             return new FilePreferenceStoreManager();
@@ -40,7 +36,7 @@ namespace motoi.platform.resources.runtime.preference {
         /// default implementation.
         /// </returns>
         private static IPreferenceStoreManager CreatePreferenceStoreManager() {
-            Logger logWriter = LogManager.GetCurrentClassLogger();
+            ILog logWriter = LogManager.GetLog(typeof(PreferenceStoreManager));
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(PreferenceStoreManagerExtensionPointId);
             
             // Default
@@ -52,8 +48,7 @@ namespace motoi.platform.resources.runtime.preference {
             // Max priority
             IConfigurationElement maxPriorityElement = configurationElements.OrderByDescending(element => {
                 string priorityValue = element["priority"];
-                int priority;
-                if (!int.TryParse(priorityValue, out priority)) return 0;
+                if (!int.TryParse(priorityValue, out int priority)) return 0;
                 return priority;
             }).First();
 
@@ -76,7 +71,7 @@ namespace motoi.platform.resources.runtime.preference {
                 logWriter.Info($"Preference store manager of type '{preferenceStoreManager.GetType()}' successfully installed");
                 return preferenceStoreManager;
             } catch (Exception ex) {
-                logWriter.Error(ex, $"Error on installing preference store manager from plug-in '{providingBundle}' (Class '{className}').");
+                logWriter.Error($"Error on installing preference store manager from plug-in '{providingBundle}' (Class '{className}').", ex);
                 return GetDefaultPreferenceStoreManager();
             }
         }

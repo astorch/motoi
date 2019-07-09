@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using motoi.platform.resources.model.preference;
-using NLog;
+using xcite.logging;
 
 namespace motoi.platform.resources.runtime.preference {
     /// <summary>
-    /// Provides an implementation of <see cref="IPreferenceStoreManager"/> that operates on 
-    /// the local file system.
+    /// Provides an implementation of <see cref="IPreferenceStoreManager"/>
+    /// that operates on the local file system.
     /// </summary>
     public class FilePreferenceStoreManager : IPreferenceStoreManager {
         private const string PreferencesFolderName = ".preferences";
-        private readonly Dictionary<string, IPreferenceStore> iPreferenceStoreTable = new Dictionary<string, IPreferenceStore>(23);
-        private readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private readonly Dictionary<string, IPreferenceStore> _preferenceStoreTable = new Dictionary<string, IPreferenceStore>(23);
+        private readonly ILog _log = LogManager.GetLog(typeof(FilePreferenceStoreManager));
         private string iPreferenceFolderBasePath;
 
         /// <inheritdoc />
@@ -23,7 +23,7 @@ namespace motoi.platform.resources.runtime.preference {
             if (storeScope == EStoreScope.User)
                 storeBasePath = Path.Combine(storeBasePath, Environment.UserName.ToLowerInvariant());
 
-            if (!iPreferenceStoreTable.TryGetValue(storeName, out IPreferenceStore prefStore)) {
+            if (!_preferenceStoreTable.TryGetValue(storeName, out IPreferenceStore prefStore)) {
                 // Create the store base path if neccessary
                 if (!Directory.Exists(storeBasePath))
                     Directory.CreateDirectory(storeBasePath);
@@ -34,7 +34,7 @@ namespace motoi.platform.resources.runtime.preference {
                 // Create the store instance
                 PreferenceStore preferenceStore = new PreferenceStore(storeName, storePath);
                 preferenceStore.Load();
-                iPreferenceStoreTable.Add(storeName, prefStore = preferenceStore);
+                _preferenceStoreTable.Add(storeName, prefStore = preferenceStore);
             }
 
             return prefStore;
@@ -52,7 +52,7 @@ namespace motoi.platform.resources.runtime.preference {
 
         /// <inheritdoc />
         public void Dispose() {
-            using (Dictionary<string, IPreferenceStore>.ValueCollection.Enumerator storeItr = iPreferenceStoreTable.Values.GetEnumerator()) {
+            using (Dictionary<string, IPreferenceStore>.ValueCollection.Enumerator storeItr = _preferenceStoreTable.Values.GetEnumerator()) {
                 while (storeItr.MoveNext()) {
                     IPreferenceStore store = storeItr.Current;
                     if (store == null) continue;
@@ -60,12 +60,12 @@ namespace motoi.platform.resources.runtime.preference {
                     try {
                         store.Flush();
                     } catch (Exception ex) {
-                        _log.Error(ex, "Error on flushing store. Reason: {0}");
+                        _log.Error("Error on flushing store. Reason: {0}", ex);
                     }
                 }
             }
 
-            iPreferenceStoreTable.Clear();
+            _preferenceStoreTable.Clear();
         }
     }
 }

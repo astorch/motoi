@@ -1,9 +1,7 @@
 ﻿using System.IO;
 
 namespace motoi.platform.resources.model {
-    /// <summary>
-    /// Defines a workspace
-    /// </summary>
+    /// <summary> Defines a workspace </summary>
     public interface IWorkspace : IWorkspaceArtefactContainer {
         /// <summary>
         /// Returns an <see cref="IWorkspaceFile"/> reference for the given <paramref name="fileInfo"/>. If the file info 

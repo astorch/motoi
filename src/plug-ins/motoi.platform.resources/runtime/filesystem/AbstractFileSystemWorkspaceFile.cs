@@ -3,13 +3,9 @@ using System.IO;
 using motoi.platform.resources.model;
 
 namespace motoi.platform.resources.runtime.filesystem {
-    /// <summary>
-    /// Provides an abstract implementation of <see cref="IWorkspaceFile"/>.
-    /// </summary>
+    /// <summary> Provides an abstract implementation of <see cref="IWorkspaceFile"/>. </summary>
     public abstract class AbstractFileSystemWorkspaceFile : IWorkspaceFile { // TODO remove public modifier
-        /// <summary>
-        /// Creates a new instance using the associated <paramref name="file"/>.
-        /// </summary>
+        /// <summary> Creates a new instance using the associated <paramref name="file"/>. </summary>
         /// <param name="file">File system file</param>
         /// <exception cref="ArgumentNullException">If <paramref name="file"/> is NULL</exception>
         protected AbstractFileSystemWorkspaceFile(FileInfo file) {
@@ -18,16 +14,14 @@ namespace motoi.platform.resources.runtime.filesystem {
             Location = new Uri(file.FullName);
         }
 
-        /// <summary>
-        /// Returns the associated file system file.
-        /// </summary>
-        protected virtual FileInfo FileSystemFile { get; private set; }
+        /// <summary> Returns the associated file system file. </summary>
+        protected virtual FileInfo FileSystemFile { get; }
 
         /// <inheritdoc />
-        public virtual string Name { get; private set; }
+        public virtual string Name { get; }
 
         /// <inheritdoc />
-        public virtual Uri Location { get; private set; }
+        public virtual Uri Location { get; }
 
         /// <inheritdoc />
         public abstract IWorkspaceArtefact Parent { get; }
@@ -62,8 +56,7 @@ namespace motoi.platform.resources.runtime.filesystem {
 
         /// <inheritdoc />
         public override string ToString() {
-            string result = string.Format("{0} ({1})", Nature, Location.LocalPath);
-            return result;
+            return $"{Nature} ({Location.LocalPath})";
         }
     }
 }

@@ -6,16 +6,14 @@ using System.IO;
 using motoi.platform.resources.model.preference;
 
 namespace motoi.platform.resources.runtime.preference {
-    /// <summary>
-    /// Provides an implementation of <see cref="IPreferenceStore"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IPreferenceStore"/>. </summary>
     public class PreferenceStore : IPreferenceStore {
 
-        private static readonly IFormatProvider iFormatProvider = CultureInfo.InvariantCulture;
+        private static readonly IFormatProvider _formatProvider = CultureInfo.InvariantCulture;
 
-        private readonly string iStoreName;
-        private readonly string iStorePath;
-        private readonly Dictionary<string, string> iValueTable = new Dictionary<string, string>(23);
+        private readonly string _storeName;
+        private readonly string _storePath;
+        private readonly Dictionary<string, string> _valueTable = new Dictionary<string, string>(23);
 
         /// <summary>
         /// Creates a new instance that is associated with the given <paramref name="storeName"/>. 
@@ -25,11 +23,11 @@ namespace motoi.platform.resources.runtime.preference {
         /// <param name="storePath">Path the store reads its data from or stores it</param>
         /// <exception cref="ArgumentNullException">If any argument is NULL or empty</exception>
         public PreferenceStore(string storeName, string storePath) {
-            if (string.IsNullOrEmpty(storeName)) throw new ArgumentNullException("storeName");
-            if (string.IsNullOrEmpty(storePath)) throw new ArgumentNullException("storePath");
+            if (string.IsNullOrEmpty(storeName)) throw new ArgumentNullException(nameof(storeName));
+            if (string.IsNullOrEmpty(storePath)) throw new ArgumentNullException(nameof(storePath));
 
-            iStoreName = storeName;
-            iStorePath = storePath;
+            _storeName = storeName;
+            _storePath = storePath;
         }
 
         /// <inheritdoc />
@@ -37,25 +35,23 @@ namespace motoi.platform.resources.runtime.preference {
 
         /// <inheritdoc />
         public virtual TValue GetValue<TValue>(string key) where TValue : IConvertible {
-            TValue value;
-            if (!TryGetValue(key, out value)) throw new InvalidOperationException("Key is not present or unset");
+            if (!TryGetValue(key, out TValue value)) throw new InvalidOperationException("Key is not present or unset");
             return value;
         }
 
         /// <inheritdoc />
         public virtual bool TryGetValue<TValue>(string key, out TValue value) where TValue : IConvertible {
-            value = default(TValue);
+            value = default;
             if (!HasValue(key)) return false;
 
-            string strValue = iValueTable[key];
-            value = (TValue) Convert.ChangeType(strValue, typeof(TValue), iFormatProvider);
+            string strValue = _valueTable[key];
+            value = (TValue) Convert.ChangeType(strValue, typeof(TValue), _formatProvider);
             return true;
         }
 
         /// <inheritdoc />
         public virtual TValue GetValue<TValue>(string key, TValue defaultValue) where TValue : IConvertible {
-            TValue tableValue;
-            if (!TryGetValue(key, out tableValue)) return defaultValue;
+            if (!TryGetValue(key, out TValue tableValue)) return defaultValue;
             return tableValue;
         }
 
@@ -64,9 +60,9 @@ namespace motoi.platform.resources.runtime.preference {
             if (string.IsNullOrEmpty(key)) return;
 
             if (value == null) {
-                iValueTable.Remove(key);
+                _valueTable.Remove(key);
             } else {
-                iValueTable[key] = value.ToString(iFormatProvider);
+                _valueTable[key] = value.ToString(_formatProvider);
                 RaisePropertyChanged(key);
             }
         }
@@ -74,37 +70,37 @@ namespace motoi.platform.resources.runtime.preference {
         /// <inheritdoc />
         public virtual bool HasValue(string key) {
             if (string.IsNullOrEmpty(key)) return false;
-            return iValueTable.ContainsKey(key);
+            return _valueTable.ContainsKey(key);
         }
 
         /// <inheritdoc />
         public virtual void Flush() {
-            List<string> fileEntries = new List<string>(iValueTable.Count);
-            using (Dictionary<string, string>.Enumerator itr = iValueTable.GetEnumerator()) {
+            List<string> fileEntries = new List<string>(_valueTable.Count);
+            using (Dictionary<string, string>.Enumerator itr = _valueTable.GetEnumerator()) {
                 while (itr.MoveNext()) {
                     KeyValuePair<string, string> keyValuePair = itr.Current;
-                    string entry = string.Format("{0}={1}", keyValuePair.Key, keyValuePair.Value);
+                    string entry = $"{keyValuePair.Key}={keyValuePair.Value}";
                     fileEntries.Add(entry);
                 }
             }
 
-            File.WriteAllLines(iStorePath, fileEntries);
+            File.WriteAllLines(_storePath, fileEntries);
         }
 
         /// <summary>
         /// Fills the data of the instance with the information from the assigned store path.
         /// </summary>
         public void Load() {
-            if (!File.Exists(iStorePath)) return;
+            if (!File.Exists(_storePath)) return;
 
-            string[] fileEntries = File.ReadAllLines(iStorePath);
+            string[] fileEntries = File.ReadAllLines(_storePath);
             for (int i = -1; ++i != fileEntries.Length;) {
                 string entry = fileEntries[i];
                 string[] keyValuePair = entry.Split(new[] {'='}, 2);
                 string key = keyValuePair[0];
                 string value = keyValuePair[1];
 
-                iValueTable[key] = value;
+                _valueTable[key] = value;
             }
         }
 
@@ -121,7 +117,7 @@ namespace motoi.platform.resources.runtime.preference {
 
         /// <inheritdoc />
         public override string ToString() {
-            return string.Format("{0} '{1}'", GetType().Name, iStoreName);
+            return $"{GetType().Name} '{_storeName}'";
         }
     }
 }

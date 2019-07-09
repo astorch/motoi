@@ -5,13 +5,9 @@ using motoi.platform.resources.model;
 using xcite.csharp;
 
 namespace motoi.platform.resources.runtime.filesystem {
-    /// <summary>
-    /// Provides an abstract implementation of <see cref="IWorkspaceArtefactContainer"/>.
-    /// </summary>
+    /// <summary> Provides an abstract implementation of <see cref="IWorkspaceArtefactContainer"/>. </summary>
     abstract class AbstractFileSystemWorkspaceArtefactContainer : IWorkspaceArtefactContainer {
-        /// <summary>
-        /// Creates a new instance using the given <paramref name="directoryInfo"/>.
-        /// </summary>
+        /// <summary> Creates a new instance using the given <paramref name="directoryInfo"/>. </summary>
         /// <param name="directoryInfo">Directory info</param>
         /// <exception cref="ArgumentNullException">If the given directory reference is NULL</exception>
         protected AbstractFileSystemWorkspaceArtefactContainer(DirectoryInfo directoryInfo) {
@@ -25,14 +21,10 @@ namespace motoi.platform.resources.runtime.filesystem {
         /// <inheritdoc />
         public event EventHandler Refreshed;
 
-        /// <summary>
-        /// Returns the associated file system directory.
-        /// </summary>
+        /// <summary> Returns the associated file system directory. </summary>
         protected virtual DirectoryInfo FileSystemDirectory { get; }
 
-        /// <summary>
-        /// Returns a collection containing the obtained container artefacts.
-        /// </summary>
+        /// <summary> Returns a collection containing the obtained container artefacts. </summary>
         protected virtual List<IWorkspaceArtefact> ContainerArtefacts { get; }
 
         /// <inheritdoc />
@@ -123,7 +115,7 @@ namespace motoi.platform.resources.runtime.filesystem {
         /// <param name="exception">Exception</param>
         /// <param name="delegate">Reference the exception happened to</param>
         private void OnDispatchEventException(Exception exception, Delegate @delegate) {
-            ResourceService.Instance.ResourceServiceLog.Error(exception, $"Error on dispatching event to '{@delegate}'.");
+            ResourceService.Instance.ResourceServiceLog.Error($"Error on dispatching event to '{@delegate}'.", exception);
         }
 
         /// <summary>Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.</summary>
@@ -153,8 +145,7 @@ namespace motoi.platform.resources.runtime.filesystem {
 
         /// <inheritdoc />
         public override string ToString() {
-            string result = string.Format("{0} ({1})", Nature, Location.LocalPath);
-            return result;
+            return $"{Nature} ({Location.LocalPath})";
         }
     }
 }

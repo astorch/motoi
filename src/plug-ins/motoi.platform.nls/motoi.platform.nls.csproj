@@ -1,33 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard20</TargetFramework>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Company>Arian Storch</Company>
-    <Authors>Arian Storch</Authors>
-    <Description>Motoi Platform NLS Library</Description>
-    <Copyright>© 2017 - 2019 Arian Storch. All rights reserved.</Copyright>
-    <Version>1.0.0</Version>
-    <DebugSymbols>True</DebugSymbols>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugType>full</DebugType>    
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj" />
-    <ProjectReference Include="..\..\libs\motoi.plugins\motoi.plugins.csproj" />
-    <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="meta-inf\signature.mf" />
-  </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&quot;$(SolutionDir)..\bin\debug\Tessa.exe&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot; &quot;$(SolutionDir)..\bin\debug&quot;" />
-  </Target>
+    <PropertyGroup>
+        <TargetFramework>netstandard20</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <Company>Arian Storch</Company>
+        <Authors>Arian Storch</Authors>
+        <Description>Motoi Platform NLS API</Description>
+        <Copyright>© 2017 - 2019 Arian Storch. All rights reserved.</Copyright>
+        <Version>1.0.0</Version>
+        <DebugSymbols>True</DebugSymbols>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DebugType>full</DebugType>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj" />
+        <ProjectReference Include="..\..\libs\motoi.plugins\motoi.plugins.csproj" />
+        <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj" />
+    </ItemGroup>
+    <ItemGroup />
+    <ItemGroup>
+        <None Include="meta-inf\signature.mf" />
+    </ItemGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="&quot;$(SolutionDir)..\bin\debug\Tessa.exe&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot; &quot;$(SolutionDir)..\bin\debug&quot;" />
+    </Target>
 </Project>

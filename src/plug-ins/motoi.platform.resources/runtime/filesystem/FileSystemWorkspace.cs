@@ -3,23 +3,21 @@ using System.IO;
 using motoi.platform.resources.model;
 
 namespace motoi.platform.resources.runtime.filesystem {
-    /// <summary>
-    /// Provides an implementation of <see cref="IWorkspace"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IWorkspace"/>. </summary>
     class FileSystemWorkspace : FileSystemWorkspaceFolder, IWorkspace {
-        /// <summary>
-        /// Creates a new instance for the given <paramref name="workspaceDirectoryInfo"/>.
-        /// </summary>
+        /// <summary> Creates a new instance for the given <paramref name="workspaceDirectoryInfo"/>. </summary>
         /// <param name="workspaceDirectoryInfo">Workspace directory info</param>
         public FileSystemWorkspace(DirectoryInfo workspaceDirectoryInfo) : base(workspaceDirectoryInfo) {
             // Currently nothing to do here
         }
 
         /// <inheritdoc />
-        public override string Nature { get { return "FileSystem.Workspace"; } }
+        public override string Nature 
+            => "FileSystem.Workspace";
 
         /// <inheritdoc />
-        public override IWorkspaceArtefact Parent { get { return null; } }
+        public override IWorkspaceArtefact Parent 
+            => null;
 
         /// <inheritdoc />
         public virtual IWorkspaceFile GetWorkspaceFile(FileInfo fileInfo) {
@@ -44,6 +42,8 @@ namespace motoi.platform.resources.runtime.filesystem {
             using (IEnumerator<IWorkspaceFolder> folderItr = FlatHierarchy<IWorkspaceFolder>().GetEnumerator()) {
                 while (folderItr.MoveNext()) {
                     IWorkspaceFolder folder = folderItr.Current;
+                    if (folder == null) continue;
+                    
                     string folderPath = folder.Location.LocalPath;
                     if (folderPath == dirPath) return folder;
                 }
