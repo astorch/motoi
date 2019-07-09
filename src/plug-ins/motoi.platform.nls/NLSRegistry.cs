@@ -6,14 +6,14 @@ using System.Reflection;
 using motoi.extensions;
 using motoi.platform.commons;
 using motoi.plugins;
-using NLog;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.platform.nls {
     /// <summary> Implements the registry for NLS contributions. </summary>
     public class NLSRegistry : GenericSingleton<NLSRegistry> {
         private const string ExtensionPointId = "org.motoi.platform.localization";
-        private readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private readonly ILog _log = LogManager.GetLog(typeof(NLSRegistry));
         private readonly Dictionary<string, LocalizationContribution> _registry = new Dictionary<string, LocalizationContribution>(97);
 
         /// <summary>
@@ -51,10 +51,13 @@ namespace motoi.platform.nls {
             using (IEnumerator<LocalizationContribution> locContrSetItr = locContrSet.GetEnumerator()) {
                 while (locContrSetItr.MoveNext()) {
                     LocalizationContribution contr = locContrSetItr.Current;
-
+                    if (contr == null) continue;
+                    
                     using (IEnumerator<ResourcePathReference> contrItr = contr.Sources.GetEnumerator()) {
                         while (contrItr.MoveNext()) {
                             ResourcePathReference fileContr = contrItr.Current;
+                            if (fileContr == null) continue;
+                            
                             Assembly assembly = fileContr.Assembly;
                             string resourcePath = fileContr.ResourcePath;
                             string lnk = string.IsNullOrEmpty(language) ? string.Empty : "_";
@@ -104,7 +107,7 @@ namespace motoi.platform.nls {
                     try {
                         provider = TypeLoader.TypeForName(bundle, providerType);
                     } catch (Exception ex) {
-                        _log.Error(ex, $"Error on resolving type of '{providerType}' provided by bundle '{bundle}' for localization contribution '{id}'");
+                        _log.Error($"Error on resolving type of '{providerType}' provided by bundle '{bundle}' for localization contribution '{id}'", ex);
                         continue;
                     }
 

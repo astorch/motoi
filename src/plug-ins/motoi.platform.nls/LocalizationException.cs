@@ -2,8 +2,8 @@
 
 namespace motoi.platform.nls {
     /// <summary>
-    /// Defines an error that occurred during the initialization of a plug-in specific 
-    /// localization.
+    /// Defines an error that occurred during the initialization
+    /// of a plug-in specific localization.
     /// </summary>
     public class LocalizationException : Exception {
         /// <inheritdoc />

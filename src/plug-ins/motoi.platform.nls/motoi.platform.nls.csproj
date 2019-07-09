@@ -2,46 +2,29 @@
   <PropertyGroup>
     <TargetFramework>netstandard20</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Company>Arian Storch</Company>
+    <Authors>Arian Storch</Authors>
+    <Description>Motoi Platform NLS Library</Description>
+    <Copyright>© 2017 - 2019 Arian Storch. All rights reserved.</Copyright>
+    <Version>1.0.0</Version>
+    <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\debug\motoi.platform.nls.xml</DocumentationFile>
+  
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugType>full</DebugType>    
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugType>embedded</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile></DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\..\libs\motoi.extensions\motoi.extensions.csproj" />
     <ProjectReference Include="..\..\libs\motoi.plugins\motoi.plugins.csproj" />
     <ProjectReference Include="..\motoi.platform.commons\motoi.platform.commons.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.5" />
-    <PackageReference Include="xcite.csharp" Version="7.0.3" />
-  </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="..\..\PlatformProductAssemblyInfo.cs">
-      <Link>PlatformProductAssemblyInfo.cs</Link>
-    </Compile>
     <None Include="meta-inf\signature.mf" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

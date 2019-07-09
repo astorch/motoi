@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using NLog;
+using xcite.logging;
 
 namespace motoi.platform.nls {
     /// <summary>
@@ -21,13 +21,13 @@ namespace motoi.platform.nls {
     /// </summary>
     /// <typeparam name="TObject">Type of subclass that provides the fields to set up</typeparam>
     public abstract class NLS<TObject> : NLS where TObject : NLS<TObject> {
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog _log = LogManager.GetLog(typeof(NLS<>));
 
         /// <summary>
         /// Loads the messages according to the fields declared by the current class type. 
         /// The localization id is derived from the current subclass type <typeparamref name="TObject"/>.
         /// </summary>
-        static protected void LoadMessages() {
+        protected static void LoadMessages() {
             LoadMessages(null);
         }
 
@@ -37,7 +37,7 @@ namespace motoi.platform.nls {
         /// id is derived from the current subclass type <typeparamref name="TObject"/>.
         /// </summary>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        static protected void LoadMessages(string localizationId) {
+        protected static void LoadMessages(string localizationId) {
             Type nlsAccessType = typeof(TObject);
             localizationId = string.IsNullOrEmpty(localizationId)
                                     ? GetLocalizationId(nlsAccessType)
@@ -77,7 +77,7 @@ namespace motoi.platform.nls {
                     FieldInfo field = fields[i];
                     string fieldName = field.Name;
                     if (!messageSet.TryGetValue(fieldName, out string fieldValue)) {
-                        _log.Warn($"{nlsAccessType} declares a message that has not been set by a NLS resource file");
+                        _log.Warning($"{nlsAccessType} declares a message that has not been set by a NLS resource file");
                         continue;
                     }
 
@@ -85,7 +85,7 @@ namespace motoi.platform.nls {
                     try {
                         field.SetValue(null, fieldValue);
                     } catch (Exception ex) {
-                        _log.Error(ex, "Error on applying localized text");
+                        _log.Error("Error on applying localized text", ex);
                     }
                 }
 
@@ -94,11 +94,11 @@ namespace motoi.platform.nls {
                     while (itr.MoveNext()) {
                         KeyValuePair<string, string> entry = itr.Current;
                         string key = entry.Key;
-                        _log.Warn($"Unused message found for key '{key}'");
+                        _log.Warning($"Unused message found for key '{key}'");
                     }
                 }
             } catch (Exception ex) {
-                _log.Error(ex, $"Error on applying localized messages to '{nlsAccessType}'");
+                _log.Error($"Error on applying localized messages to '{nlsAccessType}'", ex);
             }
         }
 
@@ -108,7 +108,7 @@ namespace motoi.platform.nls {
         /// </summary>
         /// <param name="resourceFileContent">Content of the resource file</param>
         /// <param name="messageSet">Set all found messages are inserted to</param>
-        static private void PutMessages(string resourceFileContent, IDictionary<string, string> messageSet) {
+        private static void PutMessages(string resourceFileContent, IDictionary<string, string> messageSet) {
             string[] messages = resourceFileContent.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
             for (int i = -1; ++i != messages.Length;) {
                 string message = messages[i];
@@ -123,12 +123,12 @@ namespace motoi.platform.nls {
     /// <summary> Provides non-generic access to NLS features. </summary>
     public abstract class NLS {
         internal const BindingFlags FieldBindingFlags = BindingFlags.Public | BindingFlags.Static;
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog _log = LogManager.GetLog(typeof(NLS));
 
-        /// <summary>  Set up NL property once </summary>
+        /// <summary> Set up NL property once </summary>
         static NLS() {
             // Set up platform language
-            NL = (string)Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Process)["motoi:nl"] ?? "en_US";
+            NL = (string) Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Process)["motoi:nl"] ?? "en_US";
         }
 
         /// <summary> Returns the current set natural language of the platform. </summary>
@@ -153,7 +153,7 @@ namespace motoi.platform.nls {
         /// <param name="key">Key to localize. Should start with an '%'</param>
         /// <param name="type">Type the localization id is derived from</param>
         /// <returns>The key itself or the localized text</returns>
-        static public string Localize(string key, Type type) 
+        public static string Localize(string key, Type type) 
             => LocalizeInternal(key, type, GetLocalizationId);
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace motoi.platform.nls {
         /// <param name="key">Key to localize. Should start with an '%'</param>
         /// <param name="obj">Object the localization id is derived from</param>
         /// <returns>The key itself or the localized text</returns>
-        static public string Localize(string key, object obj) 
+        public static string Localize(string key, object obj) 
             => LocalizeInternal(key, obj, GetLocalizationId);
 
         /// <summary>
@@ -183,14 +183,14 @@ namespace motoi.platform.nls {
             // Resolve provider
             Type providerType = NLSRegistry.Instance.GetProviderType(localizationId);
             if (providerType == null) {
-                _log.Warn($"There is no NLS provider for the localization id '{localizationId}'");
+                _log.Warning($"There is no NLS provider for the localization id '{localizationId}'");
                 return null;
             }
 
             // Resolve provider field
             FieldInfo field = providerType.GetField(key, FieldBindingFlags);
             if (field == null) {
-                _log.Warn($"NLS provider '{providerType}' defines no field for key '{key}'");
+                _log.Warning($"NLS provider '{providerType}' defines no field for key '{key}'");
                 return null;
             }
 
