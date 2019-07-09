@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using motoi.extensions;
 using motoi.platform.ui.shells;
-using NLog;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.platform.application {
-    /// <summary>
-    /// Provides access to core components of the application.
-    /// </summary>
+    /// <summary> Provides access to core components of the application. </summary>
     public class Platform : GenericSingleton<Platform> {
         /// <summary> Extension point id </summary>
         private const string PlatformServiceExtensionPointId = "org.motoi.platform.service";
 
-        private static readonly Logger _platformLog = LogManager.GetCurrentClassLogger();
+        private static readonly ILog _platformLog = LogManager.GetLog(typeof(Platform));
         private readonly Dictionary<Type, IPlatformService> _platformServices = new Dictionary<Type, IPlatformService>();
 
         public TService GetService<TService>() where TService : class, IPlatformService {
@@ -25,7 +23,7 @@ namespace motoi.platform.application {
         }
 
         /// <summary> Returns the platform log. </summary>
-        public Logger PlatformLog 
+        public ILog PlatformLog 
             => _platformLog;
 
         /// <summary>
@@ -40,9 +38,7 @@ namespace motoi.platform.application {
             _platformServices.Clear();
         }
 
-        /// <summary>
-        /// Will be called directly after this instance has been created.
-        /// </summary>
+        /// <summary> Will be called directly after this instance has been created. </summary>
         protected override void OnInitialize() {
             IConfigurationElement[] extensions = ExtensionService.Instance.GetConfigurationElements(PlatformServiceExtensionPointId);
         }

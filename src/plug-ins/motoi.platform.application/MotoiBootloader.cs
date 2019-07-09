@@ -6,20 +6,18 @@ using motoi.extensions;
 using motoi.platform.resources;
 using motoi.platform.resources.runtime.preference;
 using motoi.plugins;
-using NLog;
 using PTP;
+using xcite.logging;
 
 namespace motoi.platform.application {
     /// <summary> Provides the common entry point of any motoi application. </summary>
     public class MotoiBootloader {
         /// <summary> Log instance. </summary>
-        private static Logger _logger;
+        private static ILog _log = LogManager.GetLog(typeof(MotoiBootloader));
 
         /// <summary> Entry point of the application. </summary>
         /// <param name="args"></param>
         public static void Main(string[] args) {
-            _logger = LogManager.GetCurrentClassLogger();
-
             try {
                 // Load platform settings
                 LoadIniFile();
@@ -39,7 +37,7 @@ namespace motoi.platform.application {
                 // Start Application Manager
                 ApplicationManager.Instance.DoWork();
             } catch (Exception ex) {
-                _logger.Error(ex, ex.Message);
+                _log.Error(ex.Message, ex);
                 Environment.Exit(-1);
             } finally {
                 ApplicationManager.Instance.HomeTime();
@@ -60,7 +58,7 @@ namespace motoi.platform.application {
         /// </summary>
         private static void LoadIniFile() {
             string procName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-            string iniName = string.Format("{0}.ini", procName).ToLowerInvariant();
+            string iniName = $"{procName}.ini".ToLowerInvariant();
 
             string currentDirectoryPath = Directory.GetCurrentDirectory();
             DirectoryInfo directoryInfo = new DirectoryInfo(currentDirectoryPath);

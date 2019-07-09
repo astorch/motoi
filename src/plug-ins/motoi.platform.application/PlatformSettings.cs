@@ -3,52 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace motoi.platform.application {
-    /// <summary>
-    /// Provides access to global platform settings.
-    /// </summary>
+    /// <summary> Provides access to global platform settings. </summary>
     public class PlatformSettings : IEnumerable<KeyValuePair<string,string>>, IDisposable {
-        /// <summary>
-        /// Backing variable of the instance.
-        /// </summary>
-        private static PlatformSettings iInstance;
+        private static PlatformSettings _instance;
 
-        /// <summary>
-        /// Returns the instance.
-        /// </summary>
-        public static PlatformSettings Instance {
-            get { return iInstance ?? (iInstance = new PlatformSettings()); }
-        }
+        /// <summary> Returns the instance. </summary>
+        public static PlatformSettings Instance 
+            => _instance ?? (_instance = new PlatformSettings());
+        
+        private readonly IDictionary<string,string> _settingsMap = new Dictionary<string, string>(10);
 
-        /// <summary>
-        /// Backing variable for the settings map.
-        /// </summary>
-        private readonly IDictionary<string,string> iSettingsMap = new Dictionary<string, string>(10);
-
-        /// <summary>
-        /// Private constructor.
-        /// </summary>
+        /// <inheritdoc />
         private PlatformSettings() {
             // Prevent from external invocation
         }
 
-        /// <summary>
-        /// Adds the given value for the given key to the settings.
-        /// </summary>
+        /// <summary> Adds the given value for the given key to the settings. </summary>
         /// <param name="key">Key</param>
         /// <param name="value">Value</param>
         internal void Add(string key, string value) {
-            iSettingsMap.Add(key, value);
+            _settingsMap.Add(key, value);
         }
 
-        /// <summary>
-        /// Returns the value of the given key or null if none exists.
-        /// </summary>
+        /// <summary> Returns the value of the given key or null if none exists. </summary>
         /// <param name="key">Key of the value</param>
         /// <returns>Value or null</returns>
         public string Get(string key) {
-            string value;
-            if (iSettingsMap.TryGetValue(key, out value))
-                return value;
+            if (_settingsMap.TryGetValue(key, out string value)) return value;
             return null;
         }
 
@@ -58,37 +39,23 @@ namespace motoi.platform.application {
         /// </summary>
         /// <param name="key">Key of the value</param>
         /// <returns>Value or null</returns>
-        public string this[string key] { get { return Get(key); } }
-
-        /// <summary>
-        /// Gibt einen Enumerator zurück, der eine Auflistung durchläuft.
-        /// </summary>
-        /// <returns>
-        /// Ein <see cref="T:System.Collections.IEnumerator"/>-Objekt, das zum Durchlaufen der Auflistung verwendet werden kann.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
+        public string this[string key] 
+            => Get(key);
+        
+        /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
-
-        /// <summary>
-        /// Gibt einen Enumerator zurück, der die Auflistung durchläuft.
-        /// </summary>
-        /// <returns>
-        /// Ein <see cref="T:System.Collections.Generic.IEnumerator`1"/>, der zum Durchlaufen der Auflistung verwendet werden kann.
-        /// </returns>
-        /// <filterpriority>1</filterpriority>
+        
+        /// <inheritdoc />
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator() {
-            return iSettingsMap.GetEnumerator();
+            return _settingsMap.GetEnumerator();
         }
 
-        /// <summary>
-        /// Führt anwendungsspezifische Aufgaben durch, die mit der Freigabe, der Zurückgabe oder dem Zurücksetzen von nicht verwalteten Ressourcen zusammenhängen.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
+        /// <inheritdoc />
         public void Dispose() {
-            iSettingsMap.Clear();
-            iInstance = null;
+            _settingsMap.Clear();
+            _instance = null;
         }
     }
 }

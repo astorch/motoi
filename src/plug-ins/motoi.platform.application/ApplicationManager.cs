@@ -8,7 +8,7 @@ using motoi.platform.ui.menus;
 using motoi.platform.ui.shells;
 using motoi.platform.ui.toolbars;
 using motoi.plugins;
-using NLog;
+using xcite.logging;
 
 namespace motoi.platform.application {
     /// <summary> Provides a manager for application instances. </summary>
@@ -22,33 +22,34 @@ namespace motoi.platform.application {
 
         /// <summary> Extension point id. </summary>
         private const string ApplicationExtensionPointId = "org.motoi.application";
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        private IMotoiApplication iApplication;
-        private IApplicationController iApplicationController;
-        private IMainWindow iMainWindow;
+        private readonly ILog _log = LogManager.GetLog(typeof(ApplicationManager));
 
-        /// <summary> Private constructor. </summary>
+        private IMotoiApplication _application;
+        private IApplicationController _applicationController;
+        private IMainWindow _mainWindow;
+
+        /// <inheritdoc />
         private ApplicationManager() {
             // Nothing to do here
         }
 
         /// <summary> Tells the manager to do his job. </summary>
         public void DoWork() {
-            _logger.Debug("Doing my work");
+            _log.Debug("Doing my work");
 
             string applicationId = PlatformSettings.Instance["application"];
 
             if (string.IsNullOrEmpty(applicationId))
                 throw new NullReferenceException("Application definition is null or empty! Check the ini file!");
 
-            iApplication = GetApplicationInstance(applicationId);
+            _application = GetApplicationInstance(applicationId);
 
-            if (iApplication == null)
+            if (_application == null)
                 throw new NullReferenceException(string.Format("There is no application implementation for the given application id '{0}'. " +
                                                                "Check the ini file and the existence of the application annotation!", applicationId));
 
-            iApplication.OnStartup();
+            _application.OnStartup();
 
             // Creating and Starting UI-Thread
             Thread uiThread = new Thread(OnRunningUI);
@@ -56,60 +57,56 @@ namespace motoi.platform.application {
             uiThread.Name = "Motoi Application UI-Thread";
             uiThread.Start();
 
-            _logger.Debug("Time to get some coffee");
+            _log.Debug("Time to get some coffee");
 
             // Wait here until the UI thread has been finished
             uiThread.Join();
         }
 
-        /// <summary>
-        /// Thread method which will start the UI message dispatching
-        /// </summary>
+        /// <summary> Thread method which will start the UI message dispatching </summary>
         private void OnRunningUI() {
 
-            if (!iApplication.IsHeadless) {
-                iApplication.OnPreInitializeMainWindow();
-                iMainWindow = UIFactory.NewShell<IMainWindow>();
-                Platform.Instance.MainWindow = iMainWindow;
-                MenuItemProvider.AddExtensionPointMenuItems(iMainWindow);
-                ToolbarItemProvider.AddExtensionPointToolbarItems(iMainWindow);
-                RestoreWindowState(iMainWindow);
-                iApplication.OnPostInitializeMainWindow(iMainWindow);
+            if (!_application.IsHeadless) {
+                _application.OnPreInitializeMainWindow();
+                _mainWindow = UIFactory.NewShell<IMainWindow>();
+                Platform.Instance.MainWindow = _mainWindow;
+                MenuItemProvider.AddExtensionPointMenuItems(_mainWindow);
+                ToolbarItemProvider.AddExtensionPointToolbarItems(_mainWindow);
+                RestoreWindowState(_mainWindow);
+                _application.OnPostInitializeMainWindow(_mainWindow);
             } else {
-                _logger.Info("Application will run headless");
+                _log.Info("Application will run headless");
             }
 
-            iApplication.OnApplicationRun();
+            _application.OnApplicationRun();
 
             try {
-                iApplicationController = FactoryProvider.Instance.GetApplicationController();
-                iApplicationController.RunApplication(iMainWindow);
+                _applicationController = FactoryProvider.Instance.GetApplicationController();
+                _applicationController.RunApplication(_mainWindow);
             } catch (Exception ex) {
-                _logger.Error(ex, ex.Message);
+                _log.Error(ex.Message, ex);
             }
 
-            if (!iApplication.IsHeadless) {
-                MemorizeWindowState(iMainWindow);
+            if (!_application.IsHeadless) {
+                MemorizeWindowState(_mainWindow);
             }
 
-            iApplication.OnApplicationShutdown();
+            _application.OnApplicationShutdown();
         }
 
-        /// <summary>
-        /// Tells the manager to stop and to release all its resources (dispose).
-        /// </summary>
+        /// <summary> Tells the manager to stop and to release all its resources (dispose). </summary>
         public void HomeTime() {
-            _logger.Debug("Time to go home");
+            _log.Debug("Time to go home");
 
-            iApplication.OnShutdown();
-            iApplication = null;
+            _application.OnShutdown();
+            _application = null;
 
-            iApplicationController = null;
-            iMainWindow = null;
+            _applicationController = null;
+            _mainWindow = null;
 
             _instance = null;
 
-            _logger.Debug("Goodbye");
+            _log.Debug("Goodbye");
         }
 
         /// <summary>
@@ -126,7 +123,7 @@ namespace motoi.platform.application {
             string className = applicationConfigurationElement["class"];
 
             if (string.IsNullOrEmpty(className))
-                throw new NullReferenceException(string.Format("Attribute 'class' is null or empty for the application id '{0}'!", id));
+                throw new NullReferenceException($"Attribute 'class' is null or empty for the application id '{id}'!");
 
             IBundle providingBundle = ExtensionService.Instance.GetProvidingBundle(applicationConfigurationElement);
             Type type = TypeLoader.TypeForName(providingBundle, className);
@@ -159,7 +156,7 @@ namespace motoi.platform.application {
                 mainWindow.TopLocation = windowTop;
                 mainWindow.LeftLocation = windowLeft;
             } catch (Exception ex) {
-                _logger.Error(ex, "Error on restoring window state.");
+                _log.Error("Error on restoring window state.", ex);
             }
         }
 
@@ -186,7 +183,7 @@ namespace motoi.platform.application {
                 preferenceStore.SetValue(WindowLeftKey, windowLeft);
                 preferenceStore.Flush();
             } catch (Exception ex) {
-                _logger.Error(ex, "Error on memorizing window state.");
+                _log.Error("Error on memorizing window state.", ex);
             }
         }
 

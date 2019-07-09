@@ -1,7 +1,5 @@
 ﻿namespace motoi.platform.application {
-    /// <summary>
-    /// Defines a platform service.
-    /// </summary>
+    /// <summary> Defines a platform service. </summary>
     public interface IPlatformService {
         
     }
