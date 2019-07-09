@@ -3,9 +3,7 @@ using System.IO;
 using motoi.moose.commands;
 
 namespace motoi.moose { 
-    /// <summary>
-    /// Provides common entry point of a moose based application.
-    /// </summary>
+    /// <summary> Provides common entry point of a moose based application. </summary>
     class MooseBootLoader {
         private static bool _doLoop;
 
@@ -22,9 +20,7 @@ namespace motoi.moose {
             }
         }
 
-        /// <summary>
-        /// Parses the given input and returns a command that can handle it.
-        /// </summary>
+        /// <summary> Parses the given input and returns a command that can handle it. </summary>
         /// <param name="input">Input to parse</param>
         /// <returns>Command that handles the input</returns>
         static IMooseCommand BuildCommand(string input) {
@@ -46,9 +42,7 @@ namespace motoi.moose {
             return NoActionCommand.Default;
         }
 
-        /// <summary>
-        /// Implements a command that leads to no action.
-        /// </summary>
+        /// <summary> Implements a command that leads to no action. </summary>
         class NoActionCommand : IMooseCommand {
             /// <summary>
             /// Default instance. Can be used because it's stateless.
@@ -61,9 +55,7 @@ namespace motoi.moose {
             public void Execute(IConsoleWriter consoleWriter) { }
         }
 
-        /// <summary>
-        /// Implements a command which ends the application.
-        /// </summary>
+        /// <summary> Implements a command which ends the application. </summary>
         class ExitCommand : IMooseCommand {
             /// <summary>
             /// Executes the command
@@ -73,12 +65,10 @@ namespace motoi.moose {
             }
         }
 
-        /// <summary>
-        /// Provides an implementation of <see cref="IConsoleWriter"/>.
-        /// </summary>
+        /// <summary> Provides an implementation of <see cref="IConsoleWriter"/>. </summary>
         class ConsoleWriter : IConsoleWriter {
-            private readonly TextWriter iStandardWriter;
-            private readonly TextWriter iErrorWriter;
+            private readonly TextWriter _standardWriter;
+            private readonly TextWriter _errorWriter;
 
             /// <summary>
             /// Creates a new instance using the given writers.
@@ -86,8 +76,8 @@ namespace motoi.moose {
             /// <param name="standardWriter">Standard output writer</param>
             /// <param name="errorWriter">Error writer</param>
             public ConsoleWriter(TextWriter standardWriter, TextWriter errorWriter) {
-                iStandardWriter = standardWriter;
-                iErrorWriter = errorWriter;
+                _standardWriter = standardWriter;
+                _errorWriter = errorWriter;
             }
 
             /// <summary>
@@ -95,7 +85,7 @@ namespace motoi.moose {
             /// </summary>
             /// <param name="text">Text to write</param>
             public void WriteError(string text) {
-                iErrorWriter.WriteLine("[ERROR] {0}", text);
+                _errorWriter.WriteLine("[ERROR] {0}", text);
             }
 
             /// <summary>
@@ -103,7 +93,7 @@ namespace motoi.moose {
             /// </summary>
             /// <param name="text">Text to write</param>
             public void WriteMessage(string text) {
-                iStandardWriter.WriteLine(text);
+                _standardWriter.WriteLine(text);
             }
         }
     }

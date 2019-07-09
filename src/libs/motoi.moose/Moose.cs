@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using motoi.plugins;
-using NLog;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.moose {
     /// <summary> Provides methods to start or stop plug-ins. </summary>
     public static class Moose {
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog _log = LogManager.GetLog(typeof(Moose));
 
         /// <summary> Is invoked when a plug-in has been started properly. </summary>
         public static event EventHandler<MooseEventArgs> PluginStarted;
@@ -39,9 +39,9 @@ namespace motoi.moose {
                 // Notify listener
                 PluginStarted.Dispatch(
                     new object[] { new MooseEventArgs(symbolicPluginName) },
-                    (ex, dlg) => _log.Error(ex, $"Error on dispatching PluginStarted event to '{dlg}'"));
+                    (ex, dlg) => _log.Error($"Error on dispatching PluginStarted event to '{dlg}'", ex));
             } catch (Exception ex) {
-                _log.Error(ex, $"Error on starting plug-in '{symbolicPluginName}'");
+                _log.Error($"Error on starting plug-in '{symbolicPluginName}'", ex);
             }   
         }
 
@@ -51,7 +51,7 @@ namespace motoi.moose {
         public static void Stop(string symbolicPluginName) {
             PluginStopped.Dispatch(
                 new[] {(object) null, new MooseEventArgs(symbolicPluginName)},
-                (ex, dlg) => _log.Error(ex, $"Error on dispatching PluginStopped event to '{dlg}'"));
+                (ex, dlg) => _log.Error($"Error on dispatching PluginStopped event to '{dlg}'", ex));
             throw new NotImplementedException();
         }
     }

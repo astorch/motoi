@@ -1,26 +1,22 @@
 ﻿using System;
 
 namespace motoi.moose.commands {
-    /// <summary>
-    /// Implements a command that handles the "start" action.
-    /// </summary>
+    /// <summary> Implements a command that handles the "start" action. </summary>
     class StartCommand : IMooseCommand {
-        private readonly string iBundleName;
+        private readonly string _bundleName;
 
         /// <summary>
-        /// Creates a new instance
+        /// Creates a new instance that starts the bundle
+        /// with the specified <paramref name="bundleName"/>.
         /// </summary>
-        /// <param name="bundleName"></param>
         public StartCommand(string bundleName) {
-            iBundleName = bundleName.Replace("\"", string.Empty);
+            _bundleName = bundleName.Replace("\"", string.Empty);
         }
 
-        /// <summary>
-        /// Executes the command
-        /// </summary>
+        /// <inheritdoc />
         public void Execute(IConsoleWriter consoleWriter) {
             try {
-                Moose.Start(iBundleName);
+                Moose.Start(_bundleName);
             } catch (Exception ex) {
                 consoleWriter.WriteError(ex.ToString());
             }
