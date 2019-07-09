@@ -2,14 +2,12 @@
 using PTP;
 
 namespace motoi.plugins {
-    /// <summary>
-    /// Provides a factory for signature files.
-    /// </summary>
+    /// <summary> Provides a factory for signature files. </summary>
     class SignatureFactory : AbstractFactory<SignatureFactory> {
-        /// <summary>
-        /// Protected constructor.
-        /// </summary>
-        protected SignatureFactory() { }
+        /// <inheritdoc />
+        protected SignatureFactory() {
+            // Only clients may initialize
+        }
 
         /// <summary>
         /// Creates an instance of <see cref="IPluginSignature"/> from the given 

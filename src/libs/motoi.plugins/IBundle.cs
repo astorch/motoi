@@ -3,9 +3,7 @@
 namespace motoi.plugins {
     /// <summary> Defines a bundle. </summary>
     public interface IBundle {
-        /// <summary>
-        /// Returns a stream for the given resource within the bundle.
-        /// </summary>
+        /// <summary> Returns a stream for the given resource within the bundle. </summary>
         /// <param name="resource">Path of the resource within the bundle</param>
         /// <returns>Stream or null</returns>
         Stream GetResourceAsStream(string resource);
@@ -18,9 +16,7 @@ namespace motoi.plugins {
         /// <returns>Stream or null</returns>
         Stream GetAssemblyResourceAsStream(string resource);
 
-        /// <summary>
-        /// Returns a collection of all available resources within the bundle.
-        /// </summary>
+        /// <summary> Returns a collection of all available resources within the bundle. </summary>
         /// <returns>Array of resource paths</returns>
         string[] GetResources();
 
@@ -32,9 +28,7 @@ namespace motoi.plugins {
         /// <returns>Array of resource paths</returns>
         string[] GetResources(string searchPattern);
 
-        /// <summary>
-        /// Returns the name of the bundle.
-        /// </summary>
+        /// <summary> Returns the name of the bundle. </summary>
         string Name { get; }
     }
 }

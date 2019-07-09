@@ -1,40 +1,34 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip;
-using xcite.collections;
 
 namespace motoi.plugins {
     /// <summary> Provides an implementation of <see cref="IBundle"/> </summary>
     class BundleImpl : IBundle {
-        private readonly FileInfo iMarcFile;
-        private Assembly iBundledAssembly;
-        private string[] iResources;
+        private readonly FileInfo _marcFile;
+        private Assembly _bundledAssembly;
+        private string[] _resources;
 
-        /// <summary>
-        /// Creates a new instance for the given marc file.
-        /// </summary>
+        /// <summary> Creates a new instance for the given marc file. </summary>
         /// <param name="marcFile">Marc file</param>
         public BundleImpl(FileInfo marcFile) {
-            if (marcFile == null)
-                throw new NullReferenceException("Marc file is null!");
+            if (marcFile == null) throw new ArgumentNullException(nameof(marcFile));
 
             if (!marcFile.Exists)
-                throw new NullReferenceException(string.Format("Marc file does not exist! Path is '{0}'",
-                    marcFile.FullName));
+                throw new ArgumentException($"Marc file does not exist! Path is '{marcFile.FullName}'");
 
-            iMarcFile = marcFile;
-            Name = Path.GetFileNameWithoutExtension(iMarcFile.FullName);
+            _marcFile = marcFile;
+            Name = Path.GetFileNameWithoutExtension(_marcFile.FullName);
         }
 
-        /// <summary>
-        /// Returns a stream to the given resource within the bundle.
-        /// </summary>
+        /// <summary> Returns a stream to the given resource within the bundle. </summary>
         /// <param name="resource">Path of the resource within the bundle</param>
         /// <returns>Stream or null</returns>
         public Stream GetResourceAsStream(string resource) {
-            string filePath = iMarcFile.FullName;
+            string filePath = _marcFile.FullName;
 
             using (ZipFile zipFile = new ZipFile(filePath)) {
                 ZipEntry signatureZipEntry = zipFile.GetEntry(resource);
@@ -58,41 +52,45 @@ namespace motoi.plugins {
         /// <param name="resource">Path to embedded resource within the assembly</param>
         /// <returns>Stream or null</returns>
         public Stream GetAssemblyResourceAsStream(string resource) {
-            if (iBundledAssembly == null)
+            if (_bundledAssembly == null)
                 ResolveBundledAssembly();
 
             string translatedResourceName = resource.Replace('/', '.');
-            string assemblyQualifiedName = string.Format("{0}.{1}", Name, translatedResourceName);
+            string assemblyQualifiedName = $"{Name}.{translatedResourceName}";
 
-            if(iBundledAssembly == null) throw new NullReferenceException("Bundled assembly is null");
+            if(_bundledAssembly == null) throw new InvalidOperationException("Bundled assembly is null");
 
-            Stream resourceStream = iBundledAssembly.GetManifestResourceStream(assemblyQualifiedName);
-            return resourceStream;
+            return _bundledAssembly.GetManifestResourceStream(assemblyQualifiedName);
         }
 
         /// <summary> Returns the name of the bundle. </summary>
         public string Name { get; }
 
-        /// <summary>
-        /// Returns a collection of all available resources within the bundle.
-        /// </summary>
+        /// <summary> Returns a collection of all available resources within the bundle. </summary>
         /// <returns>Array of resource paths</returns>
         public string[] GetResources() {
-            if (iResources != null) return iResources;
+            if (_resources != null) return _resources;
 
-            string filePath = iMarcFile.FullName;
+            string filePath = _marcFile.FullName;
             using (ZipFile zipFile = new ZipFile(filePath)) {
                 string[] entryNames = new string[zipFile.Count];
                 int p = 0;
-                zipFile.ForEach(entry => {
-                    ZipEntry zipEntry = (ZipEntry) entry;
-                    entryNames[p++] = zipEntry.Name;
-                });
 
-                iResources = entryNames;
+                IEnumerator itr = zipFile.GetEnumerator();
+                try {
+                    while (itr.MoveNext()) {
+                        ZipEntry zipEntry = (ZipEntry) itr.Current;
+                        if (zipEntry == null) continue;
+                        entryNames[p++] = zipEntry.Name;
+                    }
+                } finally {
+                    (itr as IDisposable)?.Dispose();
+                }
+
+                _resources = entryNames;
             }
 
-            return iResources;
+            return _resources;
         }
 
         /// <summary>
@@ -116,19 +114,17 @@ namespace motoi.plugins {
             return filtered;
         }
 
+        /// <inheritdoc />
         public override string ToString() {
-            return iMarcFile.FullName;
+            return _marcFile.FullName;
         }
 
-        /// <summary>
-        /// Resolves the assembly that has been packed with this bundle.
-        /// </summary>
+        /// <summary> Resolves the assembly that has been packed with this bundle. </summary>
         private void ResolveBundledAssembly() {
-            string assemblyName = string.Format("{0}.dll", Name);
+            string assemblyName = $"{Name}.dll";
             Assembly assembly = Assembly.Load(assemblyName);
-            if (assembly == null)
-                return;
-            iBundledAssembly = assembly;
+            if (assembly == null) return;
+            _bundledAssembly = assembly;
         }
     }
 }

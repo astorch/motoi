@@ -4,38 +4,33 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using NLog;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.plugins {
     /// <summary> Provides a service to handle all installed plug-ins. </summary>
     public class PluginService {
-
-        /// <summary> Log instance. </summary>
-        private readonly Logger _log = LogManager.GetCurrentClassLogger();
-
-        /// <summary> Backing variable of the manager instance. </summary>
         private static PluginService _instance;
 
         /// <summary> Returns the instance of this service. </summary>
         public static PluginService Instance 
             => _instance ?? (_instance = new PluginService());
 
-        private readonly IDictionary<string, Assembly> iNameToAssemblyMap = new Dictionary<string, Assembly>(100);
-        private readonly LinkedList<IncludeMapping> iIncludeMappings = new LinkedList<IncludeMapping>();
+        private readonly ILog _log = LogManager.GetLog(typeof(PluginService));
 
-        private readonly LinkedList<IPluginInfo> iFoundPlugins = new LinkedList<IPluginInfo>();
-        private readonly LinkedList<IPluginInfo> iProvidedPlugins = new LinkedList<IPluginInfo>();
-        private readonly LinkedList<IPluginInfo> iActivatedPlugins = new LinkedList<IPluginInfo>();
+        private readonly IDictionary<string, Assembly> _nameToAssemblyMap = new Dictionary<string, Assembly>(100);
+        private readonly LinkedList<IncludeMapping> _includeMappings = new LinkedList<IncludeMapping>();
+
+        private readonly LinkedList<IPluginInfo> _foundPlugins = new LinkedList<IPluginInfo>();
+        private readonly LinkedList<IPluginInfo> _providedPlugins = new LinkedList<IPluginInfo>();
+        private readonly LinkedList<IPluginInfo> _activatedPlugins = new LinkedList<IPluginInfo>();
 
         private const string PluginDirectoryPath = "\\plug-ins\\";
 
         private bool _started;
         private bool _stopped;
 
-        /// <summary>
-        /// Private constructor.
-        /// </summary>
+        /// <inheritdoc />
         private PluginService() {
             // AppDomainSetup setup = new AppDomainSetup();
             // AppDomain motoiAppDomain = AppDomain.CreateDomain("Motoi Application Domain", null, setup);
@@ -48,19 +43,11 @@ namespace motoi.plugins {
         public event EventHandler Stopped;
 
         /// <summary> Will be invoked when the app domain cannot resolve a type on its own. </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
         private Assembly OnTypeResolve(object sender, ResolveEventArgs args) {
             return null;
         }
 
-        /// <summary>
-        /// Will be invoked when the app domain cannot resolve an assembly on its own.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <summary> Will be invoked when the app domain cannot resolve an assembly on its own. </summary>
         private Assembly OnAssemblyResolve(object sender, ResolveEventArgs args) {
             string assemblyName = args.Name;
 
@@ -73,32 +60,37 @@ namespace motoi.plugins {
             assemblyName = assemblyName.Replace(".dll", string.Empty);
 
             // Maybe the assembly has already been resolved
-            if (iNameToAssemblyMap.TryGetValue(assemblyName, out Assembly assmbly))
+            if (_nameToAssemblyMap.TryGetValue(assemblyName, out Assembly assmbly))
                 return assmbly;
 
             Stream assemblyStream;
             // Maybe it's an included assembly?
-            string dllName = string.Format("{0}.dll", assemblyName);
-            IncludeMapping inclMap = iIncludeMappings.FirstOrDefault(x => x.Name == dllName);
+            string dllName = $"{assemblyName}.dll";
+            IncludeMapping inclMap = _includeMappings.FirstOrDefault(x => x.Name == dllName);
             if (inclMap != null) {
                 string path = inclMap.BundlePath;
                 IBundle bundle = inclMap.Bundle;
                 assemblyStream = bundle.GetResourceAsStream(path);
-                return Unwrap(assemblyStream, assemblyName);
+                using (assemblyStream) {
+                    return Unwrap(assemblyStream, assemblyName);
+                }
             }
 
             // TODO Maybe a hash algorithmn would be faster
             // Looking for normal plugged assembly
-            using (LinkedList<IPluginInfo>.Enumerator enmtor = iProvidedPlugins.GetEnumerator()) {
+            using (LinkedList<IPluginInfo>.Enumerator enmtor = _providedPlugins.GetEnumerator()) {
                 while (enmtor.MoveNext()) {
                     IPluginInfo plugin = enmtor.Current;
+                    if (plugin == null) continue;
+                    
                     IBundle bundle = plugin.Bundle;
-                    if (bundle.Name != assemblyName)
-                        continue;
+                    if (bundle.Name != assemblyName) continue;
 
-                    string lookupName = string.Format("{0}.dll", assemblyName);
+                    string lookupName = $"{assemblyName}.dll";
                     assemblyStream = bundle.GetResourceAsStream(lookupName);
-                    return Unwrap(assemblyStream, assemblyName);
+                    using (assemblyStream) {
+                        return Unwrap(assemblyStream, assemblyName);
+                    }
                 }
             }
 
@@ -113,37 +105,34 @@ namespace motoi.plugins {
         /// <param name="assemblyName">Name of the assembly</param>
         /// <returns>Loaded assembly</returns>
         private Assembly Unwrap(Stream assemblyStream, string assemblyName) {
-            if (assemblyStream == null)
-                return null;
+            if (assemblyStream == null) return null;
 
-            const int defaultBufferSize = 1024*300; // 300kb 
+            const int defaultBufferSize = 1024 * 1024 * 1; // 1MB 
 
-            MemoryStream memoryStream = new MemoryStream(defaultBufferSize);
-            assemblyStream.CopyTo(memoryStream);
-            assemblyStream.Dispose();
-            byte[] assemblyBytes = memoryStream.ToArray();
-            memoryStream.Dispose();
+            byte[] assemblyBytes;
+            using (MemoryStream memoryStream = new MemoryStream(defaultBufferSize)) {
+                assemblyStream.CopyTo(memoryStream);
+                assemblyBytes = memoryStream.ToArray();
+            }
+                
             Assembly assembly = Assembly.Load(assemblyBytes);
+            
             // Store mapping
-            iNameToAssemblyMap.Add(assemblyName, assembly);
+            _nameToAssemblyMap.Add(assemblyName, assembly);
             return assembly;
         }
 
-        /// <summary>
-        /// Starts the Plug-in Service.
-        /// </summary>
+        /// <summary> Starts the Plug-in Service. </summary>
         public void Start() {
-            if (_started)
-                return;
+            if (_started) return;
 
-            _log.Info("Starting Plug-in Service");
+            _log.Info("Starting plug-in service");
 
             string currentDirectoryPath = Directory.GetCurrentDirectory();
-            string pluginDirectoryPath = string.Format("{0}{1}", currentDirectoryPath, PluginDirectoryPath);
+            string pluginDirectoryPath = $"{currentDirectoryPath}{PluginDirectoryPath}";
             DirectoryInfo directoryInfo = new DirectoryInfo(pluginDirectoryPath);
             
-            if (!directoryInfo.Exists)
-                throw new DirectoryNotFoundException(pluginDirectoryPath);
+            if (!directoryInfo.Exists) throw new DirectoryNotFoundException(pluginDirectoryPath);
 
             FileInfo[] marcFiles = directoryInfo.GetFiles("*.marc", SearchOption.TopDirectoryOnly);
 
@@ -153,36 +142,36 @@ namespace motoi.plugins {
                 IBundle bundle = BundleFactory.Instance.CreateBundle(marcFile);
                 IPluginInfo pluginInfo = RegisterBundle(bundle);
 
-                if (pluginInfo == null)
-                    continue;
+                if (pluginInfo == null) continue;
 
-                iFoundPlugins.AddLast(pluginInfo);
+                _foundPlugins.AddLast(pluginInfo);
 
                 // Handling additional resources
                 string[] bundleResources = bundle.GetResources(@"includes/*");
-                Array.ForEach(bundleResources, rsx => {
-                        string[] split = rsx.Split('/');
-                        string name = split.Last();
-                        string bundlePath = rsx;
-                        IncludeMapping inclMap = new IncludeMapping { Name = name, BundlePath = bundlePath, Bundle = bundle };
-                        iIncludeMappings.AddLast(inclMap);
-                    });
+                for (int j = -1; ++j != bundleResources.Length;) {
+                    string rsx = bundleResources[j];
+                    string[] split = rsx.Split('/');
+                    string name = split.Last();
+                    string bundlePath = rsx;
+                    IncludeMapping inclMap = new IncludeMapping { Name = name, BundlePath = bundlePath, Bundle = bundle };
+                    _includeMappings.AddLast(inclMap);
+                }
             }
 
             // Check dependencies
-            using (LinkedList<IPluginInfo>.Enumerator enmtor = iFoundPlugins.GetEnumerator()) {
+            using (LinkedList<IPluginInfo>.Enumerator enmtor = _foundPlugins.GetEnumerator()) {
                 while (enmtor.MoveNext()) {
                     IPluginInfo pluginInfo = enmtor.Current;
-                    string missingDependencyName;
-                    bool dependenciesSatisfied = CheckDependencies(pluginInfo, iFoundPlugins, out missingDependencyName);
+                    bool dependenciesSatisfied = CheckDependencies(pluginInfo, _foundPlugins, out string missingDependencyName);
                     if (!dependenciesSatisfied) {
-                        string message = string.Format("Can not provide '{0}' because of missing dependency '{1}'. Plug-in will not be available!",
-                                pluginInfo, missingDependencyName);
+                        string message = $"Can not provide '{pluginInfo}' " +
+                                         $"because of missing dependency '{missingDependencyName}'. " +
+                                          "Plug-in will not be available!";
                         _log.Error(message);
                         continue;
                     }
                     SetPluginState(pluginInfo, EPluginState.Provided);
-                    iProvidedPlugins.AddLast(pluginInfo);
+                    _providedPlugins.AddLast(pluginInfo);
                 }
             }
             
@@ -219,24 +208,20 @@ namespace motoi.plugins {
             return true;
         }
 
-        /// <summary>
-        /// Sets the given state for the given plug-in.
-        /// </summary>
+        /// <summary> Sets the given state for the given plug-in. </summary>
         /// <param name="pluginInfo">Plug-in to modify</param>
         /// <param name="state">New state of the plug-in</param>
         private void SetPluginState(IPluginInfo pluginInfo, EPluginState state) {
-            ((PluginInfoImpl)pluginInfo).State = state;
-            string message = string.Format("Plug-in '{0}' {1}", pluginInfo.Signature.SymbolicName, state);
+            ((PluginInfoImpl) pluginInfo).State = state;
+            string message = $"Plug-in '{pluginInfo.Signature.SymbolicName}' {state}";
             _log.Info(message);
         }
 
-        /// <summary>
-        /// Processes the given marc file and creates an instance of <see cref="IPluginInfo"/>.
-        /// </summary>
+        /// <summary> Processes the given marc file and creates an instance of <see cref="IPluginInfo"/>. </summary>
         /// <param name="bundle">Marc file to process</param>
         /// <returns>Instance of PluginInfo or null</returns>
         private IPluginInfo RegisterBundle(IBundle bundle) {
-            _log.Debug(string.Format("Processing bundle '{0}'", bundle));
+            _log.Debug($"Processing bundle '{bundle}'");
             try {
                 Stream signatureFileStream = bundle.GetResourceAsStream("signature.mf");
 
@@ -250,33 +235,29 @@ namespace motoi.plugins {
 
                 using (signatureFileStream) {
                     pluginSignature = SignatureFactory.Instance.CreateSignature(signatureFileStream);
-                    _log.Debug(string.Format("Resolved plug-in signature '{0}'", pluginSignature));
+                    _log.Debug($"Resolved plug-in signature '{pluginSignature}'");
                 }
 
                 IPluginInfo pluginInfo = PluginFactory.Instance.CreatePluginInfo(bundle, pluginSignature);
-                _log.Debug(string.Format("Resolved plug-in info '{0}'", pluginInfo));
+                _log.Debug($"Resolved plug-in info '{pluginInfo}'");
 
                 return pluginInfo;
             } catch (Exception ex) {
-                string message = string.Format("Could not process marc file '{0}'. Plug-in will not be available!",
-                                               bundle);
-                _log.Error(ex, message);
+                string message = $"Could not process marc file '{bundle}'. Plug-in will not be available!";
+                _log.Error(message, ex);
             }
             return null;
         }
 
-        /// <summary>
-        /// Stops the Plug-in Service and disposes all of its resources.
-        /// </summary>
+        /// <summary> Stops the plug-in service and disposes all of its resources. </summary>
         public void Stop() {
-            if (_stopped)
-                return;
+            if (_stopped) return;
 
-            _log.Info("Stopping Plug-in Service");
+            _log.Info("Stopping plug-in service");
 
-            iActivatedPlugins.Clear();
-            iFoundPlugins.Clear();
-            iProvidedPlugins.Clear();
+            _activatedPlugins.Clear();
+            _foundPlugins.Clear();
+            _providedPlugins.Clear();
 
             _instance = null;
 
@@ -290,9 +271,9 @@ namespace motoi.plugins {
 
             stoppedHandler.Dispatch(
                 new object[]{this, EventArgs.Empty}, 
-                (exception, dlg) => _log.Warn((Exception) exception, "Error on dispatching stopped event.")
+                (exception, dlg) => _log.Warning("Error on dispatching stopped event.", exception)
             );
-            _log.Info("Plug-in Service Stopped");
+            _log.Info("Plug-in service stopped");
         }
 
         /// <summary>
@@ -309,7 +290,7 @@ namespace motoi.plugins {
             if (plugin.State != EPluginState.Provided) return;
 
             bool isProvided = ProvidedPlugins.Contains(plugin);
-            if (!isProvided) throw new PluginActivationException(string.Format("Plug-in '{0}' cannot be started due to missing dependencies", plugin));
+            if (!isProvided) throw new PluginActivationException($"Plug-in '{plugin}' cannot be started due to missing dependencies");
 
             IPluginSignature pluginSignature = plugin.Signature;
             IBundle bundle = plugin.Bundle;
@@ -326,15 +307,15 @@ namespace motoi.plugins {
                     pluginActivator = activatorType.NewInstance<IPluginActivator>();
                     ((PluginSignatureImpl) pluginSignature).PluginActivator = pluginActivator;
                 } catch (Exception ex) {
-                    _log.Error(ex, "Error on creating instance of '{0}'", fullyQualifiedActivatorTypeName);
-                    throw new PluginActivationException(string.Format("Error on creating an instance of '{0}'", plugin), ex);
+                    _log.Error($"Error on creating instance of '{fullyQualifiedActivatorTypeName}'", ex);
+                    throw new PluginActivationException($"Error on creating an instance of '{plugin}'", ex);
                 }
 
                 try {
                     pluginActivator.OnActivate();
                 } catch (Exception ex) {
-                    _log.Error(ex, "Error on activating plug-in '{0}'", plugin);
-                    throw new PluginActivationException(string.Format("Error on activating plug-in '{0}'", plugin), ex);
+                    _log.Error($"Error on activating plug-in '{plugin}'", ex);
+                    throw new PluginActivationException($"Error on activating plug-in '{plugin}'", ex);
                 }
             } else {
                 _log.Debug($"Plug-in '{plugin}' does not have a plug-in activator. It is activated silently.");
@@ -342,42 +323,30 @@ namespace motoi.plugins {
 
             // Update state model
             SetPluginState(plugin, EPluginState.Activated);
-            iActivatedPlugins.AddLast(plugin);
+            _activatedPlugins.AddLast(plugin);
         }
 
-        /// <summary>
-        /// Returns all found plug-ins within a read-only collection.
-        /// </summary>
-        public ReadOnlyCollection<IPluginInfo> FoundPlugins { get { return iFoundPlugins.ToList().AsReadOnly(); } }
+        /// <summary> Returns all found plug-ins within a read-only collection. </summary>
+        public ReadOnlyCollection<IPluginInfo> FoundPlugins 
+            => _foundPlugins.ToList().AsReadOnly();
 
-        /// <summary>
-        /// Returns all provided plug-ins within a read-only collection.
-        /// </summary>
-        public ReadOnlyCollection<IPluginInfo> ProvidedPlugins { get { return iProvidedPlugins.ToList().AsReadOnly(); } }
+        /// <summary> Returns all provided plug-ins within a read-only collection. </summary>
+        public ReadOnlyCollection<IPluginInfo> ProvidedPlugins 
+            => _providedPlugins.ToList().AsReadOnly();
 
-        /// <summary>
-        /// Returns all activated plug-ins with a read-only collection.
-        /// </summary>
-        public ReadOnlyCollection<IPluginInfo> ActivatedPlugins { get { return iActivatedPlugins.ToList().AsReadOnly(); } }
+        /// <summary> Returns all activated plug-ins with a read-only collection. </summary>
+        public ReadOnlyCollection<IPluginInfo> ActivatedPlugins 
+            => _activatedPlugins.ToList().AsReadOnly();
 
-        /// <summary>
-        /// Defines a include mapping for internal purposes.
-        /// </summary>
+        /// <summary> Defines a include mapping for internal purposes. </summary>
         class IncludeMapping {
-
-            /// <summary>
-            /// Name of the include.
-            /// </summary>
+            /// <summary> Name of the include </summary>
             public string Name { get; set; }
 
-            /// <summary>
-            /// Bundle path.
-            /// </summary>
+            /// <summary> Bundle path </summary>
             public string BundlePath { get; set; }
 
-            /// <summary>
-            /// Contributing bundle.
-            /// </summary>
+            /// <summary> Contributing bundle </summary>
             public IBundle Bundle { get; set; }
         }
     }
