@@ -10,8 +10,8 @@ using motoi.workbench.runtime;
 namespace motoi.workbench.errorlogview {
     /// <summary> Implements a data view that shows all logged entries of the <see cref="PlatformErrorLog"/>. </summary>
     public class ErrorLogDataView : AbstractDataView {
-        private readonly LinkedList<ErrorLogEntry> fErrorViewItemSet = new LinkedList<ErrorLogEntry>();
-        private IListViewer fListViewer;
+        private readonly LinkedList<ErrorLogEntry> _errorViewItemSet = new LinkedList<ErrorLogEntry>();
+        private IListViewer _listViewer;
 
         /// <inheritdoc />
         public override IWidgetFactory WidgetFactory { get; set; }
@@ -27,8 +27,8 @@ namespace motoi.workbench.errorlogview {
         /// <param name="sender">Event source</param>
         /// <param name="errorLogEntry">Event arguments</param>
         private void OnPlatformErrorLogEntryAdded(object sender, ErrorLogEntry errorLogEntry) {
-            fErrorViewItemSet.AddFirst(errorLogEntry);
-            PlatformUI.Instance.Invoker.InvokeAsync(lstVwr => lstVwr.Update(), fListViewer);
+            _errorViewItemSet.AddFirst(errorLogEntry);
+            PlatformUI.Instance.Invoker.InvokeAsync(lstVwr => lstVwr.Update(), _listViewer);
         }
 
         /// <inheritdoc />
@@ -36,19 +36,17 @@ namespace motoi.workbench.errorlogview {
             gridComposite.GridColumns = 1;
             gridComposite.GridRows = 1;
 
-            fListViewer = WidgetFactory.CreateInstance<IListViewer>(gridComposite);
-            gridComposite.AddWidget(fListViewer);
+            _listViewer = WidgetFactory.CreateInstance<IListViewer>(gridComposite);
+            gridComposite.AddWidget(_listViewer);
 
-            fListViewer.ContentProvider = new ErrorsViewListContentProvider();
-            fListViewer.LabelProvider = new ErrorsViewListLabelProvider();
-            fListViewer.Input = fErrorViewItemSet;
-            fListViewer.SelectionDoubleClicked += OnSelectionDoubleClicked;
-            fListViewer.Update();
+            _listViewer.ContentProvider = new ErrorsViewListContentProvider();
+            _listViewer.LabelProvider = new ErrorsViewListLabelProvider();
+            _listViewer.Input = _errorViewItemSet;
+            _listViewer.SelectionDoubleClicked += OnSelectionDoubleClicked;
+            _listViewer.Update();
         }
 
-        /// <summary>
-        /// Is invoked when a list viewer item has been double clicked.
-        /// </summary>
+        /// <summary> Is invoked when a list viewer item has been double clicked. </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="selectionEventArgs">Event arguments</param>
         private void OnSelectionDoubleClicked(object sender, SelectionEventArgs selectionEventArgs) {
@@ -58,10 +56,12 @@ namespace motoi.workbench.errorlogview {
         }
 
         /// <inheritdoc />
-        public override string Name { get { return Messages.ErrorLogDataView_Name; } }
+        public override string Name 
+            => Messages.ErrorLogDataView_Name;
 
         /// <inheritdoc />
-        public override ImageDescriptor Image { get { return ImageDescriptor.Create("images.error-file", "resources/images/File-Warning-32.png"); } }
+        public override ImageDescriptor Image 
+            => ImageDescriptor.Create("images.error-file", "resources/images/File-Warning-32.png");
 
         /// <summary>
         /// Implements the <see cref="IListLabelProvider"/> for the <see cref="ErrorLogDataView"/>.
@@ -135,7 +135,8 @@ namespace motoi.workbench.errorlogview {
             }
 
             /// <inheritdoc />
-            public ColumnDescriptor[] Columns { get { return new[] {MessageColumn, PluginColumn, DateColumn}; } }
+            public ColumnDescriptor[] Columns 
+                => new[] {MessageColumn, PluginColumn, DateColumn};
         }
     }
 }
