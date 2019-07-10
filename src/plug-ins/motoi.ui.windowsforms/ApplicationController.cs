@@ -3,9 +3,7 @@ using motoi.platform.ui.factories;
 using motoi.platform.ui.shells;
 
 namespace motoi.ui.windowsforms {
-    /// <summary>
-    /// Implements <see cref="IApplicationController"/> for the windows forms UI platform.
-    /// </summary>
+    /// <summary> Implements <see cref="IApplicationController"/> for the windows forms UI platform. </summary>
     public class ApplicationController : IApplicationController {
         /// <inheritdoc />
         public void RunApplication(IMainWindow mainWindow) {

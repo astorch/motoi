@@ -6,17 +6,13 @@ using motoi.platform.ui.widgets;
 using motoi.ui.windowsforms.utils;
 
 namespace motoi.ui.windowsforms.controls {
-    /// <summary>
-    /// Provides an implementation of <see cref="IGridPanel"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IGridPanel"/>. </summary>
     public class GridPanel : TableLayoutPanel, IGridPanel {
 
         private int iNextColumn;
         private int iNextRow;
-
-        /// <summary>
-        /// Creates a new instance.
-        /// </summary>
+        
+        /// <inheritdoc />
         public GridPanel() {
             InitializeComponent();
         }
@@ -136,9 +132,7 @@ namespace motoi.ui.windowsforms.controls {
 
         #endregion
 
-        /// <summary>
-        /// Notifies the instance to initialize its content.
-        /// </summary>
+        /// <summary> Notifies the instance to initialize its content. </summary>
         private void InitializeComponent() {
             // Currently nothing to do here
         }

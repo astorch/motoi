@@ -5,9 +5,7 @@ using motoi.platform.ui.shells;
 using motoi.ui.windowsforms.shells;
 
 namespace motoi.ui.windowsforms {
-    /// <summary>
-    /// Implements <see cref="IShellFactory"/> for the windows forms UI platform.
-    /// </summary>
+    /// <summary> Implements <see cref="IShellFactory"/> for the windows forms UI platform. </summary>
     public class ShellFactory : IShellFactory {
         /// <inheritdoc />
         public TShell CreateInstance<TShell>() where TShell : class, IShell {

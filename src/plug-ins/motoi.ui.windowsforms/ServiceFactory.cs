@@ -7,9 +7,7 @@ using motoi.workbench.model;
 using motoi.workbench.model.jobs;
 
 namespace motoi.ui.windowsforms {
-    /// <summary>
-    /// Implements <see cref="IUIServiceFactory"/> for the windows forms UI platform.
-    /// </summary>
+    /// <summary> Implements <see cref="IUIServiceFactory"/> for the windows forms UI platform. </summary>
     public class ServiceFactory : IUIServiceFactory {
         /// <inheritdoc />
         public TService GetService<TService>() where TService : class, IUIService {

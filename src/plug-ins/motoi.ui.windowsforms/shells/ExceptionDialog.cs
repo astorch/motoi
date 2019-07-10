@@ -9,20 +9,18 @@ using motoi.platform.ui.shells;
 using motoi.platform.ui.widgets;
 
 namespace motoi.ui.windowsforms.shells {
-    /// <summary>
-    /// Provides an implementation of <see cref="IExceptionDialog"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IExceptionDialog"/>. </summary>
     public class ExceptionDialog : MessageDialog, IExceptionDialog {
         private static readonly string ForwardLabelText = "Details " + '\u00BB';  // »
         private static readonly string BackwardLabelText = "Details " + '\u00AB'; // «
 
-        private TableLayoutPanel fParentContentPanel;
-        private TableLayoutPanel fDetailsPanel;
-        private ListBox fDetailsListBox;
-        private RichTextBox fDetailsTextBox;
-        private Size fCollapsedClientSize;
-        private IButton fDetailsButton;
-        private bool fShowDetails;
+        private TableLayoutPanel _parentContentPanel;
+        private TableLayoutPanel _detailsPanel;
+        private ListBox _detailsListBox;
+        private RichTextBox _detailsTextBox;
+        private Size _collapsedClientSize;
+        private IButton _detailsButton;
+        private bool _showDetails;
 
         /// <inheritdoc />
         public ExceptionDialog() {
@@ -42,9 +40,7 @@ namespace motoi.ui.windowsforms.shells {
 
         #endregion
 
-        /// <summary>
-        /// Is invoked when <see cref="IExceptionDialog.Exception"/> has been changed.
-        /// </summary>
+        /// <summary> Is invoked when <see cref="IExceptionDialog.Exception"/> has been changed. </summary>
         /// <param name="value">New value</param>
         private void OnExceptionChanged(Exception value) {
             if (value == null) return;
@@ -68,55 +64,55 @@ namespace motoi.ui.windowsforms.shells {
             ExceptionInfo allMessageInfo = new ExceptionInfo("All messages", aggregatedMessage, aggregatedStacktrace,
                 value.TargetSite.Name, value.Source);
             exceptionStack.Insert(0, allMessageInfo);
-            fDetailsListBox.DataSource = exceptionStack;
-            fDetailsListBox.DisplayMember = "Type";
+            _detailsListBox.DataSource = exceptionStack;
+            _detailsListBox.DisplayMember = "Type";
 
-            fDetailsListBox.SelectedValueChanged += (sender, args) => {
+            _detailsListBox.SelectedValueChanged += (sender, args) => {
                 ExceptionInfo exInfo = (ExceptionInfo) ((ListBox) sender).SelectedItem;
                 string rtfText = exInfo.ToRtfString();
-                fDetailsTextBox.Rtf = rtfText;
+                _detailsTextBox.Rtf = rtfText;
             };
 
-            fDetailsListBox.SelectionMode = SelectionMode.One;
-            fDetailsListBox.SelectedItem = exceptionStack[0];
+            _detailsListBox.SelectionMode = SelectionMode.One;
+            _detailsListBox.SelectedItem = exceptionStack[0];
         }
 
         /// <inheritdoc />
         protected override void AddMessageDialogButtons(EMessageDialogResult[] resultSet) {
             base.AddMessageDialogButtons(resultSet);
-            fDetailsButton = ((IDialogWindow) this).AddButton(ForwardLabelText, new ActionHandlerDelegate(OnDetailsButtonClicked));
+            _detailsButton = ((IDialogWindow) this).AddButton(ForwardLabelText, new ActionHandlerDelegate(OnDetailsButtonClicked));
         }
 
 
         /// <summary> Is invoked when the button to show or hide the details has been clicked. </summary>
         private void OnDetailsButtonClicked() {
             // Toggle flag
-            fShowDetails = !fShowDetails;
+            _showDetails = !_showDetails;
 
             SuspendLayout();
 
             // Expand or collapse dialog window
-            if (fShowDetails) {
-                fDetailsButton.Text = BackwardLabelText;
+            if (_showDetails) {
+                _detailsButton.Text = BackwardLabelText;
 
-                fParentContentPanel.RowCount += 1;
-                fParentContentPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100f));
+                _parentContentPanel.RowCount += 1;
+                _parentContentPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100f));
 
-                fParentContentPanel.Controls.Add(fDetailsPanel, 0, 2);
-                fParentContentPanel.SetColumnSpan(fDetailsPanel, 2);
+                _parentContentPanel.Controls.Add(_detailsPanel, 0, 2);
+                _parentContentPanel.SetColumnSpan(_detailsPanel, 2);
 
-                fCollapsedClientSize = ClientSize;
+                _collapsedClientSize = ClientSize;
                 ClientSize = new Size(1200, 600);
             } else {
-                fDetailsButton.Text = ForwardLabelText;
+                _detailsButton.Text = ForwardLabelText;
 
-                fParentContentPanel.RowCount -= 1;
-                fParentContentPanel.RowStyles.RemoveAt(fParentContentPanel.RowStyles.Count - 1);
+                _parentContentPanel.RowCount -= 1;
+                _parentContentPanel.RowStyles.RemoveAt(_parentContentPanel.RowStyles.Count - 1);
 
-                int index = fParentContentPanel.Controls.GetChildIndex(fDetailsPanel);
-                fParentContentPanel.Controls.RemoveAt(index);
+                int index = _parentContentPanel.Controls.GetChildIndex(_detailsPanel);
+                _parentContentPanel.Controls.RemoveAt(index);
 
-                ClientSize = fCollapsedClientSize;
+                ClientSize = _collapsedClientSize;
             }
             
             ResumeLayout(true);
@@ -127,39 +123,39 @@ namespace motoi.ui.windowsforms.shells {
             CreateControls();
 
             Control ctrl = base.CreateContentControl(contentContainer);
-            fParentContentPanel = (TableLayoutPanel) contentContainer.Controls[contentContainer.Controls.Count - 1];
+            _parentContentPanel = (TableLayoutPanel) contentContainer.Controls[contentContainer.Controls.Count - 1];
             
             return ctrl;
         }
 
         /// <inheritdoc />
         protected override void OnWindowClosed() {
-            fDetailsPanel.Controls.Clear();
-            fDetailsPanel = null;
-            fDetailsListBox = null;
-            fDetailsTextBox = null;
+            _detailsPanel.Controls.Clear();
+            _detailsPanel = null;
+            _detailsListBox = null;
+            _detailsTextBox = null;
 
             base.OnWindowClosed();
         }
 
         /// <summary> Creates the controls used by this component. </summary>
         private void CreateControls() {
-            fDetailsPanel = new TableLayoutPanel {ColumnCount = 2, RowCount = 1, Dock = DockStyle.Fill, AutoSize = true};
+            _detailsPanel = new TableLayoutPanel {ColumnCount = 2, RowCount = 1, Dock = DockStyle.Fill, AutoSize = true};
 
-            fDetailsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100f));
-            fDetailsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40f));
-            fDetailsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80f));
+            _detailsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100f));
+            _detailsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40f));
+            _detailsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80f));
 
-            fDetailsListBox = new ListBox {Dock =  DockStyle.Fill, AutoSize = true, IntegralHeight = false};
-            fDetailsPanel.Controls.Add(fDetailsListBox, 0, 0);
+            _detailsListBox = new ListBox {Dock =  DockStyle.Fill, AutoSize = true, IntegralHeight = false};
+            _detailsPanel.Controls.Add(_detailsListBox, 0, 0);
             
-            fDetailsTextBox = new RichTextBox {
+            _detailsTextBox = new RichTextBox {
                 ReadOnly = true,
                 Dock = DockStyle.Fill,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = true
             };
-            fDetailsPanel.Controls.Add(fDetailsTextBox, 1, 0);
+            _detailsPanel.Controls.Add(_detailsTextBox, 1, 0);
         }
 
         /// <summary> Performs an initialization of the used components. </summary>
@@ -186,19 +182,19 @@ namespace motoi.ui.windowsforms.shells {
             }
 
             /// <summary> Returns the exception type. </summary>
-            public string Type { get; private set; }
+            public string Type { get; }
 
             /// <summary> Returns the exception message. </summary>
-            public string Message { get; private set; }
+            public string Message { get; }
 
             /// <summary> Returns the stacktrace of the exception. </summary>
-            public string Stacktrace { get; private set; }
+            public string Stacktrace { get; }
 
             /// <summary> Returns the target site of the exception. </summary>
-            public string TargetSite{ get; private set; }
+            public string TargetSite{ get; }
 
             /// <summary> Returns the source of the exception. </summary>
-            public string Source { get; private set; }
+            public string Source { get; }
 
             /// <summary>
             /// Creates an instance of <see cref="ExceptionInfo"/> based on the informationen 

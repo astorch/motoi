@@ -1,12 +1,11 @@
 ﻿using System;
 
 namespace motoi.ui.windowsforms.utils {
-    /// <summary>
-    /// Provides common methods for cast operations.
-    /// </summary>
+    /// <summary> Provides common methods for cast operations. </summary>
     public static class CastUtil {
         /// <summary>
-        /// Casts the given object to the given type. If the cast is invalid an exception will be thrown.
+        /// Casts the given object to the given type.
+        /// If the cast is invalid an exception will be thrown.
         /// </summary>
         /// <typeparam name="TOut">Outgoing type</typeparam>
         /// <typeparam name="TIn">Incoming type</typeparam>
@@ -21,7 +20,8 @@ namespace motoi.ui.windowsforms.utils {
         }
 
         /// <summary>
-        /// Casts the given object to the given type. If the cast is invalid an exception will be thrown.
+        /// Casts the given object to the given type.
+        /// If the cast is invalid an exception will be thrown.
         /// </summary>
         /// <typeparam name="TOut">Outgoing type</typeparam>
         /// <param name="obj">Object to cast</param>

@@ -77,9 +77,7 @@ namespace motoi.ui.windowsforms.controls {
 
         #endregion
 
-        /// <summary>
-        /// Is invoked when the style definition has been changed.
-        /// </summary>
+        /// <summary> Is invoked when the style definition has been changed. </summary>
         /// <param name="styleDefinition">New style definition</param>
         private void OnStyleDefinitionChanged(StyleDefinition styleDefinition) {
             if (styleDefinition == null) return;

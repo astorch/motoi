@@ -4,13 +4,9 @@ using motoi.platform.ui;
 using motoi.platform.ui.widgets;
 
 namespace motoi.ui.windowsforms.controls {
-    /// <summary>
-    /// Provides an implementation of <see cref="ITextBlock"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="ITextBlock"/>. </summary>
     public class TextBlock : Label, ITextBlock {
-        /// <summary>
-        /// Creates a new instance.
-        /// </summary>
+        /// <inheritdoc />
         public TextBlock() {
             InitializeComponent();
         }
@@ -46,9 +42,7 @@ namespace motoi.ui.windowsforms.controls {
 
         #endregion
 
-        /// <summary>
-        /// Notifies the instance to initialize its content.
-        /// </summary>
+        /// <summary> Notifies the instance to initialize its content. </summary>
         private void InitializeComponent() {
             TextAlign = ContentAlignment.MiddleLeft;
             Margin = new Padding(5);

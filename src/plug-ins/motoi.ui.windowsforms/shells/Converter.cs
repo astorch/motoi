@@ -2,9 +2,7 @@
 using motoi.platform.ui.shells;
 
 namespace motoi.ui.windowsforms.shells {
-    /// <summary>
-    /// Provides access to various implementations of <see cref="IConverter{TIn,TOut}"/>.
-    /// </summary>
+    /// <summary> Provides access to various implementations of <see cref="IConverter{TIn,TOut}"/>. </summary>
     public static class Converter {
         /// <summary> Window state converter </summary>
         public static readonly WindowStateConverter WindowState = new WindowStateConverter();

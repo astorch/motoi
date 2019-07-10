@@ -5,21 +5,14 @@ using System.Drawing;
 using System.Windows.Forms;
 using motoi.platform.ui.bindings;
 using motoi.platform.ui.toolbars;
-using xcite.collections;
 
 namespace motoi.ui.windowsforms.toolbars {
-    /// <summary>
-    /// Provides an implementation of <see cref="IToolBarComboBox"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IToolBarComboBox"/>. </summary>
     public class ToolBarComboBox : ToolStripComboBox, IToolBarComboBox {
-        /// <summary>
-        /// Event that occurs when a property value changes.
-        /// </summary>
+        /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Returns the items source of the items selector or does set it.
-        /// </summary>
+        
+        /// <inheritdoc />
         ICollection IToolBarComboBox.ItemsSource {
             get { return PToolBarComboBox.GetModelValue<ICollection>(this, PToolBarComboBox.ItemsSourceProperty); }
             set {
@@ -29,14 +22,14 @@ namespace motoi.ui.windowsforms.toolbars {
                 Items.Clear();
                 if (value == null) return;
                 
-                object[] items = value.ToArray();
+                object[] items = new object[value.Count];
+                value.CopyTo(items, 0);
+                
                 Items.AddRange(items);
             }
         }
-
-        /// <summary>
-        /// Returns the selected item or does set it.
-        /// </summary>
+        
+        /// <inheritdoc />
         object IToolBarComboBox.SelectedItem {
             get { return PToolBarComboBox.GetModelValue<object>(this, PToolBarComboBox.SelectedItemProperty); }
             set {
@@ -45,9 +38,7 @@ namespace motoi.ui.windowsforms.toolbars {
             }
         }
 
-        /// <summary>
-        /// Returns TRUE if the control is enabled or does set it.
-        /// </summary>
+        /// <inheritdoc />
         bool IToolBarControl.IsEnabled {
             get { return PToolBarComboBox.GetModelValue<bool>(this, PToolBarComboBox.IsEnabledProperty); }
             set {
@@ -55,10 +46,8 @@ namespace motoi.ui.windowsforms.toolbars {
                 Enabled = value;
             }
         }
-
-        /// <summary>
-        /// Returns TRUE if the item is editable.
-        /// </summary>
+        
+        /// <inheritdoc />
         bool IToolBarComboBox.Editable {
             get { return PToolBarComboBox.GetModelValue<bool>(this, PToolBarComboBox.EditableProperty); }
             set {
@@ -67,36 +56,25 @@ namespace motoi.ui.windowsforms.toolbars {
             }
         }
 
-        /// <summary>
-        /// Returns the current width of the control or does set it.
-        /// </summary>
+        /// <inheritdoc />
         int IToolBarControl.Width {
             get { return Size.Width; }
             set { Size = new Size(value, Size.Height); }
         }
-
-        /// <summary>
-        /// Löst das <see cref="E:System.Windows.Forms.ToolStripComboBox.SelectedIndexChanged"/>-Ereignis aus.
-        /// </summary>
-        /// <param name="e">Ein <see cref="T:System.EventArgs"/>, der die Ereignisdaten enthält.</param>
+        
+        /// <inheritdoc />
         protected override void OnSelectedIndexChanged(EventArgs e) {
             PToolBarComboBox.SetModelValue(this, PToolBarComboBox.SelectedItemProperty, SelectedItem, EBindingSourceUpdateReason.PropertyChanged);
             base.OnSelectedIndexChanged(e);
         }
-
-        /// <summary>
-        /// Löst das <see cref="E:System.Windows.Forms.ToolStripControlHost.LostFocus"/>-Ereignis aus.
-        /// </summary>
-        /// <param name="e">Ein <see cref="T:System.EventArgs"/>, das die Ereignisdaten enthält.</param>
+        
+        /// <inheritdoc />
         protected override void OnLostFocus(EventArgs e) {
             PToolBarComboBox.SetModelValue(this, PToolBarComboBox.SelectedItemProperty, SelectedItem, EBindingSourceUpdateReason.LostFocus);
             base.OnLostFocus(e);
         }
-
-        /// <summary>
-        /// Gibt die vom <see cref="T:System.Windows.Forms.ToolStripControlHost"/> verwendeten nicht verwalteten Ressourcen und optional auch die verwalteten Ressourcen frei.
-        /// </summary>
-        /// <param name="disposing">true, um sowohl verwaltete als auch nicht verwaltete Ressourcen freizugeben. false, um ausschließlich nicht verwaltete Ressourcen freizugeben. </param>
+        
+        /// <inheritdoc />
         protected override void Dispose(bool disposing) {
             PToolBarComboBox.DisposeInstance(this);
             base.Dispose(disposing);

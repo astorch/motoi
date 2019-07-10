@@ -5,12 +5,9 @@ using motoi.platform.ui.bindings;
 using motoi.platform.ui.widgets;
 
 namespace motoi.ui.windowsforms.controls {
-    /// <summary>
-    /// Provides an implementation of <see cref="ICheckBox"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="ICheckBox"/>. </summary>
     public class CheckBox : System.Windows.Forms.CheckBox, ICheckBox {
-
-        /// <summary>Initializes a new instance of the <see cref="T:System.Windows.Forms.CheckBox" /> class.</summary>
+        /// <inheritdoc />
         public CheckBox() {
             InitializeComponent();
         }
@@ -67,9 +64,7 @@ namespace motoi.ui.windowsforms.controls {
             base.OnCheckStateChanged(e);
         }
 
-        /// <summary>
-        /// Notifies the instance to initialize its content.
-        /// </summary>
+        /// <summary> Notifies the instance to initialize its content. </summary>
         private void InitializeComponent() {
             Margin = new Padding(8, 5, 5, 5);
         }

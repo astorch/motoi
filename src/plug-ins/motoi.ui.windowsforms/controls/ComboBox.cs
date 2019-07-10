@@ -4,16 +4,11 @@ using System.Windows.Forms;
 using motoi.platform.ui;
 using motoi.platform.ui.bindings;
 using motoi.platform.ui.widgets;
-using xcite.collections;
 
 namespace motoi.ui.windowsforms.controls {
-    /// <summary>
-    /// Provides an implementation of <see cref="IComboBox"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IComboBox"/>. </summary>
     public class ComboBox : System.Windows.Forms.ComboBox, IComboBox {
-        /// <summary>
-        /// Creates a new instance.
-        /// </summary>
+        /// <inheritdoc />
         public ComboBox() {
             InitializeComponent();
         }
@@ -84,25 +79,30 @@ namespace motoi.ui.windowsforms.controls {
             base.OnSelectedValueChanged(e);
         }
 
-        /// <summary>
-        /// Is invoked when the current items source has been changed.
-        /// </summary>
+        /// <summary> Is invoked when the current items source has been changed. </summary>
         /// <param name="itemsSource">New items source collection</param>
         protected virtual void OnItemsSourceChanged(ICollection itemsSource) {
             try {
                 BeginUpdate();
                 
                 Items.Clear();
-                itemsSource.ForEach(obj => Items.Add(obj));
-                
+
+                IEnumerator itr = itemsSource.GetEnumerator();
+                try {
+                    while (itr.MoveNext()) {
+                        object item = itr.Current;
+                        Items.Add(item);
+                    }
+                } finally {
+                    (itr as IDisposable)?.Dispose();
+                }
+
             } finally {
                 EndUpdate();
             }
         }
 
-        /// <summary>
-        /// Notifies the instance to initialize its content.
-        /// </summary>
+        /// <summary> Notifies the instance to initialize its content. </summary>
         private void InitializeComponent() {
             Margin = new Padding(5);
         }

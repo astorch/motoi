@@ -12,9 +12,7 @@ using WeifenLuo.WinFormsUI.Docking;
 using ToolBar = motoi.ui.windowsforms.toolbars.ToolBar;
 
 namespace motoi.ui.windowsforms.shells {
-    /// <summary>
-    /// Provides an implementation of <see cref="ISingleViewPerspective"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="ISingleViewPerspective"/>. </summary>
     public class SingleViewPerspective : AbstractPerspective, ISingleViewPerspective {
         private readonly PerspectiveDockPanel iDockPanel;
         private DockContent iDocumentDockContent;
@@ -36,17 +34,13 @@ namespace motoi.ui.windowsforms.shells {
             ConfigureDockPanel(iDockPanel);
         }
 
-        /// <summary>
-        /// Notifies the instance to apply a custom configuration to the underlying dock panel.
-        /// </summary>
+        /// <summary> Notifies the instance to apply a custom configuration to the underlying dock panel. </summary>
         /// <param name="dockPanel">Underlying dock panel</param>
         protected virtual void ConfigureDockPanel(DockPanel dockPanel) {
             dockPanel.DocumentStyle = DocumentStyle.DockingSdi;
         }
 
-        /// <summary>
-        /// Returns the current theme.
-        /// </summary>
+        /// <summary> Returns the current theme. </summary>
         /// <returns>Theme</returns>
         private ThemeBase GetTheme() {
             return new VS2015BlueTheme();
@@ -56,11 +50,8 @@ namespace motoi.ui.windowsforms.shells {
         public override IWidgetCompound GetPanel() {
             return iDockPanel;
         }
-
-        /// <summary>
-        /// Tells the instance to make the given <paramref name="editor"/> visible to the user.
-        /// </summary>
-        /// <param name="editor">Editor to show</param>
+        
+        /// <inheritdoc />
         protected override void OnShowEditor(IEditor editor) {
             if (editor == null) return;
 
@@ -102,9 +93,7 @@ namespace motoi.ui.windowsforms.shells {
             }
         }
 
-        /// <summary>
-        /// Is invoked when a property of the currently opened editor has been changed.
-        /// </summary>
+        /// <summary> Is invoked when a property of the currently opened editor has been changed. </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="args">Event arguments</param>
         private void OnEditorPropertyChanged(object sender, PropertyChangedEventArgs args) {
@@ -117,9 +106,7 @@ namespace motoi.ui.windowsforms.shells {
             iDocumentDockContent.TabText = editorTabText;
         }
 
-        /// <summary>
-        /// Is invoked when the dirty state of the currently opened editor has been changed.
-        /// </summary>
+        /// <summary> Is invoked when the dirty state of the currently opened editor has been changed. </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="eventArgs">Event arguments</param>
         private void OnEditorDirtyChanged(object sender, EventArgs eventArgs) {
@@ -131,9 +118,7 @@ namespace motoi.ui.windowsforms.shells {
             iDocumentDockContent.TabText = tabName;
         }
 
-        /// <summary>
-        /// Is invoked when the dock content got the focus.
-        /// </summary>
+        /// <summary> Is invoked when the dock content got the focus. </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="eventArgs">Event arguments</param>
         private void OnDockContentGotFocus(object sender, EventArgs eventArgs) {
@@ -144,9 +129,7 @@ namespace motoi.ui.windowsforms.shells {
             PerspectiveEventManager.Dispatch(lstnr => lstnr.OnWorkbenchPartActivated(workbenchPart), OnDispatchWorkbenchEventException);
         }
 
-        /// <summary>
-        /// Is invoked when the user closes the editor by closing the dock content.
-        /// </summary>
+        /// <summary> Is invoked when the user closes the editor by closing the dock content. </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="eventArgs">Event arguments</param>
         private void OnDockContentClosed(object sender, EventArgs eventArgs) {
@@ -155,9 +138,7 @@ namespace motoi.ui.windowsforms.shells {
             CloseEditor(dockContent.Tag as IEditor, true);
         }
 
-        /// <summary>
-        /// Is invoked when the user requested the close of a dock content.
-        /// </summary>
+        /// <summary> Is invoked when the user requested the close of a dock content. </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="cancelEventArgs">Event arguments</param>
         private void OnDockContentClosing(object sender, CancelEventArgs cancelEventArgs) {
@@ -165,11 +146,8 @@ namespace motoi.ui.windowsforms.shells {
             if (dockContent == null) return;
             cancelEventArgs.Cancel = !CanCloseEditor(dockContent.Tag as IEditor);
         }
-
-        /// <summary>
-        /// Tells the instance to close the given <paramref name="editor"/>.
-        /// </summary>
-        /// <param name="editor">Editor to close</param>
+        
+        /// <inheritdoc />
         protected override void OnCloseEditor(IEditor editor) {
             if (editor == null) return;
 
@@ -188,13 +166,8 @@ namespace motoi.ui.windowsforms.shells {
                 iCurrentToolBar = null;
             }
         }
-
-        /// <summary>
-        /// Tells the instance to make the given <paramref name="dataView"/> visible to the user at the given 
-        /// <paramref name="viewPosition"/>.
-        /// </summary>
-        /// <param name="dataView">Data view to show</param>
-        /// <param name="viewPosition">Target view position</param>
+        
+        /// <inheritdoc />
         protected override void OnShowDataView(IDataView dataView, EViewPosition viewPosition) {
             // Visual root element
             DockContent dataViewDockContent = new DockContent();
@@ -248,9 +221,7 @@ namespace motoi.ui.windowsforms.shells {
             return DockState.Document;
         }
 
-        /// <summary>
-        /// Extends <see cref="DockPanel"/> to implement <see cref="IWidgetCompound"/>.
-        /// </summary>
+        /// <summary> Extends <see cref="DockPanel"/> to implement <see cref="IWidgetCompound"/>. </summary>
         class PerspectiveDockPanel : DockPanel, IWidgetCompound {
 
             /// <inheritdoc />

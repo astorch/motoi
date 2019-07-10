@@ -1,9 +1,7 @@
 ﻿using System.Windows.Forms;
 
 namespace motoi.ui.windowsforms.utils {
-    /// <summary>
-    /// Provides various extension methods for <see cref="Control"/>.
-    /// </summary>
+    /// <summary> Provides various extension methods for <see cref="Control"/>. </summary>
     public static class ControlExtensionMethods {
         /// <summary>
         /// Creates a new instance of <see cref="LayoutSuspensionToken"/> that is 

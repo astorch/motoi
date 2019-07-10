@@ -2,9 +2,7 @@
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace motoi.ui.windowsforms.shells {
-    /// <summary>
-    /// Provides an implementation of <see cref="IMultiViewPerspective"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IMultiViewPerspective"/>. </summary>
     public class MultiViewPerspective : SingleViewPerspective, IMultiViewPerspective {
         /// <inheritdoc />
         protected override void ConfigureDockPanel(DockPanel dockPanel) {

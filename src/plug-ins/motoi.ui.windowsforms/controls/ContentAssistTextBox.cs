@@ -54,11 +54,8 @@ namespace motoi.ui.windowsforms.controls {
             ProcessSyntaxValidation(changedRange);
             base.OnTextChangedDelayed(changedRange);
         }
-
-        /// <summary>
-        /// Is invoked when a line is painted.
-        /// </summary>
-        /// <param name="e">Event arguments</param>
+        
+        /// <inheritdoc />
         protected override void OnPaintLine(PaintLineEventArgs e) {
             base.OnPaintLine(e);
             if (iSyntaxHints.Count == 0) return;

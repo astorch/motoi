@@ -9,30 +9,24 @@ using motoi.platform.ui.shells;
 using motoi.platform.ui.toolbars;
 using motoi.ui.windowsforms.controls;
 using motoi.ui.windowsforms.jobs;
-using xcite.collections;
 using ToolBar = motoi.ui.windowsforms.toolbars.ToolBar;
 
 namespace motoi.ui.windowsforms.shells {
     /// <summary>
-    /// Provides an implementation of <see cref="IMainWindow"/> based on Windows Forms 
-    /// API.
+    /// Provides an implementation of <see cref="IMainWindow"/>
+    /// based on Windows Forms API.
     /// </summary>
     public class MainWindow : Window, IMainWindow {
-        private ToolBar iApplicationToolBar;
-        private readonly LinearList<Control> iTopControlAddQueue = new LinearList<Control>();
+        private ToolBar _applicationToolBar;
+        private readonly List<Control> iTopControlAddQueue = new List<Control>(80);
 
-        /// <summary>
-        /// Creates a new instance.
-        /// </summary>
+        /// <inheritdoc />
         public MainWindow() {
             InitializeComponents();
             StartPosition = FormStartPosition.Manual;
         }
 
-        /// <summary>
-        /// Tells the window to the add the given menu.
-        /// </summary>
-        /// <param name="menu">Menu and its item to add</param>
+        /// <inheritdoc />
         public void AddMenu(MenuContribution menu) {
             if (MainMenuStrip == null) {
                 MainMenuStrip = new MenuStrip();
@@ -62,8 +56,7 @@ namespace motoi.ui.windowsforms.shells {
                     if (menuItemContribution.ImageStream != null)
                         menuItem.Image = new Bitmap(menuItemContribution.ImageStream);
 
-                    Keys shortcutKeys;
-                    if (Enum.TryParse(menuItemContribution.Shortcut, true, out shortcutKeys)) {
+                    if (Enum.TryParse(menuItemContribution.Shortcut, true, out Keys shortcutKeys)) {
                         menuItem.ShortcutKeys = shortcutKeys;
                         menuItem.ShowShortcutKeys = true;
                     }
@@ -80,15 +73,12 @@ namespace motoi.ui.windowsforms.shells {
                 }
             }
         }
-
-        /// <summary>
-        /// Tells the window to add the given group to the toolbar.
-        /// </summary>
-        /// <param name="group"></param>
+        
+        /// <inheritdoc />
         public void AddToolbarGroup(ToolbarGroupContribution group) {
             bool groupExisting = true;
 
-            if (iApplicationToolBar == null) {
+            if (_applicationToolBar == null) {
                 ToolStripContainer toolStripContainer = new ToolStripContainer {Dock = DockStyle.Top};
                 Size oldSize = toolStripContainer.Size;
                 toolStripContainer.Size = new Size(oldSize.Width, 32);
@@ -97,19 +87,19 @@ namespace motoi.ui.windowsforms.shells {
                 // All all remaining Controls
                 AddTopControlsFromQueue();
 
-                iApplicationToolBar = new ToolBar();
-                toolStripContainer.ContentPanel.Controls.Add(iApplicationToolBar);
+                _applicationToolBar = new ToolBar();
+                toolStripContainer.ContentPanel.Controls.Add(_applicationToolBar);
                 groupExisting = false;
             }
 
             // If there has been added groups before we have to put a separator on it
             if (groupExisting)
-                iApplicationToolBar.Items.Add(new ToolStripSeparator());
+                _applicationToolBar.Items.Add(new ToolStripSeparator());
 
             using (IEnumerator<ToolbarItemContribution> itr = group.GroupItems.GetEnumerator()) {
                 while (itr.MoveNext()) {
                     ToolbarItemContribution toolbarItem = itr.Current;
-                    iApplicationToolBar.AddButton(null, toolbarItem.ImageStream, toolbarItem.ActionHandler,
+                    _applicationToolBar.AddButton(null, toolbarItem.ImageStream, toolbarItem.ActionHandler,
                         toolbarItem.Label);
                 }
             }
@@ -124,9 +114,7 @@ namespace motoi.ui.windowsforms.shells {
             iTopControlAddQueue.Clear();
         }
 
-        /// <summary>
-        /// Performs an initialization of the used components.
-        /// </summary>
+        /// <summary> Performs an initialization of the used components. </summary>
         private void InitializeComponents() {
             // Reduce flickering
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer | ControlStyles.OptimizedDoubleBuffer, true);
@@ -153,51 +141,27 @@ namespace motoi.ui.windowsforms.shells {
 
         #region IUIInvoker
 
-        /// <summary>
-        /// Invokes the given <paramref name="action"/> on the UI thread. It blocks the current thread until 
-        /// the action has been executed.
-        /// </summary>
-        /// <param name="action">Action to be executed</param>
+        /// <inheritdoc />
         void IUIInvoker.Invoke(Action action) {
             base.Invoke(action);
         }
 
-        /// <summary>
-        /// Invokes the given <paramref name="action"/> on the UI thread using the given <paramref name="value"/>. 
-        /// It blocks the current thread until the action has been executed.
-        /// </summary>
-        /// <typeparam name="TObject">Type of the action parameter</typeparam>
-        /// <param name="action">Action to be executed</param>
-        /// <param name="value">Action argument</param>
+        /// <inheritdoc />
         void IUIInvoker.Invoke<TObject>(Action<TObject> action, TObject value) {
             base.Invoke(action, value);
         }
-
-        /// <summary>
-        /// Invokes the given <paramref name="action"/> asynchronously on the UI thread. It doesn't block the current thread.
-        /// </summary>
-        /// <param name="action">Action to be executed</param>
-        /// <returns>An <see cref="IAsyncResult"/> that represents the result of the operation</returns>
+        
+        /// <inheritdoc />
         IAsyncResult IUIInvoker.InvokeAsync(Action action) {
             return base.BeginInvoke(action);
         }
-
-        /// <summary>
-        /// Invokes the given <paramref name="action"/> asynchronously on the UI thread. It doesn't block the current thread.
-        /// </summary>
-        /// <typeparam name="TObject">Type of the action parameter</typeparam>
-        /// <param name="action">Action to be executed</param>
-        /// <param name="value">Action argument</param>
-        /// <returns>An <see cref="IAsyncResult"/> that represents the result of the operation</returns>
+        
+        /// <inheritdoc />
         IAsyncResult IUIInvoker.InvokeAsync<TObject>(Action<TObject> action, TObject value) {
             return base.BeginInvoke(action, value);
         }
-
-        /// <summary>
-        /// Returns TRUE if current thread is not the UI thread and therefore an <see cref="IUIInvoker.Invoke"/> is required 
-        /// to execute an action by it.
-        /// </summary>
-        /// <returns>TRUE if the current thread is not the UI thread</returns>
+        
+        /// <inheritdoc />
         bool IUIInvoker.RequiresInvoke() {
             return InvokeRequired;
         }

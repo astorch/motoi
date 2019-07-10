@@ -7,15 +7,11 @@ using motoi.platform.ui.data;
 using motoi.platform.ui.widgets;
 
 namespace motoi.ui.windowsforms.controls {
-    /// <summary>
-    /// Provides an implementation of <see cref="IListViewer"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IListViewer"/>. </summary>
     public class ListViewer : ListView, IListViewer {
-        private IListContentProvider iContentProvider;
-
-        /// <summary>
-        /// Creates a new instance.
-        /// </summary>
+        private IListContentProvider _contentProvider;
+        
+        /// <inheritdoc />
         public ListViewer() {
             InitializeComponent();
         }
@@ -59,9 +55,9 @@ namespace motoi.ui.windowsforms.controls {
         /// Returns the currently used content provider or does set it.
         /// </summary>
         public IListContentProvider ContentProvider {
-            get { return iContentProvider; }
+            get { return _contentProvider; }
             set {
-                iContentProvider = value;
+                _contentProvider = value;
                 OnContentProviderChanged(value);
             }
         }
@@ -117,18 +113,14 @@ namespace motoi.ui.windowsforms.controls {
 
         #endregion
 
-        /// <summary>
-        /// Is invoked when the content provider has been changed.
-        /// </summary>
+        /// <summary> Is invoked when the content provider has been changed. </summary>
         /// <param name="contentProvider">New content provider</param>
         protected virtual void OnContentProviderChanged(IListContentProvider contentProvider) {
-            ColumnDescriptor[] columns = contentProvider == null ? null : contentProvider.Columns;
+            ColumnDescriptor[] columns = contentProvider?.Columns;
             CreateColumns(columns);
         }
 
-        /// <summary>
-        /// Styles all list view items of the given <paramref name="collection"/>.
-        /// </summary>
+        /// <summary> Styles all list view items of the given <paramref name="collection"/>. </summary>
         /// <param name="collection">Collection of items to style</param>
         private void StyleListViewItems(ListViewItemCollection collection) {
             for (IEnumerator itr = collection.GetEnumerator(); itr.MoveNext(); ) {
@@ -149,9 +141,7 @@ namespace motoi.ui.windowsforms.controls {
             }
         }
 
-        /// <summary>
-        /// Creates list view items and groups for the given data <paramref name="elements"/>.
-        /// </summary>
+        /// <summary> Creates list view items and groups for the given data <paramref name="elements"/>. </summary>
         /// <param name="elements">Data element collection</param>
         private void CreateGroupsAndItems(object[] elements) {
             Items.Clear();
@@ -226,9 +216,8 @@ namespace motoi.ui.windowsforms.controls {
             if (orientation == EColumnTextOrientation.Right) return HorizontalAlignment.Right;
             return HorizontalAlignment.Center;
         }
-
-        /// <summary>Raises the <see cref="E:System.Windows.Forms.Control.MouseDoubleClick" /> event.</summary>
-        /// <param name="e">An <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data. </param>
+        
+        /// <inheritdoc />
         protected override void OnMouseDoubleClick(MouseEventArgs e) {
             base.OnMouseDoubleClick(e);
 
@@ -250,9 +239,7 @@ namespace motoi.ui.windowsforms.controls {
             SelectionChanged(this, new SelectionEventArgs { Selection = selectedItem });
         }
 
-        /// <summary>
-        /// Notifies the instance to initialize its content.
-        /// </summary>
+        /// <summary> Notifies the instance to initialize its content. </summary>
         private void InitializeComponent() {
             DoubleBuffered = true; // TODO Check if it has any advantages
             View = View.Details;

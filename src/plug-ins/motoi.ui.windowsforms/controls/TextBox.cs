@@ -5,12 +5,9 @@ using motoi.platform.ui.bindings;
 using motoi.platform.ui.widgets;
 
 namespace motoi.ui.windowsforms.controls {
-    /// <summary>
-    /// Provides an implementation of <see cref="ITextBox"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="ITextBox"/>. </summary>
     public class TextBox : System.Windows.Forms.TextBox, ITextBox {
-
-        /// <summary>Initializes a new instance of the <see cref="T:System.Windows.Forms.TextBox" /> class.</summary>
+        /// <inheritdoc />
         public TextBox() {
             InitializeComponent();
         }
@@ -65,16 +62,14 @@ namespace motoi.ui.windowsforms.controls {
         }
 
         #endregion
-
-        /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data. </param>
+        
+        /// <inheritdoc />
         protected override void OnTextChanged(EventArgs e) {
             PTextBox.SetModelValue(this, PTextBox.TextProperty, Text, EBindingSourceUpdateReason.PropertyChanged);
             base.OnTextChanged(e);
         }
 
-        /// <summary>
-        /// Notifies the instance to initialize its content.
-        /// </summary>
+        /// <summary> Notifies the instance to initialize its content. </summary>
         private void InitializeComponent() {
             Margin = new Padding(5);
         }

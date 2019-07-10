@@ -10,34 +10,24 @@ using motoi.platform.ui.images;
 using motoi.platform.ui.widgets;
 
 namespace motoi.ui.windowsforms.controls {
-    /// <summary>
-    /// Provides an implementation of <see cref="ITreeViewer"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="ITreeViewer"/>. </summary>
     public class TreeViewer : TreeView, ITreeViewer {
-        private readonly Dictionary<object, TreeNode> iDataObjectTreeNodeMap = new Dictionary<object, TreeNode>(100);
-        private object iLastSelectedDataObject;
-        private object iLastExpandedDataObject;
-
-        /// <summary>
-        /// The handler will be notified when a new selection has been made.
-        /// </summary>
+        private readonly Dictionary<object, TreeNode> _dataObjectTreeNodeMap = new Dictionary<object, TreeNode>(100);
+        private object _lastSelectedDataObject;
+        private object _lastExpandedDataObject;
+        
+        /// <inheritdoc />
         public event EventHandler<SelectionEventArgs> SelectionChanged;
-
-        /// <summary>
-        /// The handler will be notified when a selection has been made using a double click.
-        /// </summary>
+        
+        /// <inheritdoc />
         public event EventHandler<SelectionEventArgs> SelectionDoubleClicked;
-
-        /// <summary>
-        /// Creates a new instance.
-        /// </summary>
+        
+        /// <inheritdoc />
         public TreeViewer() {
             OnInitialized();
         }
 
-        /// <summary>
-        /// Tells the instance to initialize its content.
-        /// </summary>
+        /// <summary> Tells the instance to initialize its content. </summary>
         private void OnInitialized() {
             ContentProvider = null;
             LabelProvider = DefaultTreeLabelProvider.Instance;
@@ -50,11 +40,8 @@ namespace motoi.ui.windowsforms.controls {
             ShowLines = true;
             ShowPlusMinus = true;
         }
-
-        /// <summary>
-        /// Löst das <see cref="E:System.Windows.Forms.TreeView.BeforeSelect"/>-Ereignis aus.
-        /// </summary>
-        /// <param name="e">Eine Instanz der <see cref="T:System.Windows.Forms.TreeViewCancelEventArgs"/>-Klasse, die die Ereignisdaten enthält. </param>
+        
+        /// <inheritdoc />
         protected override void OnBeforeSelect(TreeViewCancelEventArgs e) {
             base.OnBeforeSelect(e);
             
@@ -85,14 +72,11 @@ namespace motoi.ui.windowsforms.controls {
 
         /// <inheritdoc />
         public ContextMenuItemProvider ContextMenuItemProvider { get; set; }
-
-        /// <summary>
-        /// Löst das <see cref="E:System.Windows.Forms.TreeView.AfterSelect"/>-Ereignis aus.
-        /// </summary>
-        /// <param name="e">Eine Instanz der <see cref="T:System.Windows.Forms.TreeViewEventArgs"/>-Klasse, die die Ereignisdaten enthält. </param>
+        
+        /// <inheritdoc />
         protected override void OnAfterSelect(TreeViewEventArgs e) {
             base.OnAfterSelect(e);
-            iLastSelectedDataObject = e.Node.Tag;
+            _lastSelectedDataObject = e.Node.Tag;
 
             // TODO Add try-catch
 
@@ -113,11 +97,8 @@ namespace motoi.ui.windowsforms.controls {
                 }
             }
         }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.TreeView.NodeMouseDoubleClick"/> event. 
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.TreeNodeMouseClickEventArgs"/> that contains the event data. </param>
+        
+        /// <inheritdoc />
         protected override void OnNodeMouseDoubleClick(TreeNodeMouseClickEventArgs e) {
             base.OnNodeMouseDoubleClick(e);
 
@@ -126,32 +107,23 @@ namespace motoi.ui.windowsforms.controls {
             if (SelectionDoubleClicked != null && SelectedNode != null)
                 SelectionDoubleClicked(this, new SelectionEventArgs {Selection = SelectedNode.Tag});
         }
-
-        /// <summary>Raises the <see cref="E:System.Windows.Forms.TreeView.AfterExpand" /> event.</summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.TreeViewEventArgs" /> that contains the event data. </param>
+        
+        /// <inheritdoc />
         protected override void OnAfterExpand(TreeViewEventArgs e) {
             base.OnAfterExpand(e);
-            iLastExpandedDataObject = e.Node.Tag;
+            _lastExpandedDataObject = e.Node.Tag;
         }
-
-        /// <summary>
-        /// Returns the input of the data viewer or does set it.
-        /// </summary>
+        
+        /// <inheritdoc />
         public object Input { get; set; }
 
-        /// <summary>
-        /// Returns the currently used content provider or does set it.
-        /// </summary>
+        /// <inheritdoc />
         public ITreeContentProvider ContentProvider { get; set; }
-
-        /// <summary>
-        /// Returns the currently used label provider or does set it.
-        /// </summary>
+        
+        /// <inheritdoc />
         public ITreeLabelProvider LabelProvider { get; set; }
-
-        /// <summary>
-        /// Fully re-creates the tree. Structural and visual properties will be updated.
-        /// </summary>
+        
+        /// <inheritdoc />
         void IDataViewer<ITreeContentProvider, ITreeLabelProvider>.Update() {
             if (ContentProvider == null) throw new NullReferenceException("ContentProvider is null!");
             if (LabelProvider == null) throw new NullReferenceException("LabelProvider is null!");
@@ -160,7 +132,7 @@ namespace motoi.ui.windowsforms.controls {
                 BeginUpdate();
                 
                 Nodes.Clear();
-                iDataObjectTreeNodeMap.Clear();
+                _dataObjectTreeNodeMap.Clear();
 
                 object[] items = ContentProvider.GetElements(Input);
                 CreateTree(items, Nodes);
@@ -183,7 +155,7 @@ namespace motoi.ui.windowsforms.controls {
                 object element = elements[i];
                 CustomTreeNode treeNode = new CustomTreeNode();
                 treeNode.Tag = element;
-                iDataObjectTreeNodeMap.Add(element, treeNode);
+                _dataObjectTreeNodeMap.Add(element, treeNode);
                 StyleNode(treeNode);
                 collection.Add(treeNode);
 
@@ -193,18 +165,14 @@ namespace motoi.ui.windowsforms.controls {
                 }
             }
         }
-
-        /// <summary>
-        /// Refreshs the tree. Only visual properties will be updated.
-        /// </summary>
+        
+        /// <inheritdoc />
         void IDataViewer<ITreeContentProvider, ITreeLabelProvider>.Refresh() {
             if (LabelProvider == null) throw new NullReferenceException("LabelProvider is null!");
             StyleTree(Nodes);
         }
 
-        /// <summary>
-        /// Styles all nodes of the given collection using the current Label Provider.
-        /// </summary>
+        /// <summary> Styles all nodes of the given collection using the current Label Provider. </summary>
         /// <param name="nodes">Collection of nodes to style</param>
         private void StyleTree(TreeNodeCollection nodes) {
             for (IEnumerator enmtor = nodes.GetEnumerator(); enmtor.MoveNext(); ) {
@@ -215,9 +183,7 @@ namespace motoi.ui.windowsforms.controls {
             }
         }
 
-        /// <summary>
-        /// Styles the given node using the current Label Provider.
-        /// </summary>
+        /// <summary> Styles the given node using the current Label Provider. </summary>
         /// <param name="treeNode">Node to style</param>
         private void StyleNode(CustomTreeNode treeNode) {
             object element = treeNode.Tag;
@@ -248,49 +214,41 @@ namespace motoi.ui.windowsforms.controls {
         /// is re-selected, too.
         /// </summary>
         private void TryReenterPreviousState() {
-            if (iLastExpandedDataObject != null) {
-                TreeNode treeNode;
-                if (iDataObjectTreeNodeMap.TryGetValue(iLastExpandedDataObject, out treeNode))
+            if (_lastExpandedDataObject != null) {
+                if (_dataObjectTreeNodeMap.TryGetValue(_lastExpandedDataObject, out TreeNode treeNode))
                     treeNode.Expand();
             }
 
-            if (iLastSelectedDataObject != null) {
-                TreeNode treeNode;
-                if (iDataObjectTreeNodeMap.TryGetValue(iLastSelectedDataObject, out treeNode))
+            if (_lastSelectedDataObject != null) {
+                if (_dataObjectTreeNodeMap.TryGetValue(_lastSelectedDataObject, out TreeNode treeNode))
                     SelectedNode = treeNode;
                 else
                     SelectedNode = null;
             }
         }
 
-        /// <summary>
-        /// Extends <see cref="TreeNode"/> to add additional behaviours.
-        /// </summary>
+        /// <summary> Extends <see cref="TreeNode"/> to add additional behaviours. </summary>
         class CustomTreeNode : TreeNode {
-            private Color iForeColor = Color.Transparent;
-            private bool iIsEnabled = true;
+            private Color _foreColor = Color.Transparent;
+            private bool _isEnabled = true;
 
-            /// <summary>
-            /// Returns true if the node is enabled or does set it.
-            /// </summary>
+            /// <summary> Returns TRUE, if the node is enabled or does set it. </summary>
             public bool IsEnabled {
-                get { return iIsEnabled; }
+                get { return _isEnabled; }
                 set {
-                    iIsEnabled = value;
+                    _isEnabled = value;
                     CheckLayout();
                 }
             }
 
-            /// <summary>
-            /// Updates the layout of the tree node.
-            /// </summary>
+            /// <summary> Updates the layout of the tree node. </summary>
             private void CheckLayout() {
                 if (!IsEnabled) {
-                    iForeColor = ForeColor;
+                    _foreColor = ForeColor;
                     ForeColor = SystemColors.GrayText;
                 } else {
-                    if (iForeColor != Color.Transparent)
-                        ForeColor = iForeColor;
+                    if (_foreColor != Color.Transparent)
+                        ForeColor = _foreColor;
                 }
             }
         }

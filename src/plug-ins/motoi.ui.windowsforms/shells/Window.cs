@@ -15,17 +15,15 @@ namespace motoi.ui.windowsforms.shells {
     /// Windows Forms API.
     /// </summary>
     public class Window : Form, IWindow {
-        private EWindowResizeMode iWindowResizeMode;
-        private EWindowStyle iWindowStyle;
+        private EWindowResizeMode _windowResizeMode;
+        private EWindowStyle _windowStyle;
 
         /// <inheritdoc />
         public Window() {
             InitializeComponents();
         }
 
-        /// <summary>
-        /// Returns the current window content or does set it.
-        /// </summary>
+        /// <summary> Returns the current window content or does set it. </summary>
         protected IWidgetCompound WindowContent { get; set; }
         
         #region IWindow
@@ -143,18 +141,18 @@ namespace motoi.ui.windowsforms.shells {
 
         /// <inheritdoc />
         public EWindowStyle WindowStyle {
-            get { return iWindowStyle; }
+            get { return _windowStyle; }
             set {
-                iWindowStyle = value;
+                _windowStyle = value;
                 UpdateFormBorderStyle();
             }
         }
 
         /// <inheritdoc />
         public EWindowResizeMode WindowResizeMode {
-            get { return iWindowResizeMode; }
+            get { return _windowResizeMode; }
             set {
-                iWindowResizeMode = value;
+                _windowResizeMode = value;
                 UpdateFormBorderStyle();
             } 
         }
@@ -164,13 +162,13 @@ namespace motoi.ui.windowsforms.shells {
         /// <see cref="WindowResizeMode"/> and <see cref="WindowStyle"/>.
         /// </summary>
         private void UpdateFormBorderStyle()  {
-            EWindowStyle windowStyle = iWindowStyle;
+            EWindowStyle windowStyle = _windowStyle;
             if (windowStyle == EWindowStyle.BlankWindow) {
                 FormBorderStyle = FormBorderStyle.None;
                 return;
             }
 
-            EWindowResizeMode resizeMode = iWindowResizeMode;
+            EWindowResizeMode resizeMode = _windowResizeMode;
             if (resizeMode == EWindowResizeMode.NoResize) {
                 MinimizeBox = false;
                 MaximizeBox = false;
@@ -214,9 +212,7 @@ namespace motoi.ui.windowsforms.shells {
 
         #endregion
 
-        /// <summary>
-        /// Performs an initialization of the used components.
-        /// </summary>
+        /// <summary> Performs an initialization of the used components. </summary>
         private void InitializeComponents() {
             WindowStyle = EWindowStyle.DefaultWindow;
             WindowResizeMode = EWindowResizeMode.CanResize;
@@ -224,9 +220,7 @@ namespace motoi.ui.windowsforms.shells {
             Closed += OnClosed;
         }
 
-        /// <summary>
-        /// Is invoked when the form has been closed.
-        /// </summary>
+        /// <summary> Is invoked when the form has been closed. </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="eventArgs">Event arguments</param>
         private void OnClosed(object sender, EventArgs eventArgs) {
@@ -238,9 +232,7 @@ namespace motoi.ui.windowsforms.shells {
             Controls.Clear();
         }
 
-        /// <summary>
-        /// Is invoked before the form will be closed.
-        /// </summary>
+        /// <summary> Is invoked before the form will be closed. </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="cancelEventArgs">Event arguments</param>
         private void OnClosing(object sender, CancelEventArgs cancelEventArgs) {

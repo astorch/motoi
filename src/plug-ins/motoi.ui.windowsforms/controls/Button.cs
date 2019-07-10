@@ -42,9 +42,7 @@ namespace motoi.ui.windowsforms.controls {
 
         #endregion
 
-        /// <summary>
-        /// Performs an initialization of the used components.
-        /// </summary>
+        /// <summary> Performs an initialization of the used components. </summary>
         private void InitializeComponent() {
             MinimumSize = new Size(120, 32);
         }
@@ -54,8 +52,7 @@ namespace motoi.ui.windowsforms.controls {
             base.OnClick(e);
 
             IActionHandler actionHandler = ((IButton) this).ActionHandler;
-            if (actionHandler == null) return;
-            actionHandler.Run();
+            actionHandler?.Run();
         }
     }
 }

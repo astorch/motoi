@@ -6,9 +6,7 @@ using motoi.platform.ui.images;
 using motoi.platform.ui.toolbars;
 
 namespace motoi.ui.windowsforms.toolbars {
-    /// <summary>
-    /// Provides an implementation of <see cref="IToolBar"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IToolBar"/>. </summary>
     public class ToolBar : ToolStrip, IToolBar {
         /// <summary>
         /// Adds a button to the tool bar with the given <paramref name="label"/>. If the button is clicked, the given 
@@ -60,6 +58,7 @@ namespace motoi.ui.windowsforms.toolbars {
             Items.Add(toolStripButton);
         }
 
+        /// <inheritdoc />
         public IToolBarComboBox AddComboBox() {
             ToolBarComboBox toolBarComboBox = new ToolBarComboBox();
             Items.Add(toolBarComboBox);

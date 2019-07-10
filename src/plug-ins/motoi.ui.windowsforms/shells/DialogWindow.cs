@@ -8,9 +8,7 @@ using MotoiButton = motoi.ui.windowsforms.controls.Button;
 using motoi.ui.windowsforms.utils;
 
 namespace motoi.ui.windowsforms.shells {
-    /// <summary>
-    /// Provides an implementation of <see cref="IDialogWindow"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IDialogWindow"/>. </summary>
     public class DialogWindow : Window, IDialogWindow {
         private FlowLayoutPanel iFlowLayoutPanel;
         private TableLayoutPanel iTableLayoutPanel;
@@ -113,9 +111,7 @@ namespace motoi.ui.windowsforms.shells {
 
         #endregion
 
-        /// <summary>
-        /// Performs an initialization of the used components.
-        /// </summary>
+        /// <summary> Performs an initialization of the used components. </summary>
         private void InitializeComponent() {
             iTableLayoutPanel = new TableLayoutPanel { RowCount = 3, ColumnCount = 1, Dock = DockStyle.Fill };
             iTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100f)); // Content

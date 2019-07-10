@@ -3,17 +3,15 @@ using System.Windows.Forms;
 using motoi.platform.ui.factories;
 
 namespace motoi.ui.windowsforms {
-    /// <summary>
-    /// Implements <see cref="IUIProvider"/> for the windows forms UI platform.
-    /// </summary>
+    /// <summary> Implements <see cref="IUIProvider"/> for the windows forms UI platform. </summary>
     public class WinformsUIProvider : IUIProvider {
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
 
-        private IApplicationController iApplicationController;
-        private IUIServiceFactory iUIServiceFactory;
-        private IShellFactory iShellFactory;
-        private IWidgetFactory iWidgetFactory;
+        private IApplicationController _applicationController;
+        private IUIServiceFactory _uiServiceFactory;
+        private IShellFactory _shellFactory;
+        private IWidgetFactory _widgetFactory;
 
         /// <inheritdoc />
         public WinformsUIProvider() {
@@ -27,22 +25,22 @@ namespace motoi.ui.windowsforms {
 
         /// <inheritdoc />
         public IApplicationController GetApplicationController() {
-            return iApplicationController ?? (iApplicationController = new ApplicationController());
+            return _applicationController ?? (_applicationController = new ApplicationController());
         }
 
         /// <inheritdoc />
         public IShellFactory GetShellFactory() {
-            return iShellFactory ?? (iShellFactory = new ShellFactory());
+            return _shellFactory ?? (_shellFactory = new ShellFactory());
         }
 
         /// <inheritdoc />
         public IWidgetFactory GetWidgetFactory() {
-            return iWidgetFactory ?? (iWidgetFactory = new WidgetFactory());
+            return _widgetFactory ?? (_widgetFactory = new WidgetFactory());
         }
 
         /// <inheritdoc />
         public IUIServiceFactory GetUIServiceFactory() {
-            return iUIServiceFactory ?? (iUIServiceFactory = new ServiceFactory());
+            return _uiServiceFactory ?? (_uiServiceFactory = new ServiceFactory());
         }
     }
 }

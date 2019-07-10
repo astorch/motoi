@@ -27,9 +27,7 @@ namespace motoi.ui.windowsforms.messaging {
             }
         }
 
-        /// <summary>
-        /// Removes all specific event handlers for the given <paramref name="control"/>.
-        /// </summary>
+        /// <summary> Removes all specific event handlers for the given <paramref name="control"/>. </summary>
         /// <param name="control">Control which had registered a custom event handler</param>
         public void RemoveMessageReceivedHandler(Control control) {
             if (control == null) return;
@@ -39,20 +37,14 @@ namespace motoi.ui.windowsforms.messaging {
             }
         }
 
-        /// <summary>
-        /// Event that is raised when a message has been received.
-        /// </summary>
+        /// <summary> Event that is raised when a message has been received. </summary>
         public event EventHandler<MessageReceivedEventArgs> MessageReceived; 
 
-        /// <summary>
-        /// Returns the currently used UI thread message dispatcher or does set it.
-        /// </summary>
+        /// <summary> Returns the currently used UI thread message dispatcher or does set it. </summary>
         public Control Dispatcher { get; set; }
 
-        /// <summary>
-        /// Notifies the instance that the given <paramref name="message"/> has been dispatched synchronously.
-        /// </summary>
-        /// <param name="message">Dispatched message</param>
+
+        /// <inheritdoc />
         public void OnMessageDispatch(UIMessage message) {
             if (Dispatcher == null) return;
 
@@ -70,11 +62,8 @@ namespace motoi.ui.windowsforms.messaging {
             }
             Dispatcher.Invoke(mappedEventHandler, this, message);
         }
-
-        /// <summary>
-        /// Notifies the instance that the given <paramref name="message"/> has been dispatched asynchronously.
-        /// </summary>
-        /// <param name="message">Dispatched message</param>
+        
+        /// <inheritdoc />
         public void OnAsyncMessageDispatch(UIMessage message) {
             if (Dispatcher == null) return;
 
@@ -93,16 +82,12 @@ namespace motoi.ui.windowsforms.messaging {
             Dispatcher.BeginInvoke(mappedEventHandler, this, message);
         }
 
-        /// <summary>
-        /// Will be called directly after this instance has been created.
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnInitialize() {
 //            UIMessageDispatcher.Instance.AddMessageDispatchListener(this);
         }
-
-        /// <summary>
-        /// Will be called when <see cref="GenericSingleton{TClass}.Destroy"/> has been called for this instance.
-        /// </summary>
+        
+        /// <inheritdoc />
         protected override void OnDestroy() {
             // Currently nothing to do here
         }

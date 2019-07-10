@@ -5,9 +5,7 @@ using motoi.workbench.bindings;
 using motoi.workbench.model.jobs;
 
 namespace motoi.ui.windowsforms.jobs {
-    /// <summary>
-    /// Provides a win forms specific implementation of <see cref="IProgressMonitor"/>.
-    /// </summary>
+    /// <summary> Provides a win forms specific implementation of <see cref="IProgressMonitor"/>. </summary>
     public class ProgressMonitor : WorkbenchPropertyChangedDispatcher, IProgressMonitor {
 
         private static readonly ProgressMonitor Default = new ProgressMonitor();
@@ -18,9 +16,7 @@ namespace motoi.ui.windowsforms.jobs {
         /// </summary>
         internal static ToolStripLabelledProgressBar ToolStripProgressBar { get; set; }
 
-        /// <summary>
-        /// Returns an instance of this clas.
-        /// </summary>
+        /// <summary> Returns an instance of this clas. </summary>
         /// <returns>Instance of this class</returns>
         public static ProgressMonitor GetInstance() {
             return Default.Prepare();
@@ -47,7 +43,7 @@ namespace motoi.ui.windowsforms.jobs {
         }
 
         /// <summary>
-        /// Returns TRUE if the progress monitor is visible to the user or does set it.
+        /// Returns TRUE, if the progress monitor is visible to the user or does set it.
         /// </summary>
         public bool IsVisible {
             get { return ToolStripProgressBar.Visible; }
@@ -59,9 +55,7 @@ namespace motoi.ui.windowsforms.jobs {
             IsVisible = false;
         }
 
-        /// <summary>
-        /// Resets the instance to an inital state.
-        /// </summary>
+        /// <summary> Resets the instance to an inital state. </summary>
         /// <returns>Same instance set to an initial state</returns>
         private ProgressMonitor Prepare() {
             IsIndetermine = false;
@@ -71,9 +65,7 @@ namespace motoi.ui.windowsforms.jobs {
             return this;
         }
 
-        /// <summary>
-        /// Invokes the given <paramref name="action"/> on the UI thread.
-        /// </summary>
+        /// <summary> Invokes the given <paramref name="action"/> on the UI thread. </summary>
         /// <param name="action">Action to invoke</param>
         private void ExecuteOnUIThread(Action action) {
             PlatformUI.Instance.Invoker.InvokeAsync(action);

@@ -15,8 +15,7 @@ namespace motoi.ui.windowsforms.utils {
         /// </summary>
         /// <param name="control">Control which layout is going to be suspended</param>
         public LayoutSuspensionToken(Control control) {
-            if (control == null) throw new ArgumentNullException("control");
-            iControl = control;
+            iControl = control ?? throw new ArgumentNullException(nameof(control));
             iControl.SuspendLayout();
         }
 

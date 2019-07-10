@@ -5,9 +5,7 @@ using motoi.platform.ui.widgets;
 using motoi.ui.windowsforms.controls;
 
 namespace motoi.ui.windowsforms {
-    /// <summary>
-    /// Implements <see cref="IWidgetFactory"/> for the windows forms UI platform.
-    /// </summary>
+    /// <summary> Implements <see cref="IWidgetFactory"/> for the windows forms UI platform. </summary>
     public class WidgetFactory : IWidgetFactory {
         /// <summary>
         /// Return a new instance of the given type.
