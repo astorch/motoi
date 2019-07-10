@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using motoi.extensions;
 using motoi.plugins;
-using NLog;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.workbench.propertyview {
     /// <summary>
@@ -13,9 +13,9 @@ namespace motoi.workbench.propertyview {
         /// <summary> Extension point id. </summary>
         private const string ExtensionPointId = "org.motoi.workbench.propertyview.provider";
 
-        private readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private readonly ILog _log = LogManager.GetLog(typeof(PropertyViewItemsProviderRegistry));
 
-        private Dictionary<string, IPropertyViewItemsProvider> iRegisteredProviders;
+        private Dictionary<string, IPropertyViewItemsProvider> _registeredProviders;
 
         /// <summary>
         /// Returns the provider that has been registered for the given <paramref name="fileExtension"/>. If there 
@@ -24,7 +24,7 @@ namespace motoi.workbench.propertyview {
         /// <param name="fileExtension">File extension a provider may associated with</param>
         /// <returns>An instance of <see cref="IPropertyViewItemsProvider"/> or NULL</returns>
         public IPropertyViewItemsProvider GetProvider(string fileExtension) {
-            if (iRegisteredProviders.TryGetValue(fileExtension, out IPropertyViewItemsProvider provider)) return provider;
+            if (_registeredProviders.TryGetValue(fileExtension, out IPropertyViewItemsProvider provider)) return provider;
             return null;
         }
 
@@ -33,7 +33,7 @@ namespace motoi.workbench.propertyview {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(ExtensionPointId);
             _log.Info($"{configurationElements.Length} registered provider found");
 
-            iRegisteredProviders = new Dictionary<string, IPropertyViewItemsProvider>(configurationElements.Length);
+            _registeredProviders = new Dictionary<string, IPropertyViewItemsProvider>(configurationElements.Length);
 
             for (int i = -1; ++i != configurationElements.Length;) {
                 IConfigurationElement configurationElement = configurationElements[i];
@@ -57,23 +57,23 @@ namespace motoi.workbench.propertyview {
                     Type providerType = TypeLoader.TypeForName(providingBundle, cls);
                     provider = providerType.NewInstance<IPropertyViewItemsProvider>();
                 } catch (Exception ex) {
-                    _log.Error(ex, $"Error on creating instance of '{cls}' provided by bundle '{providingBundle}'.");
+                    _log.Error($"Error on creating instance of '{cls}' provided by bundle '{providingBundle}'.", ex);
                     continue;
                 }
 
                 try {
-                    iRegisteredProviders.Add(fileExtension, provider);
+                    _registeredProviders.Add(fileExtension, provider);
                     _log.Info($"Provider '{provider.GetType()}' ({providingBundle}) successfully registered for file extension '{fileExtension}'");
                 } catch (Exception ex) {
-                    _log.Error(ex, $"Error on registering '{provider.GetType()}' ({providingBundle}) as provider for file extension '{2}'. Reason: {fileExtension}");
+                    _log.Error($"Error on registering '{provider.GetType()}' ({providingBundle}) as provider for file extension '{fileExtension}'.", ex);
                 }
             }
         }
 
         /// <inheritdoc />
         protected override void OnDestroy() {
-            iRegisteredProviders.Clear();
-            iRegisteredProviders = null;
+            _registeredProviders.Clear();
+            _registeredProviders = null;
         }
     }
 }
