@@ -13,14 +13,12 @@ using motoi.workbench.runtime;
 namespace motoi.workbench.workspaceexplorer {
     /// <summary> Provides a view of the current workspace content. </summary>
     public class WorkspaceDataView : AbstractDataView {
-        /// <summary>
-        /// Data view id of this class.
-        /// </summary>
+        /// <summary> Data view id of this class. </summary>
         public const string Id = "motoi.workbench.workspaceexplorer.workspaceDataView";
 
         private static readonly ImageDescriptor DataViewImage = ImageDescriptor.Create("images.explorer", "resources/images/Explorer-32.png");
         
-        private IWorkspace iWorkspaceReference;
+        private IWorkspace _workspaceReference;
 
         /// <inheritdoc />
         public override IWidgetFactory WidgetFactory { get; set; }
@@ -36,10 +34,10 @@ namespace motoi.workbench.workspaceexplorer {
             treeViewer.SelectionDoubleClicked += OnSelectionDoubleClicked;
             treeViewer.ContentProvider = new WorkspaceTreeContentProviderImpl();
             treeViewer.LabelProvider = new WorkspaceTreeLabelProviderImpl();
-            treeViewer.Input = iWorkspaceReference;
+            treeViewer.Input = _workspaceReference;
             treeViewer.Update();
 
-            iWorkspaceReference.Refreshed += (sender, args) => treeViewer.Update();
+            _workspaceReference.Refreshed += (sender, args) => treeViewer.Update();
         }
 
         /// <summary>
@@ -61,14 +59,16 @@ namespace motoi.workbench.workspaceexplorer {
 
         /// <inheritdoc />
         public override void Init() {
-            iWorkspaceReference = ResourceService.Instance.Workspace;
+            _workspaceReference = ResourceService.Instance.Workspace;
         }
 
         /// <inheritdoc />
-        public override string Name { get { return Messages.WorkspaceDataView_Name; } }
+        public override string Name 
+            => Messages.WorkspaceDataView_Name;
 
         /// <inheritdoc />
-        public override ImageDescriptor Image { get { return DataViewImage; } }
+        public override ImageDescriptor Image 
+            => DataViewImage;
 
         /// <summary>
         /// Provides an implementation of <see cref="ITreeLabelProvider"/> for <see cref="IWorkspace"/> data.

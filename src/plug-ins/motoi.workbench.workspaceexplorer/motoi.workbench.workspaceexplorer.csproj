@@ -1,66 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\debug\</OutputPath>
-    <DefineConstants />
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\debug\motoi.workbench.workspaceexplorer.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>embedded</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\release\</OutputPath>
-    <DefineConstants />
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DebugSymbols>true</DebugSymbols>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj" />
-    <ProjectReference Include="..\motoi.platform.resources\motoi.platform.resources.csproj" />
-    <ProjectReference Include="..\motoi.platform.ui\motoi.platform.ui.csproj" />
-    <ProjectReference Include="..\motoi.workbench\motoi.workbench.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.5" />
-    <PackageReference Include="xcite.csharp" Version="7.0.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="resources\images\Explorer-32.png" />
-    <None Remove="resources\images\File-32.png" />
-    <None Remove="resources\images\Folder-32.png" />
-    <None Remove="resources\texts\messages.txt" />
-    <None Remove="resources\texts\messages_de.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\WorkbenchProductAssemblyInfo.cs">
-      <Link>WorkbenchProductAssemblyInfo.cs</Link>
-    </Compile>
-    <EmbeddedResource Include="resources\images\Explorer-32.png" />
-    <EmbeddedResource Include="resources\images\File-32.png" />
-    <EmbeddedResource Include="resources\images\Folder-32.png" />
-    <EmbeddedResource Include="resources\texts\messages.txt" />
-    <EmbeddedResource Include="resources\texts\messages_de.txt" />
-    <None Include="meta-Inf\signature.mf" />
-    <None Include="meta-Inf\extensions.xml">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&quot;$(SolutionDir)..\bin\debug\Tessa.exe&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot; &quot;$(SolutionDir)..\bin\debug&quot;" />
-  </Target>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <Company>Arian Storch</Company>
+        <Authors>Arian Storch</Authors>
+        <Description>Motoi Workbench Workspace Explorer</Description>
+        <Copyright>© 2017 - 2019 Arian Storch. All rights reserved.</Copyright>
+        <Version>1.0.0</Version>
+        <DebugSymbols>True</DebugSymbols>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">        
+        <DebugType>full</DebugType>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\motoi.platform.nls\motoi.platform.nls.csproj" />
+        <ProjectReference Include="..\motoi.platform.resources\motoi.platform.resources.csproj" />
+        <ProjectReference Include="..\motoi.platform.ui\motoi.platform.ui.csproj" />
+        <ProjectReference Include="..\motoi.workbench\motoi.workbench.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="resources\images\Explorer-32.png" />
+        <None Remove="resources\images\File-32.png" />
+        <None Remove="resources\images\Folder-32.png" />
+        <None Remove="resources\texts\messages.txt" />
+        <None Remove="resources\texts\messages_de.txt" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="resources\images\Explorer-32.png" />
+        <EmbeddedResource Include="resources\images\File-32.png" />
+        <EmbeddedResource Include="resources\images\Folder-32.png" />
+        <EmbeddedResource Include="resources\texts\messages.txt" />
+        <EmbeddedResource Include="resources\texts\messages_de.txt" />
+        <None Include="meta-Inf\signature.mf" />
+        <None Include="meta-Inf\extensions.xml">
+            <SubType>Designer</SubType>
+        </None>
+    </ItemGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="&quot;$(SolutionDir)..\bin\debug\Tessa.exe&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot; &quot;$(SolutionDir)..\bin\debug&quot;" />
+    </Target>
 </Project>
