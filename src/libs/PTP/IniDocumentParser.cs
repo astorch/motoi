@@ -1,44 +1,39 @@
 ﻿using System;
 using System.IO;
 
-namespace PTP
-{
+namespace PTP {
     /// <summary>
     /// Provides an implementation of <see cref="AbstractPlainDocumentParser"/> 
     /// to parse ini files.
     /// </summary>
     public class IniDocumentParser : AbstractPlainDocumentParser {
-
-        /// <summary>
-        /// Creates a new parser for the given file.
-        /// </summary>
+        /// <summary> Creates a new parser for the given file. </summary>
         /// <param name="fileInfo">File info</param>
-        public IniDocumentParser(FileInfo fileInfo) : base(fileInfo) { }
+        public IniDocumentParser(FileInfo fileInfo) : base(fileInfo) {
+            // Nothing to do here
+        }
 
-        /// <summary>
-        /// Creates a new parser for the given stream.
-        /// </summary>
+        /// <summary> Creates a new parser for the given stream. </summary>
         /// <param name="fileStream">Stream to parse</param>
-        public IniDocumentParser(Stream fileStream) : base(fileStream) { }
+        public IniDocumentParser(Stream fileStream) : base(fileStream) {
+            // Nothing to do here
+        }
+        
+        /// <inheritdoc />
+        protected override string[] BlockSplitter => new string[0];
 
-        /// <summary>
-        /// Returns the block splitter tokens.
-        /// </summary>
-        protected override string[] BlockSplitter { get { return new string[0]; } }
 
-        /// <summary>
-        /// Returns the chunk splitter tokens.
-        /// </summary>
-        protected override string[] ChunkSplitter { get { return new[] { Environment.NewLine };  } }
+        /// <inheritdoc />
+        protected override string[] ChunkSplitter 
+            => new[] {Environment.NewLine};
+        
+        /// <inheritdoc />
+        protected override string[] NLNoBlock 
+            => new[] {"/"};
 
-        /// <summary>
-        /// Returns the ignorable newline tokens.
-        /// </summary>
-        protected override string[] NLNoBlock { get { return new[] { "/" }; } }
 
-        /// <summary>
-        /// Returns the inline splitter tokens.
-        /// </summary>
-        protected override string[] InlineSplitter { get { return new string[0]; } }
+        /// <inheritdoc />
+        protected override string[] InlineSplitter 
+            => new string[0];
     }
 }
