@@ -43,7 +43,7 @@ namespace motoi.extensions {
                 IPluginInfo plugin = providedPlugins[i];
                 
                 Stream stream = plugin.Bundle.GetResourceAsStream(ExtensionFileName);
-                if (stream == null) return;
+                if (stream == null) continue;
 
                 // Create a parser and parse the stream
                 ExtensionFileParser parser = ExtensionFileParser.GetInstance(stream);
