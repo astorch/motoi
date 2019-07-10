@@ -7,9 +7,7 @@ namespace motoi.workbench.problemsview {
     /// be displayed by the <see cref="ProblemsDataView"/>.
     /// </summary>
     public interface IProblemsViewItemProvider : IWorkbenchPart {
-        /// <summary>
-        /// Event that is raised when items to display has been found.
-        /// </summary>
+        /// <summary> Event that is raised when items to display has been found. </summary>
         event EventHandler<ItemsFoundEventArgs> ItemsFound;
     }
 
@@ -17,17 +15,13 @@ namespace motoi.workbench.problemsview {
     /// Defines the arguments of the <see cref="IProblemsViewItemProvider.ItemsFound"/> event.
     /// </summary>
     public class ItemsFoundEventArgs : EventArgs {
-        /// <summary>
-        /// Creates a new instance.
-        /// </summary>
+        /// <summary> Creates a new instance. </summary>
         /// <param name="items">Items that has been found</param>
         public ItemsFoundEventArgs(ProblemsViewItem[] items) {
             Items = items;
         }
 
-        /// <summary>
-        /// Returns the items that shall be displayed by the Problems Data View.
-        /// </summary>
-        public ProblemsViewItem[] Items { get; private set; }
+        /// <summary> Returns the items that shall be displayed by the Problems Data View. </summary>
+        public ProblemsViewItem[] Items { get; }
     }
 }

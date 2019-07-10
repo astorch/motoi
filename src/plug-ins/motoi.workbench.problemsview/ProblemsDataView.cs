@@ -19,12 +19,12 @@ namespace motoi.workbench.problemsview {
         // ReSharper disable once UnusedMember.Global
         public const string Id = "motoi.workbench.problemsview.problemsDataView";
 
-        private readonly ProblemsViewItemCollection iErrorCollection = new ProblemsViewItemCollection(EProblemsViewItemType.Error);
-        private readonly ProblemsViewItemCollection iWarningCollection = new ProblemsViewItemCollection(EProblemsViewItemType.Warning);
-        private readonly ProblemsViewItemCollection iInfoCollection = new ProblemsViewItemCollection(EProblemsViewItemType.Info);
+        private readonly ProblemsViewItemCollection _errorCollection = new ProblemsViewItemCollection(EProblemsViewItemType.Error);
+        private readonly ProblemsViewItemCollection _warningCollection = new ProblemsViewItemCollection(EProblemsViewItemType.Warning);
+        private readonly ProblemsViewItemCollection _infoCollection = new ProblemsViewItemCollection(EProblemsViewItemType.Info);
 
-        private readonly AutoLockStruct<bool> iDataChanged = new AutoLockStruct<bool>();
-        private Timer iTimer; // TODO Dispose
+        private readonly AutoLockStruct<bool> _dataChanged = new AutoLockStruct<bool>();
+        private Timer _timer; // TODO Dispose
 
         /// <inheritdoc />
         public override IWidgetFactory WidgetFactory { get; set; }
@@ -39,13 +39,13 @@ namespace motoi.workbench.problemsview {
 
             listViewer.ContentProvider = new ProblemsViewListContentProvider();
             listViewer.LabelProvider = new ProblemsViewListLabelProvider();
-            listViewer.Input = new[] {iErrorCollection, iWarningCollection, iInfoCollection};
+            listViewer.Input = new[] {_errorCollection, _warningCollection, _infoCollection};
             listViewer.Update();
 
-            iTimer = new Timer(state => {
-                lock (iDataChanged) {
-                    if (!iDataChanged.Get()) return;
-                    iDataChanged.Set(false);
+            _timer = new Timer(state => {
+                lock (_dataChanged) {
+                    if (!_dataChanged.Get()) return;
+                    _dataChanged.Set(false);
                 }
                 PlatformUI.Instance.Invoker.InvokeAsync(() => listViewer.Update());
             }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
@@ -58,10 +58,12 @@ namespace motoi.workbench.problemsview {
         }
 
         /// <inheritdoc />
-        public override string Name { get { return Messages.ProblemsDataView_Name; } }
+        public override string Name 
+            => Messages.ProblemsDataView_Name;
 
         /// <inheritdoc />
-        public override ImageDescriptor Image { get { return null; } } // TODO Add image
+        public override ImageDescriptor Image 
+            => null; // TODO Add image
 
         #region IPerspectiveListener
 
@@ -95,23 +97,23 @@ namespace motoi.workbench.problemsview {
             IEnumerable<ProblemsViewItem> items = eventArgs.Items;
             if (items == null) return;
 
-            iErrorCollection.Clear();
-            iWarningCollection.Clear();
-            iInfoCollection.Clear();
+            _errorCollection.Clear();
+            _warningCollection.Clear();
+            _infoCollection.Clear();
 
             for (IEnumerator<ProblemsViewItem> itr = items.GetEnumerator(); itr.MoveNext();) {
                 ProblemsViewItem item = itr.Current;
-                ProblemsViewItemCollection collection = iErrorCollection;
+                ProblemsViewItemCollection collection = _errorCollection;
 
                 if (item.ItemType == EProblemsViewItemType.Warning)
-                    collection = iWarningCollection;
+                    collection = _warningCollection;
                 else if (item.ItemType == EProblemsViewItemType.Info)
-                    collection = iInfoCollection;
+                    collection = _infoCollection;
 
                 collection.Add(item);
             }
 
-            iDataChanged.Set(true);
+            _dataChanged.Set(true);
         }
 
         #endregion
@@ -142,9 +144,8 @@ namespace motoi.workbench.problemsview {
             }
 
             /// <inheritdoc />
-            public ColumnDescriptor[] Columns {
-                get { return new[] { DescriptionColumn, FileColumn, LineColumn, ColumnColumn }; }
-            }
+            public ColumnDescriptor[] Columns 
+                => new[] { DescriptionColumn, FileColumn, LineColumn, ColumnColumn };
 
             /// <inheritdoc />
             public bool HasChildren(object item) {
@@ -155,7 +156,7 @@ namespace motoi.workbench.problemsview {
             public object[] GetChildren(object item) {
                 ProblemsViewItemCollection itemCollection = item as ProblemsViewItemCollection;
                 if (itemCollection == null) return new object[0];
-                return Enumerable.ToArray(itemCollection);
+                return itemCollection.ToArray();
             }
         }
 

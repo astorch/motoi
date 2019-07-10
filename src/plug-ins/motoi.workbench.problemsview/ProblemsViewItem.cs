@@ -31,16 +31,16 @@ namespace motoi.workbench.problemsview {
         }
 
         /// <summary> Returns the type of the item. </summary>
-        public EProblemsViewItemType ItemType { get; private set; }
+        public EProblemsViewItemType ItemType { get; }
 
         /// <summary> Returns the description of the item. </summary>
-        public string Description { get; private set; }
+        public string Description { get; }
 
         /// <summary> Returns the affected workspace artefact. </summary>
-        public IWorkspaceArtefact WorkspaceArtefact { get; private set; }
+        public IWorkspaceArtefact WorkspaceArtefact { get; }
 
         /// <summary> Returns the line number that is associated with the item. </summary>
-        public uint Line { get; private set; }
+        public uint Line { get; }
 
         /// <summary>  Returns the column number that is associated with the item. </summary>
         public uint Column { get; set; }
