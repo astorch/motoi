@@ -7,8 +7,7 @@ using motoi.workbench.model;
 namespace motoi.workbench.stub.menu {
     /// <summary> Provides an action handler for the menu item 'Save'. </summary>
     public class FileMenuSaveHandler : AbstractActionHandler, IWorkbenchListener, IPerspectiveListener {
-
-        /// <summary> Creates a new instance. </summary>
+        /// <inheritdoc />
         public FileMenuSaveHandler() {
             PlatformUI.Instance.Workbench.AddWorkbenchListener(this);
             IsEnabled = false;
@@ -19,7 +18,7 @@ namespace motoi.workbench.stub.menu {
             try {
                 PlatformUI.Instance.Workbench.ActivePerspective.ActiveEditor.ExecuteSave(null);
             } catch (Exception ex) {
-                Platform.Instance.PlatformLog.Error(ex, "Error on performing ExecuteSave() on active editor.");
+                Platform.Instance.PlatformLog.Error("Error on performing ExecuteSave() on active editor.", ex);
             }
         }
 

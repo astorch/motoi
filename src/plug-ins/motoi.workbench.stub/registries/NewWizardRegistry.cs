@@ -7,9 +7,8 @@ using motoi.platform.nls;
 using motoi.plugins;
 using motoi.platform.ui.images;
 using motoi.workbench.model;
-using NLog;
-using xcite.collections;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.workbench.stub.registries {
     /// <summary> Implements a registry that manages all New Wizard contributions. </summary>
@@ -18,21 +17,21 @@ namespace motoi.workbench.stub.registries {
         /// <summary> Extension point id. </summary>
         private const string ExtensionPointId = "org.motoi.workbench.stub.wizards.newWizard";
 
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog _log = LogManager.GetLog(typeof(NewWizardRegistry));
 
         /// <summary> Collection of resolved contributions. </summary>
-        private readonly LinearList<Contribution> iContributions = new LinearList<Contribution>();
+        private readonly List<Contribution> _contributions = new List<Contribution>(30);
 
         /// <summary> Returns all registered contributions. </summary>
         public Contribution[] Contributions 
-            => iContributions.ToArray();
+            => _contributions.ToArray();
 
         /// <inheritdoc />
         protected override void OnInitialize() {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(ExtensionPointId);
 
-            IConfigurationElement[] categories = Enumerable.ToArray(configurationElements.Where(el => el.Prefix == "category"));
-            IConfigurationElement[] wizards = Enumerable.ToArray(configurationElements.Where(el => el.Prefix == "wizard"));
+            IConfigurationElement[] categories = configurationElements.Where(el => el.Prefix == "category").ToArray();
+            IConfigurationElement[] wizards = configurationElements.Where(el => el.Prefix == "wizard").ToArray();
             IDictionary<string, CategoryContribution> idToCategoryMap = new Dictionary<string, CategoryContribution>(categories.Length);
 
             // Processing categories
@@ -53,7 +52,7 @@ namespace motoi.workbench.stub.registries {
 
                 CategoryContribution contribution = new CategoryContribution { Id = id, Label = label };
                 idToCategoryMap.Add(id, contribution);
-                iContributions.Add(contribution);
+                _contributions.Add(contribution);
             }
 
             // Processing wizards
@@ -74,16 +73,16 @@ namespace motoi.workbench.stub.registries {
                     Type wizardType = TypeLoader.TypeForName(providingBundle, className);
                     wizardImpl = wizardType.NewInstance<IWizard>();
                 } catch (Exception ex) {
-                    _log.Error(ex, $"Error on creating wizard of type '{className}'.");
+                    _log.Error($"Error on creating wizard of type '{className}'.", ex);
                     continue;
                 }
 
                 ImageDescriptor imageDescriptor = null;
                 if (!string.IsNullOrEmpty(imagePath)) {
                     try {
-                        imageDescriptor = ImageDescriptor.Create(string.Format("image.{0}", id), wizardImpl.GetType().Assembly, imagePath);
+                        imageDescriptor = ImageDescriptor.Create($"image.{id}", wizardImpl.GetType().Assembly, imagePath);
                     } catch (Exception ex) {
-                        _log.Error(ex, $"Error on resolving image of wizard '{id}'.");
+                        _log.Error($"Error on resolving image of wizard '{id}'.", ex);
                     }
                 }
 
@@ -100,7 +99,7 @@ namespace motoi.workbench.stub.registries {
                     }
                 }
 
-                iContributions.Add(contribution);
+                _contributions.Add(contribution);
             }
         }
 

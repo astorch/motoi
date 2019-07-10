@@ -4,44 +4,33 @@ using motoi.workbench.runtime;
 using motoi.workbench.stub.wizards.pages;
 
 namespace motoi.workbench.stub.wizards {
-    /// <summary>
-    /// Provides an implementation of a new file wizard.
-    /// </summary>
+    /// <summary> Provides an implementation of a new file wizard. </summary>
     public class NewWizard : AbstractWizard {
-        private readonly NewWizardOpeningPage iOpeningPage = new NewWizardOpeningPage();
-
-        /// <summary>
-        /// Tells the subclass that initialize has been invoked.
-        /// </summary>
+        private readonly NewWizardOpeningPage _openingPage = new NewWizardOpeningPage();
+        
+        /// <inheritdoc />
         protected override void OnInitialize() {
-            AddWizardPage(iOpeningPage);
+            AddWizardPage(_openingPage);
             Title = Messages.NewWizard_Title;
         }
-
-        /// <summary>
-        /// Tells the subclass that cancel has been invoked.
-        /// </summary>
+        
+        /// <inheritdoc />
         protected override void OnCancel() {
             // Currently nothing to do here
         }
-
-        /// <summary>
-        /// Tells the subclass that finish has been invoked.
-        /// </summary>
+        
+        /// <inheritdoc />
         protected override void OnFinish() {
             try {
-                if (iOpeningPage.SelectedWizard != null)
-                    iOpeningPage.SelectedWizard.Open();
+                _openingPage.SelectedWizard?.Open();
             } catch (Exception ex) {
-                Platform.Instance.PlatformLog.Error(ex, "Error on performing OnFinish().");
+                Platform.Instance.PlatformLog.Error("Error on performing OnFinish().", ex);
             }
         }
-
-        /// <summary>
-        /// Tells the subclass that dispose has been invoked.
-        /// </summary>
+        
+        /// <inheritdoc />
         protected override void OnDispose() {
-            iOpeningPage.Dispose();
+            _openingPage.Dispose();
         }
     }
 }

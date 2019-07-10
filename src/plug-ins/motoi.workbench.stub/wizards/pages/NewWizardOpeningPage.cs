@@ -1,11 +1,11 @@
-﻿using motoi.platform.ui.data;
+﻿using System.Linq;
+using motoi.platform.ui.data;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.images;
 using motoi.platform.ui.widgets;
 using motoi.workbench.model;
 using motoi.workbench.runtime;
 using motoi.workbench.stub.registries;
-using xcite.collections;
 
 namespace motoi.workbench.stub.wizards.pages {
     /// <summary>
@@ -13,16 +13,10 @@ namespace motoi.workbench.stub.wizards.pages {
     /// for the New Wizard.
     /// </summary>
     public class NewWizardOpeningPage : AbstractWizardPage {
-        /// <summary>
-        /// Returns the currently selected wizard.
-        /// </summary>
+        /// <summary> Returns the currently selected wizard. </summary>
         public IWizard SelectedWizard { get; private set; }
-
-        /// <summary>
-        /// Tells the page to initialize its content.
-        /// </summary>
-        /// <param name="gridComposite">Element container</param>
-        /// <param name="widgetFactory">Factory to create widgets</param>
+        
+        /// <inheritdoc />
         public override void Initialize(IGridPanel gridComposite, IWidgetFactory widgetFactory) {
             Title = Messages.NewWizardOpeningPage_Title;
             Description = Messages.NewWizardOpeningPage_Description;
@@ -37,9 +31,7 @@ namespace motoi.workbench.stub.wizards.pages {
             treeViewer.SelectionChanged += OnSelectionChanged;
         }
 
-        /// <summary>
-        /// Is invoked when a selection has been made.
-        /// </summary>
+        /// <summary> Is invoked when a selection has been made. </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="selectionEventArgs">Event arguments</param>
         private void OnSelectionChanged(object sender, SelectionEventArgs selectionEventArgs) {
@@ -52,17 +44,13 @@ namespace motoi.workbench.stub.wizards.pages {
             
             SelectedWizard = wizardContribution.Wizard;
         }
-
-        /// <summary>
-        /// Notifies the instance to dispose any created or referenced resource.
-        /// </summary>
+        
+        /// <inheritdoc />
         public override void Dispose() {
             // Currently nothing to do here
         }
 
-        /// <summary>
-        /// Provides an implementation of <see cref="ITreeContentProvider"/>.
-        /// </summary>
+        /// <summary> Provides an implementation of <see cref="ITreeContentProvider"/>. </summary>
         class NewWizardTreeContentProvider : ITreeContentProvider {
             /// <inheritdoc />
             public object[] GetElements(object input) {
@@ -86,9 +74,7 @@ namespace motoi.workbench.stub.wizards.pages {
             }
         }
 
-        /// <summary>
-        /// Provides an implementation of <see cref="ITreeLabelProvider"/>.
-        /// </summary>
+        /// <summary> Provides an implementation of <see cref="ITreeLabelProvider"/>. </summary>
         class NewWizardTreeLabelProvider : ITreeLabelProvider {
 
             private static readonly ImageDescriptor FolderImageDescriptor = ImageDescriptor.Create("image.folder", "resources/images/Folder-32.png");
@@ -102,12 +88,8 @@ namespace motoi.workbench.stub.wizards.pages {
 
             /// <inheritdoc />
             public ImageDescriptor GetImage(object item) {
-                CategoryContribution categoryContribution = item as CategoryContribution;
-                if (categoryContribution != null) return FolderImageDescriptor;
-                
-                WizardContribution wizardContribution = item as WizardContribution;
-                if (wizardContribution != null) return wizardContribution.Image;
-
+                if (item is CategoryContribution) return FolderImageDescriptor;
+                if (item is WizardContribution wizardContribution) return wizardContribution.Image;
                 return null;
             }
 
