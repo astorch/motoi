@@ -4,14 +4,10 @@ using System.IO;
 using System.Linq;
 
 namespace Tessa {
-    /// <summary>
-    /// Provides the entry point for the application.
-    /// </summary>
-    class Program {
-        /// <summary>
-        /// Main method.
-        /// </summary>
-        /// <param name="args"></param>
+    /// <summary> Provides the entry point for the application. </summary>
+    class EntryPoint {
+        /// <summary> Implements the entry point of the application. </summary>
+        /// <param name="args">Execution arguments</param>
         static void Main(string[] args) {
             // TODO Print options to console
             if (args.Length == 0) return;
@@ -32,13 +28,13 @@ namespace Tessa {
                 string customOutputPath = args[2];
                 DirectoryInfo directoryInfo = new DirectoryInfo(customOutputPath);
                 if (!directoryInfo.Exists) 
-                    throw new InvalidOperationException(string.Format("Custom output path '{0}' does not exist", directoryInfo.FullName));
+                    throw new InvalidOperationException($"Custom output path '{directoryInfo.FullName}' does not exist");
 
                 currentDir = directoryInfo.FullName;
             }
 
             // Build output directory path
-            string pluginOutputPath = string.Format(@"{0}\\plug-ins\\", currentDir);
+            string pluginOutputPath = $@"{currentDir}\\plug-ins\\";
 
             // Perform packaging
             Packager.Instance.PackMarc(args[0], args[1], pluginOutputPath);
