@@ -37,7 +37,12 @@ namespace Tessa {
             string pluginOutputPath = $@"{currentDir}\\plug-ins\\";
 
             // Perform packaging
-            Packager.Instance.PackMarc(args[0], args[1], pluginOutputPath);
+            try {
+                Packager.Instance.PackMarc(args[0], args[1], pluginOutputPath);
+            } catch (Exception ex) {
+                Console.Error.WriteLine(ex);
+                throw;
+            }
 
             // Print result to console
             FileInfo csprojFileInfo = new FileInfo(args[0]);
