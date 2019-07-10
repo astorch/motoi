@@ -294,7 +294,7 @@ namespace Tessa {
 	            string includeSimpleName = Path.GetFileNameWithoutExtension(projectFileInfo.FullName);
 
                 // Look up latest file
-                string assemblyFileName = string.Format("{0}.dll", includeSimpleName);
+                string assemblyFileName = $"{includeSimpleName}.dll";
                 FileInfo[] assemblies = projectDirectoryInfo.GetFiles(assemblyFileName, SearchOption.AllDirectories);
 
                 // To avoid conflicts between debug and release build, we take the last written one
@@ -332,31 +332,38 @@ namespace Tessa {
 
 	            Match hintPath = Regex.Match(includeContent, "(\\<HintPath\\>(?<path>[^\\<]+)\\</HintPath\\>)");
 
-	            // Reference name
-	            string includeSimpleName = includeMatch.Groups["include"].Value;
-	            includeSimpleName = includeSimpleName.Split(',')[0]; // The assembly might be fully specified
+	            // Select reference only if we have a hint path
+	            if (hintPath.Success) {
+		            // Reference name
+		            string includeSimpleName = includeMatch.Groups["include"].Value;
+		            includeSimpleName = includeSimpleName.Split(',')[0]; // The assembly might be fully specified
 
-	            // Referenced assembly path
-	            string includeReferencePath = hintPath.Groups["path"].Value;
+		            // Referenced assembly path
+		            string includeReferencePath = hintPath.Groups["path"].Value;
 
-	            // The include path is relative to the csproj file, so we must re-align it
-	            string basePath = csprojFileInfo.Directory.FullName;
-	            string assemblyReferencePath = Path.Combine(basePath, includeReferencePath);
+		            // The include path is relative to the csproj file, so we must re-align it
+		            string basePath = csprojFileInfo.Directory.FullName;
+		            string assemblyReferencePath = Path.Combine(basePath, includeReferencePath);
 
-	            FileInfo assemblyFileInfo = new FileInfo(assemblyReferencePath);
-	            DirectoryInfo assemblyDirectoryInfo = assemblyFileInfo.Directory;
-	            if (assemblyDirectoryInfo == null) throw new InvalidOperationException("Could not determine directory of assemblyDirectoryInfo: " + assemblyFileInfo);
+		            FileInfo assemblyFileInfo = new FileInfo(assemblyReferencePath);
+		            DirectoryInfo assemblyDirectoryInfo = assemblyFileInfo.Directory;
+		            if (assemblyDirectoryInfo == null) 
+			            throw new InvalidOperationException($"Could not determine directory of assemblyDirectoryInfo '{assemblyFileInfo}' " +
+			                                                $"for include '{includeSimpleName}'.");
 
-                // Look up latest file
-                string assemblyFileName = string.Format("{0}.dll", includeSimpleName);
-	            FileInfo[] assemblies = assemblyDirectoryInfo.GetFiles(assemblyFileName, SearchOption.TopDirectoryOnly);
+		            // Look up latest file
+		            string assemblyFileName = $"{includeSimpleName}.dll";
+		            FileInfo[] assemblies = assemblyDirectoryInfo.GetFiles(assemblyFileName, SearchOption.TopDirectoryOnly);
 
-	            // To avoid conflicts between debug and release build, we take the last written one
-	            FileInfo includeAssembly = assemblies.FirstOrDefault();
-                if (includeAssembly == null) throw new InvalidOperationException("There is no file located at the declared path: " + assemblyReferencePath);
+		            // To avoid conflicts between debug and release build, we take the last written one
+		            FileInfo includeAssembly = assemblies.FirstOrDefault();
+		            if (includeAssembly == null) 
+			            throw new InvalidOperationException($"There is no file located at the declared path '{assemblyReferencePath}' " +
+			                                                $"for the include '{includeSimpleName}'.");
 
-	            // Add to table
-	            referencesTable.Add(includeSimpleName, includeAssembly.FullName);
+		            // Add to table
+		            referencesTable.Add(includeSimpleName, includeAssembly.FullName);
+	            }
 
 	            // Navigate to next match
 	            includeMatch = includeMatch.NextMatch();
