@@ -1,62 +1,41 @@
-﻿using motoi.platform.ui;
-using motoi.platform.ui.bindings;
+﻿using motoi.platform.ui.bindings;
 using motoi.platform.ui.factories;
 using motoi.platform.ui.widgets;
 using motoi.workbench.model;
 
 namespace motoi.workbench.runtime {
-    /// <summary>
-    /// Provides an abstract implementation of <see cref="IWizardPage"/>.
-    /// </summary>
+    /// <summary> Provides an abstract implementation of <see cref="IWizardPage"/>. </summary>
     public abstract class AbstractWizardPage : PropertyChangedDispatcher, IWizardPage {
-        private bool iCanLeave;
+        private bool _canLeave;
 
-        /// <summary>
-        /// Returns the wizard the page is currently added to or does set it.
-        /// </summary>
+        /// <summary> Returns the wizard the page is currently added to or does set it. </summary>
         public IWizard Wizard { get; set; }
 
-        /// <summary>
-        /// Returns a data context object or does set it.
-        /// </summary>
+        /// <summary> Returns a data context object or does set it. </summary>
         public object DataContext { get; set; }
 
-        /// <summary>
-        /// Returns true if the page is enabled.
-        /// </summary>
+        /// <summary> Returns TRUE, if the page is enabled. </summary>
         public bool IsEnabled { get; protected set; }
 
-        /// <summary>
-        /// Returns true if the page can be left.
-        /// </summary>
+        /// <summary> Returns TRUE, if the page can be left. </summary>
         public bool CanLeave {
-            get { return iCanLeave; }
+            get { return _canLeave; }
             protected set {
-                iCanLeave = value; 
+                _canLeave = value; 
                 DispatchPropertyChanged(() => CanLeave);
             }
         }
-
-        /// <summary>
-        /// Returns the title of wizard page.
-        /// </summary>
+        
+        /// <inheritdoc />
         public string Title { get; protected set; }
-
-        /// <summary>
-        /// Returns the description of the wizard page.
-        /// </summary>
+        
+        /// <inheritdoc />
         public string Description { get; protected set; }
-
-        /// <summary>
-        /// Tells the page to initialize its content.
-        /// </summary>
-        /// <param name="gridComposite">Element container</param>
-        /// <param name="widgetFactory">Factory to create widgets</param>
+        
+        /// <inheritdoc />
         public abstract void Initialize(IGridPanel gridComposite, IWidgetFactory widgetFactory);
-
-        /// <summary>
-        /// Notifies the instance to dispose any created or referenced resource.
-        /// </summary>
+        
+        /// <inheritdoc />
         public abstract void Dispose();
     }
 }

@@ -8,28 +8,18 @@ using motoi.workbench.runtime.jobs;
 using xcite.csharp;
 
 namespace motoi.workbench {
-    /// <summary>
-    /// Provides access to UI components of the platform.
-    /// </summary>
+    /// <summary> Provides access to UI components of the platform. </summary>
     public class PlatformUI : GenericSingleton<PlatformUI> {
-        /// <summary>
-        /// Returns the current workbench.
-        /// </summary>
+        /// <summary> Returns the current workbench. </summary>
         public IWorkbench Workbench { get; private set; }
 
-        /// <summary>
-        /// Returns the current UI Invoker.
-        /// </summary>
+        /// <summary> Returns the current UI Invoker. </summary>
         public IUIInvoker Invoker { get; private set; }
 
-        /// <summary>
-        /// Returns the current job service.
-        /// </summary>
+        /// <summary> Returns the current job service. </summary>
         public IJobService JobService { get; private set; }
-
-        /// <summary>
-        /// Will be called directly after this instance has been created.
-        /// </summary>
+        
+        /// <inheritdoc />
         protected override void OnInitialize() {
             IMainWindow mainWindow = Platform.Instance.MainWindow;
             Workbench = new Workbench(mainWindow);
@@ -37,9 +27,7 @@ namespace motoi.workbench {
             JobService = new JobService();
         }
 
-        /// <summary>
-        /// Will be called when <see cref="GenericSingleton{TClass}.Destroy"/> has been called for this instance.
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnDestroy() {
             // Currently nothing to do here
         }

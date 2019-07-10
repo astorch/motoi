@@ -6,16 +6,17 @@ using motoi.workbench.model;
 
 namespace motoi.workbench.runtime {
     /// <summary>
-    /// Provides an abstract implementation of <see cref="ITextEditor"/> that is based on <see cref="AbstractEditor"/>.
+    /// Provides an abstract implementation of <see cref="ITextEditor"/>
+    /// that is based on <see cref="AbstractEditor"/>.
     /// </summary>
     public abstract class AbstractTextEditor : AbstractEditor, ITextEditor {
-        private string iEditorText;
+        private string _editorText;
 
         /// <inheritdoc />
         public virtual string EditorText {
-            get { return iEditorText; }
+            get { return _editorText; }
             set {
-                iEditorText = value;
+                _editorText = value;
                 IsDirty = true;
             }
         }

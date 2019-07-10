@@ -3,17 +3,15 @@ using motoi.platform.ui;
 using motoi.platform.ui.shells;
 using motoi.workbench.events;
 using motoi.workbench.model;
-using NLog;
 using xcite.csharp.oop;
+using xcite.logging;
 
 namespace motoi.workbench.runtime {
-    /// <summary>
-    /// Provides an implementation of <see cref="IWorkbench"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IWorkbench"/>. </summary>
     public class Workbench : IWorkbench {
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog _log = LogManager.GetLog(typeof(Workbench));
 
-        private readonly AuxiliaryAudible<IWorkbenchListener> iWorkbenchEventManager = new AuxiliaryAudible<IWorkbenchListener>();
+        private readonly AuxiliaryAudible<IWorkbenchListener> _workbenchEventManager = new AuxiliaryAudible<IWorkbenchListener>();
 
         /// <summary>Creates a new instance of the given <paramref name="mainWindow"/></summary>
         /// <param name="mainWindow">Main window of the application</param>
@@ -21,21 +19,14 @@ namespace motoi.workbench.runtime {
             MainWindow = mainWindow;
         }
 
-        /// <summary>
-        /// Returns the current main window.
-        /// </summary>
-        public IMainWindow MainWindow { get; private set; }
 
-        /// <summary>
-        /// Returns the current active perspective.
-        /// </summary>
+        /// <inheritdoc />
+        public IMainWindow MainWindow { get; }
+        
+        /// <inheritdoc />
         public IPerspective ActivePerspective { get; private set; }
-
-        /// <summary>
-        /// Opens a perspective with the given perspective id.
-        /// </summary>
-        /// <param name="perspectiveId">Id of the perspective</param>
-        /// <returns>Instance of perspective or null</returns>
+        
+        /// <inheritdoc />
         public IPerspective OpenPerspective(string perspectiveId) {
             if (string.IsNullOrEmpty(perspectiveId)) return null;
 
@@ -50,7 +41,7 @@ namespace motoi.workbench.runtime {
             }
 
             ActivePerspective = newPerspective;
-            iWorkbenchEventManager.Dispatch(lstnr => lstnr.OnPerspectiveChanged(oldPerspective, newPerspective), OnPerspectiveChangedException);
+            _workbenchEventManager.Dispatch(lstnr => lstnr.OnPerspectiveChanged(oldPerspective, newPerspective), OnPerspectiveChangedException);
 
             if (newPerspective != null) {
                 // Currently nothing to do
@@ -59,29 +50,21 @@ namespace motoi.workbench.runtime {
             return newPerspective;
         }
 
-        /// <summary>
-        /// Is invoked when an error during the event dispatching occurred.
-        /// </summary>
+        /// <summary> Is invoked when an error during the event dispatching occurred. </summary>
         /// <param name="exception">Exception</param>
         /// <param name="workbenchListener">Listener the exception happened to</param>
         private void OnPerspectiveChangedException(Exception exception, IWorkbenchListener workbenchListener) {
-            _log.Error(exception, $"Error on dispatching event to '{workbenchListener}'.");
+            _log.Error($"Error on dispatching event to '{workbenchListener}'.", exception);
         }
-
-        /// <summary>
-        /// Subscribes the given <paramref name="listener"/> to workbench events.
-        /// </summary>
-        /// <param name="listener">Listener to subscribe</param>
+        
+        /// <inheritdoc />
         public void AddWorkbenchListener(IWorkbenchListener listener) {
-            iWorkbenchEventManager.AddListener(listener);
+            _workbenchEventManager.AddListener(listener);
         }
-
-        /// <summary>
-        /// Unsubscribes the given <paramref name="listener"/> from workbench events.
-        /// </summary>
-        /// <param name="listener">Listener to unsubscribe</param>
+        
+        /// <inheritdoc />
         public void RemoveWorkbenchListener(IWorkbenchListener listener) {
-            iWorkbenchEventManager.RemoveListener(listener);
+            _workbenchEventManager.RemoveListener(listener);
         }
     }
 }

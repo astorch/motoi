@@ -6,25 +6,21 @@ using motoi.platform.nls;
 using motoi.platform.ui;
 using motoi.plugins;
 using motoi.workbench.model;
-using NLog;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.workbench.registries {
-    /// <summary>
-    /// Provides methods to manage instances of <see cref="IDataView"/>.
-    /// </summary>
+    /// <summary> Provides methods to manage instances of <see cref="IDataView"/>. </summary>
     public class DataViewRegistry : GenericSingleton<DataViewRegistry> {
         /// <summary> Extension Point id. </summary>
         private const string DataViewExtensionPointId = "org.motoi.ui.dataview";
 
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog _log = LogManager.GetLog(typeof(DataViewRegistry));
 
         private readonly List<DataViewContribution> iRegisteredDataViews = new List<DataViewContribution>(31);
         private readonly Dictionary<Type, IDataView> iCreatedDataViews = new Dictionary<Type, IDataView>(31);
 
-        /// <summary>
-        /// Returns an enumerable of all registered view references.
-        /// </summary>
+        /// <summary> Returns an enumerable of all registered view references. </summary>
         /// <returns>Enumerable of all registered view references</returns>
         /// <seealso cref="IViewReference"/>
         public IEnumerable<IViewReference> GetViewReferences() {
@@ -65,7 +61,8 @@ namespace motoi.workbench.registries {
         }
 
         /// <summary>
-        /// Returns the existing instance of the given <paramref name="dataViewType"/>. If there isn't one, a new one is created.
+        /// Returns the existing instance of the given <paramref name="dataViewType"/>.
+        /// If there isn't one, a new one is created.
         /// </summary>
         /// <typeparam name="TDataView">Type of data view to get</typeparam>
         /// <param name="dataViewType">Type of data view to get</param>
@@ -82,18 +79,16 @@ namespace motoi.workbench.registries {
                 // Exit
                 return dataViewInstance;
             } catch (Exception ex) {
-                _log.Error(ex, $"Error on initiating a new instance of '{dataViewType}'.");
+                _log.Error($"Error on initiating a new instance of '{dataViewType}'.", ex);
                 return null;
             }
         }
-
-        /// <summary>
-        /// Will be called directly after this instance has been created.
-        /// </summary>
+        
+        /// <inheritdoc />
         protected override void OnInitialize() {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(DataViewExtensionPointId);
             if (configurationElements.Length == 0) {
-                _log.Warn("No data view has been contributed by any extension point!");
+                _log.Warning("No data view has been contributed by any extension point!");
                 return;
             }
 
@@ -136,22 +131,18 @@ namespace motoi.workbench.registries {
                     iRegisteredDataViews.Add(dataViewContribution);
                     _log.Info($"Data view contribution '{id}' registered.");
                 } catch (Exception ex) {
-                    _log.Error(ex, $"Error loading type '{cls}'.");
+                    _log.Error($"Error loading type '{cls}'.", ex);
                 }
             }
         }
-
-        /// <summary>
-        /// Will be called when <see cref="GenericSingleton{TClass}.Destroy"/> has been called for this instance.
-        /// </summary>
+        
+        /// <inheritdoc />
         protected override void OnDestroy() {
             iRegisteredDataViews.Clear();
             iCreatedDataViews.Clear();
         }
 
-        /// <summary>
-        /// Provides an anonymous implementation of <see cref="IViewReference"/>.
-        /// </summary>
+        /// <summary> Provides an anonymous implementation of <see cref="IViewReference"/>. </summary>
         class ViewReferenceImpl : IViewReference {
             /// <inheritdoc />
             public ViewReferenceImpl(string id, string title) {

@@ -1,23 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using motoi.extensions;
 using motoi.plugins;
 using motoi.workbench.model;
-using NLog;
-using xcite.collections;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.workbench.registries {
-    /// <summary>
-    /// Provides methods to manage instances of <see cref="IEditor"/>.
-    /// </summary>
+    /// <summary> Provides methods to manage instances of <see cref="IEditor"/>. </summary>
     public class EditorRegistry : GenericSingleton<EditorRegistry> {
         /// <summary> Extension Point id. </summary>
         private const string EditorExtensionPointId = "org.motoi.ui.editor";
 
-        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog _log = LogManager.GetLog(typeof(EditorRegistry));
 
-        private readonly LinearList<EditorContribution> iRegisteredEditors = new LinearList<EditorContribution>();
+        private readonly List<EditorContribution> _registeredEditors = new List<EditorContribution>(20);
 
         /// <summary>
         /// Returns an editor that has been registered to the given <paramref name="fileExtension"/>. If there is 
@@ -26,7 +24,7 @@ namespace motoi.workbench.registries {
         /// <param name="fileExtension">File extension an editor can handle</param>
         /// <returns>Instance of <see cref="IEditor"/> or NULL</returns>
         public IEditor GetEditorForExtension(string fileExtension) {
-            EditorContribution editorContribution = iRegisteredEditors.FirstOrDefault(entry => entry.SupportsFileExtension(fileExtension));
+            EditorContribution editorContribution = _registeredEditors.FirstOrDefault(entry => entry.SupportsFileExtension(fileExtension));
             if (editorContribution == null) return null;
 
             return GetEditorInstance(editorContribution);
@@ -39,7 +37,7 @@ namespace motoi.workbench.registries {
         /// <param name="editorId">Id of the editor</param>
         /// <returns>Instance of <see cref="IEditor"/> or NULL</returns>
         public IEditor GetEditorForId(string editorId) {
-            EditorContribution editorContribution = iRegisteredEditors.FirstOrDefault(entry => string.Equals(entry.EditorId, editorId));
+            EditorContribution editorContribution = _registeredEditors.FirstOrDefault(entry => string.Equals(entry.EditorId, editorId));
             if (editorContribution == null) return null;
 
             return GetEditorInstance(editorContribution);
@@ -59,18 +57,16 @@ namespace motoi.workbench.registries {
                 IEditor editor = (IEditor) Activator.CreateInstance(editorType);
                 return editor;
             } catch (Exception ex) {
-                _log.Error(ex, $"Error on initiating a new instance of '{editorType}'.");
+                _log.Error($"Error on initiating a new instance of '{editorType}'.", ex);
                 return null;
             }
         }
-
-        /// <summary>
-        /// Will be called directly after this instance has been created.
-        /// </summary>
+        
+        /// <inheritdoc />
         protected override void OnInitialize() {
             IConfigurationElement[] configurationElements = ExtensionService.Instance.GetConfigurationElements(EditorExtensionPointId);
             if (configurationElements.Length == 0) {
-                _log.Warn("No editor has been contributed by any extension point!");
+                _log.Warning("No editor has been contributed by any extension point!");
                 return;
             }
 
@@ -115,42 +111,32 @@ namespace motoi.workbench.registries {
                         EditorType = editorType,
                         SupportedFileExtensions = fileExtensionParts
                     };
-                    iRegisteredEditors.Add(editorContribution);
+                    _registeredEditors.Add(editorContribution);
                     _log.Info($"Editor contribution '{id}' registered.");
                 } catch (Exception ex) {
-                    _log.Error(ex, $"Error loading type '{cls}'.");
+                    _log.Error($"Error loading type '{cls}'.", ex);
                 }
             }
         }
 
-        /// <summary>
-        /// Will be called when <see cref="GenericSingleton{TClass}.Destroy"/> has been called for this instance.
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnDestroy() {
-            iRegisteredEditors.Clear();
+            _registeredEditors.Clear();
         }
 
-        /// <summary>
-        /// Describes an editor contribution.
-        /// </summary>
+        /// <summary> Describes an editor contribution. </summary>
         class EditorContribution {
-            /// <summary>
-            /// Returns the id of the editor or does set it.
-            /// </summary>
+            /// <summary> Returns the id of the editor or does set it. </summary>
             public string EditorId { get; set; }
 
-            /// <summary>
-            /// Returns the <see cref="Type"/> of the editor or does set it.
-            /// </summary>
+            /// <summary> Returns the <see cref="Type"/> of the editor or does set it. </summary>
             public Type EditorType { get; set; }
 
-            /// <summary>
-            /// Returns the supported file extensions by the editor or does set them.
-            /// </summary>
+            /// <summary> Returns the supported file extensions by the editor or does set them. </summary>
             public string[] SupportedFileExtensions { get; set; }
 
             /// <summary>
-            /// Returns TRUE if the editor supports the given <paramref name="fileExtension"/>.
+            /// Returns TRUE, if the editor supports the given <paramref name="fileExtension"/>.
             /// </summary>
             /// <param name="fileExtension">File extension to proof</param>
             /// <returns>TRUE or FALSE</returns>

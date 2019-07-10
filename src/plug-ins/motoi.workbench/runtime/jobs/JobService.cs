@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using motoi.platform.ui.factories;
 using motoi.workbench.model.jobs;
-using NLog;
 using xcite.csharp;
+using xcite.logging;
 
 namespace motoi.workbench.runtime.jobs {
-    /// <summary>
-    /// Provides an implementation of <see cref="IJobService"/>.
-    /// </summary>
+    /// <summary> Provides an implementation of <see cref="IJobService"/>. </summary>
     public class JobService : IJobService {
-        private readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private readonly ILog _log = LogManager.GetLog(typeof(JobService));
         private readonly Queue<JobHandle> _jobQueue = new Queue<JobHandle>(7);
         private readonly AutoLockStruct<bool> _processingQueue = new AutoLockStruct<bool>();
 
@@ -34,9 +32,7 @@ namespace motoi.workbench.runtime.jobs {
             return jobHandle;
         }
 
-        /// <summary>
-        /// Is invoked when a thread to process the job queue has been started.
-        /// </summary>
+        /// <summary> Is invoked when a thread to process the job queue has been started. </summary>
         /// <param name="state">Reference to the job queue</param>
         private void ProcessJobQueue(object state) {
             Thread.CurrentThread.Name = "Job Service - Job Queue Processor";
@@ -56,9 +52,7 @@ namespace motoi.workbench.runtime.jobs {
             _processingQueue.Set(false);
         }
 
-        /// <summary>
-        /// Is invoked when a task for a job is being executed.
-        /// </summary>
+        /// <summary> Is invoked when a task for a job is being executed. </summary>
         /// <param name="dataStore">Data store object array</param>
         private void OnTaskExecution(object[] dataStore) {
             string jobName = null;
@@ -73,30 +67,26 @@ namespace motoi.workbench.runtime.jobs {
                 Thread.ResetAbort();
                 _log.Fatal("Thread has been explicitly cancelled!", ex);
             } catch (Exception ex) {
-                _log.Error(ex, $"Error on executing job '{jobName}'.");
+                _log.Error($"Error on executing job '{jobName}'.", ex);
             }
         }
 
-        /// <summary>
-        /// Provides an anonymous implementation of <see cref="IJobHandle"/>.
-        /// </summary>
+        /// <summary> Provides an anonymous implementation of <see cref="IJobHandle"/>. </summary>
         class JobHandle : IJobHandle {
-            private readonly JobExecutionHandler iJobExecutionHandler;
-            private readonly object iStateObject;
-            private readonly string iJobName;
-            private readonly ManualResetEventSlim iWaitHandle;
+            private readonly JobExecutionHandler _jobExecutionHandler;
+            private readonly object _stateObject;
+            private readonly string _jobName;
+            private readonly ManualResetEventSlim _waitHandle;
 
-            /// <summary>
-            /// Creates a new instance that operates with the given values.
-            /// </summary>
+            /// <summary> Creates a new instance that operates with the given values. </summary>
             /// <param name="onExecute"></param>
             /// <param name="stateObj"></param>
             /// <param name="jobName"></param>
             public JobHandle(JobExecutionHandler onExecute, object stateObj, string jobName) {
-                iJobExecutionHandler = onExecute;
-                iStateObject = stateObj;
-                iJobName = jobName;
-                iWaitHandle = new ManualResetEventSlim(false);
+                _jobExecutionHandler = onExecute;
+                _stateObject = stateObj;
+                _jobName = jobName;
+                _waitHandle = new ManualResetEventSlim(false);
             }
 
             /// <summary>
@@ -105,12 +95,12 @@ namespace motoi.workbench.runtime.jobs {
             /// </summary>
             /// <returns>Job data set</returns>
             public object[] GetDataSet() {
-                return new[] {iJobExecutionHandler, iStateObject, iJobName};
+                return new[] {_jobExecutionHandler, _stateObject, _jobName};
             }
 
             /// <inheritdoc />
             public void Wait() {
-                iWaitHandle.Wait();
+                _waitHandle.Wait();
             }
 
             /// <inheritdoc />
@@ -118,34 +108,26 @@ namespace motoi.workbench.runtime.jobs {
                 throw new NotSupportedException();
             }
 
-            /// <summary>
-            /// Notices the job that its execution has been started.
-            /// </summary>
+            /// <summary> Notifies the job that its execution has been started. </summary>
             public void AcknowledgeStart() {
                 Started.Dispatch(new object[] {this, EventArgs.Empty});
             }
 
-            /// <summary>
-            /// Notices the job that its execution has been finished.
-            /// </summary>
+            /// <summary> Notifies the job that its execution has been finished. </summary>
             public void AcknowledgeFinish() {
                 Finished.Dispatch(new object[] {this, EventArgs.Empty});
                 SetWaitHandle();
             }
 
-            /// <summary>
-            /// Notices the job that its execution has been cancelled.
-            /// </summary>
+            /// <summary> Notifies the job that its execution has been cancelled. </summary>
             public void AcknowledgeCancel() {
                 Cancelled.Dispatch(new object[] {this, EventArgs.Empty});
                 SetWaitHandle();
             }
 
-            /// <summary>
-            /// Sets the wait handle to signalled (true).
-            /// </summary>
+            /// <summary> Sets the wait handle to signalled (true). </summary>
             private void SetWaitHandle() {
-                iWaitHandle.Set();
+                _waitHandle.Set();
             }
 
             /// <inheritdoc />

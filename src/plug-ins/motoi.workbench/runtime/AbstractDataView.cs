@@ -3,7 +3,8 @@ using motoi.workbench.model;
 
 namespace motoi.workbench.runtime {
     /// <summary>
-    /// Provides an abstract implementation of <see cref="IDataView"/> based on <see cref="AbstractWorkbenchPart"/>.
+    /// Provides an abstract implementation of <see cref="IDataView"/>
+    /// based on <see cref="AbstractWorkbenchPart"/>.
     /// </summary>
     public abstract class AbstractDataView : AbstractWorkbenchPart, IDataView {
         /// <summary> Tells the instance to initialize its state. </summary>

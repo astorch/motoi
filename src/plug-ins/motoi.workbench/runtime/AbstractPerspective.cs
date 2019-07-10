@@ -8,13 +8,18 @@ using motoi.platform.ui.shells;
 using motoi.workbench.events;
 using motoi.workbench.model;
 using motoi.workbench.registries;
-using NLog;
 using xcite.csharp.oop;
+using xcite.logging;
 
 namespace motoi.workbench.runtime {
     /// <summary> Provides an abstract implementation of <see cref="IPerspective"/>. </summary>
     public abstract class AbstractPerspective : IPerspective {
-        private readonly Logger _log = LogManager.GetCurrentClassLogger();
+        private readonly ILog _log;
+
+        /// <inheritdoc />
+        protected AbstractPerspective() {
+            _log = LogManager.GetLog(GetType());
+        }
 
         /// <summary> Returns the underlying perspective event manager to dispatch events. </summary>
         protected AuxiliaryAudible<IPerspectiveListener> PerspectiveEventManager { get; } = new AuxiliaryAudible<IPerspectiveListener>();
@@ -80,7 +85,7 @@ namespace motoi.workbench.runtime {
                 ActiveEditor = editor;
                 PerspectiveEventManager.Dispatch(lstnr => lstnr.OnWorkbenchPartOpened(editor), OnDispatchWorkbenchEventException);
             } catch (Exception ex) {
-                _log.Error(ex, $"Error on showing editor '{editor}' by perspective '{this}'.");
+                _log.Error($"Error on showing editor '{editor}' by perspective '{this}'.", ex);
             }
         }
 
@@ -109,7 +114,7 @@ namespace motoi.workbench.runtime {
                 try {
                     editor.ExecuteSave(null);
                 } catch (Exception ex){
-                    _log.Error(ex, "Error on execute save on active editor.");
+                    _log.Error("Error on execute save on active editor.", ex);
                 }
             }
 
@@ -139,7 +144,7 @@ namespace motoi.workbench.runtime {
                 PerspectiveEventManager.Dispatch(lstnr => lstnr.OnWorkbenchPartClosed(editor), OnDispatchWorkbenchEventException);
                 return true;
             } catch (Exception ex) {
-                _log.Error(ex, $"Error on closing editor '{editor}' by perspective '{this}'.");
+                _log.Error($"Error on closing editor '{editor}' by perspective '{this}'.", ex);
                 return false;
             }
         }
@@ -150,7 +155,7 @@ namespace motoi.workbench.runtime {
         /// <param name="exception">Exception</param>
         /// <param name="perspectiveListener">Listener the exception happened to</param>
         protected virtual void OnDispatchWorkbenchEventException(Exception exception, IPerspectiveListener perspectiveListener) {
-            _log.Error(exception, $"Error on dispatching perspective event to '{perspectiveListener}'.");
+            _log.Error($"Error on dispatching perspective event to '{perspectiveListener}'.", exception);
         }
 
         /// <inheritdoc />
@@ -188,7 +193,7 @@ namespace motoi.workbench.runtime {
                 ActiveDataViews.Add(dataView);
                 PerspectiveEventManager.Dispatch(lstnr => lstnr.OnWorkbenchPartOpened(dataView), OnDispatchWorkbenchEventException);
             } catch (Exception ex) {
-                _log.Error(ex, $"Error on showing data view '{dataView}' by perspective '{this}'.");
+                _log.Error($"Error on showing data view '{dataView}' by perspective '{this}'.", ex);
             }
         }
 

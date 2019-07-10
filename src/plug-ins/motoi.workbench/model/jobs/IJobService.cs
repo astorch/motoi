@@ -1,7 +1,5 @@
 ﻿namespace motoi.workbench.model.jobs {
-    /// <summary>
-    /// Provides methods to schedule jobs.
-    /// </summary>
+    /// <summary> Provides methods to schedule jobs. </summary>
     public interface IJobService {
         /// <summary>
         /// Schedules a job. When the job is being executed the given <paramref name="onExecute"/> 

@@ -3,9 +3,7 @@ using motoi.workbench.model;
 using xcite.csharp;
 
 namespace motoi.workbench {
-    /// <summary>
-    /// Provides a factory for creating instances of <see cref="IPerspective"/>.
-    /// </summary>
+    /// <summary> Provides a factory for creating instances of <see cref="IPerspective"/>. </summary>
     public class PerspectiveFactory : GenericSingleton<PerspectiveFactory> {
         /// <summary>
         /// Returns an instance of a perspective referenced by the given id. If no instance 
@@ -26,17 +24,13 @@ namespace motoi.workbench {
         public IPerspective GetPerspective<TPerspective>() where TPerspective : class, IPerspective {
             return UIFactory.NewService<TPerspective>();
         }
-
-        /// <summary>
-        /// Will be called directly after this instance has been created.
-        /// </summary>
+        
+        /// <inheritdoc />
         protected override void OnInitialize() {
             // Currently nothing to do here
         }
 
-        /// <summary>
-        /// Will be called when <see cref="GenericSingleton{TClass}.Destroy"/> has been called for this instance.
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnDestroy() {
             // Currently nothing to do here
         }

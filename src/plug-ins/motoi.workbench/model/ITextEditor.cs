@@ -4,9 +4,7 @@
     /// used for text editors.
     /// </summary>
     public interface ITextEditor : IEditor {
-        /// <summary>
-        /// Returns the text that is edited or does set it.
-        /// </summary>
+        /// <summary> Returns the text that is edited or does set it. </summary>
         string EditorText { get; set; }
     }
 }
