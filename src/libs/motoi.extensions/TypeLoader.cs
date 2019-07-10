@@ -12,10 +12,10 @@ namespace motoi.extensions {
         public static Type TypeForName(IBundle bundle, string typeName) {
             string bundleName = bundle.Name;
             string assemblyQualifiedName = string.Format("{0}.{1},{0}", bundleName, typeName);
-
+            
             Type type = Type.GetType(assemblyQualifiedName);
-            if (type == null) throw new NullReferenceException($"There is no known type for '{assemblyQualifiedName}'");
-
+            if (type == null) throw new InvalidOperationException($"There is no known type for '{assemblyQualifiedName}'");
+            
             return type;
         }
     }
