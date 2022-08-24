@@ -43,12 +43,12 @@
         <ProjectReference Include="..\motoi.workbench\motoi.workbench.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="DockPanelSuite" Version="3.0.6" />
-        <PackageReference Include="DockPanelSuite.ThemeVS2012" Version="3.0.6" />
+        <PackageReference Include="DockPanelSuite" Version="3.1.0" />
+        <PackageReference Include="DockPanelSuite.ThemeVS2012" Version="3.1.0" />
         <PackageReference Include="DockPanelSuite.ThemeVS2012Light" Version="2.10.0" />
-        <PackageReference Include="DockPanelSuite.ThemeVS2013" Version="3.0.6" />
+        <PackageReference Include="DockPanelSuite.ThemeVS2013" Version="3.1.0" />
         <PackageReference Include="DockPanelSuite.ThemeVS2013Blue" Version="2.10.0" />
-        <PackageReference Include="DockPanelSuite.ThemeVS2015" Version="3.0.6" />
+        <PackageReference Include="DockPanelSuite.ThemeVS2015" Version="3.1.0" />
     </ItemGroup>
     <ItemGroup>
         <Reference Include="FastColoredTextBox, Version=2.16.23.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">

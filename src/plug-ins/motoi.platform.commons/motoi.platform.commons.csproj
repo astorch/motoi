@@ -20,7 +20,7 @@
 
     <ItemGroup>
         <PackageReference Include="xcite.csharp" Version="7.2.0" />
-        <PackageReference Include="xcite.logging" Version="1.5.0" />
+        <PackageReference Include="xcite.logging" Version="2.1.1" />
     </ItemGroup>
     <ItemGroup>
         <None Include="meta-inf\signature.mf" />
